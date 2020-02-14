@@ -7,7 +7,25 @@
 		<key>BIPWallet.xcscheme_^#shared#^_</key>
 		<dict>
 			<key>orderHint</key>
-			<integer>0</integer>
+			<integer>39</integer>
+		</dict>
+	</dict>
+	<key>SuppressBuildableAutocreation</key>
+	<dict>
+		<key>FA9E518C23ED9972007263B9</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>FA9E51A223ED9976007263B9</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>FA9E51AD23ED9976007263B9</key>
+		<dict>
+			<key>primary</key>
+			<true/>
 		</dict>
 	</dict>
 </dict>

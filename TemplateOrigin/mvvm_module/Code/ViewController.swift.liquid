@@ -1,0 +1,25 @@
+{% include 'header' %}
+import UIKit
+import RxSwift
+
+class {{ module_info.name }}ViewController: BaseViewController, Controller {
+
+  // MARK: - ControllerProtocol
+
+  typealias ViewModelType = {{ module_info.name }}ViewModel
+
+  var viewModel: ViewModelType!
+
+  func configure(with viewModel: {{ module_info.name }}ViewModel) {
+
+  }
+
+  // MARK: - ViewController
+
+  override func viewDidLoad() {
+    super.viewDidLoad()
+
+    configure(with: viewModel)
+  }
+
+}

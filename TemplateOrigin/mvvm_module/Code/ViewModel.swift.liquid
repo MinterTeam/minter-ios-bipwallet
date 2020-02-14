@@ -1,0 +1,35 @@
+{% include 'header' %}
+import Foundation
+import RxSwift
+
+class {{ module_info.name }}ViewModel: BaseViewModel, ViewModel {
+
+  // MARK: - ViewModel
+
+  var input: {{ module_info.name }}ViewModel.Input!
+  var output: {{ module_info.name }}ViewModel.Output!
+  var dependency: {{ module_info.name }}ViewModel.Dependency!
+
+  struct Input {
+
+  }
+
+  struct Output {
+
+  }
+
+  struct Dependency {
+
+  }
+
+  init(dependency: Dependency) {
+    self.input = Input()
+    self.output = Output()
+    self.dependency = dependency
+
+    super.init()
+  }
+
+  // MARK: -
+
+}

@@ -1,0 +1,36 @@
+### Headers settings
+company: Minter
+
+### Xcode project settings
+project_name: BIPWallet
+xcodeproj_path: BIPWallet.xcodeproj
+
+### Code generation settings section
+# The main project target name
+project_target: BIPWallet
+
+# The file path for new modules
+project_file_path: BIPWallet/Classes/Modules/
+
+# The Xcode group path to new modules
+project_group_path: BIPWallet/Classes/Modules/
+
+### Tests generation settings section
+# The tests target name
+test_target: BIPWalletTests
+
+# The file path for new tests
+test_file_path: BIPWalletTests
+
+# The Xcode group path to new tests
+test_group_path: BIPWalletTests
+
+### Dependencies settings section
+podfile_path: Podfile
+
+### Templates
+templates:
+- {name: mvvm_module, local: 'TemplateOrigin/mvvm_module'}
+#- {name: local_template_name, local: 'absolute/file/path'}
+#- {name: remote_template_name, git: 'https://github.com/igrekde/remote_template'}
+#- {name: catalog_template_name}

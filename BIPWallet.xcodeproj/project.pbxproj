@@ -3,18 +3,65 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 51;
 	objects = {
 
 /* Begin PBXBuildFile section */
+		02369AC9AA14A2266B255A96 /* WelcomeModule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 696B1DFC64C434A82F1C6710 /* WelcomeModule.swift */; };
+		07687502B660F85E2037AEC8 /* CreateWalletAssembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1D6A8CB5D73C729D8F782AF /* CreateWalletAssembly.swift */; };
+		1C0184FBB1580E7CCCEA74D3 /* LoginAssembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD96F022A0D3F4294555783C /* LoginAssembly.swift */; };
+		1D12B6909278F24D865935C3 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BAF398FC178479B30C221DE /* LoginViewController.swift */; };
+		21208D45E2C43CAD752277E3 /* LoginAssembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4380900671E6404DB7ABA01 /* LoginAssembly.swift */; };
+		43A4D422A0E2E7742ACC09ED /* CreateWalletModule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76B34E6E2452620B3B6D7B09 /* CreateWalletModule.swift */; };
+		51A2FCE25B24A8DDA37FAEC6 /* BalanceCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20958F4FAACA5087FA8F47A0 /* BalanceCoordinator.swift */; };
+		5366121F7BA11FE1492C8097 /* LoginRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 486094B69FD39ED0D75F1375 /* LoginRouter.swift */; };
+		55DB34A01910DA5211326DD3 /* WelcomeCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 940A44BFF555B056C95C840E /* WelcomeCoordinator.swift */; };
+		56EDD21C329AF2318FD23713 /* WelcomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16C0C907524E67DDBCEB9B2C /* WelcomeViewModel.swift */; };
+		7A1C1644FC6DAD6598096D94 /* CreateWalletViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97E9579313FF8CF0E26A6AC6 /* CreateWalletViewController.swift */; };
+		808A231B0C3A8B605B420E54 /* LoginCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F7A48254EFBBF30D77BC600 /* LoginCoordinator.swift */; };
+		A338E424A74229D413D40A4A /* LoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5413834B760366E7191BEC35 /* LoginViewModel.swift */; };
+		A5B0CC2E00A7D2EF317E0B5B /* CreateWalletCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26F18828E00B1CF49C2DE7B9 /* CreateWalletCoordinator.swift */; };
+		A6BE75C3B22CDF83D0191E4D /* BalanceRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB31B371A7AE3977441EC31B /* BalanceRouter.swift */; };
+		AEF28033588C87423D3D89BA /* WelcomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67DBB8A770C155298B6582FB /* WelcomeViewController.swift */; };
+		C07883911E1465903399B2B7 /* CreateWalletAssembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF85214272621D8D89C74CCB /* CreateWalletAssembly.swift */; };
+		C1985C8208A5B24D2B287FA5 /* BalanceAssembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF97071AA123CB858647216C /* BalanceAssembly.swift */; };
+		CFA7A7454DA83FC006AAA4F3 /* BalanceAssembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5311994EAF233E9EF35C263C /* BalanceAssembly.swift */; };
+		E4818AC3B18BE46354F0E781 /* BalanceViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E06002183097E82CC6483769 /* BalanceViewModel.swift */; };
+		E9D01DFC3CF6845EB30CA76B /* CreateWalletViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29DD11B1F735B7F8EC0CAE1A /* CreateWalletViewModel.swift */; };
+		EB5D4AD1C63AEA3EE525B8E9 /* BalanceModule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0025D51ED532BFA2E45C5018 /* BalanceModule.swift */; };
+		EB8B302C53E3CB8E2C8A0243 /* CreateWalletRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 598E47A6EC96168CC112ACF6 /* CreateWalletRouter.swift */; };
+		F5D7A362541DE5C2FEF937D6 /* Pods_BIPWallet.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CD2CA24CF49F10509A4262CE /* Pods_BIPWallet.framework */; };
+		F8E8F9B815FB09EEC0791228 /* WelcomeRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94AECF199577EA8043FE8885 /* WelcomeRouter.swift */; };
+		F900EF850894A0F998A98F63 /* LoginModule.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7BFBEB06E0668DFCCF098FF /* LoginModule.swift */; };
+		FA16D5B5205E0655DC48415D /* BalanceViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A98F8DBF73A100CA774E265 /* BalanceViewController.swift */; };
 		FA9E519123ED9972007263B9 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA9E519023ED9972007263B9 /* AppDelegate.swift */; };
-		FA9E519323ED9972007263B9 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA9E519223ED9972007263B9 /* SceneDelegate.swift */; };
 		FA9E519523ED9972007263B9 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA9E519423ED9972007263B9 /* ViewController.swift */; };
 		FA9E519823ED9972007263B9 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FA9E519623ED9972007263B9 /* Main.storyboard */; };
 		FA9E519A23ED9976007263B9 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FA9E519923ED9976007263B9 /* Assets.xcassets */; };
 		FA9E519D23ED9976007263B9 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FA9E519B23ED9976007263B9 /* LaunchScreen.storyboard */; };
 		FA9E51A823ED9976007263B9 /* BIPWalletTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA9E51A723ED9976007263B9 /* BIPWalletTests.swift */; };
 		FA9E51B323ED9976007263B9 /* BIPWalletUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA9E51B223ED9976007263B9 /* BIPWalletUITests.swift */; };
+		FACA652C23F2AAAF00399359 /* BaseCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = FACA652B23F2AAAF00399359 /* BaseCoordinator.swift */; };
+		FACA652F23F2AAF000399359 /* Coordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = FACA652E23F2AAF000399359 /* Coordinator.swift */; };
+		FACA653123F2AB2A00399359 /* Routable.swift in Sources */ = {isa = PBXBuildFile; fileRef = FACA653023F2AB2A00399359 /* Routable.swift */; };
+		FACA653323F2AB5600399359 /* Presentable.swift in Sources */ = {isa = PBXBuildFile; fileRef = FACA653223F2AB5600399359 /* Presentable.swift */; };
+		FACA653523F2ABD700399359 /* DeepLinkOption.swift in Sources */ = {isa = PBXBuildFile; fileRef = FACA653423F2ABD700399359 /* DeepLinkOption.swift */; };
+		FACA653723F2AE5200399359 /* BaseViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FACA653623F2AE5200399359 /* BaseViewModel.swift */; };
+		FACA653923F2B04300399359 /* BaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FACA653823F2B04200399359 /* BaseViewController.swift */; };
+		FACA653B23F2B07500399359 /* Controller.swift in Sources */ = {isa = PBXBuildFile; fileRef = FACA653A23F2B07500399359 /* Controller.swift */; };
+		FACA653E23F2B2D300399359 /* NavigationRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = FACA653D23F2B2D300399359 /* NavigationRouter.swift */; };
+		FACA654023F2CCDF00399359 /* AppCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = FACA653F23F2CCDF00399359 /* AppCoordinator.swift */; };
+		FACA654223F2D01400399359 /* AppRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = FACA654123F2D01400399359 /* AppRouter.swift */; };
+		FACA654423F2D4DE00399359 /* AppCoordinatorAssembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = FACA654323F2D4DE00399359 /* AppCoordinatorAssembly.swift */; };
+		FACA654523F2D65500399359 /* WelcomeModuleAssembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F20116D84B5D11B6872261E /* WelcomeModuleAssembly.swift */; };
+		FACA654723F2ECD100399359 /* WelcomeCoordinatorAssembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = FACA654623F2ECD100399359 /* WelcomeCoordinatorAssembly.swift */; };
+		FACA654B23F401AE00399359 /* AuthService.swift in Sources */ = {isa = PBXBuildFile; fileRef = FACA654A23F401AE00399359 /* AuthService.swift */; };
+		FACA654E23F4021500399359 /* KeychainAuthStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = FACA654D23F4021500399359 /* KeychainAuthStorage.swift */; };
+		FACA655023F4024E00399359 /* AuthStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = FACA654F23F4024E00399359 /* AuthStorage.swift */; };
+		FACA655223F4032700399359 /* Storages.swift in Sources */ = {isa = PBXBuildFile; fileRef = FACA655123F4032700399359 /* Storages.swift */; };
+		FACA655423F403FD00399359 /* Storage.swift in Sources */ = {isa = PBXBuildFile; fileRef = FACA655323F403FD00399359 /* Storage.swift */; };
+		FACA655623F5680600399359 /* HomeCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = FACA655523F5680600399359 /* HomeCoordinator.swift */; };
+		FACA655823F5681500399359 /* HomeCoordinatorAssembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = FACA655723F5681500399359 /* HomeCoordinatorAssembly.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -35,9 +82,36 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		0025D51ED532BFA2E45C5018 /* BalanceModule.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = BalanceModule.swift; sourceTree = "<group>"; };
+		16C0C907524E67DDBCEB9B2C /* WelcomeViewModel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = WelcomeViewModel.swift; sourceTree = "<group>"; };
+		20958F4FAACA5087FA8F47A0 /* BalanceCoordinator.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = BalanceCoordinator.swift; sourceTree = "<group>"; };
+		26F18828E00B1CF49C2DE7B9 /* CreateWalletCoordinator.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = CreateWalletCoordinator.swift; sourceTree = "<group>"; };
+		29DD11B1F735B7F8EC0CAE1A /* CreateWalletViewModel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = CreateWalletViewModel.swift; sourceTree = "<group>"; };
+		2B16A12CF440C4646DF7C60C /* Pods-BIPWallet.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BIPWallet.release.xcconfig"; path = "Target Support Files/Pods-BIPWallet/Pods-BIPWallet.release.xcconfig"; sourceTree = "<group>"; };
+		2BAF398FC178479B30C221DE /* LoginViewController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
+		3F20116D84B5D11B6872261E /* WelcomeModuleAssembly.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = WelcomeModuleAssembly.swift; sourceTree = "<group>"; };
+		486094B69FD39ED0D75F1375 /* LoginRouter.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = LoginRouter.swift; sourceTree = "<group>"; };
+		5311994EAF233E9EF35C263C /* BalanceAssembly.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = BalanceAssembly.swift; sourceTree = "<group>"; };
+		5413834B760366E7191BEC35 /* LoginViewModel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = LoginViewModel.swift; sourceTree = "<group>"; };
+		598E47A6EC96168CC112ACF6 /* CreateWalletRouter.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = CreateWalletRouter.swift; sourceTree = "<group>"; };
+		5A98F8DBF73A100CA774E265 /* BalanceViewController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = BalanceViewController.swift; sourceTree = "<group>"; };
+		678F85AF5586FEB059E7FB72 /* Pods-BIPWallet.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BIPWallet.debug.xcconfig"; path = "Target Support Files/Pods-BIPWallet/Pods-BIPWallet.debug.xcconfig"; sourceTree = "<group>"; };
+		67DBB8A770C155298B6582FB /* WelcomeViewController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = WelcomeViewController.swift; sourceTree = "<group>"; };
+		696B1DFC64C434A82F1C6710 /* WelcomeModule.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = WelcomeModule.swift; sourceTree = "<group>"; };
+		6F7A48254EFBBF30D77BC600 /* LoginCoordinator.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = LoginCoordinator.swift; sourceTree = "<group>"; };
+		76B34E6E2452620B3B6D7B09 /* CreateWalletModule.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = CreateWalletModule.swift; sourceTree = "<group>"; };
+		940A44BFF555B056C95C840E /* WelcomeCoordinator.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = WelcomeCoordinator.swift; sourceTree = "<group>"; };
+		94AECF199577EA8043FE8885 /* WelcomeRouter.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = WelcomeRouter.swift; sourceTree = "<group>"; };
+		97E9579313FF8CF0E26A6AC6 /* CreateWalletViewController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = CreateWalletViewController.swift; sourceTree = "<group>"; };
+		B7BFBEB06E0668DFCCF098FF /* LoginModule.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = LoginModule.swift; sourceTree = "<group>"; };
+		BD96F022A0D3F4294555783C /* LoginAssembly.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = LoginAssembly.swift; sourceTree = "<group>"; };
+		CD2CA24CF49F10509A4262CE /* Pods_BIPWallet.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_BIPWallet.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		DF85214272621D8D89C74CCB /* CreateWalletAssembly.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = CreateWalletAssembly.swift; sourceTree = "<group>"; };
+		E06002183097E82CC6483769 /* BalanceViewModel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = BalanceViewModel.swift; sourceTree = "<group>"; };
+		E4380900671E6404DB7ABA01 /* LoginAssembly.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = LoginAssembly.swift; sourceTree = "<group>"; };
+		F1D6A8CB5D73C729D8F782AF /* CreateWalletAssembly.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = CreateWalletAssembly.swift; sourceTree = "<group>"; };
 		FA9E518D23ED9972007263B9 /* BIPWallet.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BIPWallet.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		FA9E519023ED9972007263B9 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		FA9E519223ED9972007263B9 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		FA9E519423ED9972007263B9 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		FA9E519723ED9972007263B9 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		FA9E519923ED9976007263B9 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -49,6 +123,28 @@
 		FA9E51AE23ED9976007263B9 /* BIPWalletUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BIPWalletUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		FA9E51B223ED9976007263B9 /* BIPWalletUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BIPWalletUITests.swift; sourceTree = "<group>"; };
 		FA9E51B423ED9976007263B9 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		FACA652B23F2AAAF00399359 /* BaseCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseCoordinator.swift; sourceTree = "<group>"; };
+		FACA652E23F2AAF000399359 /* Coordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Coordinator.swift; sourceTree = "<group>"; };
+		FACA653023F2AB2A00399359 /* Routable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Routable.swift; sourceTree = "<group>"; };
+		FACA653223F2AB5600399359 /* Presentable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Presentable.swift; sourceTree = "<group>"; };
+		FACA653423F2ABD700399359 /* DeepLinkOption.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeepLinkOption.swift; sourceTree = "<group>"; };
+		FACA653623F2AE5200399359 /* BaseViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseViewModel.swift; sourceTree = "<group>"; };
+		FACA653823F2B04200399359 /* BaseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseViewController.swift; sourceTree = "<group>"; };
+		FACA653A23F2B07500399359 /* Controller.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Controller.swift; sourceTree = "<group>"; };
+		FACA653D23F2B2D300399359 /* NavigationRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationRouter.swift; sourceTree = "<group>"; };
+		FACA653F23F2CCDF00399359 /* AppCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppCoordinator.swift; sourceTree = "<group>"; };
+		FACA654123F2D01400399359 /* AppRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppRouter.swift; sourceTree = "<group>"; };
+		FACA654323F2D4DE00399359 /* AppCoordinatorAssembly.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppCoordinatorAssembly.swift; sourceTree = "<group>"; };
+		FACA654623F2ECD100399359 /* WelcomeCoordinatorAssembly.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeCoordinatorAssembly.swift; sourceTree = "<group>"; };
+		FACA654A23F401AE00399359 /* AuthService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthService.swift; sourceTree = "<group>"; };
+		FACA654D23F4021500399359 /* KeychainAuthStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainAuthStorage.swift; sourceTree = "<group>"; };
+		FACA654F23F4024E00399359 /* AuthStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthStorage.swift; sourceTree = "<group>"; };
+		FACA655123F4032700399359 /* Storages.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Storages.swift; sourceTree = "<group>"; };
+		FACA655323F403FD00399359 /* Storage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Storage.swift; sourceTree = "<group>"; };
+		FACA655523F5680600399359 /* HomeCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeCoordinator.swift; sourceTree = "<group>"; };
+		FACA655723F5681500399359 /* HomeCoordinatorAssembly.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeCoordinatorAssembly.swift; sourceTree = "<group>"; };
+		FB31B371A7AE3977441EC31B /* BalanceRouter.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = BalanceRouter.swift; sourceTree = "<group>"; };
+		FF97071AA123CB858647216C /* BalanceAssembly.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = BalanceAssembly.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -56,6 +152,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F5D7A362541DE5C2FEF937D6 /* Pods_BIPWallet.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -76,6 +173,89 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		323BF6C75E07E0B0104A8099 /* Login */ = {
+			isa = PBXGroup;
+			children = (
+				E4380900671E6404DB7ABA01 /* LoginAssembly.swift */,
+				2BAF398FC178479B30C221DE /* LoginViewController.swift */,
+				5413834B760366E7191BEC35 /* LoginViewModel.swift */,
+				6F7A48254EFBBF30D77BC600 /* LoginCoordinator.swift */,
+				BD96F022A0D3F4294555783C /* LoginAssembly.swift */,
+				B7BFBEB06E0668DFCCF098FF /* LoginModule.swift */,
+				486094B69FD39ED0D75F1375 /* LoginRouter.swift */,
+			);
+			path = Login;
+			sourceTree = "<group>";
+		};
+		38F9B9F7E440F4420D7BB853 /* CreateWallet */ = {
+			isa = PBXGroup;
+			children = (
+				F1D6A8CB5D73C729D8F782AF /* CreateWalletAssembly.swift */,
+				97E9579313FF8CF0E26A6AC6 /* CreateWalletViewController.swift */,
+				29DD11B1F735B7F8EC0CAE1A /* CreateWalletViewModel.swift */,
+				26F18828E00B1CF49C2DE7B9 /* CreateWalletCoordinator.swift */,
+				DF85214272621D8D89C74CCB /* CreateWalletAssembly.swift */,
+				76B34E6E2452620B3B6D7B09 /* CreateWalletModule.swift */,
+				598E47A6EC96168CC112ACF6 /* CreateWalletRouter.swift */,
+			);
+			path = CreateWallet;
+			sourceTree = "<group>";
+		};
+		3AEACA9750EE5D33F2FB45A5 /* Welcome */ = {
+			isa = PBXGroup;
+			children = (
+				696B1DFC64C434A82F1C6710 /* WelcomeModule.swift */,
+				3F20116D84B5D11B6872261E /* WelcomeModuleAssembly.swift */,
+				67DBB8A770C155298B6582FB /* WelcomeViewController.swift */,
+				16C0C907524E67DDBCEB9B2C /* WelcomeViewModel.swift */,
+				94AECF199577EA8043FE8885 /* WelcomeRouter.swift */,
+				940A44BFF555B056C95C840E /* WelcomeCoordinator.swift */,
+				FACA654623F2ECD100399359 /* WelcomeCoordinatorAssembly.swift */,
+			);
+			path = Welcome;
+			sourceTree = "<group>";
+		};
+		59B3275C88C0DE980516A76A /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				678F85AF5586FEB059E7FB72 /* Pods-BIPWallet.debug.xcconfig */,
+				2B16A12CF440C4646DF7C60C /* Pods-BIPWallet.release.xcconfig */,
+			);
+			path = Pods;
+			sourceTree = "<group>";
+		};
+		9B5E34FBA7659BBC088C121E /* Balance */ = {
+			isa = PBXGroup;
+			children = (
+				5311994EAF233E9EF35C263C /* BalanceAssembly.swift */,
+				5A98F8DBF73A100CA774E265 /* BalanceViewController.swift */,
+				E06002183097E82CC6483769 /* BalanceViewModel.swift */,
+				20958F4FAACA5087FA8F47A0 /* BalanceCoordinator.swift */,
+				FF97071AA123CB858647216C /* BalanceAssembly.swift */,
+				0025D51ED532BFA2E45C5018 /* BalanceModule.swift */,
+				FB31B371A7AE3977441EC31B /* BalanceRouter.swift */,
+			);
+			path = Balance;
+			sourceTree = "<group>";
+		};
+		A2CFCEF1D1A05E93BCE74263 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				CD2CA24CF49F10509A4262CE /* Pods_BIPWallet.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		C2AA6360CBCC52A293410A47 /* Modules */ = {
+			isa = PBXGroup;
+			children = (
+				FACA655923F56B7100399359 /* Wallet */,
+				FACA654823F3FAAE00399359 /* Home */,
+				9B5E34FBA7659BBC088C121E /* Balance */,
+			);
+			path = Modules;
+			sourceTree = "<group>";
+		};
 		FA9E518423ED9972007263B9 = {
 			isa = PBXGroup;
 			children = (
@@ -83,6 +263,8 @@
 				FA9E51A623ED9976007263B9 /* BIPWalletTests */,
 				FA9E51B123ED9976007263B9 /* BIPWalletUITests */,
 				FA9E518E23ED9972007263B9 /* Products */,
+				59B3275C88C0DE980516A76A /* Pods */,
+				A2CFCEF1D1A05E93BCE74263 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -99,9 +281,7 @@
 		FA9E518F23ED9972007263B9 /* BIPWallet */ = {
 			isa = PBXGroup;
 			children = (
-				FA9E519023ED9972007263B9 /* AppDelegate.swift */,
-				FA9E519223ED9972007263B9 /* SceneDelegate.swift */,
-				FA9E519423ED9972007263B9 /* ViewController.swift */,
+				FADB357723F1A42400FCDBF9 /* Classes */,
 				FA9E519623ED9972007263B9 /* Main.storyboard */,
 				FA9E519923ED9976007263B9 /* Assets.xcassets */,
 				FA9E519B23ED9976007263B9 /* LaunchScreen.storyboard */,
@@ -128,6 +308,92 @@
 			path = BIPWalletUITests;
 			sourceTree = "<group>";
 		};
+		FACA652A23F2AAA100399359 /* Common */ = {
+			isa = PBXGroup;
+			children = (
+				FACA654C23F4020700399359 /* Model */,
+				FACA654923F4019500399359 /* Service */,
+				FACA652D23F2AADD00399359 /* Protocol */,
+				FACA652B23F2AAAF00399359 /* BaseCoordinator.swift */,
+				FACA653623F2AE5200399359 /* BaseViewModel.swift */,
+				FACA653823F2B04200399359 /* BaseViewController.swift */,
+			);
+			path = Common;
+			sourceTree = "<group>";
+		};
+		FACA652D23F2AADD00399359 /* Protocol */ = {
+			isa = PBXGroup;
+			children = (
+				FACA652E23F2AAF000399359 /* Coordinator.swift */,
+				FACA653023F2AB2A00399359 /* Routable.swift */,
+				FACA653223F2AB5600399359 /* Presentable.swift */,
+				FACA653423F2ABD700399359 /* DeepLinkOption.swift */,
+				FACA653A23F2B07500399359 /* Controller.swift */,
+				FACA654F23F4024E00399359 /* AuthStorage.swift */,
+				FACA655323F403FD00399359 /* Storage.swift */,
+			);
+			path = Protocol;
+			sourceTree = "<group>";
+		};
+		FACA653C23F2B2C300399359 /* Routers */ = {
+			isa = PBXGroup;
+			children = (
+				FACA653D23F2B2D300399359 /* NavigationRouter.swift */,
+				FACA654123F2D01400399359 /* AppRouter.swift */,
+			);
+			path = Routers;
+			sourceTree = "<group>";
+		};
+		FACA654823F3FAAE00399359 /* Home */ = {
+			isa = PBXGroup;
+			children = (
+				38F9B9F7E440F4420D7BB853 /* CreateWallet */,
+				323BF6C75E07E0B0104A8099 /* Login */,
+				3AEACA9750EE5D33F2FB45A5 /* Welcome */,
+				FACA655523F5680600399359 /* HomeCoordinator.swift */,
+				FACA655723F5681500399359 /* HomeCoordinatorAssembly.swift */,
+			);
+			path = Home;
+			sourceTree = "<group>";
+		};
+		FACA654923F4019500399359 /* Service */ = {
+			isa = PBXGroup;
+			children = (
+				FACA654A23F401AE00399359 /* AuthService.swift */,
+				FACA655123F4032700399359 /* Storages.swift */,
+			);
+			path = Service;
+			sourceTree = "<group>";
+		};
+		FACA654C23F4020700399359 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				FACA654D23F4021500399359 /* KeychainAuthStorage.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		FACA655923F56B7100399359 /* Wallet */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Wallet;
+			sourceTree = "<group>";
+		};
+		FADB357723F1A42400FCDBF9 /* Classes */ = {
+			isa = PBXGroup;
+			children = (
+				FACA653C23F2B2C300399359 /* Routers */,
+				FACA652A23F2AAA100399359 /* Common */,
+				FA9E519023ED9972007263B9 /* AppDelegate.swift */,
+				FA9E519423ED9972007263B9 /* ViewController.swift */,
+				C2AA6360CBCC52A293410A47 /* Modules */,
+				FACA653F23F2CCDF00399359 /* AppCoordinator.swift */,
+				FACA654323F2D4DE00399359 /* AppCoordinatorAssembly.swift */,
+			);
+			path = Classes;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -135,9 +401,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = FA9E51B723ED9976007263B9 /* Build configuration list for PBXNativeTarget "BIPWallet" */;
 			buildPhases = (
+				135A10D30A5DD6ACB4626EC2 /* [CP] Check Pods Manifest.lock */,
 				FA9E518923ED9972007263B9 /* Sources */,
 				FA9E518A23ED9972007263B9 /* Frameworks */,
 				FA9E518B23ED9972007263B9 /* Resources */,
+				5F6C762B5FF1E75E61F8DBEE /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -254,14 +522,102 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		135A10D30A5DD6ACB4626EC2 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-BIPWallet-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		5F6C762B5FF1E75E61F8DBEE /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-BIPWallet/Pods-BIPWallet-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-BIPWallet/Pods-BIPWallet-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-BIPWallet/Pods-BIPWallet-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		FA9E518923ED9972007263B9 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 				FA9E519523ED9972007263B9 /* ViewController.swift in Sources */,
+				FACA653123F2AB2A00399359 /* Routable.swift in Sources */,
+				FACA654023F2CCDF00399359 /* AppCoordinator.swift in Sources */,
+				FACA654B23F401AE00399359 /* AuthService.swift in Sources */,
+				FACA654E23F4021500399359 /* KeychainAuthStorage.swift in Sources */,
+				FACA654423F2D4DE00399359 /* AppCoordinatorAssembly.swift in Sources */,
 				FA9E519123ED9972007263B9 /* AppDelegate.swift in Sources */,
-				FA9E519323ED9972007263B9 /* SceneDelegate.swift in Sources */,
+				FACA653323F2AB5600399359 /* Presentable.swift in Sources */,
+				FACA654723F2ECD100399359 /* WelcomeCoordinatorAssembly.swift in Sources */,
+				FACA654523F2D65500399359 /* WelcomeModuleAssembly.swift in Sources */,
+				FACA653523F2ABD700399359 /* DeepLinkOption.swift in Sources */,
+				FACA653B23F2B07500399359 /* Controller.swift in Sources */,
+				FACA652F23F2AAF000399359 /* Coordinator.swift in Sources */,
+				FACA653E23F2B2D300399359 /* NavigationRouter.swift in Sources */,
+				FACA652C23F2AAAF00399359 /* BaseCoordinator.swift in Sources */,
+				AEF28033588C87423D3D89BA /* WelcomeViewController.swift in Sources */,
+				56EDD21C329AF2318FD23713 /* WelcomeViewModel.swift in Sources */,
+				FACA653723F2AE5200399359 /* BaseViewModel.swift in Sources */,
+				55DB34A01910DA5211326DD3 /* WelcomeCoordinator.swift in Sources */,
+				FACA654223F2D01400399359 /* AppRouter.swift in Sources */,
+				FACA653923F2B04300399359 /* BaseViewController.swift in Sources */,
+				02369AC9AA14A2266B255A96 /* WelcomeModule.swift in Sources */,
+				F8E8F9B815FB09EEC0791228 /* WelcomeRouter.swift in Sources */,
+				21208D45E2C43CAD752277E3 /* LoginAssembly.swift in Sources */,
+				1D12B6909278F24D865935C3 /* LoginViewController.swift in Sources */,
+				A338E424A74229D413D40A4A /* LoginViewModel.swift in Sources */,
+				808A231B0C3A8B605B420E54 /* LoginCoordinator.swift in Sources */,
+				1C0184FBB1580E7CCCEA74D3 /* LoginAssembly.swift in Sources */,
+				F900EF850894A0F998A98F63 /* LoginModule.swift in Sources */,
+				FACA655823F5681500399359 /* HomeCoordinatorAssembly.swift in Sources */,
+				FACA655423F403FD00399359 /* Storage.swift in Sources */,
+				5366121F7BA11FE1492C8097 /* LoginRouter.swift in Sources */,
+				07687502B660F85E2037AEC8 /* CreateWalletAssembly.swift in Sources */,
+				7A1C1644FC6DAD6598096D94 /* CreateWalletViewController.swift in Sources */,
+				E9D01DFC3CF6845EB30CA76B /* CreateWalletViewModel.swift in Sources */,
+				FACA655023F4024E00399359 /* AuthStorage.swift in Sources */,
+				A5B0CC2E00A7D2EF317E0B5B /* CreateWalletCoordinator.swift in Sources */,
+				C07883911E1465903399B2B7 /* CreateWalletAssembly.swift in Sources */,
+				FACA655623F5680600399359 /* HomeCoordinator.swift in Sources */,
+				43A4D422A0E2E7742ACC09ED /* CreateWalletModule.swift in Sources */,
+				EB8B302C53E3CB8E2C8A0243 /* CreateWalletRouter.swift in Sources */,
+				FACA655223F4032700399359 /* Storages.swift in Sources */,
+				CFA7A7454DA83FC006AAA4F3 /* BalanceAssembly.swift in Sources */,
+				FA16D5B5205E0655DC48415D /* BalanceViewController.swift in Sources */,
+				E4818AC3B18BE46354F0E781 /* BalanceViewModel.swift in Sources */,
+				51A2FCE25B24A8DDA37FAEC6 /* BalanceCoordinator.swift in Sources */,
+				C1985C8208A5B24D2B287FA5 /* BalanceAssembly.swift in Sources */,
+				EB5D4AD1C63AEA3EE525B8E9 /* BalanceModule.swift in Sources */,
+				A6BE75C3B22CDF83D0191E4D /* BalanceRouter.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -432,11 +788,13 @@
 		};
 		FA9E51B823ED9976007263B9 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 678F85AF5586FEB059E7FB72 /* Pods-BIPWallet.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = A26H28FPZU;
 				INFOPLIST_FILE = BIPWallet/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -450,11 +808,13 @@
 		};
 		FA9E51B923ED9976007263B9 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 2B16A12CF440C4646DF7C60C /* Pods-BIPWallet.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = A26H28FPZU;
 				INFOPLIST_FILE = BIPWallet/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
