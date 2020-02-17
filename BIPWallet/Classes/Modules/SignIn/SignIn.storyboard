@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15705" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15706"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--Sign In View Controller-->
+        <scene sceneID="eWV-7p-cak">
+            <objects>
+                <viewController storyboardIdentifier="SignInViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="0HR-MT-Amf" customClass="SignInViewController" customModule="BIPWallet" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="NEn-Mw-fp5">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="XdO-Hr-RLG" customClass="HandlerView" customModule="BIPWallet" customModuleProvider="target">
+                                <rect key="frame" x="16" y="728" width="382" height="152"/>
+                                <subviews>
+                                    <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="yr6-mv-2QK" customClass="DefaultTextView" customModule="BIPWallet" customModuleProvider="target">
+                                        <rect key="frame" x="16" y="66" width="350" height="70"/>
+                                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="70" id="yaY-pv-fnl"/>
+                                        </constraints>
+                                        <color key="textColor" systemColor="labelColor" cocoaTouchSystemColor="darkTextColor"/>
+                                        <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="17"/>
+                                        <textInputTraits key="textInputTraits" autocapitalizationType="sentences" returnKeyType="go"/>
+                                    </textView>
+                                </subviews>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                                <constraints>
+                                    <constraint firstAttribute="trailing" secondItem="yr6-mv-2QK" secondAttribute="trailing" constant="16" id="04D-KT-5fv"/>
+                                    <constraint firstAttribute="bottom" secondItem="yr6-mv-2QK" secondAttribute="bottom" constant="16" id="2LP-TA-rTO"/>
+                                    <constraint firstItem="yr6-mv-2QK" firstAttribute="leading" secondItem="XdO-Hr-RLG" secondAttribute="leading" constant="16" id="2Yw-6V-dVt"/>
+                                    <constraint firstAttribute="height" constant="152" id="AGt-uj-es5"/>
+                                </constraints>
+                            </view>
+                        </subviews>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstAttribute="bottom" secondItem="XdO-Hr-RLG" secondAttribute="bottom" constant="16" id="E9L-CC-4yL"/>
+                            <constraint firstItem="5RY-e3-YCs" firstAttribute="trailing" secondItem="XdO-Hr-RLG" secondAttribute="trailing" constant="16" id="JHu-SY-YDn"/>
+                            <constraint firstItem="XdO-Hr-RLG" firstAttribute="leading" secondItem="5RY-e3-YCs" secondAttribute="leading" constant="16" id="Kul-m9-VGV"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="5RY-e3-YCs"/>
+                    </view>
+                    <connections>
+                        <outlet property="bottomConstraint" destination="E9L-CC-4yL" id="qrk-Fl-cBe"/>
+                        <outlet property="mainView" destination="XdO-Hr-RLG" id="QG5-Ps-rfg"/>
+                        <outlet property="textView" destination="yr6-mv-2QK" id="uM8-Hl-Xd7"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="jfz-xn-8t3" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="240.57971014492756" y="129.91071428571428"/>
+        </scene>
+    </scenes>
+</document>

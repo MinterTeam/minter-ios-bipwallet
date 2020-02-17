@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15705" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15706"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--Welcome View Controller-->
+        <scene sceneID="Q9p-Ob-PL1">
+            <objects>
+                <viewController storyboardIdentifier="WelcomeViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="Dtc-do-HsP" customClass="WelcomeViewController" customModule="BIPWallet" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="vxI-VI-0jz">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="LaunchBackgroundImage" translatesAutoresizingMaskIntoConstraints="NO" id="HJa-UO-hLR">
+                                <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                            </imageView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ayI-zr-zLo" customClass="DefaultButton" customModule="BIPWallet" customModuleProvider="target">
+                                <rect key="frame" x="16" y="730" width="382" height="50"/>
+                                <state key="normal" title="Create Wallet">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </state>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="boolean" keyPath="animateButtonTouch" value="YES"/>
+                                    <userDefinedRuntimeAttribute type="string" keyPath="pattern" value="blank"/>
+                                </userDefinedRuntimeAttributes>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fpC-GF-Uf7" customClass="DefaultButton" customModule="BIPWallet" customModuleProvider="target">
+                                <rect key="frame" x="16" y="796" width="382" height="50"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="50" id="tB0-W5-9Ye"/>
+                                </constraints>
+                                <state key="normal" title="Help">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </state>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="boolean" keyPath="animateButtonTouch" value="YES"/>
+                                    <userDefinedRuntimeAttribute type="string" keyPath="pattern" value="blank"/>
+                                </userDefinedRuntimeAttributes>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="L0K-xE-Cu0" customClass="DefaultButton" customModule="BIPWallet" customModuleProvider="target">
+                                <rect key="frame" x="16" y="664" width="382" height="50"/>
+                                <state key="normal" title="Sign In">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </state>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="boolean" keyPath="animateButtonTouch" value="YES"/>
+                                    <userDefinedRuntimeAttribute type="string" keyPath="pattern" value="filled"/>
+                                </userDefinedRuntimeAttributes>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <constraints>
+                            <constraint firstItem="ayI-zr-zLo" firstAttribute="top" secondItem="L0K-xE-Cu0" secondAttribute="bottom" constant="16" id="5Wv-Hg-7Ns"/>
+                            <constraint firstItem="HJa-UO-hLR" firstAttribute="trailing" secondItem="vxI-VI-0jz" secondAttribute="trailing" id="9Kf-Bh-8c3"/>
+                            <constraint firstItem="ayI-zr-zLo" firstAttribute="leading" secondItem="fpC-GF-Uf7" secondAttribute="leading" id="9wg-wY-2vI"/>
+                            <constraint firstAttribute="bottom" secondItem="HJa-UO-hLR" secondAttribute="bottom" id="EcF-YS-oCs"/>
+                            <constraint firstItem="L0K-xE-Cu0" firstAttribute="leading" secondItem="fpC-GF-Uf7" secondAttribute="leading" id="HYs-Qm-Ziw"/>
+                            <constraint firstItem="HJa-UO-hLR" firstAttribute="top" secondItem="vxI-VI-0jz" secondAttribute="top" id="Kgu-4s-1qH"/>
+                            <constraint firstItem="rs6-V6-SQp" firstAttribute="trailing" secondItem="fpC-GF-Uf7" secondAttribute="trailing" constant="16" id="PxW-DN-0xq"/>
+                            <constraint firstItem="fpC-GF-Uf7" firstAttribute="leading" secondItem="rs6-V6-SQp" secondAttribute="leading" constant="16" id="S49-3b-Pb9"/>
+                            <constraint firstItem="fpC-GF-Uf7" firstAttribute="top" secondItem="ayI-zr-zLo" secondAttribute="bottom" constant="16" id="SS9-KE-hti"/>
+                            <constraint firstItem="ayI-zr-zLo" firstAttribute="trailing" secondItem="fpC-GF-Uf7" secondAttribute="trailing" id="ovV-eb-ltL"/>
+                            <constraint firstItem="L0K-xE-Cu0" firstAttribute="height" secondItem="fpC-GF-Uf7" secondAttribute="height" id="qJZ-xg-rho"/>
+                            <constraint firstAttribute="bottom" secondItem="fpC-GF-Uf7" secondAttribute="bottom" constant="50" id="t9v-ga-NIm"/>
+                            <constraint firstItem="HJa-UO-hLR" firstAttribute="leading" secondItem="vxI-VI-0jz" secondAttribute="leading" id="tYi-8c-Bqb"/>
+                            <constraint firstItem="ayI-zr-zLo" firstAttribute="height" secondItem="fpC-GF-Uf7" secondAttribute="height" id="uFa-Qj-anK"/>
+                            <constraint firstItem="L0K-xE-Cu0" firstAttribute="trailing" secondItem="fpC-GF-Uf7" secondAttribute="trailing" id="vSe-ui-Pud"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="rs6-V6-SQp"/>
+                    </view>
+                    <connections>
+                        <outlet property="createWalletButton" destination="ayI-zr-zLo" id="iTh-8M-faM"/>
+                        <outlet property="helpButton" destination="fpC-GF-Uf7" id="i0L-Sv-DAg"/>
+                        <outlet property="signInButton" destination="L0K-xE-Cu0" id="dEs-Xp-Nos"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="71U-nA-djK" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="73.913043478260875" y="-2.0089285714285712"/>
+        </scene>
+    </scenes>
+    <resources>
+        <image name="LaunchBackgroundImage" width="375" height="667"/>
+    </resources>
+</document>

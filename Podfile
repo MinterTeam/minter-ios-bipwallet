@@ -18,15 +18,18 @@ def shared_pods
 	pod 'RxGesture'
 	pod 'RxDataSources'
 	pod 'RxAppState'
+  pod 'RxViewController'
   #DB/Storage
-#  pod 'RealmSwift', git: 'https://github.com/realm/realm-cocoa.git', branch: 'master', submodules: true
+  pod 'RealmSwift', git: 'https://github.com/realm/realm-cocoa.git', branch: 'master', submodules: true
   pod 'GoldenKeystore', :git => 'https://github.com/sidorov-panda/GoldenKeystore'
   #UI
   pod 'SnapKit'
 	pod 'TPKeyboardAvoiding'
-	pod 'NotificationBannerSwift', '1.8.0'
   pod 'AFDateHelper', '~> 4.2.2'
 	pod 'XLPagerTabStrip', '~> 8.0'
+  pod 'DeckTransition'
+  pod 'CardPresentationController',   :git => 'https://github.com/radianttap/CardPresentationController.git'
+  pod 'NotificationBannerSwift'
   #Analytics
 	pod 'YandexMobileMetrica/Dynamic', '3.2.0'
   #Sys

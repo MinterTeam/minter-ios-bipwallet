@@ -15,6 +15,6 @@ protocol Controller: class {
   associatedtype ViewModelType: ViewModel
   /// Configurates controller with specified ViewModelProtocol subclass
   ///
-  /// - Parameter viewModel: CPViewModel subclass instance to configure with
+  /// - Parameter viewModel: ViewModel subclass instance to configure with
   func configure(with viewModel: ViewModelType)
 }

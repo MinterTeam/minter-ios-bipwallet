@@ -1,8 +1,0 @@
-{% include 'header' %}
-import UIKit
-
-protocol {{ module_info.name }}Module: Presentable {
-
-  typealias Completion = () -> Void
-  var onFinish: Completion? { get set }
-}

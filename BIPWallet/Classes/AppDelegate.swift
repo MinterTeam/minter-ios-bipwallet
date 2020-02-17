@@ -7,30 +7,25 @@
 //
 
 import UIKit
-import Swinject
+import RxSwift
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
   var window: UIWindow?
-  lazy var appCoordinator = self.makeAppCoordinator()
+  var disposeBag = DisposeBag()
 
   func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
 
-    self.window = UIWindow(frame: UIScreen.main.bounds)
-    self.appCoordinator.start()
-    self.window?.makeKeyAndVisible()
+    window = UIWindow()
+
+    let appCoordinator = AppCoordinator(window: window!,
+                                        authStateProvider: LocalStorageAuthService(storage: KeychainAuthStorage()))
+    appCoordinator.start()
+        .subscribe()
+        .disposed(by: disposeBag)
 
     return true
   }
 
-  func makeAppCoordinator() -> Coordinator {
-    let assembler = Assembler([
-      AppCoordinatorAssembly()
-    ], container: Container())
-    return assembler.resolver.resolve(AppCoordinator.self,
-                                      arguments: assembler, window)!
-  }
-
 }
-

@@ -6,41 +6,57 @@
 //  Copyright © 2020 Alexey Sidorov. All rights reserved.
 //
 
+import RxSwift
 import Foundation
-import Swinject
 
-open class BaseCoordinator: Coordinator {
+/// Base abstract coordinator generic over the return type of the `start` method.
+class BaseCoordinator<ResultType> {
 
-  var childCoordinators: [Coordinator] = []
-  let router: Routable
-  let assembler: Assembler
+  /// Typealias which will allows to access a ResultType of the Coordainator by `CoordinatorName.CoordinationResult`.
+  typealias CoordinationResult = ResultType
 
-  init(assembler: Assembler, router: Routable) {
-    self.assembler = assembler
-    self.router = router
+  /// Utility `DisposeBag` used by the subclasses.
+  let disposeBag = DisposeBag()
+
+  /// Unique identifier.
+  private let identifier = UUID()
+
+  /// Dictionary of the child coordinators. Every child coordinator should be added
+  /// to that dictionary in order to keep it in memory.
+  /// Key is an `identifier` of the child coordinator and value is the coordinator itself.
+  /// Value type is `Any` because Swift doesn't allow to store generic types in the array.
+  private var childCoordinators = [UUID: Any]()
+
+  /// Stores coordinator to the `childCoordinators` dictionary.
+  ///
+  /// - Parameter coordinator: Child coordinator to store.
+  private func store<T>(coordinator: BaseCoordinator<T>) {
+    childCoordinators[coordinator.identifier] = coordinator
   }
 
-  open func start(with option: DeepLinkOption?) {
-
+  /// Release coordinator from the `childCoordinators` dictionary.
+  ///
+  /// - Parameter coordinator: Coordinator to release.
+  private func free<T>(coordinator: BaseCoordinator<T>) {
+    childCoordinators[coordinator.identifier] = nil
   }
 
-  open func start() {}
-
-  func addDependency(_ coordinator: Coordinator) {
-    guard !childCoordinators.contains(where: { $0 === coordinator }) else { return }
-    childCoordinators.append(coordinator)
+  /// 1. Stores coordinator in a dictionary of child coordinators.
+  /// 2. Calls method `start()` on that coordinator.
+  /// 3. On the `onNext:` of returning observable of method `start()` removes coordinator from the dictionary.
+  ///
+  /// - Parameter coordinator: Coordinator to start.
+  /// - Returns: Result of `start()` method.
+  func coordinate<T>(to coordinator: BaseCoordinator<T>) -> Observable<T> {
+    store(coordinator: coordinator)
+    return coordinator.start()
+      .do(onNext: { [weak self] _ in self?.free(coordinator: coordinator) })
   }
 
-  func removeDependency(_ coordinator: Coordinator?) {
-    guard let indexToRemove = childCoordinators
-      .firstIndex(where: { $0 === coordinator })
-          else { return }
-    
-    childCoordinators.remove(at: indexToRemove)
+  /// Starts job of the coordinator.
+  ///
+  /// - Returns: Result of coordinator job.
+  func start() -> Observable<ResultType> {
+    fatalError("Start method should be implemented.")
   }
-
-  func removeAllDependencies() {
-    childCoordinators.removeAll()
-  }
-
 }

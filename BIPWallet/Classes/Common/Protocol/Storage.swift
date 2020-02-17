@@ -13,6 +13,7 @@ public protocol Storage {
   func set(_ data: Data, forKey key: String)
   func set(_ bool: Bool, forKey key: String)
 
+  func allKeys() -> [String]?
   func object(forKey key: String) -> Any?
   func bool(forKey key: String) -> Bool?
 

@@ -12,7 +12,7 @@ import MinterMy
 protocol AuthStorage: class {
 
   func hasAccounts() -> Bool
-  func save(address: String, mnemonic: String, completion: ((Bool) -> ())?)
+//  func save(address: String, mnemonic: String, completion: ((Bool) -> ())?)
   func deleteAllAccounts()
 
 }

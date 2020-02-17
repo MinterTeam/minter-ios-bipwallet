@@ -5,9 +5,11 @@ PODS:
     - Alamofire (~> 4.7)
   - BigInt (3.1.0):
     - SipHash (~> 1.2)
+  - CardPresentationController (1.6)
   - Crashlytics (3.14.0):
     - Fabric (~> 1.10.2)
   - CryptoSwift (1.3.0)
+  - DeckTransition (2.2.0)
   - Differentiator (4.0.1)
   - Fabric (1.10.2)
   - GoldenKeystore (1.0.3):
@@ -29,6 +31,11 @@ PODS:
     - SnapKit (~> 4.0.1)
   - ObjectMapper (3.5.1)
   - ReachabilitySwift (4.3.1)
+  - Realm (4.3.2):
+    - Realm/Headers (= 4.3.2)
+  - Realm/Headers (4.3.2)
+  - RealmSwift (4.3.2):
+    - Realm (= 4.3.2)
   - RxAppState (1.6.0):
     - RxCocoa (~> 5.0)
     - RxSwift (~> 5.0)
@@ -48,6 +55,9 @@ PODS:
   - RxRelay (5.0.1):
     - RxSwift (~> 5)
   - RxSwift (5.0.1)
+  - RxViewController (1.0.0):
+    - RxCocoa (~> 5.0)
+    - RxSwift (~> 5.0)
   - secp256k1.swift (0.1.4)
   - SipHash (1.2.2)
   - SnapKit (4.0.1)
@@ -67,22 +77,27 @@ DEPENDENCIES:
   - AFDateHelper (~> 4.2.2)
   - Alamofire
   - AlamofireImage
+  - CardPresentationController (from `https://github.com/radianttap/CardPresentationController.git`)
   - Crashlytics (~> 3.10)
   - CryptoSwift (~> 1.0)
+  - DeckTransition
   - Fabric (~> 1.7)
   - GoldenKeystore (from `https://github.com/sidorov-panda/GoldenKeystore`)
   - KeychainSwift
   - MinterCore (from `https://github.com/MinterTeam/minter-ios-core.git`, branch `texas`)
   - MinterExplorer
   - MinterMy
+  - NotificationBannerSwift
   - NotificationBannerSwift (= 1.8.0)
   - ObjectMapper (~> 3.3)
   - ReachabilitySwift (~> 4.3)
+  - RealmSwift (from `https://github.com/realm/realm-cocoa.git`, branch `master`)
   - RxAppState
   - RxBiBinding
   - RxDataSources
   - RxGesture
   - RxSwift
+  - RxViewController
   - SnapKit
   - SwiftCentrifuge
   - SwiftLint
@@ -99,6 +114,7 @@ SPEC REPOS:
     - BigInt
     - Crashlytics
     - CryptoSwift
+    - DeckTransition
     - Differentiator
     - Fabric
     - KeychainSwift
@@ -108,6 +124,7 @@ SPEC REPOS:
     - NotificationBannerSwift
     - ObjectMapper
     - ReachabilitySwift
+    - Realm
     - RxAppState
     - RxBiBinding
     - RxCocoa
@@ -115,6 +132,7 @@ SPEC REPOS:
     - RxGesture
     - RxRelay
     - RxSwift
+    - RxViewController
     - secp256k1.swift
     - SipHash
     - SnapKit
@@ -129,27 +147,42 @@ SPEC REPOS:
     - YandexMobileMetrica
 
 EXTERNAL SOURCES:
+  CardPresentationController:
+    :git: https://github.com/radianttap/CardPresentationController.git
   GoldenKeystore:
     :git: https://github.com/sidorov-panda/GoldenKeystore
   MinterCore:
     :branch: texas
     :git: https://github.com/MinterTeam/minter-ios-core.git
+  RealmSwift:
+    :branch: master
+    :git: https://github.com/realm/realm-cocoa.git
+    :submodules: true
 
 CHECKOUT OPTIONS:
+  CardPresentationController:
+    :commit: 9eaeaaf43b8f606b767e75a83ee0d0ae1bfb270b
+    :git: https://github.com/radianttap/CardPresentationController.git
   GoldenKeystore:
     :commit: 2f58a6eb405561bec305d5a197bcaa1514eed77e
     :git: https://github.com/sidorov-panda/GoldenKeystore
   MinterCore:
     :commit: c1bb1f9b5b64268ad55c806f13eb021d8e570f46
     :git: https://github.com/MinterTeam/minter-ios-core.git
+  RealmSwift:
+    :commit: ad6f5f94b023caaec57c99f7a986160f8c087d0c
+    :git: https://github.com/realm/realm-cocoa.git
+    :submodules: true
 
 SPEC CHECKSUMS:
   AFDateHelper: 4ad66fb19503041fbba8a3018cb7ef9c71b2ff88
   Alamofire: c7287b6e5d7da964a70935e5db17046b7fde6568
   AlamofireImage: 78d67ccbb763d87ba44b21583d2153500a195630
   BigInt: 76b5dfdfa3e2e478d4ffdf161aeede5502e2742f
+  CardPresentationController: b19f8f9d457ef66d77698283d73ce9fb2656d953
   Crashlytics: 540b7e5f5da5a042647227a5e3ac51d85eed06df
   CryptoSwift: 1283821600233bdbeb96d7b389c3288c3bf77211
+  DeckTransition: c705e1f6bf8d63a3515a91d8a41be7038005bf35
   Differentiator: 886080237d9f87f322641dedbc5be257061b0602
   Fabric: 706c8b8098fff96c33c0db69cbf81f9c551d0d74
   GoldenKeystore: 6d176bbb332a4abb99024ebce06a3e3067c73a8a
@@ -161,6 +194,8 @@ SPEC CHECKSUMS:
   NotificationBannerSwift: 49fc4be7fabada55b189b50e72184c92edd5f7f7
   ObjectMapper: 70187b8941977c62ccfb423caf6b50be405cabf0
   ReachabilitySwift: 4032e2f59586e11e3b0ebe15b167abdd587a388b
+  Realm: 5e92902e2875dff4bb0fd02f67bb737c3d5db2bc
+  RealmSwift: 9a360fc7bae04fc2e308a34fbd899d5faa2d6b22
   RxAppState: b633d7370970ecb80081912ea08a7bf3eb644b4e
   RxBiBinding: 6cc627d9e0dfa0b2ce8470cd7e539f3cb100f782
   RxCocoa: e741b9749968e8a143e2b787f1dfbff2b63d0a5c
@@ -168,6 +203,7 @@ SPEC CHECKSUMS:
   RxGesture: a3f8dd6adf078110ed5e1c9c30d09d705a09852e
   RxRelay: 89d54507f4fd4d969e6ec1d4bd7f3673640b4640
   RxSwift: e2dc62b366a3adf6a0be44ba9f405efd4c94e0c4
+  RxViewController: 7330a46e5c31cd680db169da4c9fc8676e975a81
   secp256k1.swift: a7e7a214f6db6ce5db32cc6b2b45e5c4dd633634
   SipHash: fad90a4683e420c52ef28063063dbbce248ea6d4
   SnapKit: 0de968a9fec17499afa29683b05d0c775b6d1c29
@@ -181,6 +217,6 @@ SPEC CHECKSUMS:
   XLPagerTabStrip: 63166e21c9844fa30f2d95d30f335e73be5caf22
   YandexMobileMetrica: f18374ee6977a4cd1d0a86298a0df4ad7baf4135
 
-PODFILE CHECKSUM: 75c15654effb2ee4b4465277c43527ae0b012c11
+PODFILE CHECKSUM: 636ceaa9d990c42d00535a9d2b6841e64561863a
 
 COCOAPODS: 1.8.4

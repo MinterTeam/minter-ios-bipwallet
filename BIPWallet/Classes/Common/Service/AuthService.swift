@@ -11,6 +11,7 @@ import MinterMy
 
 enum AuthState {
   case noAccount
+  case pinNeeded
   case hasAccount
 }
 
@@ -19,21 +20,18 @@ protocol AuthStateProvider {
 }
 
 protocol AuthService {
-  func addAccount(_ account: Account)
   func logout()
 }
 
-final class AuthServiceImpl: AuthService, AuthStateProvider {
+final class LocalStorageAuthService: AuthService, AuthStateProvider {
 
-  var storage: AuthStorage!
+  var storage: AuthStorage
+
+  init(storage: AuthStorage) {
+    self.storage = storage
+  }
 
   // MARK: - AuthService
-
-  func addAccount(_ account: Account) {
-    storage.save(address: account.address, mnemonic: "") { (success) in
-      
-    }
-  }
 
   func logout() {
     storage.deleteAllAccounts()
@@ -42,6 +40,6 @@ final class AuthServiceImpl: AuthService, AuthStateProvider {
   // MARK: - AuthStateProvider
 
   var authState: AuthState {
-    return storage.hasAccounts() ? AuthState.hasAccount : .noAccount
+    return storage.hasAccounts() ? .hasAccount : .noAccount
   }
 }

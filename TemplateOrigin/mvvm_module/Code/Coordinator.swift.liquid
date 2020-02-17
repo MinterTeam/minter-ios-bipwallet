@@ -1,10 +1,11 @@
 {% include 'header' %}
 import UIKit
+import RxSwift
 
-protocol {{ module_info.name }}Coordinator: Coordinator {
+class {{ module_info.name }}Coordinator: BaseCoordinator<Void> {
 
-}
-
-class {{ module_info.name }}CoordinatorImpl: BaseCoordinator, {{ module_info.name }}Coordinator {
+  override func start() -> Observable<ResultType> {
+    fatalError("Start method should be implemented.")
+  }
 
 }

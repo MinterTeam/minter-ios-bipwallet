@@ -30,6 +30,10 @@ class LocalStorage: Storage {
     storage.synchronize()
   }
 
+  func allKeys() -> [String]? {
+    return nil
+  }
+
   func object(forKey key: String) -> Any? {
     if let obj = self.storage.object(forKey: key) as? Data {
       return NSKeyedUnarchiver.unarchiveObject(with: obj)
@@ -82,6 +86,10 @@ class SecureStorage: Storage {
   }
 
   // MARK: - Getters
+
+  func allKeys() -> [String]? {
+    return storage.allKeys
+  }
 
   func object(forKey key: String) -> Any? {
     guard let archive = storage.getData(key) else {

@@ -6,48 +6,44 @@
 //  Copyright © 2020 Alexey Sidorov. All rights reserved.
 //
 
-import Swinject
+import RxSwift
 
-protocol AppCoordinator: Coordinator {}
+final class AppCoordinator: BaseCoordinator<Void> {
 
-final class AppCoordinatorImpl: BaseCoordinator, AppCoordinator {
+  private let window: UIWindow
 
-  var authStateProvider: AuthStateProvider!
-  
-  override func start() {
-    runAuthFlow()
+  var authStateProvider: AuthStateProvider
+
+  init(window: UIWindow, authStateProvider: AuthStateProvider) {
+    self.window = window
+    self.authStateProvider = authStateProvider
   }
 
-  override func start(with option: DeepLinkOption?) {
-    
-//    switch authStateProvider.authState {
-//    case false:
-//        runAuthFlow(with: option)
-//    case true:
-//        runMainFlow(with: option)
-//    }
-  }
+  override func start() -> Observable<Void> {
+    switch authStateProvider.authState {
+    case .hasAccount:
+      return startWallet()
 
-  private func runAuthFlow(with deepLink: DeepLinkOption? = nil) {
+    case .noAccount:
+      return startWelcome().flatMap { (_) -> Observable<Void> in
+        return self.startWallet()
+      }
 
-    let coordinator = assembler.resolver.resolve(WelcomeCoordinator.self, argument: assembler)!
-    coordinator.onFinish = { [weak coordinator, weak self] deepLink in
-      self?.removeDependency(coordinator)
-      self?.runMainFlow(with: deepLink)
+    case .pinNeeded:
+      return startPin()
     }
-    addDependency(coordinator)
-    router.setRootModule(coordinator.router, animated: true)
-    coordinator.start(with: deepLink)
   }
 
-  private func runMainFlow(with deepLink: DeepLinkOption?) {
-    let coordinator = assembler.resolver.resolve(BalanceCoordinator.self, argument: assembler)!
-    coordinator.onLogout = { [weak coordinator, weak self] in
-        self?.removeDependency(coordinator)
-        self?.runAuthFlow()
-    }
-    addDependency(coordinator)
-    router.setRootModule(coordinator.router)
-    coordinator.start(with: deepLink)
+  private func startWelcome() -> Observable<Void> {
+    return coordinate(to: WelcomeCoordinator(window: window))
   }
+
+  private func startWallet() -> Observable<Void> {
+    return coordinate(to: WalletCoordinator(window: window))
+  }
+
+  private func startPin() -> Observable<Void> {
+    return coordinate(to: BalanceCoordinator(window: window))
+  }
+
 }
