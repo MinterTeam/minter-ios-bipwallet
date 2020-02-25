@@ -26,7 +26,7 @@ final class AppCoordinator: BaseCoordinator<Void> {
 
     case .noAccount:
       return startWelcome().flatMap { (_) -> Observable<Void> in
-        return self.startWallet()
+        return self.start()
       }
 
     case .pinNeeded:
@@ -43,7 +43,7 @@ final class AppCoordinator: BaseCoordinator<Void> {
   }
 
   private func startPin() -> Observable<Void> {
-    return coordinate(to: BalanceCoordinator(window: window))
+    return coordinate(to: WalletCoordinator(window: window))
   }
 
 }

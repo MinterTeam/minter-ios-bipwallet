@@ -11,6 +11,10 @@ import RxSwift
 
 class BalanceViewModel: BaseViewModel, ViewModel {
 
+  // MARK: -
+
+  private var needsToUpdateBalance = PublishSubject<Void>()
+
   // MARK: - ViewModel
 
   var input: BalanceViewModel.Input!
@@ -18,19 +22,19 @@ class BalanceViewModel: BaseViewModel, ViewModel {
   var dependency: BalanceViewModel.Dependency!
 
   struct Input {
-
+    var needsToUpdateBalance: AnyObserver<Void>
   }
 
   struct Output {
-
+    
   }
 
   struct Dependency {
-
+    var balanceService: BalanceService
   }
 
   init(dependency: Dependency) {
-    self.input = Input()
+    self.input = Input(needsToUpdateBalance: needsToUpdateBalance.asObserver())
     self.output = Output()
     self.dependency = dependency
 

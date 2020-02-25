@@ -38,8 +38,8 @@ class DefaultButton: UIButton {
 		if pattern == "blank" {
 			self.backgroundColor = .clear
 			self.layer.borderWidth = 2.0
-			self.layer.borderColor = UIColor.mainWhiteColor().cgColor
-			self.setTitleColor(.mainWhiteColor(), for: .normal)
+      self.layer.borderColor = UIColor.mainPurpleColor().cgColor
+			self.setTitleColor(UIColor.mainPurpleColor(), for: .normal)
 		} else if pattern == "transparent" {
 			self.backgroundColor = .clear
 			self.layer.borderWidth = 2.0
@@ -51,20 +51,27 @@ class DefaultButton: UIButton {
 			self.setTitleColor(.black, for: .normal)
 			self.layer.borderWidth = 0.0
 			addShadow()
-		} else {
+    } else if pattern == "purple" {
+      self.setBackgroundImage(UIImage(named: "DefaultButtonActive"), for: .normal)
+      self.setBackgroundImage(UIImage(named: "DefaultButtonDisabled"), for: .disabled)
+      self.setTitleColor(.white, for: .normal)
+      self.setTitleColor(UIColor(hex: 0x8E8E8E), for: .disabled)
+
+//      addShadow()
+    } else {
 			self.layer.borderWidth = 0.0
 			self.backgroundColor = .white
 			self.setTitleColor(UIColor.mainColor(), for: .normal)
 			addShadow()
 		}
 
-		if state == .disabled {
-			clearShadow()
-		}
+//		if state == .disabled {
+//			clearShadow()
+//		}
 	}
 
 	func addShadow() {
-        self.layer.shadowColor = UIColor.mainColor(alpha: 0.3).cgColor
+    self.layer.shadowColor = UIColor.mainColor(alpha: 0.3).cgColor
 		self.layer.shadowPath = UIBezierPath(roundedRect: bounds,
 																				 cornerRadius: layer.cornerRadius).cgPath
 		self.layer.shadowOffset = CGSize(width: 1.0, height: 1.0)
@@ -83,7 +90,7 @@ class DefaultButton: UIButton {
 	override func awakeFromNib() {
 		super.awakeFromNib()
 
-		self.titleLabel?.font = UIFont.boldFont(of: 14.0)
+		self.titleLabel?.font = UIFont.semiBoldFont(of: 18.0)
 		self.layer.cornerRadius = 16.0
 		self.updateAppearance()
 		self.animateButtonTouch = true

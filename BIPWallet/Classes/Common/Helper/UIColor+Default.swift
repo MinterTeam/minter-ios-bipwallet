@@ -29,4 +29,9 @@ extension UIColor {
 	static func mainGreyColor(alpha: CGFloat = 1) -> UIColor {
 		return UIColor(hex: 0x929292, alpha: alpha)!
 	}
+
+  static func mainPurpleColor(alpha: CGFloat = 1) -> UIColor {
+    return UIColor(hex: 0x502EC2, alpha: alpha)!
+  }
+
 }

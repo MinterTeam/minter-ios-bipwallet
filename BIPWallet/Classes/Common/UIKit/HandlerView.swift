@@ -33,7 +33,8 @@ class HandlerView: UIView {
     
     titleLabel.translatesAutoresizingMaskIntoConstraints = false
     titleLabel.text = self.title
-    titleLabel.font = UIFont.boldFont(of: 18.0)
+    titleLabel.font = UIFont.semiBoldFont(of: 18)
+    
     self.addSubview(titleLabel)
 
     imageView.snp.makeConstraints { (maker) in
@@ -45,7 +46,7 @@ class HandlerView: UIView {
 
     titleLabel.snp.makeConstraints { (maker) in
       maker.centerX.equalTo(self)
-      maker.top.equalTo(imageView).offset(17)
+      maker.top.equalTo(imageView).offset(22)
       maker.height.equalTo(21)
     }
 

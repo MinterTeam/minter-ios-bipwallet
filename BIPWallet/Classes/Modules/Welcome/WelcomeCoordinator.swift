@@ -48,18 +48,19 @@ class WelcomeCoordinator: BaseCoordinator<Void> {
       return
     }
     let safariViewController = SFSafariViewController(url: url)
-    viewController.present(safariViewController, animated: true) {
-      
-    }
+    viewController.present(safariViewController, animated: true) {}
   }
 
+  private let authService = LocalStorageAuthService(storage: SecureStorage(namespace: "Auth"),
+                                                    accountManager: AccountManager())
+
   func showSignIn(in viewController: UIViewController) -> Observable<Void> {
-    let coordinator = SignInCoordinator(rootViewController: viewController)
+    let coordinator = SignInCoordinator(rootViewController: viewController, authService: authService)
     return coordinate(to: coordinator)
   }
 
   func showCreateWallet(in viewController: UIViewController) -> Observable<Void> {
-    let coordinator = SignInCoordinator(rootViewController: viewController)
+    let coordinator = CreateWalletCoordinator(rootViewController: viewController, authService: authService)
     return coordinate(to: coordinator)
   }
 

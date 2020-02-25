@@ -12,16 +12,11 @@ import RxCocoa
 import GoldenKeystore
 import MinterMy
 
-protocol SignInManagerProtocol {
-  func saveMnemonic(mnemonic: String) throws
-  func address(from mnemonic: String) -> String?
-}
-
 class SignInViewModel: BaseViewModel, ViewModel {
 
   // MARK: -
 
-  private let viewWillDismiss = PublishSubject<Bool>()
+  private let viewDidDisappear = PublishSubject<Bool>()
   private let title = BehaviorSubject<String>(value: "Sign In")
   private let shakeError = PublishSubject<Void>()
   private let hardImpact = PublishSubject<Void>()
@@ -36,11 +31,11 @@ class SignInViewModel: BaseViewModel, ViewModel {
   var dependency: SignInViewModel.Dependency!
 
   struct Input {
-    var viewWillDismiss: AnyObserver<Bool>
+    var viewDidDisappear: AnyObserver<Bool>
   }
 
   struct Output {
-    var viewWillDismiss: Observable<Bool>
+    var viewDidDisappear: Observable<Bool>
     var title: Observable<String>
     var shakeError: Observable<Void>
     var hardImpact: Observable<Void>
@@ -50,12 +45,12 @@ class SignInViewModel: BaseViewModel, ViewModel {
   }
 
   struct Dependency {
-    var accountManager: SignInManagerProtocol
+    var authService: AuthService
   }
 
   init(dependency: Dependency) {
-    self.input = Input(viewWillDismiss: viewWillDismiss.asObserver())
-    self.output = Output(viewWillDismiss: viewWillDismiss.asObservable(),
+    self.input = Input(viewDidDisappear: viewDidDisappear.asObserver())
+    self.output = Output(viewDidDisappear: viewDidDisappear.asObservable(),
                          title: title.asObservable(),
                          shakeError: shakeError.asObservable(),
                          hardImpact: hardImpact.asObservable(),
@@ -83,17 +78,7 @@ class SignInViewModel: BaseViewModel, ViewModel {
         self.hardImpact.onNext(())
       } else {
         //save mnemonics
-        guard let address = self.dependency.accountManager.address(from: newVal ?? "") else {
-          self.errorMessage.onNext("Can't get address from mnemonic phrase".localized())
-          return
-        }
-        let acc = Account(id: 1, encryptedBy: .me, address: address)
-        do {
-          try self.dependency.accountManager.saveMnemonic(mnemonic: newVal ?? "")
-        } catch {
-          self.errorMessage.onNext("An error occured".localized())
-          return
-        }
+        self.dependency.authService.addAccount(mnemonic: newVal ?? "")
         self.mnemonicSaved.onNext(())
       }
 

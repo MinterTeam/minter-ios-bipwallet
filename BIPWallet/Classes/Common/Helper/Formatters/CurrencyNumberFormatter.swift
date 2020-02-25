@@ -63,7 +63,7 @@ class CurrencyNumberFormatter: NumberFormatter {
 		formatter.numberStyle = .decimal
 		formatter.decimalSeparator = "."
 		formatter.groupingSeparator = " "
-		formatter.plusSign = "+ "
+		formatter.plusSign = ""
 		formatter.minusSign = "- "
 		formatter.minimumFractionDigits = 4
 		formatter.maximumFractionDigits = 4

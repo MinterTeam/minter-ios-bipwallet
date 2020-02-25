@@ -8,8 +8,9 @@
 
 import UIKit
 import RxSwift
-import RxViewController
+//import RxViewController
 import RxBiBinding
+import RxAppState
 
 class SignInViewController: BaseViewController, Controller, StoryboardInitializable, UIImpactFeedbackProtocol {
 
@@ -38,7 +39,7 @@ class SignInViewController: BaseViewController, Controller, StoryboardInitializa
     //Input
     self.rx.viewDidDisappear
       .asDriver(onErrorJustReturn: true)
-      .drive(viewModel.input.viewWillDismiss)
+      .drive(viewModel.input.viewDidDisappear)
       .disposed(by: disposeBag)
 
     (self.textView.rx.text <-> self.viewModel.output.mnemonics).disposed(by: disposeBag)

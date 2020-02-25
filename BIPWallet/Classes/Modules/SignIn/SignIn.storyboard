@@ -17,10 +17,10 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="XdO-Hr-RLG" customClass="HandlerView" customModule="BIPWallet" customModuleProvider="target">
-                                <rect key="frame" x="16" y="728" width="382" height="152"/>
+                                <rect key="frame" x="8" y="728" width="398" height="152"/>
                                 <subviews>
                                     <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="yr6-mv-2QK" customClass="DefaultTextView" customModule="BIPWallet" customModuleProvider="target">
-                                        <rect key="frame" x="16" y="66" width="350" height="70"/>
+                                        <rect key="frame" x="16" y="66" width="366" height="70"/>
                                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="70" id="yaY-pv-fnl"/>
@@ -42,8 +42,8 @@
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstAttribute="bottom" secondItem="XdO-Hr-RLG" secondAttribute="bottom" constant="16" id="E9L-CC-4yL"/>
-                            <constraint firstItem="5RY-e3-YCs" firstAttribute="trailing" secondItem="XdO-Hr-RLG" secondAttribute="trailing" constant="16" id="JHu-SY-YDn"/>
-                            <constraint firstItem="XdO-Hr-RLG" firstAttribute="leading" secondItem="5RY-e3-YCs" secondAttribute="leading" constant="16" id="Kul-m9-VGV"/>
+                            <constraint firstItem="5RY-e3-YCs" firstAttribute="trailing" secondItem="XdO-Hr-RLG" secondAttribute="trailing" constant="8" id="JHu-SY-YDn"/>
+                            <constraint firstItem="XdO-Hr-RLG" firstAttribute="leading" secondItem="5RY-e3-YCs" secondAttribute="leading" constant="8" id="Kul-m9-VGV"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="5RY-e3-YCs"/>
                     </view>

@@ -11,6 +11,7 @@ import UIKit
 let defaultFontNameRegular = "Inter"
 let defaultFontNameMedium = "Inter-Medium"
 let defaultFontNameBold = "Inter-Bold"
+let defaultFontNameSemiBold = "Inter-SemiBold"
 //let defaultFontNameCoursive = "Ubuntu-C"
 let defaultFontNameLight = "Inter-Light"
 
@@ -19,6 +20,10 @@ extension UIFont {
 	static func defaultFont(of size: CGFloat) -> UIFont {
 		return UIFont(name: defaultFontNameRegular, size: size)!
 	}
+  
+  static func semiBoldFont(of size: CGFloat) -> UIFont {
+    return UIFont(name: defaultFontNameSemiBold, size: size)!
+  }
 
 	static func boldFont(of size: CGFloat) -> UIFont {
 		return UIFont(name: defaultFontNameBold, size: size)!

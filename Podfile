@@ -18,7 +18,7 @@ def shared_pods
 	pod 'RxGesture'
 	pod 'RxDataSources'
 	pod 'RxAppState'
-  pod 'RxViewController'
+#  pod 'RxViewController'
   #DB/Storage
   pod 'RealmSwift', git: 'https://github.com/realm/realm-cocoa.git', branch: 'master', submodules: true
   pod 'GoldenKeystore', :git => 'https://github.com/sidorov-panda/GoldenKeystore'

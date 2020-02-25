@@ -11,30 +11,24 @@ import RxSwift
 import DeckTransition
 import CardPresentationController
 
-extension AccountManager: SignInManagerProtocol {}
-
 class SignInCoordinator: BaseCoordinator<Void> {
 
   private let rootViewController: UIViewController
+  private let authService: AuthService
 
-  init(rootViewController: UIViewController) {
+  init(rootViewController: UIViewController, authService: AuthService) {
     self.rootViewController = rootViewController
+    self.authService = authService
   }
 
   override func start() -> Observable<Void> {
     let controller = SignInViewController.initFromStoryboard(name: "SignIn")
-    let accountManager = AccountManager()
-    let viewModel = SignInViewModel(dependency: SignInViewModel.Dependency(accountManager: accountManager))
+    let viewModel = SignInViewModel(dependency: SignInViewModel.Dependency(authService: authService))
     controller.viewModel = viewModel
 
-    viewModel.output.viewWillDismiss.subscribe(onNext: { [weak self] (_) in
+    viewModel.output.viewDidDisappear.subscribe(onNext: { [weak self] (_) in
       self?.rootViewController.hideBlueOverview()
-      }).disposed(by: disposeBag)
-
-//    viewModel.output.mnemonicSaved.subscribe(onNext: { [weak self] (_) in
-//      let walletCoordinator = WalletCoordinator(rootViewController: rootViewController)
-//      self?.coordinate(to: walletCoordinator)
-//      }).disposed(by: disposeBag)
+    }).disposed(by: disposeBag)
 
     var cardConfig = CardConfiguration()
     cardConfig.horizontalInset = 0.0
@@ -51,7 +45,7 @@ class SignInCoordinator: BaseCoordinator<Void> {
                                    configuration: cardConfig,
                                    animated: true)
 
-    return viewModel.output.mnemonicSaved.asObservable()
+    return Observable.merge(viewModel.output.mnemonicSaved, viewModel.output.viewDidDisappear.map { _ in Void() })
   }
 
 }

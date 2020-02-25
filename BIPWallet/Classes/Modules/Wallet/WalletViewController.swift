@@ -9,7 +9,9 @@
 import UIKit
 import RxSwift
 
-class WalletViewController: BaseViewController, Controller {
+class WalletViewController: UITabBarController, Controller, StoryboardInitializable {
+
+  var disposeBag = DisposeBag()
 
   // MARK: - ControllerProtocol
 

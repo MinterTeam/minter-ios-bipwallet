@@ -55,9 +55,6 @@ PODS:
   - RxRelay (5.0.1):
     - RxSwift (~> 5)
   - RxSwift (5.0.1)
-  - RxViewController (1.0.0):
-    - RxCocoa (~> 5.0)
-    - RxSwift (~> 5.0)
   - secp256k1.swift (0.1.4)
   - SipHash (1.2.2)
   - SnapKit (4.0.1)
@@ -88,7 +85,6 @@ DEPENDENCIES:
   - MinterExplorer
   - MinterMy
   - NotificationBannerSwift
-  - NotificationBannerSwift (= 1.8.0)
   - ObjectMapper (~> 3.3)
   - ReachabilitySwift (~> 4.3)
   - RealmSwift (from `https://github.com/realm/realm-cocoa.git`, branch `master`)
@@ -97,7 +93,6 @@ DEPENDENCIES:
   - RxDataSources
   - RxGesture
   - RxSwift
-  - RxViewController
   - SnapKit
   - SwiftCentrifuge
   - SwiftLint
@@ -132,7 +127,6 @@ SPEC REPOS:
     - RxGesture
     - RxRelay
     - RxSwift
-    - RxViewController
     - secp256k1.swift
     - SipHash
     - SnapKit
@@ -203,7 +197,6 @@ SPEC CHECKSUMS:
   RxGesture: a3f8dd6adf078110ed5e1c9c30d09d705a09852e
   RxRelay: 89d54507f4fd4d969e6ec1d4bd7f3673640b4640
   RxSwift: e2dc62b366a3adf6a0be44ba9f405efd4c94e0c4
-  RxViewController: 7330a46e5c31cd680db169da4c9fc8676e975a81
   secp256k1.swift: a7e7a214f6db6ce5db32cc6b2b45e5c4dd633634
   SipHash: fad90a4683e420c52ef28063063dbbce248ea6d4
   SnapKit: 0de968a9fec17499afa29683b05d0c775b6d1c29
@@ -217,6 +210,6 @@ SPEC CHECKSUMS:
   XLPagerTabStrip: 63166e21c9844fa30f2d95d30f335e73be5caf22
   YandexMobileMetrica: f18374ee6977a4cd1d0a86298a0df4ad7baf4135
 
-PODFILE CHECKSUM: 636ceaa9d990c42d00535a9d2b6841e64561863a
+PODFILE CHECKSUM: 8e1fc5547e85fca2a3b7ce27dda17e82083caa4c
 
 COCOAPODS: 1.8.4
