@@ -21,7 +21,6 @@ class CoinsViewModel: BaseViewModel, ViewModel {
   private var sections = PublishSubject<[BaseTableSectionItem]>()
   private var viewDidLoad = PublishSubject<Void>()
 
-  var address: String
   private var isLoading = false
 
   // MARK: - ViewModel
@@ -43,25 +42,20 @@ class CoinsViewModel: BaseViewModel, ViewModel {
     var balanceService: BalanceService
   }
 
-  init(address: String, dependency: Dependency) {
+  init(dependency: Dependency) {
     self.input = Input(coins: coins.asObserver(),
                        viewDidLoad: viewDidLoad.asObserver())
     self.output = Output(sections: sections.asObservable())
     self.dependency = dependency
 
-    self.address = address
     super.init()
 
     bind()
   }
 
   func bind() {
-//    coins.subscribe(onNext: { [weak self] (coins) in
-//      self?.createSections(coins: coins)
-//    }).disposed(by: disposeBag)
-    
     dependency.balanceService
-      .balances(address: address)
+      .balances()
       .do(onNext: { (txs) in
         
       }, onError: { [weak self] (error) in

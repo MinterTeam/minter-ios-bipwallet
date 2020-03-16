@@ -17,22 +17,32 @@ class BalanceCoordinator: BaseCoordinator<Void> {
   init(navigationController: UINavigationController) {
     self.navigationController = navigationController
 
+    let localAuthService = LocalStorageAuthService()
+    let addressObservable = Observable.just("Mx" + (localAuthService.selectedAccount()?.address ?? ""))
+
+    self.localAuthService = localAuthService
+    self.balanceService = ExplorerBalanceService(address: addressObservable)
+
     super.init()
   }
 
+  let localAuthService: LocalStorageAuthService
+  let balanceService: ExplorerBalanceService
+
   override func start() -> Observable<Void> {
     let controller = BalanceViewController.initFromStoryboard(name: "Balance")
-    let balanceService = ExplorerBalanceService()
-    
-    controller.viewModel = BalanceViewModel(dependency: BalanceViewModel.Dependency(balanceService: balanceService))
+    let viewModel = BalanceViewModel(dependency: BalanceViewModel.Dependency(balanceService: balanceService))
+    controller.viewModel = viewModel
 
-    let coins = CoinsCoordinator()
-    let transactions = TransactionsCoordinator()
+    var transactionsViewController: UIViewController?
+    
+    let coins = CoinsCoordinator(balanceService: balanceService)
+    let transactions = TransactionsCoordinator(viewController: &transactionsViewController)
 
     coordinate(to: coins).subscribe().disposed(by: disposeBag)
     coordinate(to: transactions).subscribe().disposed(by: disposeBag)
 
-    controller.controllers = [coins.viewController!, transactions.viewController!]
+    controller.controllers = [coins.viewController!, transactionsViewController!]
 
     let headerInset = CGFloat(230.0)
 
@@ -41,7 +51,9 @@ class BalanceCoordinator: BaseCoordinator<Void> {
         let newPoint = headerInset + point.y
         controller.containerViewHeightConstraint.constant = max(-headerInset, -newPoint)
         let contentOffset = CGPoint(x: 0, y: point.y)
-        transactions.viewController?.tableView?.setContentOffset(contentOffset, animated: false)
+        if let transactionsViewController = transactionsViewController as? TransactionsViewController {
+          transactionsViewController.tableView.setContentOffset(contentOffset, animated: false)
+        }
       }
     }).disposed(by: disposeBag)
 
@@ -54,16 +66,19 @@ class BalanceCoordinator: BaseCoordinator<Void> {
       }
     }).disposed(by: disposeBag).self
 
-//    let localAuthService = LocalStorageAuthService()
-//    if let account = localAuthService.selectedAccount() {
-//      balanceService.balances(address: "Mx" + account.address)
-//        .subscribe(onNext: { [weak self] (val) in
-//        self?.coinsSubject.onNext(val.balances)
-//      }).disposed(by: disposeBag)
-//    }
+    balanceService.updateBalance()
+
+    viewModel.output.didTapSelectWallet.flatMap({ (_) -> Observable<SelectWalletCoordinationResult> in
+      return self.showSelectWallet(rootViewController: controller)
+    }).subscribe().disposed(by: disposeBag)
 
     navigationController.setViewControllers([controller], animated: false)
     return Observable.never()
+  }
+
+  func showSelectWallet(rootViewController: UIViewController) -> Observable<SelectWalletCoordinationResult> {
+    let selectWalletCoordinator = SelectWalletCoordinator(rootViewController: rootViewController, authService: localAuthService)
+    return coordinate(to: selectWalletCoordinator)
   }
 
 }

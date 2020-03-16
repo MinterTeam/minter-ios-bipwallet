@@ -24,6 +24,8 @@ class TransactionsViewModel: BaseViewModel, ViewModel, TransactionViewableViewMo
   private var transactions = BehaviorSubject<[MinterExplorer.Transaction]>(value: [])
   private var sections = PublishSubject<[BaseTableSectionItem]>()
   private var viewDidLoad = PublishSubject<Void>()
+  private var didSelectItem = PublishSubject<IndexPath>()
+  private var showTransaction = PublishSubject<MinterExplorer.Transaction>()
 
   // MARK: - ViewModel
 
@@ -34,10 +36,12 @@ class TransactionsViewModel: BaseViewModel, ViewModel, TransactionViewableViewMo
   struct Input {
     var transactions: AnyObserver<[MinterExplorer.Transaction]>
     var viewDidLoad: AnyObserver<Void>
+    var didSelectItem: AnyObserver<IndexPath>
   }
 
   struct Output {
     var sections: Observable<[BaseTableSectionItem]>
+    var showTransaction: Observable<MinterExplorer.Transaction>
   }
 
   struct Dependency {
@@ -46,8 +50,12 @@ class TransactionsViewModel: BaseViewModel, ViewModel, TransactionViewableViewMo
 
   init(address: String, dependency: Dependency) {
     self.input = Input(transactions: transactions.asObserver(),
-                       viewDidLoad: viewDidLoad.asObserver())
-    self.output = Output(sections: sections.asObservable())
+                       viewDidLoad: viewDidLoad.asObserver(),
+                       didSelectItem: didSelectItem.asObserver())
+    self.output = Output(sections: sections.asObservable(),
+                         showTransaction: showTransaction.asObservable()
+    )
+
     self.dependency = dependency
     self.address = address
 
@@ -80,6 +88,12 @@ class TransactionsViewModel: BaseViewModel, ViewModel, TransactionViewableViewMo
     }).subscribe(onNext: { [weak self] (transactions) in
       self?.createSections(isLoading: self?.isLoading ?? false, transactions: transactions)
     }).disposed(by: disposeBag)
+
+    didSelectItem.filter({ (indexPath) -> Bool in
+      return (try? self.transactions.value()[safe: indexPath.row]) != nil
+    }).map({ (indexPath) -> MinterExplorer.Transaction in
+      return try! self.transactions.value()[safe: indexPath.row]!
+    }).subscribe(showTransaction).disposed(by: disposeBag)
   }
 
   // MARK: -
@@ -94,7 +108,7 @@ class TransactionsViewModel: BaseViewModel, ViewModel, TransactionViewableViewMo
       cellItems.append(loadingCell)
     }
 
-    transactions.forEach { (transaction) in
+    transactions[safe: 0..<10]?.forEach { (transaction) in
       guard let txType = transaction.type else { return }
 
       let transactionCellItem: BaseCellItem?

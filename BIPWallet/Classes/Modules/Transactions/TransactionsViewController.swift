@@ -31,6 +31,10 @@ class TransactionsViewController: BaseViewController, Controller, StoryboardInit
       .drive(viewModel.input.viewDidLoad)
       .disposed(by: disposeBag)
 
+    tableView.rx.itemSelected.asDriver()
+      .drive(viewModel.input.didSelectItem)
+      .disposed(by: disposeBag)
+
     //Output
     viewModel.output.sections
       .bind(to: tableView.rx.items(dataSource: rxDataSource!)).disposed(by: disposeBag)
@@ -65,8 +69,6 @@ class TransactionsViewController: BaseViewController, Controller, StoryboardInit
 
   }
 }
-
-
 
 extension TransactionsViewController: IndicatorInfoProvider {
   func indicatorInfo(for pagerTabStripController: PagerTabStripViewController) -> IndicatorInfo {
@@ -107,7 +109,7 @@ extension TransactionsViewController: UITableViewDelegate {
     }
     return 0.1
   }
-  
+
   func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
     return 0.1
   }

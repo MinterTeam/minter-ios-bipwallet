@@ -23,7 +23,7 @@
                         <subviews>
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" alwaysBounceVertical="YES" alwaysBounceHorizontal="YES" translatesAutoresizingMaskIntoConstraints="NO" id="uTW-SA-zQg">
                                 <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
-                                <color key="backgroundColor" systemColor="systemPurpleColor" red="0.68627450980000004" green="0.32156862749999998" blue="0.87058823529999996" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <viewLayoutGuide key="contentLayoutGuide" id="GSX-FM-Nby"/>
                                 <viewLayoutGuide key="frameLayoutGuide" id="atV-gB-uFj"/>
                                 <connections>
@@ -33,20 +33,20 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Jcw-bC-189">
                                 <rect key="frame" x="0.0" y="44" width="414" height="180.5"/>
                                 <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" alpha="0.69999999999999996" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Availabale Balance" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LZU-RC-aW4">
-                                        <rect key="frame" x="48" y="16" width="118" height="16"/>
+                                    <label opaque="NO" userInteractionEnabled="NO" alpha="0.69999999999999996" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Available Balance" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LZU-RC-aW4">
+                                        <rect key="frame" x="48" y="16" width="110.5" height="16"/>
                                         <fontDescription key="fontDescription" name="Inter-SemiBold" family="Inter" pointSize="13"/>
                                         <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="462 308.3933 BIP" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1jl-Ro-hiQ">
-                                        <rect key="frame" x="48" y="38" width="265" height="36"/>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0.0000 BIP" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1jl-Ro-hiQ">
+                                        <rect key="frame" x="48" y="38" width="162" height="36"/>
                                         <fontDescription key="fontDescription" name="Inter-SemiBold" family="Inter" pointSize="30"/>
                                         <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="+ 62 368.3933 BIP today" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hRj-4M-g3L">
-                                        <rect key="frame" x="48" y="76" width="169" height="17"/>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="+ 300.3933 BIP today" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hRj-4M-g3L">
+                                        <rect key="frame" x="48" y="76" width="148" height="17"/>
                                         <fontDescription key="fontDescription" name="Inter-SemiBold" family="Inter" pointSize="14"/>
                                         <color key="textColor" red="0.20392156862745098" green="0.7803921568627451" blue="0.34901960784313724" alpha="1" colorSpace="deviceRGB"/>
                                         <nil key="highlightedColor"/>
@@ -57,8 +57,8 @@
                                         <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="24 462 308.3933 BIP" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0vM-Ic-kBX">
-                                        <rect key="frame" x="48" y="136" width="165.5" height="19.5"/>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0.0000 BIP" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0vM-Ic-kBX">
+                                        <rect key="frame" x="48" y="136" width="86.5" height="19.5"/>
                                         <fontDescription key="fontDescription" name="Inter-SemiBold" family="Inter" pointSize="16"/>
                                         <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <nil key="highlightedColor"/>
@@ -112,7 +112,7 @@
                                 </constraints>
                             </view>
                         </subviews>
-                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="ZBL-0Z-dM2" firstAttribute="trailing" secondItem="Jcw-bC-189" secondAttribute="trailing" id="3ky-Ea-QxJ"/>
                             <constraint firstItem="Jcw-bC-189" firstAttribute="trailing" secondItem="gS7-dX-vnJ" secondAttribute="trailing" id="753-mS-G0Q"/>
@@ -128,8 +128,10 @@
                         <viewLayoutGuide key="safeArea" id="gS7-dX-vnJ"/>
                     </view>
                     <connections>
+                        <outlet property="availableBalance" destination="1jl-Ro-hiQ" id="H3B-9m-8Nt"/>
                         <outlet property="containerView" destination="uTW-SA-zQg" id="atq-Rw-5gR"/>
                         <outlet property="containerViewHeightConstraint" destination="uCx-0C-5jB" id="SOp-Lw-B7G"/>
+                        <outlet property="delegatedBalance" destination="0vM-Ic-kBX" id="BuU-Jr-v2M"/>
                         <outlet property="segmentedControl" destination="8vz-1R-ytc" id="xd2-3s-jhE"/>
                         <outlet property="segmentedControlView" destination="ZBL-0Z-dM2" id="TWK-UQ-kYl"/>
                     </connections>

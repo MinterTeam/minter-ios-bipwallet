@@ -19,7 +19,12 @@ protocol BalanceService {
     balances: [String: (Decimal, Decimal)]
   )
 
-  func balances(address: String) -> Observable<BalancesResponse>
+  var address: Observable<String> {get}
+
+  func balances() -> Observable<BalancesResponse>
+  func delegatedBalance() -> Observable<([AddressDelegation]?, Decimal?)>
+  func updateBalance()
+  func updateDelegated()
 }
 
 protocol TransactionService {

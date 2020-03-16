@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15705" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15706"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--Select Wallet View Controller-->
+        <scene sceneID="T3B-e7-CN1">
+            <objects>
+                <viewController storyboardIdentifier="SelectWalletViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="VHI-Tb-ZfI" customClass="SelectWalletViewController" customModule="BIPWallet" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="pF4-Uc-6Ze">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" bounces="NO" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" contentInsetAdjustmentBehavior="never" bouncesZoom="NO" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="1" sectionFooterHeight="1" contentViewInsetsToSafeArea="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rdC-mU-lQB" customClass="WeiredTableView" customModule="BIPWallet" customModuleProvider="target">
+                                <rect key="frame" x="8" y="30" width="270" height="62"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="62" id="EIf-5a-pE3"/>
+                                    <constraint firstAttribute="width" constant="270" id="Lyk-c1-Xn2"/>
+                                </constraints>
+                            </tableView>
+                        </subviews>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <constraints>
+                            <constraint firstItem="rdC-mU-lQB" firstAttribute="top" secondItem="fSv-Tb-ZOH" secondAttribute="top" constant="-14" id="QBt-NV-h8l"/>
+                            <constraint firstItem="rdC-mU-lQB" firstAttribute="leading" secondItem="fSv-Tb-ZOH" secondAttribute="leading" constant="8" id="g6M-l7-7bh"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="fSv-Tb-ZOH"/>
+                    </view>
+                    <connections>
+                        <outlet property="tableHeightConstraint" destination="EIf-5a-pE3" id="U1O-Xj-R94"/>
+                        <outlet property="tableView" destination="rdC-mU-lQB" id="Gkf-nS-53u"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="MiJ-0Y-q6M" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="166.66666666666669" y="130.58035714285714"/>
+        </scene>
+    </scenes>
+</document>
