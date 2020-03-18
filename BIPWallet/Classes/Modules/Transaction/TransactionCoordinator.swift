@@ -15,20 +15,22 @@ import CardPresentationController
 class TransactionCoordinator: BaseCoordinator<Void> {
 
   var rootViewController: UIViewController
+  var transaction: MinterExplorer.Transaction
 
   init(transaction: MinterExplorer.Transaction, rootViewController: UIViewController) {
     self.rootViewController = rootViewController
+    self.transaction = transaction
 
     super.init()
   }
 
   override func start() -> Observable<Void> {
-    let viewModel = TransactionViewModel(dependency: TransactionViewModel.Dependency())
+    let viewModel = TransactionViewModel(transaction: self.transaction,
+                                         dependency: TransactionViewModel.Dependency())
+
     let viewController = TransactionViewController.initFromStoryboard(name: "Transaction")
     viewController.viewModel = viewModel
 
-//    CardPresentationController.useSystemPresentationOniOS13 = true
-//    rootViewController.presentCard(viewController, configuration: nil, animated: true) {}
     var cardConfig = CardConfiguration()
     cardConfig.horizontalInset = 0.0
     cardConfig.verticalInset = 0.0
@@ -38,9 +40,14 @@ class TransactionCoordinator: BaseCoordinator<Void> {
     cardConfig.dismissAreaHeight = 5
     CardPresentationController.useSystemPresentationOniOS13 = true
 
-    rootViewController.presentCard(ClearBarNavigationController(rootViewController: viewController),
-                                   configuration: cardConfig,
-                                   animated: true)
+    let controller = ClearBarNavigationController(rootViewController: viewController)
+
+    //Seem to be a bug, but without "main.async" it delays
+    DispatchQueue.main.async { [weak self] in
+      self?.rootViewController.presentCard(controller,
+                                           configuration: cardConfig,
+                                           animated: true)
+    }
 
     return viewModel.output.didDismiss.asObservable()
   }

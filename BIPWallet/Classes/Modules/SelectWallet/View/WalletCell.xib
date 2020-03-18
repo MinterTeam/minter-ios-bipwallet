@@ -31,7 +31,7 @@
                         <nil key="textColor"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="WalletEdit" translatesAutoresizingMaskIntoConstraints="NO" id="yiQ-zq-J2H">
+                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="WalletEditIcon" translatesAutoresizingMaskIntoConstraints="NO" id="yiQ-zq-J2H">
                         <rect key="frame" x="382" y="17.5" width="24" height="24"/>
                         <constraints>
                             <constraint firstAttribute="width" constant="24" id="oQt-QS-0w3"/>
@@ -67,6 +67,6 @@
         </tableViewCell>
     </objects>
     <resources>
-        <image name="WalletEdit" width="20" height="20"/>
+        <image name="WalletEditIcon" width="20" height="20"/>
     </resources>
 </document>

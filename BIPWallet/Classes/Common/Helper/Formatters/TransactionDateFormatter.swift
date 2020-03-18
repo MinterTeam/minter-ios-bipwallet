@@ -8,9 +8,18 @@
 
 import Foundation
 
-class TransactionDateFormatter : DateFormatter {
-	
-	class var transactionDateFormatter : DateFormatter {
+class TransactionDateFormatter: DateFormatter {
+
+  class var transactionFullDateFormatter: DateFormatter {
+    let formatter = DateFormatter()
+    formatter.dateFormat = "yyyy-MM-dd HH:mm:ss (ZZZZ)"
+    formatter.timeZone = TimeZone.current
+    formatter.locale = Locale.current
+    formatter.calendar = Calendar.current
+    return formatter
+  }
+
+	class var transactionDateFormatter: DateFormatter {
 		let formatter = DateFormatter()
 		formatter.dateFormat = "dd MMM yyyy"
 		formatter.timeZone = TimeZone.current
@@ -18,8 +27,8 @@ class TransactionDateFormatter : DateFormatter {
 		formatter.calendar = Calendar.current
 		return formatter
 	}
-	
-	class var transactionTimeFormatter : DateFormatter {
+
+	class var transactionTimeFormatter: DateFormatter {
 		let formatter = DateFormatter()
 		formatter.dateFormat = "HH:mm:ss"
 		formatter.timeZone = TimeZone.current
@@ -27,7 +36,5 @@ class TransactionDateFormatter : DateFormatter {
 		formatter.calendar = Calendar.current
 		return formatter
 	}
-	
-	
-}
 
+}

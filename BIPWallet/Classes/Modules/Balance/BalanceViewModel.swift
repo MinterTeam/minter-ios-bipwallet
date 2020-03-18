@@ -60,7 +60,7 @@ class BalanceViewModel: BaseViewModel, ViewModel {
       let headerItem = self?.headerViewTitleText(with: val.baseCoinBalance) ?? NSAttributedString()
       self?.availabaleBalance.onNext(headerItem)
     }).disposed(by: disposeBag)
-    
+
     dependency.balanceService.delegatedBalance().subscribe(onNext: { (val) in
       var str = CurrencyNumberFormatter.formattedDecimal(with: val.1 ?? 0.0, formatter: CurrencyNumberFormatter.coinFormatter)
       str += ""
@@ -69,7 +69,7 @@ class BalanceViewModel: BaseViewModel, ViewModel {
     }).disposed(by: disposeBag)
 
     dependency.balanceService.updateDelegated()
-    
+
     didTapSelectWallet.subscribe(onNext: { _ in
       
       }).disposed(by: disposeBag)

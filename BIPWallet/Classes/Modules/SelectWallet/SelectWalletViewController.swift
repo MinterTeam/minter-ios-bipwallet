@@ -41,10 +41,7 @@ class SelectWalletViewController: BaseViewController, Controller, StoryboardInit
       .asDriver(onErrorJustReturn: []).drive(onNext: { [weak self] (sections) in
         let items = sections.first?.items.count ?? 0
         self?.tableHeightConstraint.constant = max(0, CGFloat(items) * 61)
-        self?.view.backgroundColor = .red
-//        UIView.animate(withDuration: 0.5) {
         self?.view.layoutIfNeeded()
-//        }
     }).disposed(by: disposeBag)
   }
 

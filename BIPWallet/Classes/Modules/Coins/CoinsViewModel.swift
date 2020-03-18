@@ -12,7 +12,7 @@ import MinterCore
 import MinterMy
 
 class CoinsViewModel: BaseViewModel, ViewModel {
-  
+
   typealias BalanceModel = [String: (Decimal, Decimal)]
 
   // MARK: -
@@ -112,8 +112,6 @@ class CoinsViewModel: BaseViewModel, ViewModel {
         : (key2 == Coin.baseCoin().symbol!) ? false
         : (key1 < key2)
     }).forEach { (key) in
-      print(String(describing: coins[key]))
-
       let separator = SeparatorTableViewCellItem(reuseIdentifier: "SeparatorTableViewCell",
                                                  identifier: "SeparatorTableViewCell_\(key)")
       let coin = CoinTableViewCellItem(reuseIdentifier: "CoinTableViewCell",

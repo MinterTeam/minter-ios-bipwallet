@@ -15,10 +15,6 @@ protocol TransactionViewableViewModel: class {
 
   var addressBook: [String: String] {get set}
   var address: String {get set}
-//  func section(index: Int) -> BaseTableSectionItem?
-//  func sectionsCount() -> Int
-//  func rowsCount(for section: Int) -> Int
-//  func cellItem(section: Int, row: Int) -> BaseCellItem?
 }
 
 extension TransactionViewableViewModel {
@@ -148,9 +144,7 @@ extension TransactionViewableViewModel {
   }
 
   func delegateTransactionItem(with transactionItem: TransactionItem) -> BaseCellItem? {
-
     let transaction = transactionItem
-
     let sectionId = nil != transaction.txn ? String(transaction.txn!) : (transaction.hash  ?? String.random(length: 20))
 
     let transactionCellItem = TransactionCellItem1(reuseIdentifier: "TransactionCell",
@@ -181,6 +175,7 @@ extension TransactionViewableViewModel {
 
     let transactionCellItem = TransactionCellItem1(reuseIdentifier: "TransactionCell",
                                                            identifier: "RedeemCheckTableViewCell\(sectionId)")
+    transactionCellItem.type = "Check".localized()
     transactionCellItem.txHash = transaction.hash
     transactionCellItem.title = (transaction.hash ?? title)
     transactionCellItem.image = UIImage(named: "redeemCheckImage")
@@ -199,7 +194,6 @@ extension TransactionViewableViewModel {
   }
 
   func systemTransactionItem(with transactionItem: TransactionItem) -> BaseCellItem? {
-
     let transaction = transactionItem
 
     let sectionId = transaction.hash ?? String.random()
@@ -211,27 +205,21 @@ extension TransactionViewableViewModel {
 
     switch txType {
     case .create:
-      transactionCellItem.title = "Create Coin"
-      break
+      transactionCellItem.type = "Create Coin"
     case .createMultisig:
-      transactionCellItem.title = "Create Multisig"
-      break
+      transactionCellItem.type = "Create Multisig"
     case .declare:
-      transactionCellItem.title = "Declare Candidate"
-      break
+      transactionCellItem.type = "Declare Candidate"
     case .editCandidate:
-      transactionCellItem.title = "Edit Candidate"
-      break
+      transactionCellItem.type = "Edit Candidate"
     case .setCandidateOffline:
-      transactionCellItem.title = "Set Candidate Offline"
-      break
+      transactionCellItem.type = "Set Candidate Offline"
     case .setCandidateOnline:
-      transactionCellItem.title = "Set Candidate Online"
-      break
+      transactionCellItem.type = "Set Candidate Online"
     default:
       break
     }
-    transactionCellItem.type = ""
+    transactionCellItem.title = transaction.hash
     transactionCellItem.image = UIImage(named: "systemTransactionImage")
     return transactionCellItem
   }

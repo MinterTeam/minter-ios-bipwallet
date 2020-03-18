@@ -33,7 +33,7 @@ class TransactionsCoordinator: BaseCoordinator<Void> {
                                             dependency: TransactionsViewModel.Dependency(transactionService: transactionService))
 
       viewModel.output.showTransaction.subscribe(onNext: { [weak self] (transaction) in
-        guard let `self` = self else { return }
+        guard let `self` = self, let transaction = transaction else { return }
         let transactionCoordinator = TransactionCoordinator(transaction: transaction,
                                                             rootViewController: self.сontroller)
         self.coordinate(to: transactionCoordinator).subscribe().disposed(by: self.disposeBag)

@@ -40,6 +40,11 @@ class DefaultButton: UIButton {
 			self.layer.borderWidth = 2.0
       self.layer.borderColor = UIColor.mainPurpleColor().cgColor
 			self.setTitleColor(UIColor.mainPurpleColor(), for: .normal)
+    } else if pattern == "blank_white" {
+      self.backgroundColor = .clear
+      self.layer.borderWidth = 2.0
+      self.layer.borderColor = UIColor.white.cgColor
+      self.setTitleColor(UIColor.white, for: .normal)
 		} else if pattern == "transparent" {
 			self.backgroundColor = .clear
 			self.layer.borderWidth = 2.0
@@ -56,18 +61,12 @@ class DefaultButton: UIButton {
       self.setBackgroundImage(UIImage(named: "DefaultButtonDisabled"), for: .disabled)
       self.setTitleColor(.white, for: .normal)
       self.setTitleColor(UIColor(hex: 0x8E8E8E), for: .disabled)
-
-//      addShadow()
     } else {
 			self.layer.borderWidth = 0.0
 			self.backgroundColor = .white
 			self.setTitleColor(UIColor.mainColor(), for: .normal)
 			addShadow()
 		}
-
-//		if state == .disabled {
-//			clearShadow()
-//		}
 	}
 
 	func addShadow() {

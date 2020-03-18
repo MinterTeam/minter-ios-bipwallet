@@ -25,7 +25,7 @@ class TransactionsViewModel: BaseViewModel, ViewModel, TransactionViewableViewMo
   private var sections = PublishSubject<[BaseTableSectionItem]>()
   private var viewDidLoad = PublishSubject<Void>()
   private var didSelectItem = PublishSubject<IndexPath>()
-  private var showTransaction = PublishSubject<MinterExplorer.Transaction>()
+  private var showTransaction = PublishSubject<MinterExplorer.Transaction?>()
 
   // MARK: - ViewModel
 
@@ -41,7 +41,7 @@ class TransactionsViewModel: BaseViewModel, ViewModel, TransactionViewableViewMo
 
   struct Output {
     var sections: Observable<[BaseTableSectionItem]>
-    var showTransaction: Observable<MinterExplorer.Transaction>
+    var showTransaction: Observable<MinterExplorer.Transaction?>
   }
 
   struct Dependency {
@@ -51,7 +51,9 @@ class TransactionsViewModel: BaseViewModel, ViewModel, TransactionViewableViewMo
   init(address: String, dependency: Dependency) {
     self.input = Input(transactions: transactions.asObserver(),
                        viewDidLoad: viewDidLoad.asObserver(),
-                       didSelectItem: didSelectItem.asObserver())
+                       didSelectItem: didSelectItem.asObserver()
+    )
+
     self.output = Output(sections: sections.asObservable(),
                          showTransaction: showTransaction.asObservable()
     )
@@ -80,7 +82,7 @@ class TransactionsViewModel: BaseViewModel, ViewModel, TransactionViewableViewMo
       })
       .subscribe(onNext: { [weak self] (transactions) in
         self?.isLoading = false
-        self?.transactions.onNext(transactions)
+        self?.transactions.onNext(transactions[safe: 0..<10] ?? [])
       }).disposed(by: disposeBag)
 
     Observable.combineLatest(viewDidLoad, transactions).map({ (val) -> [MinterExplorer.Transaction] in
@@ -89,10 +91,12 @@ class TransactionsViewModel: BaseViewModel, ViewModel, TransactionViewableViewMo
       self?.createSections(isLoading: self?.isLoading ?? false, transactions: transactions)
     }).disposed(by: disposeBag)
 
-    didSelectItem.filter({ (indexPath) -> Bool in
-      return (try? self.transactions.value()[safe: indexPath.row]) != nil
-    }).map({ (indexPath) -> MinterExplorer.Transaction in
-      return try! self.transactions.value()[safe: indexPath.row]!
+    didSelectItem.map({ (indexPath) -> IndexPath in
+      return IndexPath(row: indexPath.row/2, section: indexPath.section)
+    }).map({ (indexPath) -> MinterExplorer.Transaction? in
+      return try? self.transactions.value()[safe: indexPath.row]
+    }).filter({ (transaction) -> Bool in
+      return nil != transaction
     }).subscribe(showTransaction).disposed(by: disposeBag)
   }
 
@@ -108,7 +112,7 @@ class TransactionsViewModel: BaseViewModel, ViewModel, TransactionViewableViewMo
       cellItems.append(loadingCell)
     }
 
-    transactions[safe: 0..<10]?.forEach { (transaction) in
+    transactions.forEach { (transaction) in
       guard let txType = transaction.type else { return }
 
       let transactionCellItem: BaseCellItem?

@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="15705" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15706"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <array key="Inter-SemiBold.otf">
+            <string>Inter-SemiBold</string>
+        </array>
+    </customFonts>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" rowHeight="59" id="KGk-i7-Jjw" customClass="TransactionTwoColumnCell" customModule="BIPWallet" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="362" height="59"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
+                <rect key="frame" x="0.0" y="0.0" width="362" height="59"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Key1" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="WlE-sp-9vc">
+                        <rect key="frame" x="24" y="5" width="25" height="14"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="14" id="lJd-Eh-6an"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" name="Inter-SemiBold" family="Inter" pointSize="11"/>
+                        <color key="textColor" red="0.5568627451" green="0.5568627451" blue="0.5568627451" alpha="1" colorSpace="deviceRGB"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Key2" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GXz-fI-ge0">
+                        <rect key="frame" x="202" y="5" width="27" height="14"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="14" id="ebJ-DD-77A"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" name="Inter-SemiBold" family="Inter" pointSize="11"/>
+                        <color key="textColor" red="0.5568627451" green="0.5568627451" blue="0.5568627451" alpha="1" colorSpace="deviceRGB"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <button opaque="NO" contentMode="scaleToFill" verticalCompressionResistancePriority="1000" contentHorizontalAlignment="leading" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="Qbk-pi-y6b">
+                        <rect key="frame" x="24" y="20" width="133" height="17"/>
+                        <constraints>
+                            <constraint firstAttribute="height" priority="999" constant="17" id="gNv-5O-MW4"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" name="Inter-SemiBold" family="Inter" pointSize="14"/>
+                        <state key="normal" title="Button">
+                            <color key="titleColor" red="0.098039215690000001" green="0.098039215690000001" blue="0.098039215690000001" alpha="1" colorSpace="deviceRGB"/>
+                        </state>
+                    </button>
+                    <button opaque="NO" contentMode="scaleToFill" verticalCompressionResistancePriority="1000" contentHorizontalAlignment="leading" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="UW8-S2-3qb">
+                        <rect key="frame" x="202" y="20" width="136" height="17"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="17" id="XnY-4J-NSx"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" name="Inter-SemiBold" family="Inter" pointSize="14"/>
+                        <state key="normal" title="Button">
+                            <color key="titleColor" red="0.098039215690000001" green="0.098039215690000001" blue="0.098039215690000001" alpha="1" colorSpace="deviceRGB"/>
+                        </state>
+                        <state key="disabled">
+                            <color key="titleColor" red="0.098039215690000001" green="0.098039215690000001" blue="0.098039215690000001" alpha="1" colorSpace="deviceRGB"/>
+                        </state>
+                    </button>
+                </subviews>
+                <constraints>
+                    <constraint firstItem="WlE-sp-9vc" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="5" id="0Tf-RQ-4Zi"/>
+                    <constraint firstAttribute="centerX" secondItem="Qbk-pi-y6b" secondAttribute="trailing" constant="24" id="2Bs-cw-Rzh"/>
+                    <constraint firstItem="Qbk-pi-y6b" firstAttribute="centerY" secondItem="UW8-S2-3qb" secondAttribute="centerY" id="2DN-Hd-ad7"/>
+                    <constraint firstItem="Qbk-pi-y6b" firstAttribute="top" secondItem="WlE-sp-9vc" secondAttribute="bottom" constant="1" id="N72-ns-ion"/>
+                    <constraint firstItem="GXz-fI-ge0" firstAttribute="centerY" secondItem="WlE-sp-9vc" secondAttribute="centerY" id="Ukb-XO-uaD"/>
+                    <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="Qbk-pi-y6b" secondAttribute="bottom" constant="5" id="VfU-fF-nbs"/>
+                    <constraint firstItem="WlE-sp-9vc" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="24" id="bOa-ni-vfg"/>
+                    <constraint firstItem="Qbk-pi-y6b" firstAttribute="leading" secondItem="WlE-sp-9vc" secondAttribute="leading" id="cI2-XJ-w2Z"/>
+                    <constraint firstItem="UW8-S2-3qb" firstAttribute="top" secondItem="GXz-fI-ge0" secondAttribute="bottom" constant="1" id="f2f-cS-dg1"/>
+                    <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="UW8-S2-3qb" secondAttribute="bottom" constant="5" id="j5v-Eg-PH8"/>
+                    <constraint firstItem="GXz-fI-ge0" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="centerX" constant="21" id="j7T-EP-z9N"/>
+                    <constraint firstItem="UW8-S2-3qb" firstAttribute="leading" secondItem="GXz-fI-ge0" secondAttribute="leading" id="u9s-dT-lCG"/>
+                    <constraint firstAttribute="trailing" secondItem="UW8-S2-3qb" secondAttribute="trailing" constant="24" id="yI5-Ry-wNO"/>
+                </constraints>
+            </tableViewCellContentView>
+            <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
+            <connections>
+                <outlet property="key1" destination="WlE-sp-9vc" id="s5W-s3-IuU"/>
+                <outlet property="key2" destination="GXz-fI-ge0" id="jb2-71-Ev8"/>
+                <outlet property="value1" destination="Qbk-pi-y6b" id="8vi-fk-eE9"/>
+                <outlet property="value2" destination="UW8-S2-3qb" id="AWV-lw-Wzf"/>
+            </connections>
+            <point key="canvasLocation" x="168.11594202898553" y="147.65625"/>
+        </tableViewCell>
+    </objects>
+</document>

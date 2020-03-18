@@ -46,13 +46,13 @@ class BalanceCoordinator: BaseCoordinator<Void> {
 
     let headerInset = CGFloat(230.0)
 
-    coins.didScrollToPoint?.subscribe(onNext: { (point) in
-      if controller.segmentedControl.selectedSegmentIndex == 0 {
+    coins.didScrollToPoint?.subscribe(onNext: { [weak self] (point) in
+      if controller.segmentedControl?.selectedSegmentIndex == 0 {
         let newPoint = headerInset + point.y
-        controller.containerViewHeightConstraint.constant = max(-headerInset, -newPoint)
+        controller.containerViewHeightConstraint?.constant = max(-headerInset, -newPoint)
         let contentOffset = CGPoint(x: 0, y: point.y)
         if let transactionsViewController = transactionsViewController as? TransactionsViewController {
-          transactionsViewController.tableView.setContentOffset(contentOffset, animated: false)
+          transactionsViewController.tableView?.setContentOffset(contentOffset, animated: false)
         }
       }
     }).disposed(by: disposeBag)

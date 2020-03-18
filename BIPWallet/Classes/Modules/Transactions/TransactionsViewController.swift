@@ -66,7 +66,6 @@ class TransactionsViewController: BaseViewController, Controller, StoryboardInit
     configure(with: viewModel)
 
     tableView.contentInset = UIEdgeInsets(top: 230, left: 0, bottom: 0, right: 0)
-
   }
 }
 

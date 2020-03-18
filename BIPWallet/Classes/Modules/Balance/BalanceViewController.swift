@@ -53,7 +53,6 @@ class BalanceViewController: SegmentedPagerTabStripViewController, Controller, S
     walletSelectorButton.snp.makeConstraints { (maker) in
       maker.top.left.right.bottom.equalTo(customView)
     }
-//    walletSelectorButton.backgroundColor = .red
     return customView
   }
 

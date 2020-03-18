@@ -26,7 +26,7 @@
                                 </state>
                                 <userDefinedRuntimeAttributes>
                                     <userDefinedRuntimeAttribute type="boolean" keyPath="animateButtonTouch" value="YES"/>
-                                    <userDefinedRuntimeAttribute type="string" keyPath="pattern" value="blank"/>
+                                    <userDefinedRuntimeAttribute type="string" keyPath="pattern" value="blank_white"/>
                                 </userDefinedRuntimeAttributes>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fpC-GF-Uf7" customClass="DefaultButton" customModule="BIPWallet" customModuleProvider="target">
@@ -39,7 +39,7 @@
                                 </state>
                                 <userDefinedRuntimeAttributes>
                                     <userDefinedRuntimeAttribute type="boolean" keyPath="animateButtonTouch" value="YES"/>
-                                    <userDefinedRuntimeAttribute type="string" keyPath="pattern" value="blank"/>
+                                    <userDefinedRuntimeAttribute type="string" keyPath="pattern" value="blank_white"/>
                                 </userDefinedRuntimeAttributes>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="L0K-xE-Cu0" customClass="DefaultButton" customModule="BIPWallet" customModuleProvider="target">

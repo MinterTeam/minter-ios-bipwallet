@@ -9,12 +9,12 @@
 import UIKit
 
 class ClearBarNavigationController: UINavigationController {
-  
+
   override func viewDidLoad() {
     super.viewDidLoad()
 
     self.navigationBar.setBackgroundImage(nil, for: .default)
     self.navigationBar.isHidden = true
   }
-  
+
 }
