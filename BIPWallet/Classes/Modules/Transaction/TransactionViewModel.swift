@@ -16,7 +16,8 @@ class TransactionViewModel: BaseViewModel, ViewModel {
   // MARK: -
 
   private var transaction: MinterExplorer.Transaction
-  private var viewDidLoad = PublishSubject<Void>()
+  private var viewWillAppear = PublishSubject<Void>()
+  private var viewDidDisappear = PublishSubject<Void>()
   private var sections = PublishSubject<[BaseTableSectionItem]>()
   var didDismiss = PublishSubject<Void>()
 
@@ -27,7 +28,8 @@ class TransactionViewModel: BaseViewModel, ViewModel {
   var dependency: TransactionViewModel.Dependency!
 
   struct Input {
-    var viewDidLoad: AnyObserver<Void>
+    var viewWillAppear: AnyObserver<Void>
+    var viewDidDisappear: AnyObserver<Void>
   }
 
   struct Output {
@@ -42,7 +44,8 @@ class TransactionViewModel: BaseViewModel, ViewModel {
   init(transaction: MinterExplorer.Transaction, dependency: Dependency) {
     self.transaction = transaction
 
-    self.input = Input(viewDidLoad: viewDidLoad.asObserver())
+    self.input = Input(viewWillAppear: viewWillAppear.asObserver(),
+                       viewDidDisappear: viewDidDisappear.asObserver())
 
     self.output = Output(didDismiss: didDismiss.asObservable(),
                          sections: sections.asObservable())
@@ -57,9 +60,11 @@ class TransactionViewModel: BaseViewModel, ViewModel {
 
   func bind() {
 
-    viewDidLoad.subscribe(onNext: { [weak self] (_) in
+    viewWillAppear.subscribe(onNext: { [weak self] (_) in
       self?.createSections()
     }).disposed(by: disposeBag)
+
+    viewDidDisappear.subscribe(didDismiss).disposed(by: disposeBag)
 
   }
 
@@ -91,41 +96,6 @@ class TransactionViewModel: BaseViewModel, ViewModel {
 
   func systemTransactionItems(data: TransactionData?) -> [BaseCellItem] {
     var cellItems = [BaseCellItem]()
-
-//    let from = TransactionAddressCellItem(reuseIdentifier: "TransactionAddressCell",
-//                                          identifier: "TransactionAddressCell_From")
-//    from.address = transaction.from
-//    from.name = ""//transaction.from
-//    from.title = "From"
-//    if let address = transaction.from {
-//      from.avatarURL = MinterMyAPIURL.avatarAddress(address: address).url()
-//    }
-//    cellItems.append(from)
-//
-//    let blank1 = BlankTableViewCellItem(reuseIdentifier: "BlankTableViewCell",
-//                                        identifier: "BlankTableViewCell_AfterFrom")
-//    blank1.height = 23.0
-//    blank1.color = .white
-//    cellItems.append(blank1)
-
-//    let to = TransactionAddressCellItem(reuseIdentifier: "TransactionAddressCell",
-//                                        identifier: "TransactionAddressCell_To")
-//    to.address = transaction.data?.to
-//    to.name = ""//transaction.from
-//    to.title = "To"
-//    if let address = transaction.data?.to {
-//      to.avatarURL = MinterMyAPIURL.avatarAddress(address: address).url()
-//    }
-//    cellItems.append(to)
-//    let blank2 = BlankTableViewCellItem(reuseIdentifier: "BlankTableViewCell",
-//                                        identifier: "BlankTableViewCell_AfterTo")
-//    blank2.height = 17.0
-//    blank2.color = .white
-//    cellItems.append(blank2)
-//
-//    let separator1 = SeparatorTableViewCellItem(reuseIdentifier: "SeparatorTableViewCell",
-//                                                identifier: "SeparatorTableViewCell")
-//    cellItems.append(separator1)
 
     if let payload = transaction.payload, payload.count > 0 {
       let payloadItem = TransactionKeyValueCellItem(reuseIdentifier: "TransactionKeyValueCell",
@@ -176,7 +146,7 @@ class TransactionViewModel: BaseViewModel, ViewModel {
 
     return cellItems
   }
-  
+
   func redeemCheckTransactionItems(data: RedeemCheckRawTransactionData) -> [BaseCellItem] {
     var cellItems = [BaseCellItem]()
 

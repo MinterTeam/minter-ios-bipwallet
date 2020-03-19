@@ -33,7 +33,12 @@ class TransactionViewController: BaseViewController, Controller, StoryboardIniti
     //Input
     self.rx.viewWillAppear.map { _ in Void() }
       .asDriver(onErrorJustReturn: ())
-      .drive(viewModel.input.viewDidLoad)
+      .drive(viewModel.input.viewWillAppear)
+      .disposed(by: disposeBag)
+
+    self.rx.viewDidDisappear.map { _ in Void() }
+      .asDriver(onErrorJustReturn: ())
+      .drive(viewModel.input.viewDidDisappear)
       .disposed(by: disposeBag)
 
 //    tableView.rx.itemSelected.asDriver()

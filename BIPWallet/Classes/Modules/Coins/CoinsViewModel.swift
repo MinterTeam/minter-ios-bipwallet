@@ -20,6 +20,7 @@ class CoinsViewModel: BaseViewModel, ViewModel {
   private var coins = BehaviorSubject<BalanceModel>(value: [:])
   private var sections = PublishSubject<[BaseTableSectionItem]>()
   private var viewDidLoad = PublishSubject<Void>()
+  private var didTapExchangeButton = PublishSubject<Void>()
 
   private var isLoading = false
 
@@ -36,6 +37,7 @@ class CoinsViewModel: BaseViewModel, ViewModel {
 
   struct Output {
     var sections: Observable<[BaseTableSectionItem]>
+    var didTapExchangeButton: Observable<Void>
   }
 
   struct Dependency {
@@ -45,7 +47,8 @@ class CoinsViewModel: BaseViewModel, ViewModel {
   init(dependency: Dependency) {
     self.input = Input(coins: coins.asObserver(),
                        viewDidLoad: viewDidLoad.asObserver())
-    self.output = Output(sections: sections.asObservable())
+    self.output = Output(sections: sections.asObservable(),
+                         didTapExchangeButton: didTapExchangeButton.asObservable())
     self.dependency = dependency
 
     super.init()
@@ -94,6 +97,7 @@ class CoinsViewModel: BaseViewModel, ViewModel {
                                                 identifier: "ButtonTableViewCell_Convert")
     convertButton.buttonPattern = "blank"
     convertButton.title = "Exchange".localized()
+    convertButton.didTapButtonSubject.subscribe(didTapExchangeButton).disposed(by: disposeBag)
 
     section1.items.append(convertButton)
 

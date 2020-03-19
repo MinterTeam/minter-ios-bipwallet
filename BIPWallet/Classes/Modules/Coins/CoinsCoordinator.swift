@@ -13,6 +13,7 @@ import RxAppState
 class CoinsCoordinator: BaseCoordinator<Void> {
 
   var didScrollToPoint: Observable<CGPoint>?
+  var didTapExchangeButton = PublishSubject<Void>()
 
   var viewController: CoinsViewController?
 
@@ -35,11 +36,17 @@ class CoinsCoordinator: BaseCoordinator<Void> {
     controller.viewModel = viewModel
     self.viewController = controller
 
-    self.didScrollToPoint = controller.rx.viewDidLoad.flatMap({ (_) -> Observable<CGPoint> in
+    didScrollToPoint = controller.rx.viewDidLoad.flatMap({ (_) -> Observable<CGPoint> in
       return controller.tableView.rx.didScroll.map { (_) -> CGPoint in
         return controller.tableView.contentOffset
       }
     })
+
+    viewModel
+      .output
+      .didTapExchangeButton
+      .asDriver(onErrorJustReturn: ())
+      .drive(didTapExchangeButton).disposed(by: disposeBag)
 
     return Observable.never()
   }

@@ -35,7 +35,7 @@ class BalanceCoordinator: BaseCoordinator<Void> {
     controller.viewModel = viewModel
 
     var transactionsViewController: UIViewController?
-    
+
     let coins = CoinsCoordinator(balanceService: balanceService)
     let transactions = TransactionsCoordinator(viewController: &transactionsViewController)
 
@@ -57,6 +57,14 @@ class BalanceCoordinator: BaseCoordinator<Void> {
       }
     }).disposed(by: disposeBag)
 
+    coins
+      .didTapExchangeButton
+      .asDriver(onErrorJustReturn: ())
+      .drive(onNext: { (_) in
+        let excangeCoordinator = ExchangeCoordinator(rootController: self.navigationController)
+        self.coordinate(to: excangeCoordinator).subscribe().disposed(by: self.disposeBag)
+    }).disposed(by: disposeBag)
+
     transactions.didScrollToPoint?.subscribe(onNext: { (point) in
       if controller.segmentedControl.selectedSegmentIndex == 1 {
         let newPoint = headerInset + point.y
@@ -64,7 +72,7 @@ class BalanceCoordinator: BaseCoordinator<Void> {
         let contentOffset = CGPoint(x: 0, y: point.y)
         coins.viewController?.tableView?.setContentOffset(contentOffset, animated: false)
       }
-    }).disposed(by: disposeBag).self
+    }).disposed(by: disposeBag)
 
     balanceService.updateBalance()
 
@@ -77,7 +85,8 @@ class BalanceCoordinator: BaseCoordinator<Void> {
   }
 
   func showSelectWallet(rootViewController: UIViewController) -> Observable<SelectWalletCoordinationResult> {
-    let selectWalletCoordinator = SelectWalletCoordinator(rootViewController: rootViewController, authService: localAuthService)
+    let selectWalletCoordinator = SelectWalletCoordinator(rootViewController: rootViewController,
+                                                          authService: localAuthService)
     return coordinate(to: selectWalletCoordinator)
   }
 
