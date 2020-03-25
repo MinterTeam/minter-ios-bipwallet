@@ -11,10 +11,16 @@ import RxSwift
 
 class GetCoinsCoordinator: BaseCoordinator<Void> {
 
-  private var сontroller = GetCoinsViewController.initFromStoryboard(name: "GetCoins")
+  private var сontroller = GetCoinsViewController.initFromStoryboard(name: "Convert")
+  private let balanceService: BalanceService
 
-  init(viewController: inout UIViewController?) {
+  init(viewController: inout UIViewController?, balanceService: BalanceService, gateService: GateService) {
+    self.balanceService = balanceService
+    let viewModel = GetCoinsViewModel(dependency: GetCoinsViewModel.Dependency(balanceService: balanceService,
+                                                                               coinService: ExplorerCoinService(),
+                                                                               gateService: gateService))
     viewController = сontroller
+    (viewController as? GetCoinsViewController)?.viewModel = viewModel
   }
 
   override func start() -> Observable<Void> {

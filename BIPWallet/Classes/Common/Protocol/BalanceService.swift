@@ -16,6 +16,9 @@ protocol BalanceService {
     totalMainCoinBalance: Decimal,
     totalUSDBalance: Decimal,
     baseCoinBalance: Decimal,
+    // (Decimal, Decimal).
+    // First decimal - balance in custom coin (e.g. BANANA)
+    // Second decimal - balance in base coin (e.g. BIP)
     balances: [String: (Decimal, Decimal)]
   )
 

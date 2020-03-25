@@ -5,6 +5,8 @@
 //  Created by Laurentiu Ungur on 24/04/2017.
 //  Copyright © 2017 Laurentiu Ungur. All rights reserved.
 //
+import UIKit
+import Foundation
 
 /// Highly configurable autocomplete view that is attachable to any `UITextField`.
 open class LUAutocompleteView: UIView {
@@ -28,7 +30,7 @@ open class LUAutocompleteView: UIView {
      
     - Note: This property will be ignored if `autocompleteCell` is not `nil`.
     */
-    public var textAttributes: [NSAttributedStringKey: Any]?
+  public var textAttributes: [NSAttributedString.Key: Any]?
     /// The text field to which the autocomplete view will be attached.
     public weak var textField: UITextField? {
         didSet {

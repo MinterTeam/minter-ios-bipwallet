@@ -459,7 +459,7 @@ class TransactionViewModel: BaseViewModel, ViewModel {
     blank1.color = .white
     cellItems.append(blank1)
 
-    let signMultiplier = transaction.type == .unbond ? 1.0 : -1.0
+//    let signMultiplier = transaction.type == .unbond ? 1.0 : -1.0
 
     let to = TransactionAddressCellItem(reuseIdentifier: "TransactionAddressCell",
                                         identifier: "TransactionAddressCell_To")

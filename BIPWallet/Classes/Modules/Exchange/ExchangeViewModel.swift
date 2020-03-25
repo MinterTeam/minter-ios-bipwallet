@@ -26,7 +26,7 @@ class ExchangeViewModel: BaseViewModel, ViewModel {
   }
 
   struct Dependency {
-
+    
   }
 
   init(dependency: Dependency) {

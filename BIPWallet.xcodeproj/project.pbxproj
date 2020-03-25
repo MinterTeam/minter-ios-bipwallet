@@ -63,6 +63,17 @@
 		FA3BDE212423C5DC0076A7F4 /* CoinAutocompleteCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FA3BDE1F2423C5DC0076A7F4 /* CoinAutocompleteCell.xib */; };
 		FA3BDE222423C5DC0076A7F4 /* CoinAutocompleteCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA3BDE202423C5DC0076A7F4 /* CoinAutocompleteCell.swift */; };
 		FA3BDE242423C6390076A7F4 /* ConvertCoinsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA3BDE232423C6390076A7F4 /* ConvertCoinsViewModel.swift */; };
+		FA3BDE2824251C1B0076A7F4 /* String+Coin.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA3BDE2724251C1A0076A7F4 /* String+Coin.swift */; };
+		FA3BDE2A24251C7A0076A7F4 /* Validators.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA3BDE2924251C7A0076A7F4 /* Validators.swift */; };
+		FA3BDE3124251D5F0076A7F4 /* McPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA3BDE2D24251D5F0076A7F4 /* McPicker.swift */; };
+		FA3BDE3224251D5F0076A7F4 /* McPickerBarButtonItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA3BDE2E24251D5F0076A7F4 /* McPickerBarButtonItem.swift */; };
+		FA3BDE3324251D5F0076A7F4 /* McTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA3BDE2F24251D5F0076A7F4 /* McTextField.swift */; };
+		FA3BDE3424251D5F0076A7F4 /* McPickerPopoverViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA3BDE3024251D5F0076A7F4 /* McPickerPopoverViewController.swift */; };
+		FA3BDE3624261DE50076A7F4 /* DefaultTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA3BDE3524261DE50076A7F4 /* DefaultTextField.swift */; };
+		FA3BDE392427865F0076A7F4 /* CoinService.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA3BDE382427865F0076A7F4 /* CoinService.swift */; };
+		FA3BDE3B242786C90076A7F4 /* ExplorerCoinService.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA3BDE3A242786C90076A7F4 /* ExplorerCoinService.swift */; };
+		FA3BDE3D242A745E0076A7F4 /* GateService.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA3BDE3C242A745E0076A7F4 /* GateService.swift */; };
+		FA3BDE3F242A755D0076A7F4 /* ExplorerGateService.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA3BDE3E242A755D0076A7F4 /* ExplorerGateService.swift */; };
 		FA46990F2423755400E77373 /* Exchange.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FA46990E2423755400E77373 /* Exchange.storyboard */; };
 		FA520BB0241FDC8000146E49 /* TransactionAddressCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA520BAE241FDC8000146E49 /* TransactionAddressCell.swift */; };
 		FA520BB1241FDC8000146E49 /* TransactionAddressCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FA520BAF241FDC8000146E49 /* TransactionAddressCell.xib */; };
@@ -249,6 +260,17 @@
 		FA3BDE1F2423C5DC0076A7F4 /* CoinAutocompleteCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CoinAutocompleteCell.xib; sourceTree = "<group>"; };
 		FA3BDE202423C5DC0076A7F4 /* CoinAutocompleteCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoinAutocompleteCell.swift; sourceTree = "<group>"; };
 		FA3BDE232423C6390076A7F4 /* ConvertCoinsViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConvertCoinsViewModel.swift; sourceTree = "<group>"; };
+		FA3BDE2724251C1A0076A7F4 /* String+Coin.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+Coin.swift"; sourceTree = "<group>"; };
+		FA3BDE2924251C7A0076A7F4 /* Validators.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Validators.swift; sourceTree = "<group>"; };
+		FA3BDE2D24251D5F0076A7F4 /* McPicker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = McPicker.swift; sourceTree = "<group>"; };
+		FA3BDE2E24251D5F0076A7F4 /* McPickerBarButtonItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = McPickerBarButtonItem.swift; sourceTree = "<group>"; };
+		FA3BDE2F24251D5F0076A7F4 /* McTextField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = McTextField.swift; sourceTree = "<group>"; };
+		FA3BDE3024251D5F0076A7F4 /* McPickerPopoverViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = McPickerPopoverViewController.swift; sourceTree = "<group>"; };
+		FA3BDE3524261DE50076A7F4 /* DefaultTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultTextField.swift; sourceTree = "<group>"; };
+		FA3BDE382427865F0076A7F4 /* CoinService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoinService.swift; sourceTree = "<group>"; };
+		FA3BDE3A242786C90076A7F4 /* ExplorerCoinService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExplorerCoinService.swift; sourceTree = "<group>"; };
+		FA3BDE3C242A745E0076A7F4 /* GateService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GateService.swift; sourceTree = "<group>"; };
+		FA3BDE3E242A755D0076A7F4 /* ExplorerGateService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExplorerGateService.swift; sourceTree = "<group>"; };
 		FA46990E2423755400E77373 /* Exchange.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Exchange.storyboard; sourceTree = "<group>"; };
 		FA520BAE241FDC8000146E49 /* TransactionAddressCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionAddressCell.swift; sourceTree = "<group>"; };
 		FA520BAF241FDC8000146E49 /* TransactionAddressCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TransactionAddressCell.xib; sourceTree = "<group>"; };
@@ -588,6 +610,7 @@
 		FA3BDE102423C5950076A7F4 /* Third Party */ = {
 			isa = PBXGroup;
 			children = (
+				FA3BDE2B24251D5F0076A7F4 /* McPicker */,
 				FA3BDE1A2423C5AE0076A7F4 /* CBPinEntryView */,
 				FA3BDE112423C5A30076A7F4 /* LUAutocomplete */,
 			);
@@ -612,6 +635,25 @@
 				FA3BDE1C2423C5AE0076A7F4 /* CBPinEntryViewDefaults.swift */,
 			);
 			path = CBPinEntryView;
+			sourceTree = "<group>";
+		};
+		FA3BDE2B24251D5F0076A7F4 /* McPicker */ = {
+			isa = PBXGroup;
+			children = (
+				FA3BDE2C24251D5F0076A7F4 /* Classes */,
+			);
+			path = McPicker;
+			sourceTree = "<group>";
+		};
+		FA3BDE2C24251D5F0076A7F4 /* Classes */ = {
+			isa = PBXGroup;
+			children = (
+				FA3BDE2D24251D5F0076A7F4 /* McPicker.swift */,
+				FA3BDE2E24251D5F0076A7F4 /* McPickerBarButtonItem.swift */,
+				FA3BDE2F24251D5F0076A7F4 /* McTextField.swift */,
+				FA3BDE3024251D5F0076A7F4 /* McPickerPopoverViewController.swift */,
+			);
+			path = Classes;
 			sourceTree = "<group>";
 		};
 		FA520BAD241FDC5200146E49 /* View */ = {
@@ -733,6 +775,8 @@
 				FACA657323F6BE5000399359 /* StoryboardInitializable.swift */,
 				FA663D4F240019980029D5D0 /* BalanceService.swift */,
 				FAE162D72403DA4F007E9CAD /* TransactionViewableViewModel.swift */,
+				FA3BDE382427865F0076A7F4 /* CoinService.swift */,
+				FA3BDE3C242A745E0076A7F4 /* GateService.swift */,
 			);
 			path = Protocol;
 			sourceTree = "<group>";
@@ -755,6 +799,8 @@
 				FACA65CC23FAAC2E00399359 /* DatabaseStorage.swift */,
 				FACA65CA23FAABAE00399359 /* AccountManager.swift */,
 				FA663D4123FEED0D0029D5D0 /* ExplorerBalanceService.swift */,
+				FA3BDE3A242786C90076A7F4 /* ExplorerCoinService.swift */,
+				FA3BDE3E242A755D0076A7F4 /* ExplorerGateService.swift */,
 			);
 			path = Service;
 			sourceTree = "<group>";
@@ -776,6 +822,7 @@
 				FACA655D23F6B84600399359 /* DefaultButton.swift */,
 				FACA65BA23F791DF00399359 /* HandlerView.swift */,
 				FACA65BC23F7965700399359 /* DefaultTextView.swift */,
+				FA3BDE3524261DE50076A7F4 /* DefaultTextField.swift */,
 			);
 			path = UIKit;
 			sourceTree = "<group>";
@@ -783,6 +830,8 @@
 		FACA655F23F6B85C00399359 /* Helper */ = {
 			isa = PBXGroup;
 			children = (
+				FA3BDE2924251C7A0076A7F4 /* Validators.swift */,
+				FA3BDE2724251C1A0076A7F4 /* String+Coin.swift */,
 				FAE621EE24050CDF0040BE4C /* AddressManager+Rx.swift */,
 				FA39EA0B2404149F00757020 /* String+Validation.swift */,
 				FAE162F42403E19D007E9CAD /* TransactionTitleHelper.swift */,
@@ -1130,6 +1179,7 @@
 				FACA653723F2AE5200399359 /* BaseViewModel.swift in Sources */,
 				FA663D3D23FEEB830029D5D0 /* CoinTableViewCell.swift in Sources */,
 				FA39EA0C2404149F00757020 /* String+Validation.swift in Sources */,
+				FA3BDE3D242A745E0076A7F4 /* GateService.swift in Sources */,
 				FA3BDE222423C5DC0076A7F4 /* CoinAutocompleteCell.swift in Sources */,
 				FA787471242109EC0039E2BB /* TransactionKeyValueCell.swift in Sources */,
 				FACA654223F2D01400399359 /* AppRouter.swift in Sources */,
@@ -1153,23 +1203,28 @@
 				050FD4BCA318DDBFEBAE70A4 /* WelcomeViewController.swift in Sources */,
 				8FAD9334A14929F40714F256 /* WelcomeViewModel.swift in Sources */,
 				FACA655E23F6B84600399359 /* DefaultButton.swift in Sources */,
+				FA3BDE3124251D5F0076A7F4 /* McPicker.swift in Sources */,
 				E9C5F4B357C52D10851BB0D9 /* WelcomeCoordinator.swift in Sources */,
+				FA3BDE3624261DE50076A7F4 /* DefaultTextField.swift in Sources */,
 				FACA656823F6B8B600399359 /* CurrencyNumberFormatter.swift in Sources */,
 				FACA65B723F6D21800399359 /* Configuration.swift in Sources */,
 				FAE162F52403E19D007E9CAD /* TransactionTitleHelper.swift in Sources */,
 				FACA65D523FAEC5B00399359 /* AccountDataBaseModel.swift in Sources */,
 				23953FDC1CF7AB2FFA46615D /* BalanceViewController.swift in Sources */,
+				FA3BDE3224251D5F0076A7F4 /* McPickerBarButtonItem.swift in Sources */,
 				FACA65C923FA97B300399359 /* UIView+ShakeError.swift in Sources */,
 				FACA65D423FAEB6100399359 /* String+Random.swift in Sources */,
 				FA520BB0241FDC8000146E49 /* TransactionAddressCell.swift in Sources */,
 				3118C42D1BC1D9A988E95E75 /* BalanceViewModel.swift in Sources */,
 				FACA65C723FA977100399359 /* String+Localized.swift in Sources */,
 				FACA657023F6B91C00399359 /* UIColor+Default.swift in Sources */,
+				FA3BDE3B242786C90076A7F4 /* ExplorerCoinService.swift in Sources */,
 				FA663D52240032FD0029D5D0 /* GateManager.swift in Sources */,
 				C555964A565D5D0E47D20A33 /* BalanceCoordinator.swift in Sources */,
 				FAF317862421189500D1556C /* TransactionTwoColumnCell.swift in Sources */,
 				FACA656A23F6B8B600399359 /* Decimal+.swift in Sources */,
 				A2EE23092E6206B2481C2BD9 /* SignInViewController.swift in Sources */,
+				FA3BDE2A24251C7A0076A7F4 /* Validators.swift in Sources */,
 				AAECC4888291B535131A228A /* SignInViewModel.swift in Sources */,
 				E267E578C4157B7DDDA7A08C /* SignInCoordinator.swift in Sources */,
 				FAE162F82403E2EE007E9CAD /* TransactionCell.swift in Sources */,
@@ -1178,6 +1233,7 @@
 				ABE6C1AB835FBF73D185BCD3 /* WalletViewModel.swift in Sources */,
 				6CCDF5CFC5D97B0D2EEA779D /* WalletCoordinator.swift in Sources */,
 				337B40B7306272957F8CA5A7 /* CreateWalletViewController.swift in Sources */,
+				FA3BDE3F242A755D0076A7F4 /* ExplorerGateService.swift in Sources */,
 				EA3D2631E1BE051E430932E2 /* CreateWalletViewModel.swift in Sources */,
 				7C78ADBB5FAFCB9ACB61EBF7 /* CreateWalletCoordinator.swift in Sources */,
 				0C86BA17E81B6A692CEEFE63 /* SendViewController.swift in Sources */,
@@ -1190,10 +1246,12 @@
 				93FC3760934144DCCF6B9658 /* SettingsViewModel.swift in Sources */,
 				E56D2E5CB6B34140762F8C6A /* SettingsCoordinator.swift in Sources */,
 				06078762B3329C5ADE218F90 /* CoinsViewController.swift in Sources */,
+				FA3BDE392427865F0076A7F4 /* CoinService.swift in Sources */,
 				FAE621F924076DA10040BE4C /* AddWalletCell.swift in Sources */,
 				FA3BDE1D2423C5AE0076A7F4 /* CBPinEntryView.swift in Sources */,
 				9BFC04FFB944117F736013AC /* CoinsViewModel.swift in Sources */,
 				4F2E24D9ACAEFBEB603F3C94 /* CoinsCoordinator.swift in Sources */,
+				FA3BDE2824251C1B0076A7F4 /* String+Coin.swift in Sources */,
 				FAE162D52402F030007E9CAD /* DefaultHeader.swift in Sources */,
 				08FC94142CA4263EF49422A2 /* TransactionsViewController.swift in Sources */,
 				348E055C141F2BA7089A95A1 /* TransactionsViewModel.swift in Sources */,
@@ -1212,9 +1270,11 @@
 				3DDB6E9C696EB7BC737B4C6F /* ExchangeCoordinator.swift in Sources */,
 				FB1474DD9AFFB75F0EA9A397 /* SpendCoinsViewController.swift in Sources */,
 				247204D1E318C906847A4B65 /* SpendCoinsViewModel.swift in Sources */,
+				FA3BDE3424251D5F0076A7F4 /* McPickerPopoverViewController.swift in Sources */,
 				E4F59A9DDF1B680B043F844E /* SpendCoinsCoordinator.swift in Sources */,
 				BB2A2F3E60C15DC182DCB917 /* GetCoinsViewController.swift in Sources */,
 				A6925EC3F1CD0E7498C392A2 /* GetCoinsViewModel.swift in Sources */,
+				FA3BDE3324251D5F0076A7F4 /* McTextField.swift in Sources */,
 				F39099EE1A94F4AA606FCA2D /* GetCoinsCoordinator.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -33,15 +33,8 @@ class ConvertCoinsViewController: BaseViewController {
 			autocompleteView.autocompleteCellNibName = "CoinAutocompleteCell"
 		}
 	}
-	@IBOutlet weak var getCoinTextField: UITextField! {
-		didSet {
-			setAppearance(for: getCoinTextField)
-		}
-	}
-
-	// MARK: -
-
-	var disposableBag = DisposeBag()
+	@IBOutlet weak var getCoinTextField: UITextField!
+  @IBOutlet weak var spendCoinTextField: UITextField!
 
 	// MARK: -
 
@@ -54,72 +47,54 @@ class ConvertCoinsViewController: BaseViewController {
 			.feeObservable
 			.asDriver(onErrorJustReturn: "")
 			.drive(feeLabel.rx.text)
-			.disposed(by: self.disposableBag)
+			.disposed(by: self.disposeBag)
 
 		autocompleteView.textField = getCoinTextField
-		getCoinTextField.rx.text.subscribe(onNext: { (str) in
-			self.getCoinTextField.text = str?.uppercased()
-		}).disposed(by: disposableBag)
+    getCoinTextField
+      .rx
+      .text
+      .map { $0?.uppercased() }
+      .subscribe(getCoinTextField.rx.text)
+      .disposed(by: disposeBag)
 
-		autocompleteView.dataSource = self
-		autocompleteView.delegate = self
-	}
-
-	override var preferredStatusBarStyle: UIStatusBarStyle {
-		return .default
+		autocompleteView.dataSource = viewModel
+		autocompleteView.delegate = viewModel
 	}
 
 	// MARK: -
 
-	func toggleTextFieldBorder(textField: UITextField?) {
-		if textField?.isEditing == true {
-            textField?.layer.borderColor = UIColor.mainColor().cgColor
-		} else {
-			textField?.layer.borderColor = UIColor.mainGreyColor(alpha: 0.4).cgColor
-		}
-	}
+  func showPicker() {
+    let items = viewModel.spendCoinPickerItems
 
-	func setAppearance(for textField: UITextField) {
-		textField.layer.cornerRadius = 8.0
-		textField.layer.borderWidth = 2
-		textField.layer.borderColor = UIColor.mainGreyColor(alpha: 0.4).cgColor
-		textField.rx.controlEvent([.editingDidBegin, .editingDidEnd])
-			.asObservable()
-			.subscribe(onNext: { [weak self] state in
-				self?.toggleTextFieldBorder(textField: textField)
-			}).disposed(by: disposableBag)
-	}
+    guard items.count > 0 else {
+      return
+    }
+
+    let data: [[String]] = [items.map({ (item) -> String in
+      return item.title ?? ""
+    })]
+
+    let picker = McPicker(data: data)
+    picker.toolbarButtonsColor = .white
+    picker.toolbarDoneButtonColor = .white
+    picker.toolbarBarTintColor = UIColor(hex: 0x4225A4)
+    picker.toolbarItemsFont = UIFont.mediumFont(of: 16.0)
+    picker.show { [weak self] (selected) in
+      self?.spendCoinTextField.text = selected.first?.value
+      self?.spendCoinTextField.sendActions(for: .valueChanged)
+    }
+  }
 
 }
 
-// MARK: - LUAutocompleteViewDataSource
+extension ConvertCoinsViewController: UITextFieldDelegate {
 
-extension ConvertCoinsViewController: LUAutocompleteViewDataSource {
-	func autocompleteView(_ autocompleteView: LUAutocompleteView,
-												elementsFor text: String,
-												completion: @escaping ([String]) -> Void) {
+  func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
+    if textField == spendCoinTextField {
+      self.showPicker()
+      return false
+    }
+    return true
+  }
 
-//		viewModel?.coinNames(by: text) { (coins) in
-//			if coins.count == 1 && (coins.first ?? "") == text {
-//				completion([])
-//			}
-//			else {
-//				completion(coins)
-//			}
-//		}
-	}
-}
-
-// MARK: - LUAutocompleteViewDelegate
-
-extension ConvertCoinsViewController: LUAutocompleteViewDelegate {
-
-	func autocompleteView(_ autocompleteView: LUAutocompleteView, didSelect text: String) {
-//		//HACK: Remove after GetCoinsViewModel refactoring
-//		if let vm = viewModel as? GetCoinsViewModel {
-//			vm.getCoin.onNext(text)
-//		}
-//		autocompleteView.textField?.sendActions(for: .valueChanged)
-//		view.endEditing(true)
-	}
 }

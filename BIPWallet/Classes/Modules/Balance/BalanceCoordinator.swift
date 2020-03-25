@@ -61,7 +61,8 @@ class BalanceCoordinator: BaseCoordinator<Void> {
       .didTapExchangeButton
       .asDriver(onErrorJustReturn: ())
       .drive(onNext: { (_) in
-        let excangeCoordinator = ExchangeCoordinator(rootController: self.navigationController)
+        let excangeCoordinator = ExchangeCoordinator(rootController: self.navigationController,
+                                                     balanceService: self.balanceService)
         self.coordinate(to: excangeCoordinator).subscribe().disposed(by: self.disposeBag)
     }).disposed(by: disposeBag)
 

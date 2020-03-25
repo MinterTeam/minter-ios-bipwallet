@@ -40,11 +40,19 @@ class ExplorerBalanceService: BalanceService {
       balances: ["": (Decimal(0.0), Decimal(0.0))]
     )
 
-    address.flatMapLatest { (address) -> Observable<BalancesResponse> in
-      return self.getBalances(address: address)
-    }.asDriver(onErrorJustReturn: nullResponse)
-     .drive(balancesSubject)
-     .disposed(by: disposeBag)
+    address.flatMapLatest { (address) -> Observable<Event<BalancesResponse>> in
+      return self.getBalances(address: address).materialize()
+    }.subscribe(onNext: { event in
+      switch event {
+      case .completed:
+        break
+      case .error(let error):
+        self.balancesSubject.onError(error)
+      case .next(let val):
+        self.balancesSubject.onNext(val)
+      }
+    })
+    .disposed(by: disposeBag)
   }
 
   func delegatedBalance() -> Observable<([AddressDelegation]?, Decimal?)> {

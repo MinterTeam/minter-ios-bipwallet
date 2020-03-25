@@ -28,7 +28,7 @@ class ExchangeViewController: SegmentedPagerTabStripViewController, Controller, 
 
   override func viewDidLoad() {
 
-    self.title = "Convert Coins".localized()
+    (view as? HandlerView)?.title = "Coin Exchange".localized()
 
 //    settings.style.selectedBarHeight = 3
 //    settings.style.buttonBarBackgroundColor = .white

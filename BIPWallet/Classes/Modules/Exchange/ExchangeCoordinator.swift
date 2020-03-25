@@ -12,9 +12,11 @@ import RxSwift
 class ExchangeCoordinator: BaseCoordinator<Void> {
 
   let rootController: UIViewController
+  let balanceService: BalanceService
 
-  init(rootController: UIViewController) {
+  init(rootController: UIViewController, balanceService: BalanceService) {
     self.rootController = rootController
+    self.balanceService = balanceService
   }
 
   override func start() -> Observable<Void> {
@@ -26,8 +28,16 @@ class ExchangeCoordinator: BaseCoordinator<Void> {
     var getViewController: UIViewController?
     var spendViewController: UIViewController?
 
-    let spend = SpendCoinsCoordinator(viewController: &spendViewController)
-    let get = GetCoinsCoordinator(viewController: &getViewController)
+    let gateService = ExplorerGateService()
+
+    let spend = SpendCoinsCoordinator(viewController: &spendViewController,
+                                      balanceService: balanceService,
+                                      gateService: gateService
+                                      )
+    let get = GetCoinsCoordinator(viewController: &getViewController,
+                                  balanceService: balanceService,
+                                  gateService: gateService
+                                  )
 
     coordinate(to: spend).subscribe().disposed(by: disposeBag)
     coordinate(to: get).subscribe().disposed(by: disposeBag)

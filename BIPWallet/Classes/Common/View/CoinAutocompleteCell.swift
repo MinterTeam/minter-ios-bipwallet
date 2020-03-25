@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import UIKit
 
 class CoinAutocompleteCell: LUAutocompleteTableViewCell {
 
@@ -14,12 +15,12 @@ class CoinAutocompleteCell: LUAutocompleteTableViewCell {
 
 	override func set(text: String, searchText: String? = nil) {
 		let attributedText = NSMutableAttributedString(string: text,
-																									 attributes: [NSAttributedStringKey.font: UIFont.defaultFont(of: 16.0)])
+                                                   attributes: [NSAttributedString.Key.font: UIFont.defaultFont(of: 16.0)])
 
 		if let srch = searchText, let range = attributedText.string.range(of: srch) {
 
 			let nsrange = NSRange(range, in: attributedText.string)
-			attributedText.addAttributes([NSAttributedStringKey.font : UIFont.boldFont(of: 16.0)], range: nsrange)
+      attributedText.addAttributes([NSAttributedString.Key.font : UIFont.boldFont(of: 16.0)], range: nsrange)
 		}
 
 		coinTitleLabel.attributedText = attributedText

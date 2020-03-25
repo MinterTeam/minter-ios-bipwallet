@@ -11,104 +11,147 @@ import RxSwift
 import MinterCore
 import MinterExplorer
 
-struct ConvertPickerItem {
-	var coin: String?
-	var address: String?
-	var balance: Decimal?
-}
-
-struct ConvertBalanceItem {
-	var coin: String?
-	var address: String?
-	var balance: Decimal?
-}
-
 struct SpendCoinPickerItem {
 	var title: String?
 	var coin: String?
-	var address: String?
 	var balance: Decimal?
 
-	init(coin: String, balance: Decimal, address: String, formatter: NumberFormatter) {
+	init(coin: String, balance: Decimal, formatter: NumberFormatter) {
 		let balanceString = CurrencyNumberFormatter.formattedDecimal(with: balance, formatter: formatter)
 		self.title = coin + " (" + balanceString + ")"
 		self.coin = coin
-		self.address = address
 		self.balance = balance
 	}
 }
 
 class ConvertCoinsViewModel: BaseViewModel {
 
+  var balanceService: BalanceService
+  var coinService: CoinService
+  var gateService: GateService
+
 	var accountManager = AccountManager()
-	let coinManager = ExplorerCoinManager.default
-	var selectedAddress: String?
+
 	var selectedCoin: String? {
 		didSet {
 			selectedCoin = selectedCoin?.uppercased()
 				.trimmingCharacters(in: .whitespacesAndNewlines)
 		}
 	}
+
+  var spendCoinField = ReplaySubject<String?>.create(bufferSize: 2)
 	var hasCoin = Variable<Bool>(false)
 	var coinIsLoading = Variable(false)
 	var getCoin = BehaviorSubject<String?>(value: "")
 	var shouldClearForm = Variable(false)
 	var amountError = Variable<String?>(nil)
-	var getCoinError = Variable<String?>(nil)
+	var getCoinError = PublishSubject<String?>()
 	lazy var isLoading = BehaviorSubject<Bool>(value: false)
-	lazy var errorNotification = PublishSubject<NotifiableError?>()
-	lazy var successMessage = PublishSubject<NotifiableSuccess?>()
+	lazy var errorNotification = PublishSubject<String?>()
+	lazy var successMessage = PublishSubject<String?>()
 	let formatter = CurrencyNumberFormatter.coinFormatter
-	var currentGas = Session.shared.currentGasPrice
+	var currentGas = RawTransactionDefaultGasPrice
 	lazy var feeObservable = PublishSubject<String>()
 	var baseCoinCommission: Decimal {
-		return Decimal(currentGas.value) * RawTransactionType.buyCoin.commission() / TransactionCoinFactorDecimal
+    return (Decimal(currentGas) * RawTransactionType.buyCoin.commission()) / TransactionCoinFactorDecimal
 	}
+  var hasMultipleCoinsObserver: Observable<Bool> {
+    return balanceService.balances().map { (value) -> Bool in
+      value.balances.keys.count > 1
+    }
+  }
 
 	// MARK: -
 
-	override init() {
+  init(balanceService: BalanceService, coinService: CoinService, gateService: GateService) {
+    self.balanceService = balanceService
+    self.coinService = coinService
+    self.gateService = gateService
+
 		super.init()
 
-		Session.shared.updateGas()
+    self.selectedCoin = Coin.baseCoin().symbol!
 
-		Session.shared.currentGasPrice.asObservable().map { (_) -> String in
-			return CurrencyNumberFormatter.formattedDecimal(with: self.baseCoinCommission,
-																											formatter: CurrencyNumberFormatter.decimalFormatter) + " " + (Coin.baseCoin().symbol ?? "")
-			}.subscribe(onNext: { [weak self] (val) in
-				self?.feeObservable.onNext(val)
+    balanceService
+      .balances()
+      .subscribe(onNext: { [weak self] (val) in
+        let balances = val.balances
+        
+        self?.balances = balances.mapValues({ (val) -> Decimal in
+          return val.0
+        })
+
+        if self?.selectedCoin == nil {
+          self?.selectedCoin = Coin.baseCoin().symbol!
+        }
+
+        var spendCoinSource = [String: Decimal]()
+        balances.keys.forEach({ (coin) in
+          spendCoinSource[coin] = balances[coin]?.0 ?? 0.0
+        })
+
+        self?.spendCoinPickerSource = spendCoinSource
+
+        if self?.selectedCoin != nil {
+          self?.spendCoinField.onNext(self?.spendCoinText)
+        }
+      }).disposed(by: disposeBag)
+
+    gateService.updateGas()
+		gateService.currentGas()
+      .subscribe(onNext: { [weak self] (val) in
+        self?.currentGas = val
+        let fee = CurrencyNumberFormatter.formattedDecimal(with: self?.baseCoinCommission ?? 0.0,
+                                                           formatter: CurrencyNumberFormatter.decimalFormatter) + " " + (Coin.baseCoin().symbol ?? "")
+				self?.feeObservable.onNext(fee)
 			}).disposed(by: disposeBag)
+
+    getCoin
+      .distinctUntilChanged()
+      .do(onNext: { [weak self] (term) in
+        if nil != term && term != "" {
+          self?.hasCoin.value = false
+          self?.getCoinError.onNext("COIN NOT FOUND".localized())
+        } else {
+          self?.getCoinError.onNext("")
+        }
+      }).map({ (term) -> String in
+        return term?.transformToCoinName() ?? ""
+      }).filter({ (term) -> Bool in
+        return CoinValidator.isValid(coin: term)
+      })
+      .flatMap { (term) -> Observable<Event<Bool>> in
+        return self.coinService.coinExists(name: term).materialize()
+      }
+      .subscribe(onNext: { [weak self] (event) in
+        switch event {
+        case .completed:
+          break
+        case .next(let hasCoin):
+          self?.hasCoin.value = hasCoin
+          if hasCoin {
+            self?.getCoinError.onNext("")
+          }
+        case .error(_):
+          break
+        }
+      })
+      .disposed(by: disposeBag)
+
 	}
 
-	var selectedBalance: Decimal? {
-		let balances = Session.shared.allBalances.value
-		if
-			let ads = selectedAddress,
-			let cn = selectedCoin,
-			let smt = balances[ads],
-			let blnc = smt[cn] {
-				return blnc
-		}
-		return nil
-	}
+  var selectedBalance: Decimal {
+    guard let selectedCoin = selectedCoin else {
+      return 0.0
+    }
+    return balances[selectedCoin] ?? 0.0
+  }
 
-	var baseCoinBalance: Decimal {
-		let balances = Session.shared.allBalances.value
-		if
-			let ads = selectedAddress,
-			let cn = Coin.baseCoin().symbol,
-			let smt = balances[ads],
-			let blnc = smt[cn] {
-				return blnc
-		}
-		return 0
-	}
+  var balances = [String: Decimal]()
 
-	var hasMultipleCoins: Bool {
-		return Session.shared.allBalances.value.keys.map {
-			return Session.shared.allBalances.value[$0]?.count ?? 0
-		}.reduce(0, +) > 1
-	}
+  var baseCoinBalance: Decimal = 0.0
+
+	var hasMultipleCoins: Bool = false
 
 	func canPayComissionWithBaseCoin() -> Bool {
 		let balance = self.baseCoinBalance
@@ -119,87 +162,57 @@ class ConvertCoinsViewModel: BaseViewModel {
 	}
 
 	var selectedBalanceString: String? {
-		if let balance = selectedBalance {
-			return CurrencyNumberFormatter.formattedDecimal(with: balance,
-																											formatter: CurrencyNumberFormatter.decimalFormatter)
-		}
-		return nil
+    return CurrencyNumberFormatter.formattedDecimal(with: selectedBalance,
+                                                    formatter: CurrencyNumberFormatter.decimalFormatter)
 	}
 
 	var spendCoinText: String {
 		let selected = (selectedCoin ?? "")
-		let bal = CurrencyNumberFormatter.formattedDecimal(with: (selectedBalance ?? 0.0),
+		let bal = CurrencyNumberFormatter.formattedDecimal(with: selectedBalance,
 																											 formatter: formatter)
 		return selected + " (" + bal + ")"
 	}
 
 	// MARK: -
 
-	/// Depricated!
-	//TODO: move to SpendCoinPickerItem
-	func pickerItems() -> [ConvertPickerItem] {
-
-		var ret = [ConvertPickerItem]()
-
-		let balances = Session.shared.allBalances.value
-		balances.keys.forEach { (address) in
-			var coins = balances[address]?.keys.filter({ (coin) -> Bool in
-				return coin != Coin.baseCoin().symbol!
-			}).sorted(by: { (val1, val2) -> Bool in
-				return val1 < val2
-			})
-			coins?.insert(Coin.baseCoin().symbol!, at: 0)
-
-			coins?.forEach({ (coin) in
-				let balance = (balances[address]?[coin] ?? 0.0)
-				let item = ConvertPickerItem(coin: coin, address: address, balance: balance)
-				ret.append(item)
-			})
-		}
-		return ret
-	}
-
-	var spendCoinPickerSource: [String: [String: Decimal]] { return Session.shared.allBalances.value }
+  var spendCoinPickerSource = [String: Decimal]()
 
 	var spendCoinPickerItems: [SpendCoinPickerItem] {
 		let balances = spendCoinPickerSource
 		var ret = [SpendCoinPickerItem]()
-		balances.keys.forEach { (address) in
-			var coins = balances[address]?.keys.filter({ (coin) -> Bool in
+			var coins = balances.keys.filter({ (coin) -> Bool in
 				return coin != Coin.baseCoin().symbol!
 			}).sorted(by: { (val1, val2) -> Bool in
 				return val1 < val2
 			})
-			coins?.insert(Coin.baseCoin().symbol!, at: 0)
-			coins?.forEach({ (coin) in
-				let balance = (balances[address]?[coin] ?? 0.0)
+			coins.insert(Coin.baseCoin().symbol!, at: 0)
+			coins.forEach({ (coin) in
+				let balance = (balances[coin] ?? 0.0)
 				let item = SpendCoinPickerItem(coin: coin,
 																			 balance: balance,
-																			 address: address,
 																			 formatter: self.formatter)
 				ret.append(item)
 			})
-		}
 		return ret
 	}
 
-	func coinNames(by term: String, completion: (([String]) -> Void)?) {
-		let term = term.lowercased()
-		let coins = Session.shared.allCoins.value.filter { (con) -> Bool in
-			return (con.symbol ?? "").lowercased().starts(with: term)
-		}.sorted(by: { (coin1, coin2) -> Bool in
-			if term == (coin1.symbol ?? "").lowercased() {
-				return true
-			} else if (coin2.symbol ?? "").lowercased() == term {
-				return false
-			}
-			return (coin1.reserveBalance ?? 0) > (coin2.reserveBalance ?? 0)
-		}).map { (coin) -> String in
-			return coin.symbol ?? ""
-		}
-		let resCoins = Array(coins[safe: 0..<3] ?? [])
-		completion?(resCoins)
-	}
+//	func coinNames(by term: String, completion: (([String]) -> Void)?) {
+////		let term = term.lowercased()
+////		let coins = Session.shared.allCoins.value.filter { (con) -> Bool in
+////			return (con.symbol ?? "").lowercased().starts(with: term)
+////		}.sorted(by: { (coin1, coin2) -> Bool in
+////			if term == (coin1.symbol ?? "").lowercased() {
+////				return true
+////			} else if (coin2.symbol ?? "").lowercased() == term {
+////				return false
+////			}
+////			return (coin1.reserveBalance ?? 0) > (coin2.reserveBalance ?? 0)
+////		}).map { (coin) -> String in
+////			return coin.symbol ?? ""
+////		}
+////		let resCoins = Array(coins[safe: 0..<3] ?? [])
+////		completion?(resCoins)
+//	}
 
 	// MARK: -
 
@@ -219,12 +232,35 @@ class ConvertCoinsViewModel: BaseViewModel {
 			self.validateErrors()
 			return
 		}
-		let coins = Session.shared.allCoins.value.filter { (con) -> Bool in
-			return (con.symbol ?? "") == coin!
-		}
-		if coins.count > 0 {
-			self.hasCoin.value = true
-		}
-		validateErrors()
+//		let coins = Session.shared.allCoins.value.filter { (con) -> Bool in
+//			return (con.symbol ?? "") == coin!
+//		}
+//		if coins.count > 0 {
+//			self.hasCoin.value = true
+//		}
+//		validateErrors()
 	}
+
+  func coins(by term: String, completion: (([Coin]) -> ())?) {}
+
+}
+
+extension ConvertCoinsViewModel: LUAutocompleteViewDelegate, LUAutocompleteViewDataSource {
+
+  func autocompleteView(_ autocompleteView: LUAutocompleteView, didSelect text: String) {
+    getCoin.onNext(text)
+  }
+
+  func autocompleteView(_ autocompleteView: LUAutocompleteView,
+                        elementsFor text: String,
+                        completion: @escaping ([String]) -> Void) {
+    self.coins(by: text) { (coins) in
+      completion(coins.map({ (coin) -> String in
+        return coin.symbol ?? ""
+      }).filter({ (coin) -> Bool in
+        return coin != ""
+      }))
+    }
+  }
+
 }

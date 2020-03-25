@@ -23,4 +23,12 @@ class BannerHelper {
 																		style: .danger)
 		banner.show()
 	}
+
+  class func performSuccessNotification(title: String = "", subtitle: String? = nil) {
+    let banner = NotificationBanner(title: title,
+                                    subtitle: subtitle,
+                                    style: .success)
+    banner.show()
+  }
+
 }
