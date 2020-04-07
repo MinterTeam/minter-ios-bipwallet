@@ -20,7 +20,7 @@ class CoinAutocompleteCell: LUAutocompleteTableViewCell {
 		if let srch = searchText, let range = attributedText.string.range(of: srch) {
 
 			let nsrange = NSRange(range, in: attributedText.string)
-      attributedText.addAttributes([NSAttributedString.Key.font : UIFont.boldFont(of: 16.0)], range: nsrange)
+      attributedText.addAttributes([NSAttributedString.Key.font: UIFont.boldFont(of: 16.0)], range: nsrange)
 		}
 
 		coinTitleLabel.attributedText = attributedText

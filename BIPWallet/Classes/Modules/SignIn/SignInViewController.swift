@@ -22,7 +22,7 @@ class SignInViewController: BaseViewController, Controller, StoryboardInitializa
   // MARK: -
 
   @IBOutlet weak var bottomConstraint: NSLayoutConstraint!
-  @IBOutlet weak var mainView: HandlerView!
+  @IBOutlet weak var mainView: HandlerVerticalSnapDraggableView!
   @IBOutlet weak var textView: DefaultTextView! {
     didSet {
       textView.setPlaceholder(" Your seed phrase…")
@@ -68,10 +68,6 @@ class SignInViewController: BaseViewController, Controller, StoryboardInitializa
 
   // MARK: - ViewController
 
-  override func loadView() {
-    super.loadView()
-  }
-
   override func viewDidLoad() {
     super.viewDidLoad()
 
@@ -90,11 +86,32 @@ class SignInViewController: BaseViewController, Controller, StoryboardInitializa
         }
       }).disposed(by: disposeBag)
 
-    configure(with: viewModel)
-
-    DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-      self.textView.becomeFirstResponder()
+    view.addBackgroundTapGesture { [weak self] in
+      self?.dismiss(animated: true, completion: nil)
     }
+
+    configure(with: viewModel)
+  }
+
+  override func viewWillAppear(_ animated: Bool) {
+    super.viewWillAppear(animated)
+    print("viewWillAppear")
+  }
+
+  override func viewWillDisappear(_ animated: Bool) {
+    super.viewWillDisappear(animated)
+    print("viewWillDisappear")
+  }
+
+  override func viewDidAppear(_ animated: Bool) {
+    super.viewDidAppear(animated)
+    print("viewDidAppear")
+    self.textView.becomeFirstResponder()
+  }
+
+  override func viewDidDisappear(_ animated: Bool) {
+    super.viewDidDisappear(animated)
+    print("viewDidDisappear")
   }
 
 }

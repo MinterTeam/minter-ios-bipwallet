@@ -17,9 +17,9 @@ class CoinsCoordinator: BaseCoordinator<Void> {
 
   var viewController: CoinsViewController?
 
-  let balanceService: ExplorerBalanceService
+  let balanceService: BalanceService
 
-  init(balanceService: ExplorerBalanceService) {
+  init(balanceService: BalanceService) {
     self.balanceService = balanceService
   }
 
@@ -31,7 +31,8 @@ class CoinsCoordinator: BaseCoordinator<Void> {
       return Observable.empty()
     }
 
-    let viewModel = CoinsViewModel(dependency: CoinsViewModel.Dependency(balanceService: balanceService))
+    let dependency = CoinsViewModel.Dependency(balanceService: balanceService)
+    let viewModel = CoinsViewModel(dependency: dependency)
 
     controller.viewModel = viewModel
     self.viewController = controller
@@ -46,7 +47,8 @@ class CoinsCoordinator: BaseCoordinator<Void> {
       .output
       .didTapExchangeButton
       .asDriver(onErrorJustReturn: ())
-      .drive(didTapExchangeButton).disposed(by: disposeBag)
+      .drive(didTapExchangeButton)
+      .disposed(by: disposeBag)
 
     return Observable.never()
   }

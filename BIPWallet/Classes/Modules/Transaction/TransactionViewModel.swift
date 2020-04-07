@@ -73,7 +73,7 @@ class TransactionViewModel: BaseViewModel, ViewModel {
 
   func createSections() {
     var section1 = BaseTableSectionItem(identifier: "TransactionSection",
-                                        header: " ".localized())
+                                        header: " ")
 
     var cellItems = [BaseCellItem]()
     if let txData = transaction.data as? SendCoinTransactionData {

@@ -14,20 +14,16 @@ class BalanceCoordinator: BaseCoordinator<Void> {
 
   private let navigationController: UINavigationController
 
-  init(navigationController: UINavigationController) {
+  let authService: AuthService
+  let balanceService: BalanceService
+
+  init(navigationController: UINavigationController, balanceService: BalanceService, authService: AuthService) {
     self.navigationController = navigationController
-
-    let localAuthService = LocalStorageAuthService()
-    let addressObservable = Observable.just("Mx" + (localAuthService.selectedAccount()?.address ?? ""))
-
-    self.localAuthService = localAuthService
-    self.balanceService = ExplorerBalanceService(address: addressObservable)
+    self.balanceService = balanceService
+    self.authService = authService
 
     super.init()
   }
-
-  let localAuthService: LocalStorageAuthService
-  let balanceService: ExplorerBalanceService
 
   override func start() -> Observable<Void> {
     let controller = BalanceViewController.initFromStoryboard(name: "Balance")
@@ -60,8 +56,9 @@ class BalanceCoordinator: BaseCoordinator<Void> {
     coins
       .didTapExchangeButton
       .asDriver(onErrorJustReturn: ())
-      .drive(onNext: { (_) in
-        let excangeCoordinator = ExchangeCoordinator(rootController: self.navigationController,
+      .drive(onNext: { [weak self] (_) in
+        guard let `self` = self else { return }
+        let excangeCoordinator = ExchangeCoordinator(rootController: controller,
                                                      balanceService: self.balanceService)
         self.coordinate(to: excangeCoordinator).subscribe().disposed(by: self.disposeBag)
     }).disposed(by: disposeBag)
@@ -79,6 +76,25 @@ class BalanceCoordinator: BaseCoordinator<Void> {
 
     viewModel.output.didTapSelectWallet.flatMap({ (_) -> Observable<SelectWalletCoordinationResult> in
       return self.showSelectWallet(rootViewController: controller)
+    }).do(onNext: { [weak self] (result) in
+      switch result {
+      case .wallet(let address):
+        guard address.isValidAddress() else { return }
+        try? self?.balanceService.changeAddress(address)
+      case .cancel:
+        return
+      case .addWallet:
+        return
+      }
+    }).filter({ (result) -> Bool in
+      switch result {
+      case .addWallet:
+        return true
+      default:
+        return false
+      }
+    }).flatMap({ (_) -> Observable<Void> in
+      return self.showAddWallet(inViewController: controller)
     }).subscribe().disposed(by: disposeBag)
 
     navigationController.setViewControllers([controller], animated: false)
@@ -87,8 +103,14 @@ class BalanceCoordinator: BaseCoordinator<Void> {
 
   func showSelectWallet(rootViewController: UIViewController) -> Observable<SelectWalletCoordinationResult> {
     let selectWalletCoordinator = SelectWalletCoordinator(rootViewController: rootViewController,
-                                                          authService: localAuthService)
+                                                          authService: authService)
     return coordinate(to: selectWalletCoordinator)
+  }
+
+  func showAddWallet(inViewController: UIViewController) -> Observable<Void> {
+    let createWalletCoordinator = CreateWalletCoordinator(rootViewController: inViewController,
+                                                          authService: self.authService)
+    return self.coordinate(to: createWalletCoordinator)
   }
 
 }

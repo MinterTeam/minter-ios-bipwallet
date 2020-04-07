@@ -15,10 +15,15 @@ class SelectWalletViewModel: BaseViewModel, ViewModel {
 
   // MARK: -
 
+  lazy var accounts = self.dependency.authService.accounts()
+
   private var sections = PublishSubject<[BaseTableSectionItem]>()
   private var didCancel = PublishSubject<Void>()
-  private var didSelect = PublishSubject<Void>()
+  private var didSelectItem = PublishSubject<IndexPath>()
+  private var didSelect = PublishSubject<String>()
+  private var showEdit = PublishSubject<String>()
   private var viewDidLoad = PublishSubject<Void>()
+  private var showAdd = PublishSubject<Void>()
 
   // MARK: - ViewModel
 
@@ -28,14 +33,16 @@ class SelectWalletViewModel: BaseViewModel, ViewModel {
 
   struct Input {
     var didCancel: AnyObserver<Void>
-    var didSelect: AnyObserver<Void>
+    var didSelect: AnyObserver<IndexPath>
     var viewDidLoad: AnyObserver<Void>
   }
 
   struct Output {
     var sections: Observable<[BaseTableSectionItem]>
     var didCancel: Observable<Void>
-    var didSelect: Observable<Void>
+    var didSelect: Observable<String>
+    var showEdit: Observable<String>
+    var showAdd: Observable<Void>
   }
 
   struct Dependency {
@@ -43,39 +50,63 @@ class SelectWalletViewModel: BaseViewModel, ViewModel {
   }
 
   init(dependency: Dependency) {
-    self.input = Input(didCancel: didCancel.asObserver(),
-                       didSelect: didSelect.asObserver(),
-                       viewDidLoad: viewDidLoad.asObserver())
-    self.output = Output(sections: sections.asObservable(),
-                         didCancel: didCancel.asObservable(),
-                         didSelect: didSelect.asObserver())
+    super.init()
+
     self.dependency = dependency
 
-    super.init()
+    self.input = Input(didCancel: didCancel.asObserver(),
+                       didSelect: didSelectItem.asObserver(),
+                       viewDidLoad: viewDidLoad.asObserver()
+    )
+
+    self.output = Output(sections: sections.asObservable(),
+                         didCancel: didCancel.asObservable(),
+                         didSelect: didSelectObserable(),
+                         showEdit: showEdit.asObservable(),
+                         showAdd: showAddObservable()
+    )
 
     bind()
   }
 
   // MARK: -
 
-  func bind() {
-    viewDidLoad.subscribe(onNext: { [weak self] (_) in
-      self?.createSections(accounts: self!.dependency.authService.accounts())
-    }).disposed(by: disposeBag)
-
+  func didSelectObserable() -> Observable<String> {
+    return didSelectItem.filter({ (indexPath) -> Bool in
+      return self.accounts[safe: indexPath.row] != nil
+    }).map { (indexPath) -> String in
+      return self.accounts[indexPath.row].address
+    }
   }
 
-  func createSections(accounts: [Account]) {
+  func showAddObservable() -> Observable<Void> {
+    return didSelectItem.filter({ (indexPath) -> Bool in
+      return self.accounts[safe: indexPath.row] == nil
+    }).map { (_) -> Void in
+      return Void()
+    }
+  }
+
+  func bind() {
+    viewDidLoad.subscribe(onNext: { [weak self] (_) in
+      guard let `self` = self else { return }
+      self.createSections(accounts: self.accounts)
+    }).disposed(by: disposeBag)
+  }
+
+  func createSections(accounts: [AccountItem]) {
     var section1 = BaseTableSectionItem(identifier: "Wallet",
                                         header: "")
+
     var items = [BaseCellItem]()
     accounts.forEach { (account) in
       let walletCell = WalletCellItem(reuseIdentifier: "WalletCell",
                                       identifier: "WalletCell_\(account.address)")
-      walletCell.title = account.address
-      walletCell.emoji = "🐠"
+      walletCell.title = TransactionTitleHelper.title(from: account.address)
+      walletCell.emoji = account.emoji
       items.append(walletCell)
     }
+
     let walletCell = WalletCellItem(reuseIdentifier: "AddWalletCell",
                                     identifier: "AddWalletCell")
     items.append(walletCell)

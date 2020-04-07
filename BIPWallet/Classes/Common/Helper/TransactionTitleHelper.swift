@@ -12,7 +12,6 @@ class TransactionTitleHelper {
 
 	class func title(from: String) -> String {
 		if from.isValidAddress() || from.isValidPublicKey() {
-
 			let indexStartOfText = from.index(from.startIndex, offsetBy: 7)
 			let indexEndOfText = from.index(from.startIndex, offsetBy: from.count - 6)
 

@@ -28,7 +28,7 @@ def shared_pods
   pod 'AFDateHelper', '~> 4.2.2'
 	pod 'XLPagerTabStrip', '~> 8.0'
   pod 'DeckTransition'
-  pod 'CardPresentationController',   :git => 'https://github.com/radianttap/CardPresentationController.git'
+  pod 'CardPresentationController', :git => 'https://github.com/radianttap/CardPresentationController.git'
   pod 'NotificationBannerSwift'
   #Analytics
 	pod 'YandexMobileMetrica/Dynamic', '3.2.0'
@@ -41,6 +41,7 @@ def shared_pods
   pod 'Crashlytics', '~> 3.10'
   pod 'CryptoSwift', '~> 1.0'
   pod 'KeychainSwift'
+  pod 'SwiftValidator', :git => 'https://github.com/jpotts18/SwiftValidator.git', :tag => '4.2.0'
 end
 
 target 'BIPWallet' do

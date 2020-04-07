@@ -31,16 +31,23 @@ class SelectWalletViewController: BaseViewController, Controller, StoryboardInit
       .drive(viewModel.input.viewDidLoad)
       .disposed(by: disposeBag)
 
+    tableView.rx
+      .itemSelected
+      .asDriver()
+      .drive(viewModel.input.didSelect)
+      .disposed(by: disposeBag)
+
     //Output
     viewModel.output.sections
-      .bind(to: tableView.rx.items(dataSource: rxDataSource!)).disposed(by: disposeBag)
+      .bind(to: tableView.rx.items(dataSource: rxDataSource!))
+      .disposed(by: disposeBag)
 
     viewModel
       .output
       .sections
       .asDriver(onErrorJustReturn: []).drive(onNext: { [weak self] (sections) in
         let items = sections.first?.items.count ?? 0
-        self?.tableHeightConstraint.constant = max(0, CGFloat(items) * 61)
+        self?.tableHeightConstraint.constant = max(0, CGFloat(items) * 61) + CGFloat(items)
         self?.view.layoutIfNeeded()
     }).disposed(by: disposeBag)
   }
@@ -56,15 +63,12 @@ class SelectWalletViewController: BaseViewController, Controller, StoryboardInit
     tableView.tableFooterView = UIView(frame: CGRect(x: 0, y: 0, width: 0, height: 0.1))
     tableView.tableHeaderView = UIView(frame: CGRect(x: 0, y: 0, width: 0, height: 0.1))
 
-    registerCells()
-
     rxDataSource?.animationConfiguration = AnimationConfiguration(insertAnimation: .top,
                                                                   reloadAnimation: .none,
                                                                   deleteAnimation: .automatic)
 
     rxDataSource = RxTableViewSectionedAnimatedDataSource<BaseTableSectionItem>(
-      configureCell: { [weak self] dataSource, tableView, indexPath, sm in
-
+      configureCell: { dataSource, tableView, indexPath, sm in
         guard let item = try? dataSource.model(at: indexPath) as? BaseCellItem,
           let cell = tableView.dequeueReusableCell(withIdentifier: item.reuseIdentifier) as? ConfigurableCell else {
           return UITableViewCell()
@@ -77,7 +81,7 @@ class SelectWalletViewController: BaseViewController, Controller, StoryboardInit
     configure(with: viewModel)
 //    tableView.rx.setDelegate(self).disposed(by: disposeBag)
 
-    dismissWhenTappedAround()
+    registerCells()
 
     viewModel.input.viewDidLoad.onNext(())
   }
@@ -87,18 +91,12 @@ class SelectWalletViewController: BaseViewController, Controller, StoryboardInit
     tableView.register(UINib(nibName: "AddWalletCell", bundle: nil), forCellReuseIdentifier: "AddWalletCell")
   }
 
-  override func viewWillLayoutSubviews() {
-    super.viewWillLayoutSubviews()
-
-    self.view.frame = self.tableView.frame
-  }
-
 }
 
-class WeiredTableView: UITableView {
+extension SelectWalletViewController: UITableViewDelegate {
 
-//  override var intrinsicContentSize: CGSize {
-//    return contentSize
-//  }
+  func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+    return 61.0
+  }
 
 }

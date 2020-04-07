@@ -11,19 +11,6 @@ import RxSwift
 import MinterCore
 import MinterExplorer
 
-struct SpendCoinPickerItem {
-	var title: String?
-	var coin: String?
-	var balance: Decimal?
-
-	init(coin: String, balance: Decimal, formatter: NumberFormatter) {
-		let balanceString = CurrencyNumberFormatter.formattedDecimal(with: balance, formatter: formatter)
-		self.title = coin + " (" + balanceString + ")"
-		self.coin = coin
-		self.balance = balance
-	}
-}
-
 class ConvertCoinsViewModel: BaseViewModel {
 
   var balanceService: BalanceService
@@ -177,25 +164,6 @@ class ConvertCoinsViewModel: BaseViewModel {
 
   var spendCoinPickerSource = [String: Decimal]()
 
-	var spendCoinPickerItems: [SpendCoinPickerItem] {
-		let balances = spendCoinPickerSource
-		var ret = [SpendCoinPickerItem]()
-			var coins = balances.keys.filter({ (coin) -> Bool in
-				return coin != Coin.baseCoin().symbol!
-			}).sorted(by: { (val1, val2) -> Bool in
-				return val1 < val2
-			})
-			coins.insert(Coin.baseCoin().symbol!, at: 0)
-			coins.forEach({ (coin) in
-				let balance = (balances[coin] ?? 0.0)
-				let item = SpendCoinPickerItem(coin: coin,
-																			 balance: balance,
-																			 formatter: self.formatter)
-				ret.append(item)
-			})
-		return ret
-	}
-
 //	func coinNames(by term: String, completion: (([String]) -> Void)?) {
 ////		let term = term.lowercased()
 ////		let coins = Session.shared.allCoins.value.filter { (con) -> Bool in
@@ -232,13 +200,6 @@ class ConvertCoinsViewModel: BaseViewModel {
 			self.validateErrors()
 			return
 		}
-//		let coins = Session.shared.allCoins.value.filter { (con) -> Bool in
-//			return (con.symbol ?? "") == coin!
-//		}
-//		if coins.count > 0 {
-//			self.hasCoin.value = true
-//		}
-//		validateErrors()
 	}
 
   func coins(by term: String, completion: (([Coin]) -> ())?) {}

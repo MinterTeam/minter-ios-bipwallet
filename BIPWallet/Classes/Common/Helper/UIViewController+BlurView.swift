@@ -8,51 +8,88 @@
 
 import UIKit
 import SnapKit
+import RxSwift
 
 fileprivate let blurViewTag = 747
 
 extension UIViewController {
 
-  func showBlurOverview() {
-    let blurSubview = view.subviews.filter { (aView) -> Bool in
-      return (aView.tag == blurViewTag && aView.classForCoder == UIVisualEffectView.classForCoder())
-    }.first
+  func showBlurOverview(style: UIBlurEffect.Style = .dark, tapAction: (() -> ())? = nil) {
+    let blurSubview = findBlurView()
 
     guard blurSubview == nil else {
-      UIView.animate(withDuration: 0.25) {
-        blurSubview?.alpha = 1.0
-      }
       return
     }
-    let effectView = UIVisualEffectView(effect: UIBlurEffect(style: .dark))
+
+    let effectViewWrapper = UIView(frame: view.bounds)
+    effectViewWrapper.alpha = 0.0
+    effectViewWrapper.translatesAutoresizingMaskIntoConstraints = false
+    effectViewWrapper.tag = blurViewTag
+    effectViewWrapper.backgroundColor = UIColor(hex: 0x282240, alpha: 0.8)
+
+    let effectView = UIVisualEffectView(effect: UIBlurEffect(style: style))
     effectView.alpha = 0.0
     effectView.translatesAutoresizingMaskIntoConstraints = false
-    view.addSubview(effectView)
+    effectViewWrapper.addSubview(effectView)
     effectView.frame = view.bounds
-    effectView.tag = blurViewTag
+
+    defer {
+      UIView.animate(withDuration: 0.5) {
+        effectViewWrapper.alpha = 1.0
+        effectView.alpha = 1.0
+      }
+    }
+
     effectView.snp.makeConstraints { (maker) in
-      maker.top.equalTo(self.view).offset(-1000)
+      maker.top.equalTo(effectViewWrapper).offset(0)
+      maker.left.equalTo(effectViewWrapper).offset(0)
+      maker.right.equalTo(effectViewWrapper).offset(0)
+      maker.bottom.equalTo(effectViewWrapper).offset(0)
+    }
+
+    self.view.addSubview(effectViewWrapper)
+    effectViewWrapper.snp.makeConstraints { (maker) in
+      maker.top.equalTo(self.view).offset(-2000)
       maker.left.equalTo(self.view).offset(0)
       maker.right.equalTo(self.view).offset(0)
       maker.bottom.equalTo(self.view).offset(0)
     }
 
-    UIView.animate(withDuration: 0.25) {
-      effectView.alpha = 1.0
+    effectViewWrapper.addBackgroundTapGesture {
+      tapAction?()
     }
 
+    self.view.sendSubviewToBack(effectViewWrapper)
   }
 
-  func hideBlueOverview() {
-    guard let blurView = (view.subviews.filter { (aView) -> Bool in
-      return (aView.tag == blurViewTag && aView.classForCoder == UIVisualEffectView.classForCoder())
-    }.first) else {
-      return
-    }
+  func hideBlurOverview() {
+    guard let blurView = findBlurView() else { return }
 
-    UIView.animate(withDuration: 0.25) {
+    UIView.animate(withDuration: 0.25, animations: {
       blurView.alpha = 0.0
+    }) { (completed) in
+      if completed {
+        blurView.removeFromSuperview()
+      }
     }
+  }
+
+  func updateBlurView(percentage: CGFloat) {
+    let newPercentage = percentage
+
+    let blurView = findBlurView()
+    blurView?.alpha = max(min(newPercentage, 1.0), 0)
+  }
+
+  func findBlurView() -> UIView? {
+    return view.subviews.filter { (aView) -> Bool in
+      return (aView.tag == blurViewTag)
+    }.first
+  }
+
+  @objc func blurViewDidTap() {
+    hideBlurOverview()
   }
 
 }
+

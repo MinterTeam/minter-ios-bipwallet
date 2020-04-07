@@ -64,6 +64,7 @@ PODS:
     - SwiftProtobuf
   - SwiftLint (0.38.2)
   - SwiftProtobuf (1.8.0)
+  - SwiftValidator (4.0.0)
   - Swinject (2.7.1)
   - TPKeyboardAvoiding (1.3.3)
   - TrezorCrypto (0.0.9)
@@ -96,6 +97,7 @@ DEPENDENCIES:
   - SnapKit
   - SwiftCentrifuge
   - SwiftLint
+  - SwiftValidator (from `https://github.com/jpotts18/SwiftValidator.git`, tag `4.2.0`)
   - Swinject
   - TPKeyboardAvoiding
   - XLPagerTabStrip (~> 8.0)
@@ -152,6 +154,9 @@ EXTERNAL SOURCES:
     :branch: master
     :git: https://github.com/realm/realm-cocoa.git
     :submodules: true
+  SwiftValidator:
+    :git: https://github.com/jpotts18/SwiftValidator.git
+    :tag: 4.2.0
 
 CHECKOUT OPTIONS:
   CardPresentationController:
@@ -167,6 +172,9 @@ CHECKOUT OPTIONS:
     :commit: ad6f5f94b023caaec57c99f7a986160f8c087d0c
     :git: https://github.com/realm/realm-cocoa.git
     :submodules: true
+  SwiftValidator:
+    :git: https://github.com/jpotts18/SwiftValidator.git
+    :tag: 4.2.0
 
 SPEC CHECKSUMS:
   AFDateHelper: 4ad66fb19503041fbba8a3018cb7ef9c71b2ff88
@@ -204,12 +212,13 @@ SPEC CHECKSUMS:
   SwiftCentrifuge: b37df285ddb092e5b6d39c9d1b481cee9691d839
   SwiftLint: 8f5d2f903e1c9bcbc832fd16771e80a263ac6cbb
   SwiftProtobuf: 2cbd9409689b7df170d82a92a33443c8e3e14a70
+  SwiftValidator: 249b6b3ae3b294266c5b9de134d94f18f2d5aa47
   Swinject: ddf78b8486dd9b71a667b852cad919ab4484478e
   TPKeyboardAvoiding: 6dd3fe3268b8f2627beb7ff3d82a3cacbdf66a36
   TrezorCrypto: bfeea47a052dca2c77d4a39e1e183865e52de14d
   XLPagerTabStrip: 63166e21c9844fa30f2d95d30f335e73be5caf22
   YandexMobileMetrica: f18374ee6977a4cd1d0a86298a0df4ad7baf4135
 
-PODFILE CHECKSUM: 8e1fc5547e85fca2a3b7ce27dda17e82083caa4c
+PODFILE CHECKSUM: b99038b980e33b2bdf2c36dff4fe59ac16a9a316
 
 COCOAPODS: 1.8.4

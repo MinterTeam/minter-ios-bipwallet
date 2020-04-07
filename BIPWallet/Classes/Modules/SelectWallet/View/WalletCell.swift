@@ -7,10 +7,13 @@
 //
 
 import UIKit
+import RxSwift
 
 class WalletCellItem: BaseCellItem {
   var emoji: String?
   var title: String?
+
+  var didTapEdit = PublishSubject<Void>()
 }
 
 class WalletCell: BaseCell {

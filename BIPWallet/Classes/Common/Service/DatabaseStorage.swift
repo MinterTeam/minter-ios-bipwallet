@@ -9,11 +9,14 @@
 import Foundation
 import RealmSwift
 
-protocol DatabaseStorageModel: class {}
+protocol DatabaseStorageModel: Object {}
 
 protocol DatabaseStorage {
-	func add(object: DatabaseStorageModel)
+	func add(object: DatabaseStorageModel) throws
 	func objects(class cls: DatabaseStorageModel.Type, query: String?) -> [DatabaseStorageModel]?
+  func delete(object: DatabaseStorageModel) throws
+  func update(old: DatabaseStorageModel, new: DatabaseStorageModel) throws
+  func update(updates: (() -> ())?) throws
 }
 
 class RealmDatabaseStorage: DatabaseStorage {
@@ -28,16 +31,32 @@ class RealmDatabaseStorage: DatabaseStorage {
 
 	// MARK: -
 
-	func add(object: DatabaseStorageModel) {
+	func add(object: DatabaseStorageModel) throws {
 		guard let obj = object as? Object else {
 			assert(true, "Should be an instance of Object")
 			return
 		}
 
 		try! realm.write {// swiftlint:disable:this force_try
-			realm.add(obj)
+      realm.add(obj, update: .error)
 		}
 	}
+
+  func update(old: DatabaseStorageModel, new: DatabaseStorageModel) throws {
+    guard let oldObj = old as? Object, let newObj = new as? Object  else {
+      assert(true, "Should be an instance of Object")
+      return
+    }
+    try! realm.write {// swiftlint:disable:this force_try
+//      old.va
+    }
+  }
+
+  func update(updates: (() -> ())?) throws {
+    try! realm.write {// swiftlint:disable:this force_try
+      updates?()
+    }
+  }
 
 	// MARK: -
 
@@ -60,6 +79,12 @@ class RealmDatabaseStorage: DatabaseStorage {
 			updates()
 		}
 	}
+  
+  func delete(object: DatabaseStorageModel) throws {
+    try! realm.write {// swiftlint:disable:this force_try
+      realm.delete(object)
+    }
+  }
 
 	// MARK: -
 

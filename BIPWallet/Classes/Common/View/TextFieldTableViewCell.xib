@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="15705" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15706"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <array key="Inter-Medium.otf">
+            <string>Inter-Medium</string>
+        </array>
+        <array key="Inter-SemiBold.otf">
+            <string>Inter-SemiBold</string>
+        </array>
+        <array key="Ubuntu-M.ttf">
+            <string>Ubuntu-Medium</string>
+        </array>
+    </customFonts>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" rowHeight="79" id="hhU-0F-JyV" customClass="TextFieldTableViewCell" customModule="BIPWallet" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="79"/>
+            <autoresizingMask key="autoresizingMask"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="hhU-0F-JyV" id="gFd-nU-9ZI">
+                <rect key="frame" x="0.0" y="0.0" width="375" height="79"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="252" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nHc-GT-F7U">
+                        <rect key="frame" x="24" y="5" width="29" height="13"/>
+                        <fontDescription key="fontDescription" name="Inter-SemiBold" family="Inter" pointSize="11"/>
+                        <color key="textColor" red="0.5568627451" green="0.5568627451" blue="0.5568627451" alpha="1" colorSpace="deviceRGB"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" text="" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fDJ-ug-mwR">
+                        <rect key="frame" x="63" y="11.5" width="288" height="0.0"/>
+                        <fontDescription key="fontDescription" name="Ubuntu-Medium" family="Ubuntu" pointSize="12"/>
+                        <color key="textColor" red="0.95693963766098022" green="0.23488524556159973" blue="0.21839424967765808" alpha="1" colorSpace="deviceRGB"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="gEW-Yp-p6t" customClass="ValidatableTextField" customModule="BIPWallet" customModuleProvider="target">
+                        <rect key="frame" x="24" y="28" width="327" height="46"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="46" id="7hz-nI-E3F"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" name="Inter-Medium" family="Inter" pointSize="17"/>
+                        <textInputTraits key="textInputTraits"/>
+                        <connections>
+                            <outlet property="delegate" destination="hhU-0F-JyV" id="5rB-8T-QqV"/>
+                        </connections>
+                    </textField>
+                    <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="Myo-4g-g52">
+                        <rect key="frame" x="321" y="41" width="20" height="20"/>
+                    </activityIndicatorView>
+                </subviews>
+                <constraints>
+                    <constraint firstItem="fDJ-ug-mwR" firstAttribute="centerY" secondItem="nHc-GT-F7U" secondAttribute="centerY" id="Cms-Dl-GIR"/>
+                    <constraint firstItem="gEW-Yp-p6t" firstAttribute="trailing" secondItem="Myo-4g-g52" secondAttribute="trailing" constant="10" id="E3O-7M-ouM"/>
+                    <constraint firstItem="gEW-Yp-p6t" firstAttribute="top" secondItem="nHc-GT-F7U" secondAttribute="bottom" constant="10" id="EDA-ng-rkp"/>
+                    <constraint firstAttribute="bottom" secondItem="gEW-Yp-p6t" secondAttribute="bottom" priority="999" constant="5" id="FSQ-TG-le9"/>
+                    <constraint firstItem="fDJ-ug-mwR" firstAttribute="trailing" secondItem="gEW-Yp-p6t" secondAttribute="trailing" id="JAj-h6-Ybe"/>
+                    <constraint firstItem="gEW-Yp-p6t" firstAttribute="leading" secondItem="gFd-nU-9ZI" secondAttribute="leading" constant="24" id="OHH-2B-Z8c"/>
+                    <constraint firstItem="Myo-4g-g52" firstAttribute="centerY" secondItem="gEW-Yp-p6t" secondAttribute="centerY" id="TZK-fh-RTW"/>
+                    <constraint firstAttribute="trailing" secondItem="gEW-Yp-p6t" secondAttribute="trailing" constant="24" id="U5T-Gg-e2q"/>
+                    <constraint firstItem="nHc-GT-F7U" firstAttribute="leading" secondItem="gEW-Yp-p6t" secondAttribute="leading" id="W2t-M0-3ZU"/>
+                    <constraint firstItem="nHc-GT-F7U" firstAttribute="top" secondItem="gFd-nU-9ZI" secondAttribute="top" constant="5" id="bUk-L0-2g3"/>
+                    <constraint firstItem="fDJ-ug-mwR" firstAttribute="leading" secondItem="nHc-GT-F7U" secondAttribute="trailing" constant="10" id="eyi-HO-4St"/>
+                </constraints>
+            </tableViewCellContentView>
+            <connections>
+                <outlet property="activityIndicator" destination="Myo-4g-g52" id="cYb-ht-rJz"/>
+                <outlet property="errorTitle" destination="fDJ-ug-mwR" id="jt1-4T-Z02"/>
+                <outlet property="textField" destination="gEW-Yp-p6t" id="dz9-ZP-dYj"/>
+                <outlet property="title" destination="nHc-GT-F7U" id="DuC-Tb-Ogd"/>
+            </connections>
+            <point key="canvasLocation" x="-103.2" y="-84.107946026986511"/>
+        </tableViewCell>
+    </objects>
+</document>

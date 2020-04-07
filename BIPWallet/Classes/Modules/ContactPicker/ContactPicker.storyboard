@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="16096" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16086"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <array key="Inter-SemiBold.otf">
+            <string>Inter-SemiBold</string>
+        </array>
+    </customFonts>
+    <scenes>
+        <!--Address Book-->
+        <scene sceneID="E74-Am-qHU">
+            <objects>
+                <viewController storyboardIdentifier="ContactPickerViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="cId-Zk-hra" customClass="ContactPickerViewController" customModule="BIPWallet" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="Pf6-qm-Gx4">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" allowsSelectionDuringEditing="YES" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="18" sectionFooterHeight="18" translatesAutoresizingMaskIntoConstraints="NO" id="w04-FM-flu">
+                                <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                                <color key="backgroundColor" red="0.95686274509803915" green="0.95686274509803915" blue="0.95686274509803915" alpha="1" colorSpace="deviceRGB"/>
+                                <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                            </tableView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="No contacts at the moment" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Lqa-Nd-G4q">
+                                <rect key="frame" x="89" y="437" width="236.5" height="22"/>
+                                <fontDescription key="fontDescription" name="Inter-SemiBold" family="Inter" pointSize="18"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <constraints>
+                            <constraint firstItem="Lqa-Nd-G4q" firstAttribute="centerX" secondItem="w04-FM-flu" secondAttribute="centerX" id="1qL-Le-7hj"/>
+                            <constraint firstItem="w04-FM-flu" firstAttribute="leading" secondItem="t8C-go-zqY" secondAttribute="leading" id="5SS-pf-pHT"/>
+                            <constraint firstItem="w04-FM-flu" firstAttribute="trailing" secondItem="t8C-go-zqY" secondAttribute="trailing" id="Afl-bE-YLn"/>
+                            <constraint firstItem="w04-FM-flu" firstAttribute="top" secondItem="Pf6-qm-Gx4" secondAttribute="top" id="gfH-1N-GgU"/>
+                            <constraint firstItem="Lqa-Nd-G4q" firstAttribute="centerY" secondItem="w04-FM-flu" secondAttribute="centerY" id="oXD-8y-ivw"/>
+                            <constraint firstAttribute="bottom" secondItem="w04-FM-flu" secondAttribute="bottom" id="pFu-DH-5Kn"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="t8C-go-zqY"/>
+                    </view>
+                    <navigationItem key="navigationItem" title="Address Book" id="ks1-ro-q8X">
+                        <barButtonItem key="rightBarButtonItem" image="ContactsAddButtonIcon" id="Fwd-az-Bdr"/>
+                    </navigationItem>
+                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
+                    <connections>
+                        <outlet property="addItem" destination="Fwd-az-Bdr" id="wlC-dB-u6N"/>
+                        <outlet property="noContactsLabel" destination="Lqa-Nd-G4q" id="Huz-gj-56O"/>
+                        <outlet property="tableView" destination="w04-FM-flu" id="xu0-tS-skx"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="OnR-xq-ORz" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="400.00000000000006" y="119.86607142857142"/>
+        </scene>
+    </scenes>
+    <resources>
+        <image name="ContactsAddButtonIcon" width="20" height="20"/>
+    </resources>
+</document>

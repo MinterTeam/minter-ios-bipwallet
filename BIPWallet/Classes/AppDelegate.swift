@@ -33,6 +33,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         MinterGateBaseURLString = "https://gate-api.testnet.minter.network"
       }
     }
+
     MinterCoreSDK.initialize(urlString: conf.environment.nodeBaseURL, network: isTestnet ? .testnet : .mainnet)
     MinterExplorerSDK.initialize(APIURLString: isUITesting ? conf.environment.testExplorerAPIBaseURL : conf.environment.explorerAPIBaseURL,
                                  WEBURLString: conf.environment.explorerWebURL,
@@ -48,7 +49,56 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         .subscribe()
         .disposed(by: disposeBag)
 
+    appearance()
+
     return true
+  }
+
+}
+
+extension AppDelegate {
+
+  func appearance() {
+    UINavigationBar.appearance().shadowImage = UIImage(named: "NavigationBarShadowImage")
+//    UINavigationBar.appearance().tintColor = .white
+//    UINavigationBar.appearance().barTintColor = UIColor.mainColor()
+    UINavigationBar.appearance().titleTextAttributes = [
+      NSAttributedString.Key.foregroundColor: UIColor.mainBlackColor(),
+      NSAttributedString.Key.font: UIFont.semiBoldFont(of: 18.0)
+    ]
+    if #available(iOS 11.0, *) {
+      UINavigationBar.appearance().setTitleVerticalPositionAdjustment(6, for: .default)
+    }
+
+    UIBarButtonItem.appearance().setTitleTextAttributes([
+      NSAttributedString.Key.font: UIFont.defaultFont(of: 14),
+      NSAttributedString.Key.foregroundColor: UIColor.white,
+      NSAttributedString.Key.baselineOffset: 1
+    ], for: .normal)
+
+    UIBarButtonItem.appearance().setTitleTextAttributes([
+      NSAttributedString.Key.font: UIFont.defaultFont(of: 14),
+      NSAttributedString.Key.foregroundColor: UIColor.white,
+      NSAttributedString.Key.baselineOffset: 1
+    ], for: .highlighted)
+
+//    UITabBarItem.appearance().titlePositionAdjustment = UIOffset(horizontal: 0, vertical: -2)
+
+    let img = UIImage(named: "BackButtonIcon")?
+      .resizableImage(withCapInsets: UIEdgeInsets(top: 0, left: 12, bottom: 0, right: 0))
+    img?.stretchableImage(withLeftCapWidth: 0, topCapHeight: 20)
+    UINavigationBar.appearance().backIndicatorTransitionMaskImage = img
+    UINavigationBar.appearance().backIndicatorImage = img
+    UINavigationBar.appearance().isTranslucent = false
+
+    UITabBarItem.appearance().setTitleTextAttributes([
+      NSAttributedString.Key.foregroundColor: UIColor(hex: 0x8A8A8F)!,
+      NSAttributedString.Key.font : UIFont.mediumFont(of: 11.0)
+    ], for: .normal)
+    UITabBarItem.appearance().setTitleTextAttributes([
+      NSAttributedString.Key.foregroundColor : UIColor.mainColor(),
+      NSAttributedString.Key.font : UIFont.mediumFont(of: 11.0)
+    ], for: .selected)
   }
 
 }

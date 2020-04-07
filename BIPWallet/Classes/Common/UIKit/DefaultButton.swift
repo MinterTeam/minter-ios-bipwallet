@@ -45,6 +45,11 @@ class DefaultButton: UIButton {
       self.layer.borderWidth = 2.0
       self.layer.borderColor = UIColor.white.cgColor
       self.setTitleColor(UIColor.white, for: .normal)
+    } else if pattern == "blank_black" {
+      self.backgroundColor = .clear
+      self.layer.borderWidth = 2.0
+      self.layer.borderColor = UIColor.mainBlackColor().cgColor
+      self.setTitleColor(UIColor.mainBlackColor(), for: .normal)
 		} else if pattern == "transparent" {
 			self.backgroundColor = .clear
 			self.layer.borderWidth = 2.0
@@ -57,6 +62,7 @@ class DefaultButton: UIButton {
 			self.layer.borderWidth = 0.0
 			addShadow()
     } else if pattern == "purple" {
+      self.layer.borderWidth = 0.0
       self.setBackgroundImage(UIImage(named: "DefaultButtonActive"), for: .normal)
       self.setBackgroundImage(UIImage(named: "DefaultButtonDisabled"), for: .disabled)
       self.setTitleColor(.white, for: .normal)

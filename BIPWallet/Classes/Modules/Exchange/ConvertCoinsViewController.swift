@@ -64,7 +64,7 @@ class ConvertCoinsViewController: BaseViewController {
 	// MARK: -
 
   func showPicker() {
-    let items = viewModel.spendCoinPickerItems
+    let items = SpendCoinPickerItem.items(with: viewModel.spendCoinPickerSource)
 
     guard items.count > 0 else {
       return

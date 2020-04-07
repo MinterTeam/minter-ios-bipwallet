@@ -178,7 +178,7 @@ class AccountManager {
 	}
 
 	func mnemonic(for address: String) -> String? {
-		guard let encryptedMnemonic = secureStorage.object(forKey: address) as? Data,
+    guard let encryptedMnemonic = secureStorage.object(forKey: address.stripMinterHexPrefix()) as? Data,
 			let password = self.encryptionKey() else {
 			return nil
 		}
@@ -201,49 +201,41 @@ class AccountManager {
 
 	// MARK: -
 
-	func setMain(isMain: Bool, account: inout Account) {
-		account.isMain = isMain
-		if account.encryptedBy == .me {
-			saveLocalAccount(account: account)
-		}
-	}
-
-	// MARK: -
-
-	func loadLocalAccounts() -> [Account]? {
+	func loadLocalAccounts() -> [AccountItem]? {
 		let accounts = database.objects(class: AccountDataBaseModel.self,
 																		query: nil) as? [AccountDataBaseModel]
 
-		let res = accounts?.map { (dbModel) -> Account in
-			return Account(id: dbModel.id,
-										 encryptedBy: Account.EncryptedBy(rawValue: dbModel.encryptedBy) ?? .me,
-										 address: dbModel.address,
-										 isMain: dbModel.isMain)
+		let res = accounts?.map { (dbModel) -> AccountItem in
+      return AccountItem(title: dbModel.title,
+                         address: "Mx" + dbModel.address.stripMinterHexPrefix(),
+                         emoji: dbModel.emoji)
 		}
 		return res
 	}
 
 	// MARK: -
 
-	func saveLocalAccount(account: Account) {
+	func saveLocalAccount(account: AccountItem) {
 		guard let res = database.objects(class: AccountDataBaseModel.self,
 																		 query: "address == \"\(account.address)\"")?.first as? AccountDataBaseModel else {
+      let address = account.address.stripMinterHexPrefix().lowercased()
 			let dbModel = AccountDataBaseModel()
-			dbModel.id = account.id
-			dbModel.address = account.address.stripMinterHexPrefix().lowercased()
-			dbModel.encryptedBy = account.encryptedBy.rawValue
-			dbModel.isMain = account.isMain
+      dbModel.id = UUID().uuidString
+			dbModel.address = address
+      dbModel.emoji = account.emoji
+      dbModel.title = TransactionTitleHelper.title(from: address)
 
-			database.add(object: dbModel)
+      do {
+        try database.add(object: dbModel)
+      } catch {
+        return
+      }
 			return
 		}
 
 		let addressesToUnset = database.objects(class: AccountDataBaseModel.self) as? [AccountDataBaseModel]
 
 		database.update {
-			addressesToUnset?.forEach({ (addr) in
-				addr.isMain = false
-			})
 			res.substitute(with: account)
 		}
 	}

@@ -66,7 +66,10 @@ class BalanceViewController: SegmentedPagerTabStripViewController, Controller, S
 
   func configure(with viewModel: BalanceViewModel) {
     //Input
-    walletSelectorButton.rx.tap.asDriver().drive(viewModel.input.didTapSelectWallet).disposed(by: disposeBag)
+    walletSelectorButton.rx.tap
+      .asDriver()
+      .drive(viewModel.input.didTapSelectWallet)
+      .disposed(by: disposeBag)
 
     //Output
     viewModel.output
@@ -101,6 +104,11 @@ class BalanceViewController: SegmentedPagerTabStripViewController, Controller, S
 
     //HACK: to layout child view controllers
     view.layoutIfNeeded()
+  }
+  
+  override func viewWillAppear(_ animated: Bool) {
+    super.viewWillAppear(animated)
+    self.navigationController?.navigationBar.isUserInteractionEnabled = true
   }
 
   override public func viewControllers(for pagerTabStripController: PagerTabStripViewController) -> [UIViewController] {

@@ -12,6 +12,8 @@ import XLPagerTabStrip
 
 class ExchangeViewController: SegmentedPagerTabStripViewController, Controller, StoryboardInitializable {
 
+  var disposeBag = DisposeBag()
+
   // MARK: - ControllerProtocol
 
   typealias ViewModelType = ExchangeViewModel
@@ -19,7 +21,12 @@ class ExchangeViewController: SegmentedPagerTabStripViewController, Controller, 
   var viewModel: ViewModelType!
 
   func configure(with viewModel: ExchangeViewModel) {
-
+    self.rx.viewDidDisappear
+      .asDriver(onErrorJustReturn: false)
+      .map({ (_) -> Void in
+        return ()
+      }).drive(self.viewModel.input.viewDidDisappear)
+      .disposed(by: disposeBag)
   }
 
   // MARK: - ViewController

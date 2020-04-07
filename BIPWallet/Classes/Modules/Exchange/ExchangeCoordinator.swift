@@ -8,6 +8,7 @@
 
 import UIKit
 import RxSwift
+import CardPresentationController
 
 class ExchangeCoordinator: BaseCoordinator<Void> {
 
@@ -34,6 +35,7 @@ class ExchangeCoordinator: BaseCoordinator<Void> {
                                       balanceService: balanceService,
                                       gateService: gateService
                                       )
+
     let get = GetCoinsCoordinator(viewController: &getViewController,
                                   balanceService: balanceService,
                                   gateService: gateService
@@ -43,10 +45,9 @@ class ExchangeCoordinator: BaseCoordinator<Void> {
     coordinate(to: get).subscribe().disposed(by: disposeBag)
 
     viewController.controllers = [getViewController!, spendViewController!]
-
     rootController.presentCard(viewController, animated: true)
 
-    return Observable.never()
+    return viewModel.output.viewDidDisappear
   }
 
 }

@@ -18,25 +18,25 @@ class ExchangeViewModel: BaseViewModel, ViewModel {
   var dependency: ExchangeViewModel.Dependency!
 
   struct Input {
-
+    var viewDidDisappear: AnyObserver<Void>
   }
 
   struct Output {
-
+    var viewDidDisappear: Observable<Void>
   }
 
-  struct Dependency {
-    
-  }
+  struct Dependency {}
 
   init(dependency: Dependency) {
-    self.input = Input()
-    self.output = Output()
+    self.input = Input(viewDidDisappear: viewDidDisappear.asObserver())
+    self.output = Output(viewDidDisappear: viewDidDisappear.asObservable())
     self.dependency = dependency
 
     super.init()
   }
 
   // MARK: -
+
+  private var viewDidDisappear = PublishSubject<Void>()
 
 }

@@ -26,8 +26,12 @@ class SignInCoordinator: BaseCoordinator<Void> {
     let viewModel = SignInViewModel(dependency: SignInViewModel.Dependency(authService: authService))
     controller.viewModel = viewModel
 
-    viewModel.output.viewDidDisappear.subscribe(onNext: { [weak self] (_) in
-      self?.rootViewController.hideBlueOverview()
+    controller.rx.viewWillDisappear.subscribe(onNext: { [weak self] (_) in
+      self?.rootViewController.hideBlurOverview()
+    }).disposed(by: disposeBag)
+
+    controller.rx.viewWillAppear.subscribe(onNext: { [weak self] (_) in
+      self?.rootViewController.showBlurOverview()
     }).disposed(by: disposeBag)
 
     var cardConfig = CardConfiguration()
@@ -38,8 +42,6 @@ class SignInCoordinator: BaseCoordinator<Void> {
     cardConfig.backFadeAlpha = 1.0
     cardConfig.dismissAreaHeight = 5
     CardPresentationController.useSystemPresentationOniOS13 = false
-
-    rootViewController.showBlurOverview()
 
     rootViewController.presentCard(ClearBarNavigationController(rootViewController: controller),
                                    configuration: cardConfig,

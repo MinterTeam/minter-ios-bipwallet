@@ -109,7 +109,7 @@ class GetCoinsViewModel: ConvertCoinsViewModel, ViewModel {
     spendCoin
       .throttle(1.0, scheduler: MainScheduler.instance)
       .distinctUntilChanged().map({ (val) -> SpendCoinPickerItem? in
-        let item = self.spendCoinPickerItems.filter({ (item) -> Bool in
+        let item = SpendCoinPickerItem.items(with: self.spendCoinPickerSource).filter({ (item) -> Bool in
           return item.title == val
         }).first
         return item

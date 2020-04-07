@@ -33,7 +33,11 @@ extension UIColor {
   static func mainPurpleColor(alpha: CGFloat = 1) -> UIColor {
     return UIColor(hex: 0x502EC2, alpha: alpha)!
   }
-  
+
+  static func mainBlackColor(alpha: CGFloat = 1) -> UIColor {
+    return UIColor(hex: 0x191919, alpha: alpha)!
+  }
+
   static func textFieldBorderColor(alpha: CGFloat = 1) -> UIColor {
     return UIColor(hex: 0xE0DAF4, alpha: alpha)!
   }
@@ -41,10 +45,13 @@ extension UIColor {
   static func textFieldBackgroundColor(alpha: CGFloat = 1) -> UIColor {
     return UIColor(hex: 0xF7F5FF, alpha: alpha)!
   }
-  
+
   static func textFieldPlaceholderTextColor(alpha: CGFloat = 1) -> UIColor {
     return UIColor(hex: 0x8E8E8E, alpha: alpha)!
   }
 
+  static func tableViewCellActionRedColor(alpha: CGFloat = 1.0) -> UIColor {
+    return UIColor(hex: 0xDC4840, alpha: alpha)!
+  }
 
 }

@@ -11,6 +11,10 @@ import MinterCore
 import MinterExplorer
 import RxSwift
 
+enum BalanceServiceError: Error {
+  case incorrectAddress
+}
+
 protocol BalanceService {
   typealias BalancesResponse = (
     totalMainCoinBalance: Decimal,
@@ -24,6 +28,7 @@ protocol BalanceService {
 
   var address: Observable<String> {get}
 
+  func changeAddress(_ address: String) throws
   func balances() -> Observable<BalancesResponse>
   func delegatedBalance() -> Observable<([AddressDelegation]?, Decimal?)>
   func updateBalance()

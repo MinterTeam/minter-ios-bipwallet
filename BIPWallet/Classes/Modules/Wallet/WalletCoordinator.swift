@@ -13,8 +13,19 @@ class WalletCoordinator: BaseCoordinator<Void> {
 
   private let window: UIWindow
 
+  let authService: AuthService
+  let balanceService: BalanceService
+
   init(window: UIWindow) {
     self.window = window
+
+    let localAuthService = LocalStorageAuthService()
+    let address = (localAuthService.selectedAccount()?.address ?? "")
+
+    self.authService = localAuthService
+    self.balanceService = ExplorerBalanceService(address: address)
+
+    super.init()
   }
 
   override func start() -> Observable<Void> {
@@ -34,25 +45,27 @@ class WalletCoordinator: BaseCoordinator<Void> {
                       animations: {},
                       completion: { completed in
     })
-    
-    
 
     let balanceTabbarItem = UITabBarItem(title: "Wallets".localized(),
                                          image: UIImage(named: "WalletsIcon"),
                                          selectedImage: nil)
     let balance = UINavigationController()
     balance.tabBarItem = balanceTabbarItem
-    let balanceCoordiantor = BalanceCoordinator(navigationController: balance)
+    let balanceCoordiantor = BalanceCoordinator(navigationController: balance,
+                                                balanceService: balanceService,
+                                                authService: authService)
     coordinate(to: balanceCoordiantor).subscribe().disposed(by: disposeBag)
 
-    let sendTabbarItem = UITabBarItem(title: "Wallets".localized(),
+    let sendTabbarItem = UITabBarItem(title: "Send".localized(),
                                       image: UIImage(named: "SendIcon"),
                                       selectedImage: nil)
 
     let send = UINavigationController()
     send.tabBarItem = sendTabbarItem
 
-    let sendCoordinator = SendCoordinator(navigationController: send)
+    let sendCoordinator = SendCoordinator(navigationController: send,
+                                          balanceService: balanceService,
+                                          authService: authService)
     coordinate(to: sendCoordinator).subscribe().disposed(by: disposeBag)
 
 //    let settingsTabbarItem = UITabBarItem(title: "Wallets".localized(),
@@ -68,7 +81,6 @@ class WalletCoordinator: BaseCoordinator<Void> {
 //    }).disposed(by: disposeBag)
 
     controller.viewControllers = [balance, send]
-
 
     return Observable.never()
   }

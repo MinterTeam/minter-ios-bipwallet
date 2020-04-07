@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="16096" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16086"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <array key="Inter-Medium.otf">
+            <string>Inter-Medium</string>
+        </array>
+        <array key="Inter-SemiBold.otf">
+            <string>Inter-SemiBold</string>
+        </array>
+    </customFonts>
+    <scenes>
+        <!--Modify Contact View Controller-->
+        <scene sceneID="jCK-Xa-Byf">
+            <objects>
+                <viewController storyboardIdentifier="ModifyContactViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="dgm-ge-6ds" customClass="ModifyContactViewController" customModule="BIPWallet" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="4Ry-FM-ZxC">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="4fb-O1-wVr" customClass="HandlerVerticalSnapDraggableView" customModule="BIPWallet" customModuleProvider="target">
+                                <rect key="frame" x="8" y="623" width="398" height="257"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Mx Address or Public Key" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="32s-8W-2T9">
+                                        <rect key="frame" x="16" y="63" width="366" height="13"/>
+                                        <fontDescription key="fontDescription" name="Inter-SemiBold" family="Inter" pointSize="11"/>
+                                        <color key="textColor" red="0.5568627451" green="0.5568627451" blue="0.5568627451" alpha="1" colorSpace="deviceRGB"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="8G6-WL-tzW" customClass="DefaultTextView" customModule="BIPWallet" customModuleProvider="target">
+                                        <rect key="frame" x="16" y="86" width="366" height="70"/>
+                                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="70" id="UUa-K3-BHQ"/>
+                                        </constraints>
+                                        <color key="textColor" systemColor="labelColor" cocoaTouchSystemColor="darkTextColor"/>
+                                        <fontDescription key="fontDescription" name="Inter-Medium" family="Inter" pointSize="17"/>
+                                        <textInputTraits key="textInputTraits" autocapitalizationType="sentences" returnKeyType="next"/>
+                                        <connections>
+                                            <outlet property="delegate" destination="dgm-ge-6ds" id="l0M-ll-2c3"/>
+                                        </connections>
+                                    </textView>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qV6-1y-zAR">
+                                        <rect key="frame" x="16" y="170" width="24" height="13"/>
+                                        <fontDescription key="fontDescription" name="Inter-SemiBold" family="Inter" pointSize="11"/>
+                                        <color key="textColor" red="0.5568627451" green="0.5568627451" blue="0.5568627451" alpha="1" colorSpace="deviceRGB"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="FkZ-ew-cJ8" customClass="DefaultTextField" customModule="BIPWallet" customModuleProvider="target">
+                                        <rect key="frame" x="16" y="193" width="366" height="48"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="48" id="ShY-rW-iCg"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" name="Inter-Medium" family="Inter" pointSize="17"/>
+                                        <textInputTraits key="textInputTraits" returnKeyType="go"/>
+                                    </textField>
+                                </subviews>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                                <constraints>
+                                    <constraint firstItem="qV6-1y-zAR" firstAttribute="top" secondItem="8G6-WL-tzW" secondAttribute="bottom" constant="14" id="4Ct-YY-Kik"/>
+                                    <constraint firstItem="8G6-WL-tzW" firstAttribute="leading" secondItem="4fb-O1-wVr" secondAttribute="leading" constant="16" id="BV8-kx-ofc"/>
+                                    <constraint firstAttribute="trailing" secondItem="8G6-WL-tzW" secondAttribute="trailing" constant="16" id="ETV-Q8-LPr"/>
+                                    <constraint firstItem="FkZ-ew-cJ8" firstAttribute="top" secondItem="qV6-1y-zAR" secondAttribute="bottom" constant="10" id="J4B-hz-i8B"/>
+                                    <constraint firstItem="32s-8W-2T9" firstAttribute="top" secondItem="4fb-O1-wVr" secondAttribute="top" constant="63" id="Q8r-GK-YE8"/>
+                                    <constraint firstAttribute="bottom" secondItem="FkZ-ew-cJ8" secondAttribute="bottom" constant="16" id="VEz-hv-T1e"/>
+                                    <constraint firstItem="FkZ-ew-cJ8" firstAttribute="leading" secondItem="4fb-O1-wVr" secondAttribute="leading" constant="16" id="Wwj-hi-VJQ"/>
+                                    <constraint firstItem="8G6-WL-tzW" firstAttribute="top" secondItem="32s-8W-2T9" secondAttribute="bottom" constant="10" id="bFv-jg-d0u"/>
+                                    <constraint firstItem="qV6-1y-zAR" firstAttribute="leading" secondItem="32s-8W-2T9" secondAttribute="leading" id="ci2-TF-W4t"/>
+                                    <constraint firstItem="32s-8W-2T9" firstAttribute="trailing" secondItem="8G6-WL-tzW" secondAttribute="trailing" id="drK-5X-AXy"/>
+                                    <constraint firstItem="32s-8W-2T9" firstAttribute="leading" secondItem="4fb-O1-wVr" secondAttribute="leading" constant="16" id="hhg-vO-CuP"/>
+                                    <constraint firstAttribute="trailing" secondItem="FkZ-ew-cJ8" secondAttribute="trailing" constant="16" id="vVm-FW-uuA"/>
+                                </constraints>
+                            </view>
+                        </subviews>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="4fb-O1-wVr" firstAttribute="leading" secondItem="juO-qt-Gqe" secondAttribute="leading" constant="8" id="5G6-vw-oGK"/>
+                            <constraint firstItem="juO-qt-Gqe" firstAttribute="trailing" secondItem="4fb-O1-wVr" secondAttribute="trailing" constant="8" id="lXK-Nt-YjD"/>
+                            <constraint firstAttribute="bottom" secondItem="4fb-O1-wVr" secondAttribute="bottom" constant="16" id="yUb-fG-HI7"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="juO-qt-Gqe"/>
+                    </view>
+                    <connections>
+                        <outlet property="address" destination="8G6-WL-tzW" id="Yxi-Hu-oXZ"/>
+                        <outlet property="bottomConstraint" destination="yUb-fG-HI7" id="dON-oY-Yqg"/>
+                        <outlet property="closeButtonSuccessViewButton" destination="QiD-kV-YY7" id="WWF-k2-xcl"/>
+                        <outlet property="mainView" destination="4fb-O1-wVr" id="RYF-KR-RK1"/>
+                        <outlet property="name" destination="FkZ-ew-cJ8" id="sGr-mX-WCE"/>
+                        <outlet property="successTitleLabel" destination="U9A-7M-CEX" id="beE-qV-cdb"/>
+                        <outlet property="successView" destination="Irk-SL-qjF" id="uOc-6w-fIs"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="6HZ-wx-LSg" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+                <view contentMode="scaleToFill" id="Irk-SL-qjF" customClass="HandlerVerticalSnapDraggableView" customModule="BIPWallet" customModuleProvider="target">
+                    <rect key="frame" x="0.0" y="0.0" width="398" height="257"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <subviews>
+                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" image="popupHeaderImage" translatesAutoresizingMaskIntoConstraints="NO" id="sO5-FA-AWc">
+                            <rect key="frame" x="0.0" y="0.0" width="398" height="72"/>
+                        </imageView>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" text="Successfully added address" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FAj-ga-a9m">
+                            <rect key="frame" x="97" y="118" width="229" height="21"/>
+                            <fontDescription key="fontDescription" name="Inter-Medium" family="Inter" pointSize="17"/>
+                            <nil key="textColor"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" text="Title" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="U9A-7M-CEX">
+                            <rect key="frame" x="20" y="159" width="358" height="21"/>
+                            <fontDescription key="fontDescription" name="Inter-SemiBold" family="Inter" pointSize="18"/>
+                            <nil key="textColor"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="QiD-kV-YY7" customClass="DefaultButton" customModule="BIPWallet" customModuleProvider="target">
+                            <rect key="frame" x="16" y="191" width="366" height="50"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="50" id="tPU-03-TS5"/>
+                            </constraints>
+                            <state key="normal" title="Close"/>
+                            <userDefinedRuntimeAttributes>
+                                <userDefinedRuntimeAttribute type="string" keyPath="pattern" value="blank_black"/>
+                                <userDefinedRuntimeAttribute type="boolean" keyPath="animateButtonTouch" value="YES"/>
+                            </userDefinedRuntimeAttributes>
+                        </button>
+                    </subviews>
+                    <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                    <constraints>
+                        <constraint firstItem="sO5-FA-AWc" firstAttribute="trailing" secondItem="APW-G7-KTu" secondAttribute="trailing" id="266-5o-hnr"/>
+                        <constraint firstItem="QiD-kV-YY7" firstAttribute="leading" secondItem="APW-G7-KTu" secondAttribute="leading" constant="16" id="Dzf-Bv-G35"/>
+                        <constraint firstItem="sO5-FA-AWc" firstAttribute="top" secondItem="Irk-SL-qjF" secondAttribute="top" id="Fqq-fz-0Vd"/>
+                        <constraint firstItem="FAj-ga-a9m" firstAttribute="trailing" secondItem="APW-G7-KTu" secondAttribute="trailing" constant="5" id="K18-Z4-2V4"/>
+                        <constraint firstItem="APW-G7-KTu" firstAttribute="trailing" secondItem="U9A-7M-CEX" secondAttribute="trailing" constant="5" id="KtM-rh-KPi"/>
+                        <constraint firstItem="U9A-7M-CEX" firstAttribute="leading" secondItem="APW-G7-KTu" secondAttribute="leading" constant="5" id="MbA-aC-Fxc"/>
+                        <constraint firstItem="APW-G7-KTu" firstAttribute="trailing" secondItem="QiD-kV-YY7" secondAttribute="trailing" constant="16" id="QpB-Hm-nGI"/>
+                        <constraint firstItem="FAj-ga-a9m" firstAttribute="top" secondItem="sO5-FA-AWc" secondAttribute="bottom" constant="24" id="Ycu-ad-EHi"/>
+                        <constraint firstItem="FAj-ga-a9m" firstAttribute="leading" secondItem="APW-G7-KTu" secondAttribute="leading" constant="5" id="egg-dm-bZH"/>
+                        <constraint firstItem="QiD-kV-YY7" firstAttribute="top" secondItem="U9A-7M-CEX" secondAttribute="bottom" constant="22" id="f7S-Kn-PJJ"/>
+                        <constraint firstItem="sO5-FA-AWc" firstAttribute="leading" secondItem="APW-G7-KTu" secondAttribute="leading" id="hjY-rr-lJm"/>
+                        <constraint firstItem="U9A-7M-CEX" firstAttribute="top" secondItem="FAj-ga-a9m" secondAttribute="bottom" constant="10" id="tp1-Qc-e4h"/>
+                        <constraint firstItem="APW-G7-KTu" firstAttribute="bottom" secondItem="QiD-kV-YY7" secondAttribute="bottom" constant="16" id="uYE-Fk-kBc"/>
+                    </constraints>
+                    <viewLayoutGuide key="safeArea" id="APW-G7-KTu"/>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="boolean" keyPath="shouldHideHandlerImage" value="YES"/>
+                    </userDefinedRuntimeAttributes>
+                </view>
+            </objects>
+            <point key="canvasLocation" x="240.57971014492756" y="129.91071428571428"/>
+        </scene>
+    </scenes>
+    <resources>
+        <image name="popupHeaderImage" width="359" height="72"/>
+    </resources>
+</document>

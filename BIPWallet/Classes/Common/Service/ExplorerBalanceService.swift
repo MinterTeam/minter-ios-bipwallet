@@ -13,8 +13,8 @@ import RxSwift
 
 class ExplorerBalanceService: BalanceService {
 
-  init(address: Observable<String>) {
-    self.address = address
+  init(address: String) {
+    self.addressSubject.onNext("Mx" + address.stripMinterHexPrefix())
   }
 
   private var balancesSubject = ReplaySubject<BalancesResponse>.create(bufferSize: 1)
@@ -22,7 +22,16 @@ class ExplorerBalanceService: BalanceService {
 
   var disposeBag = DisposeBag()
 
-  var address: Observable<String>
+  var addressSubject = BehaviorSubject<String>(value: "")
+
+  var address: Observable<String> {
+    return addressSubject.asObservable()
+  }
+
+  func changeAddress(_ address: String) throws {
+    guard address.isValidAddress() else { throw BalanceServiceError.incorrectAddress }
+    self.addressSubject.onNext(address)
+  }
 
   func balances() -> Observable<BalancesResponse> {
     return balancesSubject.asObservable()
@@ -33,12 +42,12 @@ class ExplorerBalanceService: BalanceService {
   }
 
   func updateBalance() {
-    let nullResponse = (
-      totalMainCoinBalance: Decimal(0.0),
-      totalUSDBalance: Decimal(0.0),
-      baseCoinBalance: Decimal(0.0),
-      balances: ["": (Decimal(0.0), Decimal(0.0))]
-    )
+//    let nullResponse = (
+//      totalMainCoinBalance: Decimal(0.0),
+//      totalUSDBalance: Decimal(0.0),
+//      baseCoinBalance: Decimal(0.0),
+//      balances: ["": (Decimal(0.0), Decimal(0.0))]
+//    )
 
     address.flatMapLatest { (address) -> Observable<Event<BalancesResponse>> in
       return self.getBalances(address: address).materialize()
@@ -51,8 +60,7 @@ class ExplorerBalanceService: BalanceService {
       case .next(let val):
         self.balancesSubject.onNext(val)
       }
-    })
-    .disposed(by: disposeBag)
+    }).disposed(by: disposeBag)
   }
 
   func delegatedBalance() -> Observable<([AddressDelegation]?, Decimal?)> {

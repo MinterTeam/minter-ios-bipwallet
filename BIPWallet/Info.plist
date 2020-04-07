@@ -22,6 +22,8 @@
 	<string>dev</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>NSCameraUsageDescription</key>
+	<string>To be able to scan QR</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>Inter-Bold.otf</string>

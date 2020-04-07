@@ -27,7 +27,7 @@ class CreateWalletCoordinator: BaseCoordinator<Void> {
     controller.viewModel = viewModel
 
     viewModel.output.viewDidDisappear.subscribe(onNext: { [weak self] (_) in
-      self?.rootViewController.hideBlueOverview()
+      self?.rootViewController.hideBlurOverview()
     }).disposed(by: disposeBag)
 
     var cardConfig = CardConfiguration()

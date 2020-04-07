@@ -31,8 +31,8 @@ extension String {
 		return phoneTest.evaluate(with: phone)
 	}
 
-	func isValidUsername() -> Bool {
-		let usernameTest = NSPredicate(format: "SELF MATCHES %@", "^[@]?[a-zA-Z0-9_]{5,16}")
+	func isValidContactName() -> Bool {
+		let usernameTest = NSPredicate(format: "SELF MATCHES %@", "^[a-zA-Z0-9_]{3,18}")
 		return usernameTest.evaluate(with: self)
 	}
 
