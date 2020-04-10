@@ -16,7 +16,7 @@ class TransactionsViewModel: BaseViewModel, ViewModel, TransactionViewableViewMo
   // MARK: - TransactionViewableViewModel
 
   var addressBook: [String: String] = [:]
-  var address: String
+  var address: String?
   private var isLoading: Bool = false
 
   // MARK: -
@@ -46,9 +46,10 @@ class TransactionsViewModel: BaseViewModel, ViewModel, TransactionViewableViewMo
 
   struct Dependency {
     var transactionService: TransactionService
+    var balanceService: BalanceService
   }
 
-  init(address: String, dependency: Dependency) {
+  init(dependency: Dependency) {
     self.input = Input(transactions: transactions.asObserver(),
                        viewDidLoad: viewDidLoad.asObserver(),
                        didSelectItem: didSelectItem.asObserver()
@@ -59,7 +60,6 @@ class TransactionsViewModel: BaseViewModel, ViewModel, TransactionViewableViewMo
     )
 
     self.dependency = dependency
-    self.address = address
 
     super.init()
 
@@ -67,23 +67,12 @@ class TransactionsViewModel: BaseViewModel, ViewModel, TransactionViewableViewMo
   }
 
   func bind() {
-    dependency.transactionService
-      .transactions(address: "Mx" + address, page: 0)
-      .do(onNext: { (txs) in
-        
-      }, onError: { (error) in
-        self.isLoading = false
-      }, onCompleted: {
-        self.isLoading = false
-      }, onSubscribe: { [weak self] in
-        self?.isLoading = true
-        let txs = (try? self?.transactions.value()) ?? []
-        self?.createSections(isLoading: self?.isLoading, transactions: txs)
-      })
-      .subscribe(onNext: { [weak self] (transactions) in
-        self?.isLoading = false
-        self?.transactions.onNext(transactions[safe: 0..<10] ?? [])
-      }).disposed(by: disposeBag)
+    dependency.balanceService.account.map({ (account) -> String? in
+      return account?.address
+    }).filter { $0 != nil}.map{$0!}.subscribe(onNext: { [weak self] (address) in
+      self?.address = address
+      self?.loadTransactions(address: address)
+    }).disposed(by: disposeBag)
 
     Observable.combineLatest(viewDidLoad, transactions).map({ (val) -> [MinterExplorer.Transaction] in
       return val.1
@@ -155,6 +144,26 @@ class TransactionsViewModel: BaseViewModel, ViewModel, TransactionViewableViewMo
     cellItems.append(convertButton)
     section1.items = cellItems
     sections.onNext([section1])
+  }
+
+  func loadTransactions(address: String) {
+    dependency.transactionService
+      .transactions(address: "Mx" + address.stripMinterHexPrefix(), page: 0)
+      .do(onNext: { (txs) in
+        
+      }, onError: { (error) in
+        self.isLoading = false
+      }, onCompleted: {
+        self.isLoading = false
+      }, onSubscribe: { [weak self] in
+        self?.isLoading = true
+        let txs = (try? self?.transactions.value()) ?? []
+        self?.createSections(isLoading: self?.isLoading, transactions: txs)
+      })
+      .subscribe(onNext: { [weak self] (transactions) in
+        self?.isLoading = false
+        self?.transactions.onNext(transactions[safe: 0..<10] ?? [])
+      }).disposed(by: disposeBag)
   }
 
 }

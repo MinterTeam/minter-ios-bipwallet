@@ -13,9 +13,10 @@ import MinterMy
 class AccountDataBaseModel: Object, DatabaseStorageModel {
 
   @objc dynamic var id: String = UUID().uuidString
-  @objc dynamic var emoji: String = "🐠"
-  @objc dynamic var title: String = ""
+  @objc dynamic var emoji: String = "🎐"
+  @objc dynamic var title: String?
   @objc dynamic var address: String = ""
+  @objc dynamic var lastSelected = Date().timeIntervalSince1970
 
   override static func primaryKey() -> String? {
     return "id"
@@ -27,6 +28,7 @@ class AccountDataBaseModel: Object, DatabaseStorageModel {
     self.emoji = account.emoji
     self.title = account.title
 		self.address = account.address
+    self.lastSelected = account.lastSelected.timeIntervalSince1970
 	}
 
 }

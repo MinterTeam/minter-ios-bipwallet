@@ -78,7 +78,8 @@ class SignInViewModel: BaseViewModel, ViewModel {
         self.hardImpact.onNext(())
       } else {
         //save mnemonics
-        self.dependency.authService.addAccount(mnemonic: newVal ?? "")
+        try? self.dependency.authService.addAccount(mnemonic: newVal ?? "",
+                                               title: nil)
         self.mnemonicSaved.onNext(())
       }
 

@@ -44,19 +44,28 @@
                         <nil key="textColor"/>
                         <nil key="highlightedColor"/>
                     </label>
+                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="s07-Y1-vwd">
+                        <rect key="frame" x="362" y="0.0" width="52" height="55"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    </button>
                 </subviews>
                 <constraints>
                     <constraint firstItem="obw-Iq-xT8" firstAttribute="top" secondItem="4LT-dM-k8x" secondAttribute="top" constant="20" id="1Ds-dD-lTC"/>
+                    <constraint firstAttribute="trailing" secondItem="s07-Y1-vwd" secondAttribute="trailing" id="1lR-9M-vqu"/>
                     <constraint firstItem="yiQ-zq-J2H" firstAttribute="leading" secondItem="obw-Iq-xT8" secondAttribute="trailing" constant="10" id="62h-Xi-DVU"/>
                     <constraint firstItem="PmT-8X-qPj" firstAttribute="leading" secondItem="4LT-dM-k8x" secondAttribute="leading" constant="8" id="67c-tf-PHX"/>
                     <constraint firstItem="obw-Iq-xT8" firstAttribute="centerY" secondItem="PmT-8X-qPj" secondAttribute="centerY" id="L1p-s4-rIy"/>
                     <constraint firstItem="obw-Iq-xT8" firstAttribute="leading" secondItem="PmT-8X-qPj" secondAttribute="trailing" constant="2" id="Wx0-EF-zkf"/>
+                    <constraint firstItem="s07-Y1-vwd" firstAttribute="leading" secondItem="yiQ-zq-J2H" secondAttribute="leading" constant="-20" id="ZdT-Ha-t7G"/>
                     <constraint firstItem="yiQ-zq-J2H" firstAttribute="centerY" secondItem="obw-Iq-xT8" secondAttribute="centerY" id="aGy-vQ-WOj"/>
                     <constraint firstAttribute="bottom" secondItem="obw-Iq-xT8" secondAttribute="bottom" constant="18" id="ifW-Rb-rwY"/>
+                    <constraint firstAttribute="bottom" secondItem="s07-Y1-vwd" secondAttribute="bottom" id="iwl-Zi-j0g"/>
+                    <constraint firstItem="s07-Y1-vwd" firstAttribute="top" secondItem="4LT-dM-k8x" secondAttribute="top" id="kng-7a-Kpr"/>
                     <constraint firstAttribute="trailing" secondItem="yiQ-zq-J2H" secondAttribute="trailing" constant="8" id="nQ5-Zv-TG9"/>
                 </constraints>
             </tableViewCellContentView>
             <connections>
+                <outlet property="editButton" destination="s07-Y1-vwd" id="vIx-xc-hZq"/>
                 <outlet property="emoji" destination="PmT-8X-qPj" id="Vig-Y0-0t7"/>
                 <outlet property="title" destination="obw-Iq-xT8" id="EuE-Sa-JhF"/>
             </connections>

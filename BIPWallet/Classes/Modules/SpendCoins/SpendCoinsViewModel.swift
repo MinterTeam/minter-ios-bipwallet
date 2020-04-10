@@ -291,8 +291,13 @@ class SpendCoinsViewModel: ConvertCoinsViewModel, ViewModel {
       return
     }
 
-    Observable<Void>.just(()).withLatestFrom(dependency.balanceService.address)
-      .flatMap { selectedAddress in
+    Observable<Void>.just(()).withLatestFrom(dependency.balanceService.account)
+    .filter({ (account) -> Bool in
+      return account != nil && (account?.address.isValidAddress() ?? false)
+    }).map({ (item) -> String in
+      return item?.address ?? ""
+    })
+    .flatMap { selectedAddress in
         return self.processExchange(coinFrom: coinFrom,
                                     coinTo: coinTo,
                                     amount: amount,

@@ -14,11 +14,6 @@ import RxAppState
 
 class SignInViewController: BaseViewController, Controller, StoryboardInitializable, UIImpactFeedbackProtocol {
 
-  // MARK: - UIImpactFeedbackProtocol
-
-  var hardImpactFeedbackGenerator: UIImpactFeedbackGenerator = UIImpactFeedbackGenerator(style: .heavy)
-  var lightImpactFeedbackGenerator: UIImpactFeedbackGenerator = UIImpactFeedbackGenerator(style: .light)
-
   // MARK: -
 
   @IBOutlet weak var bottomConstraint: NSLayoutConstraint!
@@ -91,27 +86,6 @@ class SignInViewController: BaseViewController, Controller, StoryboardInitializa
     }
 
     configure(with: viewModel)
-  }
-
-  override func viewWillAppear(_ animated: Bool) {
-    super.viewWillAppear(animated)
-    print("viewWillAppear")
-  }
-
-  override func viewWillDisappear(_ animated: Bool) {
-    super.viewWillDisappear(animated)
-    print("viewWillDisappear")
-  }
-
-  override func viewDidAppear(_ animated: Bool) {
-    super.viewDidAppear(animated)
-    print("viewDidAppear")
-    self.textView.becomeFirstResponder()
-  }
-
-  override func viewDidDisappear(_ animated: Bool) {
-    super.viewDidDisappear(animated)
-    print("viewDidDisappear")
   }
 
 }

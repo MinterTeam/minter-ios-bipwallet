@@ -22,6 +22,7 @@ class WalletCell: BaseCell {
 
   @IBOutlet weak var title: UILabel!
   @IBOutlet weak var emoji: UILabel!
+  @IBOutlet weak var editButton: UIButton!
 
   // MARK: -
 
@@ -32,6 +33,7 @@ class WalletCell: BaseCell {
 
     emoji.text = item.emoji
     title.text = item.title
+    editButton.rx.tap.subscribe(item.didTapEdit).disposed(by: disposeBag)
   }
 
 }

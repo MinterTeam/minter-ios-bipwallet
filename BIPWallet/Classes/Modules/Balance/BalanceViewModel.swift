@@ -18,6 +18,7 @@ class BalanceViewModel: BaseViewModel, ViewModel {
   private var availabaleBalance = PublishSubject<NSAttributedString>()
   private var delegatedBalance = PublishSubject<String>()
   private var didTapSelectWallet = PublishSubject<Void>()
+  private var wallet = PublishSubject<String>()
 
   // MARK: - ViewModel
 
@@ -34,6 +35,7 @@ class BalanceViewModel: BaseViewModel, ViewModel {
     var availabaleBalance: Observable<NSAttributedString>
     var delegatedBalance: Observable<String>
     var didTapSelectWallet: Observable<Void>
+    var wallet: Observable<String?>
   }
 
   struct Dependency {
@@ -41,14 +43,15 @@ class BalanceViewModel: BaseViewModel, ViewModel {
   }
 
   init(dependency: Dependency) {
+    super.init()
+
+    self.dependency = dependency
     self.input = Input(needsToUpdateBalance: needsToUpdateBalance.asObserver(),
                        didTapSelectWallet: didTapSelectWallet.asObserver())
     self.output = Output(availabaleBalance: availabaleBalance.asObservable(),
                          delegatedBalance: delegatedBalance.asObservable(),
-                         didTapSelectWallet: didTapSelectWallet.map { $0 })
-    self.dependency = dependency
-
-    super.init()
+                         didTapSelectWallet: didTapSelectWallet.map { $0 },
+                         wallet: walletObservable())
 
     bind()
   }
@@ -69,10 +72,12 @@ class BalanceViewModel: BaseViewModel, ViewModel {
     }).disposed(by: disposeBag)
 
     dependency.balanceService.updateDelegated()
+  }
 
-    didTapSelectWallet.subscribe(onNext: { _ in
-      
-      }).disposed(by: disposeBag)
+  func walletObservable() -> Observable<String?> {
+    return self.dependency.balanceService.account.map { (item) -> String? in
+      return (item?.emoji ?? "") + " " + (item?.title ?? TransactionTitleHelper.title(from: item?.address ?? ""))
+    }
   }
 
   private let coinFormatter = CurrencyNumberFormatter.coinFormatter

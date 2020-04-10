@@ -11,6 +11,9 @@ import RxSwift
 
 class BaseViewController: UIViewController {
 
+  var hardImpactFeedbackGenerator: UIImpactFeedbackGenerator = UIImpactFeedbackGenerator(style: .heavy)
+  var lightImpactFeedbackGenerator: UIImpactFeedbackGenerator = UIImpactFeedbackGenerator(style: .light)
+
   var disposeBag = DisposeBag()
 
 }

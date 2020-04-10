@@ -82,9 +82,9 @@ class CreateWalletViewModel: BaseViewModel, ViewModel {
         return
       }
 
-      self.dependency.authService.addAccount(mnemonic: mnemonic)
+      try? self.dependency.authService.addAccount(mnemonic: mnemonic, title: nil)
       self.mnemonicSaved.onNext(())
-      }).disposed(by: disposeBag)
+    }).disposed(by: disposeBag)
 
   }
 

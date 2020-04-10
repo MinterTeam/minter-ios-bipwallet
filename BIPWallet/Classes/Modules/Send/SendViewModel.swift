@@ -91,7 +91,11 @@ class SendViewModel: BaseViewModel, ViewModel {// swiftlint:disable:this type_bo
                                       return str?.replacingOccurrences(of: ",", with: ".")
                                     }).asObservable(),
                                     payloadSubject.asObservable(),
-                                    dependency.balanceService.address)
+                                    dependency.balanceService.account.filter({ (item) -> Bool in
+                                      return (item?.address ?? "").isValidAddress()
+                                    }).map({ (item) -> String in
+                                      return item?.address ?? ""
+                                    }))
   }
   private let openAppSettingsSubject = PublishSubject<Void>()
 
@@ -257,7 +261,7 @@ YOU ARE ABOUT TO SEND SEED PHRASE IN THE MESSAGE ATTACHED TO THIS TRANSACTION.\n
 
     dependency
       .balanceService
-      .address
+      .account
       .subscribe(onNext: { [weak self] (_) in
         self?.clear()
         self?.sections.value = self?.createSections() ?? []
@@ -604,8 +608,12 @@ YOU ARE ABOUT TO SEND SEED PHRASE IN THE MESSAGE ATTACHED TO THIS TRANSACTION.\n
   // MARK: -
 
   func send() {
-    dependency.balanceService.address
-      .flatMap({ (address) -> Observable<(Int, Int)> in
+    dependency.balanceService.account.filter({ (item) -> Bool in
+      return (item?.address ?? "").isValidAddress()
+    }).map({ (account) -> String in
+      return account?.address ?? ""
+    })
+    .flatMap({ (address) -> Observable<(Int, Int)> in
         return Observable.combineLatest(
           GateManager.shared.nonce(address: address),
           GateManager.shared.minGas())

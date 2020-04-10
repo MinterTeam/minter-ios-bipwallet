@@ -14,8 +14,11 @@ import RxAppState
 class TransactionsCoordinator: BaseCoordinator<Void> {
 
   private var сontroller = TransactionsViewController.initFromStoryboard(name: "Transactions")
+  var balanceService: BalanceService
 
-  init(viewController: inout UIViewController?) {
+  init(viewController: inout UIViewController?, balanceService: BalanceService) {
+    self.balanceService = balanceService
+
     super.init()
 
     viewController = self.сontroller
@@ -24,31 +27,27 @@ class TransactionsCoordinator: BaseCoordinator<Void> {
   var didScrollToPoint: Observable<CGPoint>?
 
   override func start() -> Observable<Void> {
-    let localAuthService = LocalStorageAuthService()
-    if let account = localAuthService.selectedAccount() {
 
-      let transactionService = ExplorerTransactionService()
+    let transactionService = ExplorerTransactionService()
+    let dependency = TransactionsViewModel.Dependency(transactionService: transactionService,
+                                                      balanceService: balanceService)
+    let viewModel = TransactionsViewModel(dependency: dependency)
 
-      let viewModel = TransactionsViewModel(address: account.address,
-                                            dependency: TransactionsViewModel.Dependency(transactionService: transactionService))
+    viewModel.output.showTransaction.flatMap({ [weak self] (transaction) -> Observable<Void> in
+      guard let `self` = self, let transaction = transaction else { return Observable.empty() }
+      let transactionCoordinator = TransactionCoordinator(transaction: transaction,
+                                                          rootViewController: self.сontroller)
+      return self.coordinate(to: transactionCoordinator)
+    }).subscribe().disposed(by: self.disposeBag)
 
-      viewModel.output.showTransaction.subscribe(onNext: { [weak self] (transaction) in
-        guard let `self` = self, let transaction = transaction else { return }
-        let transactionCoordinator = TransactionCoordinator(transaction: transaction,
-                                                            rootViewController: self.сontroller)
-        self.coordinate(to: transactionCoordinator).subscribe().disposed(by: self.disposeBag)
-      }).disposed(by: disposeBag)
+    сontroller.viewModel = viewModel
 
-      сontroller.viewModel = viewModel
-
-      self.didScrollToPoint = сontroller.rx.viewDidLoad.flatMap({ [weak self] (_) -> Observable<CGPoint> in
-        guard let `self` = self else { return Observable.empty() }
-        return self.сontroller.tableView.rx.didScroll.map { (_) -> CGPoint in
-          return self.сontroller.tableView.contentOffset
-        }
-      })
-    }
-
+    self.didScrollToPoint = сontroller.rx.viewDidLoad.flatMap({ [weak self] (_) -> Observable<CGPoint> in
+      guard let `self` = self else { return Observable.empty() }
+      return self.сontroller.tableView.rx.didScroll.map { (_) -> CGPoint in
+        return self.сontroller.tableView.contentOffset
+      }
+    })
     return Observable.never()
   }
 

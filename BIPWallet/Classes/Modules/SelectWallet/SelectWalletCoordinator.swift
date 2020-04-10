@@ -12,6 +12,7 @@ import RxGesture
 
 enum SelectWalletCoordinationResult {
   case wallet(String)
+  case edit(AccountItem)
   case cancel
   case addWallet
 }
@@ -38,6 +39,7 @@ class SelectWalletCoordinator: BaseCoordinator<SelectWalletCoordinationResult> {
     let didCancel = viewModel.output.didCancel.map { _ in SelectWalletCoordinationResult.cancel }
     let didSelect = viewModel.output.didSelect.map { address in SelectWalletCoordinationResult.wallet(address) }
     let addWallet = viewModel.output.showAdd.map { address in SelectWalletCoordinationResult.addWallet }
+    let editTitle = viewModel.output.showEdit.map { account in SelectWalletCoordinationResult.edit(account) }
     let forceCancel = PublishSubject<Void>()
 
     viewController.modalPresentationStyle = .overCurrentContext
@@ -52,24 +54,14 @@ class SelectWalletCoordinator: BaseCoordinator<SelectWalletCoordinationResult> {
       (self.viewController.view as? PassthroughView)?.delegate = self
     }
 
-    let resultObservable = Observable.merge(addWallet, didCancel, didSelect, forceCancel.map { _ in SelectWalletCoordinationResult.cancel })
+    let resultObservable = Observable.merge(editTitle, addWallet, didCancel, didSelect, forceCancel.map { _ in SelectWalletCoordinationResult.cancel })
+
     resultObservable.do(onNext: { [weak self] (result) in
       self?.viewController.dismiss(animated: true, completion: nil)
     }).subscribe(selectWalletResult).disposed(by: disposeBag)
 
-//    addWallet.flatMap { [weak self] (_) -> Observable<Void> in
-//      guard let `self` = self else { return Observable.empty() }
-//      return self.showAddWallet(inViewController: self.viewController)
-//    }.subscribe().disposed(by: disposeBag)
-
     return selectWalletResult.take(1)
   }
-
-//  func showAddWallet(inViewController: UIViewController) -> Observable<Void> {
-//    let createWalletCoordinator = CreateWalletCoordinator(rootViewController: inViewController,
-//                                                          authService: self.authService)
-//    return self.coordinate(to: createWalletCoordinator)
-//  }
 
 }
 

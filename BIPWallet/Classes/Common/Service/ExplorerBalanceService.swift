@@ -13,8 +13,10 @@ import RxSwift
 
 class ExplorerBalanceService: BalanceService {
 
+  private let accountManager = AccountManager()
+
   init(address: String) {
-    self.addressSubject.onNext("Mx" + address.stripMinterHexPrefix())
+    try? self.changeAddress("Mx" + address.stripMinterHexPrefix())
   }
 
   private var balancesSubject = ReplaySubject<BalancesResponse>.create(bufferSize: 1)
@@ -22,15 +24,21 @@ class ExplorerBalanceService: BalanceService {
 
   var disposeBag = DisposeBag()
 
-  var addressSubject = BehaviorSubject<String>(value: "")
+  var accountSubject = BehaviorSubject<AccountItem?>(value: nil)
 
-  var address: Observable<String> {
-    return addressSubject.asObservable()
+  var account: Observable<AccountItem?> {
+    return accountSubject.asObservable()
   }
 
   func changeAddress(_ address: String) throws {
     guard address.isValidAddress() else { throw BalanceServiceError.incorrectAddress }
-    self.addressSubject.onNext(address)
+
+    guard let account = accountManager.loadLocalAccounts()?.filter({ (item) -> Bool in
+      return address.stripMinterHexPrefix() == item.address.stripMinterHexPrefix()
+    }).first else {
+      throw BalanceServiceError.incorrectAddress
+    }
+    self.accountSubject.onNext(account)
   }
 
   func balances() -> Observable<BalancesResponse> {
@@ -42,15 +50,9 @@ class ExplorerBalanceService: BalanceService {
   }
 
   func updateBalance() {
-//    let nullResponse = (
-//      totalMainCoinBalance: Decimal(0.0),
-//      totalUSDBalance: Decimal(0.0),
-//      baseCoinBalance: Decimal(0.0),
-//      balances: ["": (Decimal(0.0), Decimal(0.0))]
-//    )
 
-    address.flatMapLatest { (address) -> Observable<Event<BalancesResponse>> in
-      return self.getBalances(address: address).materialize()
+    account.flatMapLatest { (account) -> Observable<Event<BalancesResponse>> in
+      return self.balances(address: account!.address).materialize()
     }.subscribe(onNext: { event in
       switch event {
       case .completed:
@@ -78,8 +80,8 @@ class ExplorerBalanceService: BalanceService {
   }
   
   func updateDelegated() {
-    address.flatMapLatest { (address) -> Observable<([AddressDelegation]?, Decimal?)> in
-      return self.addressManager.delegations(address: address)
+    account.flatMapLatest { (account) -> Observable<([AddressDelegation]?, Decimal?)> in
+      return self.addressManager.delegations(address: account!.address)
     }.asDriver(onErrorJustReturn: (nil, nil))
     .drive(delegatedSubject)
     .disposed(by: disposeBag)
@@ -92,7 +94,7 @@ class ExplorerBalanceService: BalanceService {
   let httpClient = APIClient()
   lazy var addressManager = ExplorerAddressManager(httpClient: httpClient)
 
-  private func getBalances(address: String) -> Observable<BalancesResponse> {
+  func balances(address: String) -> Observable<BalancesResponse> {
     return Observable.create { (observer) -> Disposable in
 
       guard address.isValidAddress() else {

@@ -101,8 +101,9 @@ class GetCoinsViewModel: ConvertCoinsViewModel, ViewModel {
     }).disposed(by: disposeBag)
 
     didTapExchangeButton
-      .withLatestFrom(self.dependency.balanceService.address)
-      .subscribe(onNext: { [weak self] (address) in
+      .withLatestFrom(self.dependency.balanceService.account)
+      .subscribe(onNext: { [weak self] (account) in
+        guard let address = account?.address else { return }
         self?.exchange(selectedAddress: address)
       }).disposed(by: disposeBag)
 

@@ -8,6 +8,7 @@
 
 import Foundation
 import MinterMy
+import RxSwift
 
 enum AuthState {
   case noAccount
@@ -19,9 +20,18 @@ protocol AuthStateProvider {
   var authState: AuthState { get }
 }
 
+enum AuthServiceError: Error {
+  case invalidMnemonic
+  case dublicateAddress
+  case titleTaken
+  case unknown
+}
+
 protocol AuthService {
   func accounts() -> [AccountItem]
   func hasAccount() -> Bool
-  func addAccount(mnemonic: String)
+  func addAccount(mnemonic: String, title: String?) throws -> AccountItem?
+  func addAccount(with mnemonic: String, title: String?) -> Observable<AccountItem>
+  func updateAccount(account: AccountItem) -> Observable<Void>
   func logout()
 }

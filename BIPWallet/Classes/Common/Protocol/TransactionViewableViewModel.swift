@@ -12,9 +12,8 @@ import MinterExplorer
 import MinterMy
 
 protocol TransactionViewableViewModel: class {
-
   var addressBook: [String: String] {get set}
-  var address: String {get set}
+  var address: String? {get}
 }
 
 extension TransactionViewableViewModel {
@@ -26,7 +25,7 @@ extension TransactionViewableViewModel {
     let sectionId = nil != transaction.txn ? String(transaction.txn!) : (transaction.hash ?? String.random(length: 20))
 
     var signMultiplier = 1.0
-    let hasAddress = address.stripMinterHexPrefix() == (transaction.from ?? "").stripMinterHexPrefix()
+    let hasAddress = address?.stripMinterHexPrefix() == (transaction.from ?? "").stripMinterHexPrefix()
 
     var title = ""
     if hasAddress {
@@ -57,7 +56,7 @@ extension TransactionViewableViewModel {
     let sectionId = nil != transaction.txn ? String(transaction.txn!) : (transaction.hash ?? String.random(length: 20))
 
     var signMultiplier = 1.0
-    let hasAddress = address.stripMinterHexPrefix() == (transaction.from ?? "").stripMinterHexPrefix()
+    let hasAddress = address?.stripMinterHexPrefix() == (transaction.from ?? "").stripMinterHexPrefix()
 
     var title = ""
     if hasAddress {
@@ -76,7 +75,7 @@ extension TransactionViewableViewModel {
 
     if let data = transaction.data as? MultisendCoinTransactionData {
       if let val = data.values?.filter({ (val) -> Bool in
-        return address.stripMinterHexPrefix() == val.to.stripMinterHexPrefix()
+        return address?.stripMinterHexPrefix() == val.to.stripMinterHexPrefix()
       }), val.count > 0 {
         if let payload = val.first {
           transactionCellItem.amount = CurrencyNumberFormatter.formattedDecimal(with:payload.value,
@@ -107,7 +106,7 @@ extension TransactionViewableViewModel {
     let transaction = transactionItem
     let sectionId = nil != transaction.txn ? String(transaction.txn!) : (transaction.hash ?? String.random(length: 20))
 
-    let hasAddress = address.stripMinterHexPrefix() == (transaction.from ?? "").stripMinterHexPrefix()
+    let hasAddress = address?.stripMinterHexPrefix() == (transaction.from ?? "").stripMinterHexPrefix()
 
     var title = ""
     if hasAddress {
@@ -170,7 +169,7 @@ extension TransactionViewableViewModel {
     let sectionId = nil != transaction.txn ? String(transaction.txn!) : (transaction.hash  ?? String.random(length: 20))
 
     var signMultiplier = 1.0
-    let toAddress = "Mx" + address.stripMinterHexPrefix()
+    let toAddress = "Mx" + (address ?? "").stripMinterHexPrefix()
     let title = toAddress
 
     let transactionCellItem = TransactionCellItem1(reuseIdentifier: "TransactionCell",
@@ -181,7 +180,7 @@ extension TransactionViewableViewModel {
     transactionCellItem.image = UIImage(named: "redeemCheckImage")
 
     if let data = transaction.data as? MinterExplorer.RedeemCheckRawTransactionData {
-      let hasAddress = address.stripMinterHexPrefix() == (transaction.from ?? "").stripMinterHexPrefix()
+      let hasAddress = address?.stripMinterHexPrefix() == (transaction.from ?? "").stripMinterHexPrefix()
       if !hasAddress {
         signMultiplier = -1.0
       }

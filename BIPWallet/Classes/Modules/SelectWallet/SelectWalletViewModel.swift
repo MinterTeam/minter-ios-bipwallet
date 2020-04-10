@@ -21,7 +21,7 @@ class SelectWalletViewModel: BaseViewModel, ViewModel {
   private var didCancel = PublishSubject<Void>()
   private var didSelectItem = PublishSubject<IndexPath>()
   private var didSelect = PublishSubject<String>()
-  private var showEdit = PublishSubject<String>()
+  private var showEdit = PublishSubject<AccountItem>()
   private var viewDidLoad = PublishSubject<Void>()
   private var showAdd = PublishSubject<Void>()
 
@@ -41,7 +41,7 @@ class SelectWalletViewModel: BaseViewModel, ViewModel {
     var sections: Observable<[BaseTableSectionItem]>
     var didCancel: Observable<Void>
     var didSelect: Observable<String>
-    var showEdit: Observable<String>
+    var showEdit: Observable<AccountItem>
     var showAdd: Observable<Void>
   }
 
@@ -102,14 +102,19 @@ class SelectWalletViewModel: BaseViewModel, ViewModel {
     accounts.forEach { (account) in
       let walletCell = WalletCellItem(reuseIdentifier: "WalletCell",
                                       identifier: "WalletCell_\(account.address)")
-      walletCell.title = TransactionTitleHelper.title(from: account.address)
+      walletCell.title = account.title ?? TransactionTitleHelper.title(from: account.address)
       walletCell.emoji = account.emoji
+      walletCell.didTapEdit.map { (_) -> AccountItem in
+        return account
+      }.subscribe(showEdit).disposed(by: disposeBag)
       items.append(walletCell)
     }
 
-    let walletCell = WalletCellItem(reuseIdentifier: "AddWalletCell",
-                                    identifier: "AddWalletCell")
-    items.append(walletCell)
+    if accounts.count < 5 {
+      let walletCell = WalletCellItem(reuseIdentifier: "AddWalletCell",
+                                      identifier: "AddWalletCell")
+      items.append(walletCell)
+    }
     section1.items = items
     sections.onNext([section1])
   }

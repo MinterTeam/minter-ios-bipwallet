@@ -27,13 +27,12 @@ class BalanceViewController: SegmentedPagerTabStripViewController, Controller, S
   @IBOutlet weak var delegatedBalance: UILabel!
 
   var walletSelectorButton = UIButton()
+  let walletLabel = UILabel(frame: CGRect(x: 0, y: 0, width: 150, height: 30))
   var walletSelectorView: UIView {
     let customView = UIView(frame: CGRect(x: 0, y: 0, width: 173, height: 100))
-    let walletLabel = UILabel(frame: CGRect(x: 0, y: 0, width: 150, height: 30))
     walletLabel.isUserInteractionEnabled = false
     walletLabel.textColor = .white
     walletLabel.font = UIFont.semiBoldFont(of: 18.0)
-    walletLabel.text = "🐠 Main Wallet"
     let expandImageView = UIImageView(image: UIImage(named: "WalletsExpandImage")!)
     expandImageView.isUserInteractionEnabled = false
     customView.addSubview(walletLabel)
@@ -55,8 +54,6 @@ class BalanceViewController: SegmentedPagerTabStripViewController, Controller, S
     }
     return customView
   }
-
-  lazy var walletItem = UIBarButtonItem(customView: walletSelectorView)
 
   // MARK: - ControllerProtocol
 
@@ -84,6 +81,15 @@ class BalanceViewController: SegmentedPagerTabStripViewController, Controller, S
       .drive(delegatedBalance.rx.text)
       .disposed(by: disposeBag)
 
+    viewModel.output
+      .wallet
+      .subscribe(onNext: { [weak self] (val) in
+        guard let `self` = self else { return }
+        self.walletLabel.text = val
+        let button = UIBarButtonItem(customView: self.walletSelectorView)
+        self.navigationItem.setLeftBarButton(button, animated: true)
+    }).disposed(by: disposeBag)
+
   }
 
   // MARK: - ViewController
@@ -99,13 +105,10 @@ class BalanceViewController: SegmentedPagerTabStripViewController, Controller, S
     self.navigationController?.navigationBar.barStyle = .default
     self.navigationController?.navigationBar.isTranslucent = false
 
-//    navigationController?.navigationItem.leftBarButtonItem = item
-    navigationItem.leftBarButtonItem = walletItem
-
     //HACK: to layout child view controllers
     view.layoutIfNeeded()
   }
-  
+
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
     self.navigationController?.navigationBar.isUserInteractionEnabled = true

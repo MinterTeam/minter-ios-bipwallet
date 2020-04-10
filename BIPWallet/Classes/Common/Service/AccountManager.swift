@@ -208,7 +208,8 @@ class AccountManager {
 		let res = accounts?.map { (dbModel) -> AccountItem in
       return AccountItem(title: dbModel.title,
                          address: "Mx" + dbModel.address.stripMinterHexPrefix(),
-                         emoji: dbModel.emoji)
+                         emoji: dbModel.emoji,
+                         lastSelected: Date(timeIntervalSince1970: dbModel.lastSelected))
 		}
 		return res
 	}
@@ -223,7 +224,7 @@ class AccountManager {
       dbModel.id = UUID().uuidString
 			dbModel.address = address
       dbModel.emoji = account.emoji
-      dbModel.title = TransactionTitleHelper.title(from: address)
+//      dbModel.title = "Mx" + TransactionTitleHelper.title(from: address)
 
       do {
         try database.add(object: dbModel)

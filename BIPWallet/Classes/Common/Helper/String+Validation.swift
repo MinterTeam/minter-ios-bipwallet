@@ -32,9 +32,14 @@ extension String {
 	}
 
 	func isValidContactName() -> Bool {
-		let usernameTest = NSPredicate(format: "SELF MATCHES %@", "^[a-zA-Z0-9_]{3,18}")
+		let usernameTest = NSPredicate(format: "SELF MATCHES %@", "^[a-zA-Z0-9_\\-\\s]{3,18}")
 		return usernameTest.evaluate(with: self)
 	}
+
+  func isValidWalletTitle() -> Bool {
+    let titleTest = NSPredicate(format: "SELF MATCHES %@", "^[a-zA-Z0-9_\\-\\s]{3,18}")
+    return titleTest.evaluate(with: self)
+  }
 
 	func isValidCoin() -> Bool {
 		return self.count >= 3
