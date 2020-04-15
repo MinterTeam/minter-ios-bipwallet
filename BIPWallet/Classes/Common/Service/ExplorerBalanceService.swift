@@ -58,7 +58,8 @@ class ExplorerBalanceService: BalanceService {
       case .completed:
         break
       case .error(let error):
-        self.balancesSubject.onError(error)
+        return
+//        self.balancesSubject.onError(error)
       case .next(let val):
         self.balancesSubject.onNext(val)
       }
@@ -163,9 +164,9 @@ class ExplorerTransactionService: TransactionService {
 
   let explorerManager = ExplorerTransactionManager(httpClient: APIClient())
 
-  func transactions(address: String, page: Int) -> Observable<[MinterExplorer.Transaction]> {
+  func transactions(address: String, filter: TransactionServiceFilter?, page: Int) -> Observable<[MinterExplorer.Transaction]> {
     return Observable.create { (observable) -> Disposable in
-      self.explorerManager.transactions(addresses: [address]) { (transactions, error) in
+      self.explorerManager.transactions(address: address, sendType: filter?.rawValue, page: page) { (transactions, error) in
 
         guard error == nil else {
           observable.onError(error!)

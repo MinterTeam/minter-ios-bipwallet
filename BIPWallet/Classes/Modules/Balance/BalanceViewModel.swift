@@ -76,7 +76,7 @@ class BalanceViewModel: BaseViewModel, ViewModel {
 
   func walletObservable() -> Observable<String?> {
     return self.dependency.balanceService.account.map { (item) -> String? in
-      return (item?.emoji ?? "") + " " + (item?.title ?? TransactionTitleHelper.title(from: item?.address ?? ""))
+      return (item?.emoji ?? "") + "  " + (item?.title ?? TransactionTitleHelper.title(from: item?.address ?? ""))
     }
   }
 

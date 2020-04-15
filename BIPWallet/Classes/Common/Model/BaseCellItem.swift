@@ -9,7 +9,7 @@
 import Foundation
 import RxDataSources
 
-public class BaseCellItem: IdentifiableType, Equatable {
+public class BaseCellItem: IdentifiableType, Equatable, Hashable {
 
 	let reuseIdentifier: String
 	let identifier: String
@@ -33,11 +33,8 @@ public class BaseCellItem: IdentifiableType, Equatable {
 		return lhs.identifier == rhs.identifier
 	}
 
-}
+  public func hash(into hasher: inout Hasher) {
+    hasher.combine(identifier)
+  }
 
-class TransactionCellItem: BaseCellItem {
-	var txHash: String?
-	var from: String?
-	var to: String?
-	var payload: String?
 }

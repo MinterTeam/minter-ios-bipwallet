@@ -42,7 +42,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     window = UIWindow()
 
-    let authService = LocalStorageAuthService(storage: SecureStorage(namespace: "Auth"), accountManager: AccountManager())
+    let authService = LocalStorageAuthService(storage: SecureStorage(namespace: "Auth"),
+                                              accountManager: AccountManager())
     let appCoordinator = AppCoordinator(window: window!,
                                         authStateProvider: authService)
     appCoordinator.start()
@@ -59,7 +60,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 extension AppDelegate {
 
   func appearance() {
-    UINavigationBar.appearance().shadowImage = UIImage(named: "NavigationBarShadowImage")
+      UINavigationBar.appearance().shadowImage = UIImage()
+//    UINavigationBar.appearance().shadowImage = UIImage(named: "NavigationBarShadowImage")
 //    UINavigationBar.appearance().tintColor = .white
 //    UINavigationBar.appearance().barTintColor = UIColor.mainColor()
     UINavigationBar.appearance().titleTextAttributes = [
@@ -86,6 +88,7 @@ extension AppDelegate {
 
     let img = UIImage(named: "BackButtonIcon")?
       .resizableImage(withCapInsets: UIEdgeInsets(top: 0, left: 12, bottom: 0, right: 0))
+      .withAlignmentRectInsets(UIEdgeInsets(top: 0, left: -10, bottom: 0, right: 0))
     img?.stretchableImage(withLeftCapWidth: 0, topCapHeight: 20)
     UINavigationBar.appearance().backIndicatorTransitionMaskImage = img
     UINavigationBar.appearance().backIndicatorImage = img

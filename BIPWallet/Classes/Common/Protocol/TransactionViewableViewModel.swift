@@ -35,7 +35,7 @@ extension TransactionViewableViewModel {
       title = transaction.from ?? ""
     }
 
-    let transactionCellItem = TransactionCellItem1(reuseIdentifier: "TransactionCell",
+    let transactionCellItem = TransactionCellItem(reuseIdentifier: "TransactionCell",
                                                    identifier: "TransactionCellItem_\(sectionId)")
     transactionCellItem.txHash = transaction.hash
     transactionCellItem.title = title
@@ -66,7 +66,7 @@ extension TransactionViewableViewModel {
       title = transaction.from ?? ""
     }
 
-    let transactionCellItem = TransactionCellItem1(reuseIdentifier: "TransactionCell",
+    let transactionCellItem = TransactionCellItem(reuseIdentifier: "TransactionCell",
                                                    identifier: "MultisendTransactionTableViewCell_\(sectionId)")
     transactionCellItem.txHash = transaction.hash
     transactionCellItem.title = title
@@ -115,7 +115,7 @@ extension TransactionViewableViewModel {
       title = transaction.from ?? ""
     }
 
-    let transactionCellItem = TransactionCellItem1(reuseIdentifier: "TransactionCell",
+    let transactionCellItem = TransactionCellItem(reuseIdentifier: "TransactionCell",
                                                    identifier: "ConvertTransactionTableViewCell_\(sectionId)")
     transactionCellItem.txHash = transaction.hash
     transactionCellItem.title = title
@@ -146,7 +146,7 @@ extension TransactionViewableViewModel {
     let transaction = transactionItem
     let sectionId = nil != transaction.txn ? String(transaction.txn!) : (transaction.hash  ?? String.random(length: 20))
 
-    let transactionCellItem = TransactionCellItem1(reuseIdentifier: "TransactionCell",
+    let transactionCellItem = TransactionCellItem(reuseIdentifier: "TransactionCell",
                                                    identifier: "DelegateTransactionTableViewCell_\(sectionId)")
     transactionCellItem.txHash = transaction.hash
 
@@ -172,7 +172,7 @@ extension TransactionViewableViewModel {
     let toAddress = "Mx" + (address ?? "").stripMinterHexPrefix()
     let title = toAddress
 
-    let transactionCellItem = TransactionCellItem1(reuseIdentifier: "TransactionCell",
+    let transactionCellItem = TransactionCellItem(reuseIdentifier: "TransactionCell",
                                                            identifier: "RedeemCheckTableViewCell\(sectionId)")
     transactionCellItem.type = "Check".localized()
     transactionCellItem.txHash = transaction.hash
@@ -197,7 +197,7 @@ extension TransactionViewableViewModel {
 
     let sectionId = transaction.hash ?? String.random()
 
-    let transactionCellItem = TransactionCellItem1(reuseIdentifier: "TransactionCell",
+    let transactionCellItem = TransactionCellItem(reuseIdentifier: "TransactionCell",
                                                    identifier: "SystemTransactionTableViewCell_\(sectionId)")
     transactionCellItem.txHash = transaction.hash
     guard let txType = transaction.type else { return nil }

@@ -20,7 +20,6 @@ class BalanceViewController: SegmentedPagerTabStripViewController, Controller, S
 
   // MARK: - IBOutlet
 
-  @IBOutlet weak var tableView: UITableView!
   @IBOutlet weak var containerViewHeightConstraint: NSLayoutConstraint!
   @IBOutlet weak var segmentedControlView: UIView!
   @IBOutlet weak var availableBalance: UILabel!
@@ -39,7 +38,8 @@ class BalanceViewController: SegmentedPagerTabStripViewController, Controller, S
     customView.addSubview(expandImageView)
 
     walletLabel.snp.makeConstraints { (maker) in
-      maker.left.top.equalTo(customView)
+      maker.top.equalTo(customView).offset(9)
+      maker.left.equalTo(customView)
       maker.height.equalTo(21)
       maker.right.equalTo(customView).offset(-25)
     }
@@ -101,17 +101,17 @@ class BalanceViewController: SegmentedPagerTabStripViewController, Controller, S
 
     segmentedControl.setFont(UIFont.semiBoldFont(of: 14.0))
 
-    self.navigationController?.navigationBar.barTintColor = UIColor(hex: 0x2F1D69)
-    self.navigationController?.navigationBar.barStyle = .default
-    self.navigationController?.navigationBar.isTranslucent = false
-
     //HACK: to layout child view controllers
     view.layoutIfNeeded()
   }
 
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
-    self.navigationController?.navigationBar.isUserInteractionEnabled = true
+//    self.navigationController?.navigationBar.isUserInteractionEnabled = true
+    
+    self.navigationController?.navigationBar.barTintColor = UIColor(hex: 0x2F1D69)
+    self.navigationController?.navigationBar.barStyle = .default
+    self.navigationController?.navigationBar.isTranslucent = false
   }
 
   override public func viewControllers(for pagerTabStripController: PagerTabStripViewController) -> [UIViewController] {

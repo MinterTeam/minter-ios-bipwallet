@@ -1,12 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15705" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="16096" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15706"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16086"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
+    <customFonts key="customFonts">
+        <array key="Inter-SemiBold.otf">
+            <string>Inter-SemiBold</string>
+        </array>
+    </customFonts>
     <scenes>
         <!--Transactions View Controller-->
         <scene sceneID="DPv-Pp-3U6">
@@ -22,17 +27,26 @@
                                 <color key="separatorColor" red="0.8862745098" green="0.8862745098" blue="0.8862745098" alpha="1" colorSpace="custom" customColorSpace="deviceRGB"/>
                                 <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                             </tableView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="No transactions yet" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CLD-4l-70M">
+                                <rect key="frame" x="186" y="437" width="161" height="21"/>
+                                <fontDescription key="fontDescription" name="Inter-SemiBold" family="Inter" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <constraints>
                             <constraint firstItem="Whn-ZE-c7s" firstAttribute="trailing" secondItem="tR0-cY-Wvz" secondAttribute="trailing" id="19S-oK-5eB"/>
                             <constraint firstItem="Whn-ZE-c7s" firstAttribute="leading" secondItem="tR0-cY-Wvz" secondAttribute="leading" id="NcJ-IK-B7i"/>
+                            <constraint firstItem="CLD-4l-70M" firstAttribute="centerY" secondItem="Whn-ZE-c7s" secondAttribute="centerY" id="bPF-24-p0z"/>
                             <constraint firstAttribute="bottom" secondItem="Whn-ZE-c7s" secondAttribute="bottom" id="h4B-qK-uKg"/>
                             <constraint firstItem="Whn-ZE-c7s" firstAttribute="top" secondItem="nJa-uP-JE9" secondAttribute="top" id="jQ5-pT-yZZ"/>
+                            <constraint firstItem="CLD-4l-70M" firstAttribute="centerX" secondItem="Whn-ZE-c7s" secondAttribute="centerX" id="oHf-7s-ban"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="tR0-cY-Wvz"/>
                     </view>
                     <connections>
+                        <outlet property="noTransactionsLabel" destination="CLD-4l-70M" id="STh-Wg-pyM"/>
                         <outlet property="tableView" destination="Whn-ZE-c7s" id="o45-45-s52"/>
                     </connections>
                 </viewController>

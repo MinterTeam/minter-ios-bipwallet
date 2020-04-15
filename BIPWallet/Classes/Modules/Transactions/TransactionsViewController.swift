@@ -14,6 +14,7 @@ import RxAppState
 
 class TransactionsViewController: BaseViewController, Controller, StoryboardInitializable {
 
+  @IBOutlet weak var noTransactionsLabel: UILabel!
   @IBOutlet weak var tableView: UITableView!
 
   // MARK: - ControllerProtocol
@@ -37,7 +38,12 @@ class TransactionsViewController: BaseViewController, Controller, StoryboardInit
 
     //Output
     viewModel.output.sections
-      .bind(to: tableView.rx.items(dataSource: rxDataSource!)).disposed(by: disposeBag)
+      .bind(to: tableView.rx.items(dataSource: rxDataSource!))
+      .disposed(by: disposeBag)
+
+    viewModel.output.showNoTransactions.map { $0 ? 1.0 : 0.0 }
+      .asDriver(onErrorJustReturn: 0.0).drive(noTransactionsLabel.rx.alpha)
+      .disposed(by: disposeBag)
   }
 
   // MARK: - ViewController
@@ -52,7 +58,7 @@ class TransactionsViewController: BaseViewController, Controller, StoryboardInit
                                                                   deleteAnimation: .automatic)
 
     rxDataSource = RxTableViewSectionedAnimatedDataSource<BaseTableSectionItem>(
-      configureCell: { [weak self] dataSource, tableView, indexPath, sm in
+      configureCell: { dataSource, tableView, indexPath, sm in
 
         guard let item = try? dataSource.model(at: indexPath) as? BaseCellItem,
           let cell = tableView.dequeueReusableCell(withIdentifier: item.reuseIdentifier) as? ConfigurableCell else {

@@ -9,7 +9,7 @@
 import UIKit
 import AlamofireImage
 
-class TransactionCellItem1: BaseCellItem {
+class TransactionCellItem: BaseCellItem {
   var txHash: String?
   var imageURL: URL?
   var image: UIImage?
@@ -51,7 +51,7 @@ class TransactionCell: BaseCell {
   override func configure(item: BaseCellItem) {
     super.configure(item: item)
 
-    guard let item = item as? TransactionCellItem1 else { return }
+    guard let item = item as? TransactionCellItem else { return }
 
     title.text = TransactionTitleHelper.title(from: item.title ?? "")
     transactionImage.image = UIImage(named: "AvatarPlaceholderImage")

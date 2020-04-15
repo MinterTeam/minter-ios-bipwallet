@@ -64,6 +64,8 @@ class SendViewController: BaseViewController,
   override func viewDidLoad() {
     super.viewDidLoad()
 
+    self.navigationController?.navigationBar.shadowImage = UIImage(named: "NavigationBarShadowImage")
+
     registerCells()
     configure(with: viewModel)
 
@@ -110,13 +112,9 @@ class SendViewController: BaseViewController,
       textViewCell.delegate = self
       autocompleteView.textField = fakeTextField
 
-      textViewCell.textView.rx.didEndEditing.subscribe(onNext: { (_) in
-        self.fakeTextField.sendActions(for: .editingDidEnd)
-      }).disposed(by: disposeBag)
-
-      textViewCell.textView.rx.didChange.subscribe(onNext: { (_) in
-        
-      }).disposed(by: disposeBag)
+//      textViewCell.textView.rx.didEndEditing.subscribe(onNext: { (_) in
+//        self.fakeTextField.sendActions(for: .editingDidEnd)
+//      }).disposed(by: disposeBag)
 
       if nil != textViewCell as? SendPayloadTableViewCell {
         textViewCell.textView?.rx.text

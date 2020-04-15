@@ -83,7 +83,7 @@ DEPENDENCIES:
   - GoldenKeystore (from `https://github.com/sidorov-panda/GoldenKeystore`)
   - KeychainSwift
   - MinterCore (from `https://github.com/MinterTeam/minter-ios-core.git`, branch `texas`)
-  - MinterExplorer
+  - MinterExplorer (from `../../minter-ios-explorer`)
   - MinterMy
   - NotificationBannerSwift
   - ObjectMapper (~> 3.3)
@@ -116,7 +116,6 @@ SPEC REPOS:
     - Fabric
     - KeychainSwift
     - MarqueeLabel
-    - MinterExplorer
     - MinterMy
     - NotificationBannerSwift
     - ObjectMapper
@@ -150,6 +149,8 @@ EXTERNAL SOURCES:
   MinterCore:
     :branch: texas
     :git: https://github.com/MinterTeam/minter-ios-core.git
+  MinterExplorer:
+    :path: "../../minter-ios-explorer"
   RealmSwift:
     :branch: master
     :git: https://github.com/realm/realm-cocoa.git
@@ -219,6 +220,6 @@ SPEC CHECKSUMS:
   XLPagerTabStrip: 63166e21c9844fa30f2d95d30f335e73be5caf22
   YandexMobileMetrica: f18374ee6977a4cd1d0a86298a0df4ad7baf4135
 
-PODFILE CHECKSUM: b99038b980e33b2bdf2c36dff4fe59ac16a9a316
+PODFILE CHECKSUM: d34bff90a420c4bbff753d92ba41863cab18643a
 
 COCOAPODS: 1.8.4

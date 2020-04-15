@@ -26,6 +26,7 @@ class TransactionsViewModel: BaseViewModel, ViewModel, TransactionViewableViewMo
   private var viewDidLoad = PublishSubject<Void>()
   private var didSelectItem = PublishSubject<IndexPath>()
   private var showTransaction = PublishSubject<MinterExplorer.Transaction?>()
+  private var didTapShowAll = PublishSubject<Void>()
 
   // MARK: - ViewModel
 
@@ -42,6 +43,8 @@ class TransactionsViewModel: BaseViewModel, ViewModel, TransactionViewableViewMo
   struct Output {
     var sections: Observable<[BaseTableSectionItem]>
     var showTransaction: Observable<MinterExplorer.Transaction?>
+    var showNoTransactions: Observable<Bool>
+    var showAllTransactions: Observable<Void>
   }
 
   struct Dependency {
@@ -56,7 +59,11 @@ class TransactionsViewModel: BaseViewModel, ViewModel, TransactionViewableViewMo
     )
 
     self.output = Output(sections: sections.asObservable(),
-                         showTransaction: showTransaction.asObservable()
+                         showTransaction: showTransaction.asObservable(),
+                         showNoTransactions: sections.map({ (items) -> Bool in
+                          return items.reduce(0) { $0 + $1.items.count } == 0
+                         }),
+                         showAllTransactions: didTapShowAll.asObservable()
     )
 
     self.dependency = dependency
@@ -136,19 +143,21 @@ class TransactionsViewModel: BaseViewModel, ViewModel, TransactionViewableViewMo
       cellItems.append(separator)
     }
 
-    let convertButton = ButtonTableViewCellItem(reuseIdentifier: "ButtonTableViewCell",
-                                                identifier: "ButtonTableViewCell_Transactions")
-    convertButton.buttonPattern = "blank"
-    convertButton.title = "All Transactions".localized()
-
-    cellItems.append(convertButton)
+    if transactions.count > 0 {
+      let convertButton = ButtonTableViewCellItem(reuseIdentifier: "ButtonTableViewCell",
+                                                  identifier: "ButtonTableViewCell_Transactions")
+      convertButton.buttonPattern = "blank"
+      convertButton.title = "All Transactions".localized()
+      convertButton.didTapButtonSubject.subscribe(didTapShowAll).disposed(by: disposeBag)
+      cellItems.append(convertButton)
+    }
     section1.items = cellItems
     sections.onNext([section1])
   }
 
   func loadTransactions(address: String) {
     dependency.transactionService
-      .transactions(address: "Mx" + address.stripMinterHexPrefix(), page: 0)
+      .transactions(address: "Mx" + address.stripMinterHexPrefix(), filter: nil, page: 0)
       .do(onNext: { (txs) in
         
       }, onError: { (error) in

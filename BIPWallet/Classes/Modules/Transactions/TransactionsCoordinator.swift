@@ -40,6 +40,11 @@ class TransactionsCoordinator: BaseCoordinator<Void> {
       return self.coordinate(to: transactionCoordinator)
     }).subscribe().disposed(by: self.disposeBag)
 
+    viewModel.output.showAllTransactions.flatMap { (_) -> Observable<Void> in
+      guard let navigationController = self.сontroller.navigationController else { return Observable.empty() }
+      return self.showAllTransactions(navigationController: navigationController)
+    }.subscribe().disposed(by: disposeBag)
+
     сontroller.viewModel = viewModel
 
     self.didScrollToPoint = сontroller.rx.viewDidLoad.flatMap({ [weak self] (_) -> Observable<CGPoint> in
@@ -49,6 +54,11 @@ class TransactionsCoordinator: BaseCoordinator<Void> {
       }
     })
     return Observable.never()
+  }
+
+  func showAllTransactions(navigationController: UINavigationController) -> Observable<Void> {
+    let coordinator = AllTransactionsCoordinator(navigationController: navigationController, balanceService: self.balanceService)
+    return coordinate(to: coordinator)
   }
 
 }

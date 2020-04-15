@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="16096" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16086"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <array key="Inter-SemiBold.otf">
+            <string>Inter-SemiBold</string>
+        </array>
+    </customFonts>
+    <scenes>
+        <!--All Transactions-->
+        <scene sceneID="rVj-9b-hCL">
+            <objects>
+                <viewController storyboardIdentifier="AllTransactionsViewController" title="All Transactions" useStoryboardIdentifierAsRestorationIdentifier="YES" id="n1k-QF-HTx" customClass="AllTransactionsViewController" customModule="BIPWallet" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="DYR-91-4kg">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="808"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="uIN-Db-zDX">
+                                <rect key="frame" x="0.0" y="0.0" width="414" height="48"/>
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" selected="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="YUc-Ib-uRR" customClass="SelectButton" customModule="BIPWallet" customModuleProvider="target">
+                                        <rect key="frame" x="16" y="16" width="51" height="32"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="51" id="cck-zt-0Az"/>
+                                        </constraints>
+                                        <state key="normal" title="All"/>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="249" horizontalCompressionResistancePriority="751" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="e3G-wg-kRi" customClass="SelectButton" customModule="BIPWallet" customModuleProvider="target">
+                                        <rect key="frame" x="75" y="16" width="97" height="32"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="97" id="gMA-kM-Hfp"/>
+                                        </constraints>
+                                        <color key="tintColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <inset key="titleEdgeInsets" minX="16" minY="0.0" maxX="16" maxY="0.0"/>
+                                        <state key="normal" title="Incoming"/>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="QMY-35-E8p" customClass="SelectButton" customModule="BIPWallet" customModuleProvider="target">
+                                        <rect key="frame" x="180" y="16" width="97" height="32"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="97" id="DLe-ji-kBC"/>
+                                        </constraints>
+                                        <state key="normal" title="Outgoing"/>
+                                    </button>
+                                </subviews>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                                <constraints>
+                                    <constraint firstItem="e3G-wg-kRi" firstAttribute="top" secondItem="YUc-Ib-uRR" secondAttribute="top" id="Fv6-La-wR8"/>
+                                    <constraint firstItem="YUc-Ib-uRR" firstAttribute="top" secondItem="uIN-Db-zDX" secondAttribute="top" constant="16" id="IfA-SG-tiq"/>
+                                    <constraint firstItem="QMY-35-E8p" firstAttribute="leading" secondItem="e3G-wg-kRi" secondAttribute="trailing" constant="8" id="Ihw-SF-3cV"/>
+                                    <constraint firstItem="QMY-35-E8p" firstAttribute="bottom" secondItem="e3G-wg-kRi" secondAttribute="bottom" id="LxQ-9w-61C"/>
+                                    <constraint firstAttribute="height" constant="48" id="Sep-EZ-fKb"/>
+                                    <constraint firstItem="YUc-Ib-uRR" firstAttribute="leading" secondItem="uIN-Db-zDX" secondAttribute="leading" constant="16" id="Z94-Tx-wLN"/>
+                                    <constraint firstItem="e3G-wg-kRi" firstAttribute="bottom" secondItem="YUc-Ib-uRR" secondAttribute="bottom" id="g7c-XF-aim"/>
+                                    <constraint firstAttribute="bottom" secondItem="YUc-Ib-uRR" secondAttribute="bottom" id="p9H-ch-med"/>
+                                    <constraint firstItem="e3G-wg-kRi" firstAttribute="leading" secondItem="YUc-Ib-uRR" secondAttribute="trailing" constant="8" id="r7I-Ez-gDz"/>
+                                    <constraint firstItem="QMY-35-E8p" firstAttribute="top" secondItem="e3G-wg-kRi" secondAttribute="top" id="utQ-Zp-QiQ"/>
+                                </constraints>
+                            </view>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="18" sectionFooterHeight="18" translatesAutoresizingMaskIntoConstraints="NO" id="ojV-Fb-xgU">
+                                <rect key="frame" x="0.0" y="48" width="414" height="760"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                                <color key="separatorColor" red="0.8862745098" green="0.8862745098" blue="0.8862745098" alpha="1" colorSpace="custom" customColorSpace="deviceRGB"/>
+                                <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                            </tableView>
+                            <label opaque="NO" userInteractionEnabled="NO" alpha="0.0" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="No transactions yet" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="o8a-0V-Cjm">
+                                <rect key="frame" x="126.5" y="417.5" width="161" height="21"/>
+                                <fontDescription key="fontDescription" name="Inter-SemiBold" family="Inter" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <constraints>
+                            <constraint firstItem="uIN-Db-zDX" firstAttribute="trailing" secondItem="hhY-5l-gzV" secondAttribute="trailing" id="ILb-Sc-lCc"/>
+                            <constraint firstAttribute="bottom" secondItem="ojV-Fb-xgU" secondAttribute="bottom" id="PKR-hv-mVZ"/>
+                            <constraint firstItem="uIN-Db-zDX" firstAttribute="top" secondItem="DYR-91-4kg" secondAttribute="top" id="Zgo-GH-qWD"/>
+                            <constraint firstItem="ojV-Fb-xgU" firstAttribute="top" secondItem="uIN-Db-zDX" secondAttribute="bottom" id="bBh-jI-ter"/>
+                            <constraint firstItem="uIN-Db-zDX" firstAttribute="leading" secondItem="hhY-5l-gzV" secondAttribute="leading" id="iYx-YE-YDP"/>
+                            <constraint firstItem="o8a-0V-Cjm" firstAttribute="centerY" secondItem="ojV-Fb-xgU" secondAttribute="centerY" id="pPi-PO-cad"/>
+                            <constraint firstItem="o8a-0V-Cjm" firstAttribute="centerX" secondItem="ojV-Fb-xgU" secondAttribute="centerX" id="pTd-mP-yAJ"/>
+                            <constraint firstItem="ojV-Fb-xgU" firstAttribute="leading" secondItem="hhY-5l-gzV" secondAttribute="leading" id="yKQ-WW-pcc"/>
+                            <constraint firstItem="ojV-Fb-xgU" firstAttribute="trailing" secondItem="hhY-5l-gzV" secondAttribute="trailing" id="yme-lO-2RX"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="hhY-5l-gzV"/>
+                    </view>
+                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" translucent="NO" prompted="NO"/>
+                    <connections>
+                        <outlet property="filterAll" destination="YUc-Ib-uRR" id="eGi-Vr-bGH"/>
+                        <outlet property="filterIncoming" destination="e3G-wg-kRi" id="22p-bM-6mJ"/>
+                        <outlet property="filterOutgoing" destination="QMY-35-E8p" id="cwT-wk-H3M"/>
+                        <outlet property="noTransactionsLabel" destination="o8a-0V-Cjm" id="hBy-M4-R4H"/>
+                        <outlet property="tableView" destination="ojV-Fb-xgU" id="lVR-D8-IWG"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="OpV-GG-Bek" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-17.39130434782609" y="112.5"/>
+        </scene>
+    </scenes>
+</document>
