@@ -79,10 +79,11 @@ class ExplorerBalanceService: BalanceService {
 //        }
 //      }).disposed(by: disposeBag)
   }
-  
+
   func updateDelegated() {
     account.flatMapLatest { (account) -> Observable<([AddressDelegation]?, Decimal?)> in
-      return self.addressManager.delegations(address: account!.address)
+      guard let address = account?.address, address.isValidAddress() else { return Observable.empty() }
+      return self.addressManager.delegations(address: address)
     }.asDriver(onErrorJustReturn: (nil, nil))
     .drive(delegatedSubject)
     .disposed(by: disposeBag)
@@ -95,6 +96,21 @@ class ExplorerBalanceService: BalanceService {
   let httpClient = APIClient()
   lazy var addressManager = ExplorerAddressManager(httpClient: httpClient)
 
+  func delegations(address: String, page: Int) -> Observable<[MinterExplorer.AddressDelegation]> {
+    return Observable.create { (observable) -> Disposable in
+      self.addressManager.delegations(address: address, page: page) { delegations, total, error in
+
+        guard error == nil else {
+          observable.onError(error!)
+          return
+        }
+        observable.onNext(delegations ?? [])
+        observable.onCompleted()
+      }
+      return Disposables.create()
+    }
+  }
+
   func balances(address: String) -> Observable<BalancesResponse> {
     return Observable.create { (observer) -> Disposable in
 
@@ -103,7 +119,7 @@ class ExplorerBalanceService: BalanceService {
         return Disposables.create()
       }
 
-      self.addressManager.address(address: address, withSum: true) { [weak self] (response, err) in
+      self.addressManager.address(address: address, withSum: true) { (response, err) in
 
         var totalMainCoinBalance: Decimal = 0
         var totalUSDBalance: Decimal = 0

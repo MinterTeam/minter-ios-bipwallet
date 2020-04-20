@@ -24,6 +24,7 @@ class BalanceViewController: SegmentedPagerTabStripViewController, Controller, S
   @IBOutlet weak var segmentedControlView: UIView!
   @IBOutlet weak var availableBalance: UILabel!
   @IBOutlet weak var delegatedBalance: UILabel!
+  @IBOutlet weak var delegatedBalanceButton: UIButton!
 
   var walletSelectorButton = UIButton()
   let walletLabel = UILabel(frame: CGRect(x: 0, y: 0, width: 150, height: 30))
@@ -68,6 +69,11 @@ class BalanceViewController: SegmentedPagerTabStripViewController, Controller, S
       .drive(viewModel.input.didTapSelectWallet)
       .disposed(by: disposeBag)
 
+    delegatedBalanceButton.rx.tap
+      .asDriver()
+      .drive(viewModel.input.didTapDelegatedBalance)
+      .disposed(by: disposeBag)
+
     //Output
     viewModel.output
       .availabaleBalance
@@ -107,8 +113,7 @@ class BalanceViewController: SegmentedPagerTabStripViewController, Controller, S
 
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
-//    self.navigationController?.navigationBar.isUserInteractionEnabled = true
-    
+
     self.navigationController?.navigationBar.barTintColor = UIColor(hex: 0x2F1D69)
     self.navigationController?.navigationBar.barStyle = .default
     self.navigationController?.navigationBar.isTranslucent = false

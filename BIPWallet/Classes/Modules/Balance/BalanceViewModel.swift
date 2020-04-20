@@ -18,6 +18,7 @@ class BalanceViewModel: BaseViewModel, ViewModel {
   private var availabaleBalance = PublishSubject<NSAttributedString>()
   private var delegatedBalance = PublishSubject<String>()
   private var didTapSelectWallet = PublishSubject<Void>()
+  private var didTapDelegatedBalance = PublishSubject<Void>()
   private var wallet = PublishSubject<String>()
 
   // MARK: - ViewModel
@@ -29,6 +30,7 @@ class BalanceViewModel: BaseViewModel, ViewModel {
   struct Input {
     var needsToUpdateBalance: AnyObserver<Void>
     var didTapSelectWallet: AnyObserver<Void>
+    var didTapDelegatedBalance: AnyObserver<Void>
   }
 
   struct Output {
@@ -36,6 +38,7 @@ class BalanceViewModel: BaseViewModel, ViewModel {
     var delegatedBalance: Observable<String>
     var didTapSelectWallet: Observable<Void>
     var wallet: Observable<String?>
+    var showDelegated: Observable<Void>
   }
 
   struct Dependency {
@@ -46,12 +49,18 @@ class BalanceViewModel: BaseViewModel, ViewModel {
     super.init()
 
     self.dependency = dependency
+
     self.input = Input(needsToUpdateBalance: needsToUpdateBalance.asObserver(),
-                       didTapSelectWallet: didTapSelectWallet.asObserver())
+                       didTapSelectWallet: didTapSelectWallet.asObserver(),
+                       didTapDelegatedBalance: didTapDelegatedBalance.asObserver()
+    )
+
     self.output = Output(availabaleBalance: availabaleBalance.asObservable(),
                          delegatedBalance: delegatedBalance.asObservable(),
                          didTapSelectWallet: didTapSelectWallet.map { $0 },
-                         wallet: walletObservable())
+                         wallet: walletObservable(),
+                         showDelegated: didTapDelegatedBalance.asObservable()
+    )
 
     bind()
   }

@@ -8,17 +8,27 @@
 
 import UIKit
 import RxSwift
+import RxDataSources
 
-class SettingsViewController: BaseViewController, Controller {
+class SettingsViewController: BaseViewController, Controller, StoryboardInitializable {
+
+  // MARK: -
+
+  @IBOutlet weak var tableView: UITableView!
 
   // MARK: - ControllerProtocol
+
+  var rxDataSource: RxTableViewSectionedAnimatedDataSource<BaseTableSectionItem>?
 
   typealias ViewModelType = SettingsViewModel
 
   var viewModel: ViewModelType!
 
   func configure(with viewModel: SettingsViewModel) {
-
+    //Output
+    viewModel.output.sections
+      .bind(to: tableView.rx.items(dataSource: rxDataSource!))
+      .disposed(by: disposeBag)
   }
 
   // MARK: - ViewController
@@ -26,7 +36,65 @@ class SettingsViewController: BaseViewController, Controller {
   override func viewDidLoad() {
     super.viewDidLoad()
 
+    registerCells()
+
+    rxDataSource?.animationConfiguration = AnimationConfiguration(insertAnimation: .top,
+                                                                  reloadAnimation: .none,
+                                                                  deleteAnimation: .automatic)
+
+    tableView.rx.setDelegate(self).disposed(by: disposeBag)
+
+    rxDataSource = RxTableViewSectionedAnimatedDataSource<BaseTableSectionItem>(
+      configureCell: { dataSource, tableView, indexPath, sm in
+
+        guard let item = try? dataSource.model(at: indexPath) as? BaseCellItem,
+          let cell = tableView.dequeueReusableCell(withIdentifier: item.reuseIdentifier) as? ConfigurableCell else {
+          return UITableViewCell()
+        }
+        cell.configure(item: item)
+        return cell
+      })
+
     configure(with: viewModel)
+  }
+
+  private func registerCells() {
+    tableView.register(UINib(nibName: "SeparatorTableViewCell", bundle: nil),
+                       forCellReuseIdentifier: "SeparatorTableViewCell")
+    tableView.register(UINib(nibName: "DisclosureTableViewCell", bundle: nil),
+                       forCellReuseIdentifier: "DisclosureTableViewCell")
+    tableView.register(UINib(nibName: "ButtonTableViewCell", bundle: nil),
+                       forCellReuseIdentifier: "ButtonTableViewCell")
+    tableView.register(UINib(nibName: "BlankTableViewCell", bundle: nil),
+                       forCellReuseIdentifier: "BlankTableViewCell")
+    tableView.register(UINib(nibName: "SwitchTableViewCell", bundle: nil),
+                       forCellReuseIdentifier: "SwitchTableViewCell")
+    tableView.register(UINib(nibName: "ContactPickerHeader", bundle: nil),
+                       forHeaderFooterViewReuseIdentifier: "ContactPickerHeader")
+  }
+
+}
+
+extension SettingsViewController: UITableViewDelegate {
+
+  func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+    guard (rxDataSource?.sectionModels[section].header?.count ?? 0) > 0 else {
+      return nil
+    }
+    let view = tableView.dequeueReusableHeaderFooterView(withIdentifier: "ContactPickerHeader") as? ContactPickerHeader
+    view?.titleLabel?.text = rxDataSource?.sectionModels[section].header
+    return view
+  }
+
+  func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+    if (rxDataSource?.sectionModels[section].header?.count ?? 0) > 0 {
+      return 46
+    }
+    return 0.1
+  }
+
+  func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+    return 0.1
   }
 
 }

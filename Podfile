@@ -5,7 +5,7 @@ platform :ios, '11.0'
 
 def shared_pods
   #Minter
-	pod 'MinterCore', :git => 'https://github.com/MinterTeam/minter-ios-core.git', :branch => 'texas'
+	pod 'MinterCore', :path => '../../minter-ios-core'
 	pod 'MinterMy'#, :path => '../../minter-ios-my'
 	pod 'MinterExplorer', :path => '../../minter-ios-explorer'#, :branch => '2.0'
   #Networking
@@ -18,6 +18,7 @@ def shared_pods
 	pod 'RxGesture'
 	pod 'RxDataSources'
 	pod 'RxAppState'
+  pod 'RxSwiftExt'
   #DB/Storage
   pod 'RealmSwift', git: 'https://github.com/realm/realm-cocoa.git', branch: 'master', submodules: true
   pod 'GoldenKeystore', :git => 'https://github.com/sidorov-panda/GoldenKeystore'

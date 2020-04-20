@@ -19,10 +19,12 @@ extension ExplorerAddressManager {
                        page: page,
                        limit: 50,
                        completion: { (res, total, err) in
+
 				guard err == nil else {
 					observer.onError(err!)
 					return
 				}
+
 				observer.onNext((res, total))
         observer.onCompleted()
 			})

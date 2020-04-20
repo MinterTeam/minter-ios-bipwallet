@@ -1,17 +1,17 @@
 {
   "images" : [
     {
-      "filename" : "Combined Shape.png",
+      "filename" : "add_circle_outline_24px.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "Combined Shape@2x.png",
+      "filename" : "add_circle_outline_24px@2x.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
-      "filename" : "Combined Shape@3x.png",
+      "filename" : "add_circle_outline_24px@3x.png",
       "idiom" : "universal",
       "scale" : "3x"
     }

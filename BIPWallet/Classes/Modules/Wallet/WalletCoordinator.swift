@@ -68,10 +68,15 @@ class WalletCoordinator: BaseCoordinator<Void> {
                                           authService: authService)
     coordinate(to: sendCoordinator).subscribe().disposed(by: disposeBag)
 
-//    let settingsTabbarItem = UITabBarItem(title: "Wallets".localized(),
-//                                          image: UIImage(named: "SettingsIcon"),
-//                                          selectedImage: nil)
-//    let settings = SettingsCoordinator(tabbarItem: settingsTabbarItem)
+    let settingsTabbarItem = UITabBarItem(title: "Settings".localized(),
+                                          image: UIImage(named: "SettingsIcon"),
+                                          selectedImage: nil)
+
+    let settings = UINavigationController()
+    settings.tabBarItem = settingsTabbarItem
+
+    let settingsCoordinator = SettingsCoordinator(navigationController: settings)
+    coordinate(to: settingsCoordinator).subscribe().disposed(by: disposeBag)
 
 //    let coordinators = [balance, send, settings].map { (coordinator) -> Observable<UIViewController> in
 //      return self.coordinate(to: coordinator)
@@ -80,7 +85,7 @@ class WalletCoordinator: BaseCoordinator<Void> {
 //      controller.viewControllers = vcs
 //    }).disposed(by: disposeBag)
 
-    controller.viewControllers = [balance, send]
+    controller.viewControllers = [balance, send, settings]
 
     return Observable.never()
   }

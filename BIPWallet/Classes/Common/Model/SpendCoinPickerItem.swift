@@ -24,18 +24,18 @@ struct SpendCoinPickerItem {
 
   static func items(with balances: [String: Decimal]) -> [SpendCoinPickerItem] {
     var ret = [SpendCoinPickerItem]()
-      var coins = balances.keys.filter({ (coin) -> Bool in
-        return coin != Coin.baseCoin().symbol!
-      }).sorted(by: { (val1, val2) -> Bool in
-        return val1 < val2
-      })
-      coins.insert(Coin.baseCoin().symbol!, at: 0)
-      coins.forEach({ (coin) in
-        let balance = (balances[coin] ?? 0.0)
-        let item = SpendCoinPickerItem(coin: coin,
-                                       balance: balance)
-        ret.append(item)
-      })
+    var coins = balances.keys.filter({ (coin) -> Bool in
+      return coin != Coin.baseCoin().symbol!
+    }).sorted(by: { (val1, val2) -> Bool in
+      return val1 < val2
+    })
+    coins.insert(Coin.baseCoin().symbol!, at: 0)
+    coins.forEach({ (coin) in
+      let balance = (balances[coin] ?? 0.0)
+      let item = SpendCoinPickerItem(coin: coin,
+                                     balance: balance)
+      ret.append(item)
+    })
     return ret
   }
 

@@ -21,6 +21,7 @@ class AddWalletViewController: BaseViewController, Controller, StoryboardInitial
   @IBOutlet weak var generateWalletButton: DefaultButton!
   @IBOutlet weak var mnemonicTextView: DefaultTextView!
   @IBOutlet weak var titleTextField: DefaultTextField!
+  @IBOutlet weak var generateTitleTextField: DefaultTextField!
   @IBOutlet weak var generateView: HandlerVerticalSnapDraggableView! {
     didSet {
       generateView.title = "Generate New Wallet"
@@ -75,6 +76,8 @@ class AddWalletViewController: BaseViewController, Controller, StoryboardInitial
     (titleTextField.rx.text <-> viewModel.input.signInTitle).disposed(by: disposeBag)
     titleTextField.rx.controlEvent(.editingDidEndOnExit).subscribe(viewModel.input.titleDidEndEditing).disposed(by: disposeBag)
 
+    (generateTitleTextField.rx.text <-> viewModel.input.title).disposed(by: disposeBag)
+
     //Output
     viewModel.output.mnemonics
       .asDriver(onErrorJustReturn: "")
@@ -91,8 +94,8 @@ class AddWalletViewController: BaseViewController, Controller, StoryboardInitial
     }).disposed(by: disposeBag)
 
     viewModel.output.hardImpact.subscribe(onNext: { [weak self] (_) in
-//      self?.hardImpactFeedbackGenerator.prepare()
-//      self?.hardImpactFeedbackGenerator.impactOccurred()
+      self?.hardImpactFeedbackGenerator.prepare()
+      self?.hardImpactFeedbackGenerator.impactOccurred()
     }).disposed(by: disposeBag)
 
     viewModel.output.shakeError.subscribe(onNext: { [weak self] (_) in
@@ -147,8 +150,8 @@ class AddWalletViewController: BaseViewController, Controller, StoryboardInitial
       }
     }).disposed(by: disposeBag)
 
-    let keyboardObservable = Observable<Notification>.merge(NotificationCenter.default.rx.notification(ViewController.keyboardWillShowNotification),
-                                                            NotificationCenter.default.rx.notification(ViewController.keyboardWillHideNotification))
+    Observable<Notification>.merge(NotificationCenter.default.rx.notification(ViewController.keyboardWillShowNotification),
+                                   NotificationCenter.default.rx.notification(ViewController.keyboardWillHideNotification))
       .subscribe(onNext: { [weak self] (not) in
         guard let `self` = self else { return }
         guard let keyboardSize = not.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue else { return }

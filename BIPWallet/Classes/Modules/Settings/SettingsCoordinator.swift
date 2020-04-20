@@ -9,22 +9,24 @@
 import UIKit
 import RxSwift
 
-class SettingsCoordinator: BaseCoordinator<UIViewController> {
+class SettingsCoordinator: BaseCoordinator<Void> {
 
-  private let tabbarItem: UITabBarItem?
+  private let navigationController: UINavigationController
 
-  init(tabbarItem: UITabBarItem) {
-    self.tabbarItem = tabbarItem
+  init(navigationController: UINavigationController) {
+    self.navigationController = navigationController
 
     super.init()
   }
 
-  override func start() -> Observable<UIViewController> {
-    let controller = UIViewController()
-    controller.tabBarItem = self.tabbarItem
-    controller.view.backgroundColor = .blue
+  override func start() -> Observable<Void> {
+    let dependency = SettingsViewModel.Dependency()
+    let viewModel = SettingsViewModel(dependency: dependency)
+    let controller = SettingsViewController.initFromStoryboard(name: "Settings")
+    controller.viewModel = viewModel
 
-    return Observable.just(controller)
+    navigationController.setViewControllers([controller], animated: false)
+    return Observable.never()
   }
 
 }

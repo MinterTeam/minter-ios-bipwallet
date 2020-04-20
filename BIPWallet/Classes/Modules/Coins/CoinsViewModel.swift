@@ -125,7 +125,11 @@ class CoinsViewModel: BaseViewModel, ViewModel {
       coin.imageURL = MinterMyAPIURL.avatarByCoin(coin: key).url()
       coin.coin = key
       coin.amount = coins[key]?.0
-      coin.bipAmount = coins[key]?.1
+      if let bipAmount = coins[key]?.1, key != Coin.baseCoin().symbol! {
+        coin.bipAmount = bipAmount
+      } else {
+        coin.bipAmount = nil
+      }
       cellItems.append(coin)
       cellItems.append(separator)
     }

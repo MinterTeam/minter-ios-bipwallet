@@ -3,7 +3,7 @@
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16086"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16087"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -133,6 +133,7 @@
                         <outlet property="activateButtonActivityIndicator" destination="3fh-dD-so6" id="aPW-cx-n87"/>
                         <outlet property="bottomConstraint" destination="zBR-dQ-jW8" id="mgT-NY-Er4"/>
                         <outlet property="copiedIndicator" destination="TYo-aW-NNe" id="y4Z-CG-JsZ"/>
+                        <outlet property="generateTitleTextField" destination="vUe-q0-t0e" id="Y0G-aa-y9G"/>
                         <outlet property="generateView" destination="hdS-Ak-1mY" id="HeH-GR-pM7"/>
                         <outlet property="generateWalletButton" destination="FPg-CY-I4L" id="mnC-M4-sjo"/>
                         <outlet property="mainView" destination="ue4-1O-4bG" id="6WI-7a-nVm"/>

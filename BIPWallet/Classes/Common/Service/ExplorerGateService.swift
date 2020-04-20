@@ -11,7 +11,7 @@ import RxSwift
 import MinterCore
 
 class ExplorerGateService: GateService {
-  
+
   private let disposeBag = DisposeBag()
 
   private let gateManager = GateManager(httpClient: APIClient())
@@ -24,6 +24,18 @@ class ExplorerGateService: GateService {
 
   func updateGas() {
     gateManager.minGas().subscribe(gasSubject).disposed(by: disposeBag)
+  }
+
+  func nonce(address: String) -> Observable<Int> {
+    return gateManager.nonce(address: address)
+  }
+
+  func send(rawTx: String?) -> Observable<String?> {
+    return gateManager.send(rawTx: rawTx)
+  }
+
+  func estimateComission(rawTx: String) -> Observable<Decimal> {
+    gateManager.estimateComission(tx: rawTx)
   }
 
 }

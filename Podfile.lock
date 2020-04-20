@@ -55,6 +55,14 @@ PODS:
   - RxRelay (5.0.1):
     - RxSwift (~> 5)
   - RxSwift (5.0.1)
+  - RxSwiftExt (5.2.0):
+    - RxSwiftExt/Core (= 5.2.0)
+    - RxSwiftExt/RxCocoa (= 5.2.0)
+  - RxSwiftExt/Core (5.2.0):
+    - RxSwift (~> 5.0)
+  - RxSwiftExt/RxCocoa (5.2.0):
+    - RxCocoa (~> 5.0)
+    - RxSwiftExt/Core
   - secp256k1.swift (0.1.4)
   - SipHash (1.2.2)
   - SnapKit (4.0.1)
@@ -82,7 +90,7 @@ DEPENDENCIES:
   - Fabric (~> 1.7)
   - GoldenKeystore (from `https://github.com/sidorov-panda/GoldenKeystore`)
   - KeychainSwift
-  - MinterCore (from `https://github.com/MinterTeam/minter-ios-core.git`, branch `texas`)
+  - MinterCore (from `../../minter-ios-core`)
   - MinterExplorer (from `../../minter-ios-explorer`)
   - MinterMy
   - NotificationBannerSwift
@@ -94,6 +102,7 @@ DEPENDENCIES:
   - RxDataSources
   - RxGesture
   - RxSwift
+  - RxSwiftExt
   - SnapKit
   - SwiftCentrifuge
   - SwiftLint
@@ -128,6 +137,7 @@ SPEC REPOS:
     - RxGesture
     - RxRelay
     - RxSwift
+    - RxSwiftExt
     - secp256k1.swift
     - SipHash
     - SnapKit
@@ -147,8 +157,7 @@ EXTERNAL SOURCES:
   GoldenKeystore:
     :git: https://github.com/sidorov-panda/GoldenKeystore
   MinterCore:
-    :branch: texas
-    :git: https://github.com/MinterTeam/minter-ios-core.git
+    :path: "../../minter-ios-core"
   MinterExplorer:
     :path: "../../minter-ios-explorer"
   RealmSwift:
@@ -166,9 +175,6 @@ CHECKOUT OPTIONS:
   GoldenKeystore:
     :commit: 2f58a6eb405561bec305d5a197bcaa1514eed77e
     :git: https://github.com/sidorov-panda/GoldenKeystore
-  MinterCore:
-    :commit: c1bb1f9b5b64268ad55c806f13eb021d8e570f46
-    :git: https://github.com/MinterTeam/minter-ios-core.git
   RealmSwift:
     :commit: ad6f5f94b023caaec57c99f7a986160f8c087d0c
     :git: https://github.com/realm/realm-cocoa.git
@@ -206,6 +212,7 @@ SPEC CHECKSUMS:
   RxGesture: a3f8dd6adf078110ed5e1c9c30d09d705a09852e
   RxRelay: 89d54507f4fd4d969e6ec1d4bd7f3673640b4640
   RxSwift: e2dc62b366a3adf6a0be44ba9f405efd4c94e0c4
+  RxSwiftExt: 4ca80336f43c28f11a2825cdd2fc61dd6c044697
   secp256k1.swift: a7e7a214f6db6ce5db32cc6b2b45e5c4dd633634
   SipHash: fad90a4683e420c52ef28063063dbbce248ea6d4
   SnapKit: 0de968a9fec17499afa29683b05d0c775b6d1c29
@@ -220,6 +227,6 @@ SPEC CHECKSUMS:
   XLPagerTabStrip: 63166e21c9844fa30f2d95d30f335e73be5caf22
   YandexMobileMetrica: f18374ee6977a4cd1d0a86298a0df4ad7baf4135
 
-PODFILE CHECKSUM: d34bff90a420c4bbff753d92ba41863cab18643a
+PODFILE CHECKSUM: 560b030fcb661e898f3bcb83c6ada2d46e0e297b
 
 COCOAPODS: 1.8.4

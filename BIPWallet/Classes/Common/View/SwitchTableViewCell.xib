@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="16096" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16087"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <array key="Inter-SemiBold.otf">
+            <string>Inter-SemiBold</string>
+        </array>
+    </customFonts>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" rowHeight="50" id="U2E-q8-Qmy" customClass="SwitchTableViewCell" customModule="BIPWallet" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="426" height="50"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="U2E-q8-Qmy" id="Y4B-oZ-XOb">
+                <rect key="frame" x="0.0" y="0.0" width="426" height="50"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DCF-H5-7dD">
+                        <rect key="frame" x="16" y="14" width="333" height="22"/>
+                        <fontDescription key="fontDescription" name="Inter-SemiBold" family="Inter" pointSize="14"/>
+                        <color key="textColor" red="0.098039215690000001" green="0.098039215690000001" blue="0.098039215690000001" alpha="1" colorSpace="deviceRGB"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="utk-n2-RoY">
+                        <rect key="frame" x="359" y="9.5" width="53" height="31"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="51" id="3aY-LR-fsD"/>
+                        </constraints>
+                        <color key="tintColor" red="0.31372549020000001" green="0.18039215689999999" blue="0.76078431369999999" alpha="1" colorSpace="deviceRGB"/>
+                        <color key="onTintColor" red="0.31372549020000001" green="0.18039215689999999" blue="0.76078431369999999" alpha="1" colorSpace="deviceRGB"/>
+                        <connections>
+                            <action selector="didSwitch:" destination="U2E-q8-Qmy" eventType="valueChanged" id="Wkz-Pi-Yxz"/>
+                        </connections>
+                    </switch>
+                </subviews>
+                <constraints>
+                    <constraint firstItem="utk-n2-RoY" firstAttribute="centerY" secondItem="DCF-H5-7dD" secondAttribute="centerY" id="2Ta-fg-vUM"/>
+                    <constraint firstItem="utk-n2-RoY" firstAttribute="leading" secondItem="DCF-H5-7dD" secondAttribute="trailing" constant="10" id="3JA-au-UjI"/>
+                    <constraint firstItem="DCF-H5-7dD" firstAttribute="leading" secondItem="Y4B-oZ-XOb" secondAttribute="leading" constant="16" id="AXk-wM-WK9"/>
+                    <constraint firstAttribute="trailing" secondItem="utk-n2-RoY" secondAttribute="trailing" constant="16" id="Kd2-50-GmS"/>
+                    <constraint firstItem="DCF-H5-7dD" firstAttribute="top" secondItem="Y4B-oZ-XOb" secondAttribute="top" constant="14" id="P2p-qc-RyA"/>
+                    <constraint firstAttribute="bottom" secondItem="DCF-H5-7dD" secondAttribute="bottom" constant="14" id="nUV-GM-3Ch"/>
+                </constraints>
+            </tableViewCellContentView>
+            <viewLayoutGuide key="safeArea" id="GK5-Gb-CJe"/>
+            <connections>
+                <outlet property="label" destination="DCF-H5-7dD" id="joT-gK-nNR"/>
+                <outlet property="switch" destination="utk-n2-RoY" id="QD1-qC-LE1"/>
+            </connections>
+            <point key="canvasLocation" x="87" y="57"/>
+        </tableViewCell>
+    </objects>
+</document>

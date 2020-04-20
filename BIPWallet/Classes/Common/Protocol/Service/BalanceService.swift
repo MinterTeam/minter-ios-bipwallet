@@ -36,12 +36,3 @@ protocol BalanceService {
 
   func balances(address: String) -> Observable<BalancesResponse>
 }
-
-enum TransactionServiceFilter: String {
-  case incoming = "incoming"
-  case outgoing = "outcoming"
-}
-
-protocol TransactionService {
-  func transactions(address: String, filter: TransactionServiceFilter?, page: Int) -> Observable<[MinterExplorer.Transaction]>
-}

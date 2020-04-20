@@ -108,7 +108,7 @@ class ContactPickerViewController: BaseViewController, Controller, StoryboardIni
         return cell
       }, canEditRowAtIndexPath: { _,_ in
         return true
-    })
+      })
 
     configure(with: viewModel)
 

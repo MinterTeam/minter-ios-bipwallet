@@ -532,7 +532,7 @@ YOU ARE ABOUT TO SEND SEED PHRASE IN THE MESSAGE ATTACHED TO THIS TRANSACTION.\n
     if to.count > 66 {
       return false
     }
-    return to.isValidContactName() || self.isValidMinterRecipient(recipient: to)/* || to.isValidEmail()*/
+    return to.isValidContactName() || self.isValidMinterRecipient(recipient: to)
   }
 
   func shouldShowRecipientError(for recipient: String) -> Bool {

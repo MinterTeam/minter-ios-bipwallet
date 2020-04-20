@@ -39,9 +39,17 @@ class AllTransactionsViewController: BaseViewController, Controller, StoryboardI
       .drive(viewModel.input.didSelectItem)
       .disposed(by: disposeBag)
 
-    filterAll.rx.tap.asDriver().drive(viewModel.input.filterAllTaped).disposed(by: disposeBag)
-    filterIncoming.rx.tap.asDriver().drive(viewModel.input.filterIncomingTaped).disposed(by: disposeBag)
-    filterOutgoing.rx.tap.asDriver().drive(viewModel.input.filterOutgoingTaped).disposed(by: disposeBag)
+    filterAll.rx.tap.asDriver()
+      .drive(viewModel.input.filterAllTaped)
+      .disposed(by: disposeBag)
+
+    filterIncoming.rx.tap.asDriver()
+      .drive(viewModel.input.filterIncomingTaped)
+      .disposed(by: disposeBag)
+
+    filterOutgoing.rx.tap.asDriver()
+      .drive(viewModel.input.filterOutgoingTaped)
+      .disposed(by: disposeBag)
 
     tableView.rx.willDisplayCell
       .asDriver()

@@ -8,6 +8,7 @@
 
 import UIKit
 import AlamofireImage
+import MinterCore
 import RxSwift
 
 class CoinTableViewCellItem: BaseCellItem {
@@ -24,7 +25,7 @@ class CoinTableViewCellItem: BaseCellItem {
 class CoinTableViewCell: BaseCell {
 
 	// MARK: -
-	
+
 	private let formatter = CurrencyNumberFormatter.coinFormatter
 
 	// MARK: - IBOutlet
@@ -49,16 +50,13 @@ class CoinTableViewCell: BaseCell {
 	@IBOutlet weak var coinImageWrapper: UIView! {
 		didSet {
 			coinImageWrapper.backgroundColor = .clear
-//			coinImageWrapper.layer.applySketchShadow(color: UIColor(hex: 0x000000, alpha: 0.2)!,
-//																							 alpha: 1,
-//																							 x: 0,
-//																							 y: 2,
-//																							 blur: 18,
-//																							 spread: 0)
 		}
 	}
+
 	private var isShowingCoin = false
+
 	@IBAction func didTapCell(_ sender: Any) {
+
 		if self.title.frame.width > self.amount.frame.width {
 			return
 		}
@@ -75,14 +73,14 @@ class CoinTableViewCell: BaseCell {
 				self?.isShowingCoin = true
 			}
 		} else {
-				amount.adjustsFontSizeToFitWidth = false
-				self.amountLeadingConstraint?.isActive = true
-				UIView.animate(withDuration: 0.2, animations: { [weak self] in
-					self?.title.alpha = 1.0
-					self?.layoutIfNeeded()
-				}) {  [weak self] (finished) in
-					self?.isShowingCoin = false
-				}
+      amount.adjustsFontSizeToFitWidth = false
+      self.amountLeadingConstraint?.isActive = true
+      UIView.animate(withDuration: 0.2, animations: { [weak self] in
+        self?.title.alpha = 1.0
+        self?.layoutIfNeeded()
+      }) {  [weak self] (finished) in
+        self?.isShowingCoin = false
+      }
 		}
 	}
 
@@ -103,27 +101,35 @@ class CoinTableViewCell: BaseCell {
 	// MARK: -
 
 	override func configure(item: BaseCellItem) {
-		if let transaction = item as? CoinTableViewCellItem {
-			title.text = transaction.title
-			coinImage.image = transaction.image
-			if let url = transaction.imageURL {
-				coinImage.af_setImage(withURL: url,
-															filter: RoundedCornersFilter(radius: 16.0))
-			} else {
-				coinImage.image = transaction.image
-			}
+    super.configure(item: item)
 
-			amount.text = CurrencyNumberFormatter.formattedDecimal(with: transaction.amount ?? 0,
-																														 formatter: formatter)
-			coin.text = CurrencyNumberFormatter.formattedDecimal(with: transaction.bipAmount ?? 0,
+		guard let transaction = item as? CoinTableViewCellItem else {
+      return
+    }
+
+    title.text = transaction.title
+    coinImage.image = transaction.image
+    if let url = transaction.imageURL {
+      coinImage.af_setImage(withURL: url,
+                            filter: RoundedCornersFilter(radius: 16.0))
+    } else {
+      coinImage.image = transaction.image
+    }
+
+    amount.text = CurrencyNumberFormatter.formattedDecimal(with: transaction.amount ?? 0,
                                                            formatter: formatter)
 
-			transaction.amountObservable?.subscribe(onNext: { [weak self] (val) in
-				self?.amount.text = CurrencyNumberFormatter.formattedDecimal(with: val ?? 0,
-																																		 formatter: self!.formatter)
-			}).disposed(by: disposeBag)
+    if let bipAmount = transaction.bipAmount {
+      let amnt = CurrencyNumberFormatter.formattedDecimal(with: bipAmount,
+                                                          formatter: formatter)
+      coin.text = amnt + " " + (Coin.baseCoin().symbol ?? "")
+    }
 
-		}
+    transaction.amountObservable?.subscribe(onNext: { [weak self] (val) in
+      self?.amount.text = CurrencyNumberFormatter.formattedDecimal(with: val ?? 0,
+                                                                   formatter: self!.formatter)
+    }).disposed(by: disposeBag)
+		
 	}
 
 	// MARK: -
@@ -131,5 +137,13 @@ class CoinTableViewCell: BaseCell {
 	override func layoutSubviews() {
 		super.layoutSubviews()
 	}
+
+  override func prepareForReuse() {
+    super.prepareForReuse()
+    self.title.text = ""
+    self.amount.text = ""
+    self.coin.text = ""
+    self.coinImage.image = nil
+  }
 
 }

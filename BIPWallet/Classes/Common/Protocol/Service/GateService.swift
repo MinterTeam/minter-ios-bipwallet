@@ -10,6 +10,9 @@ import Foundation
 import RxSwift
 
 protocol GateService {
-  func currentGas() -> Observable<Int>
   func updateGas()
+  func currentGas() -> Observable<Int>
+  func nonce(address: String) -> Observable<Int>
+  func send(rawTx: String?) -> Observable<String?>
+  func estimateComission(rawTx: String) -> Observable<Decimal>
 }

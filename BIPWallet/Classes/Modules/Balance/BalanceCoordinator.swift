@@ -44,6 +44,11 @@ class BalanceCoordinator: BaseCoordinator<Void> {
 
     let headerInset = CGFloat(230.0)
 
+    viewModel.output.showDelegated.flatMap { [weak self] (_) -> Observable<Void> in
+      guard let `self` = self else { return Observable.just(()) }
+      return self.showDelegated(inViewController: self.navigationController, balanceService: self.balanceService)
+    }.subscribe().disposed(by: disposeBag)
+
     coins.didScrollToPoint?.subscribe(onNext: { (point) in
       if controller.segmentedControl?.selectedSegmentIndex == 0 {
         let newPoint = headerInset + point.y
@@ -55,14 +60,12 @@ class BalanceCoordinator: BaseCoordinator<Void> {
       }
     }).disposed(by: disposeBag)
 
-    coins
-      .didTapExchangeButton
-      .flatMap({ [weak self] (_) -> Observable<Void> in
-        guard let `self` = self else { return Observable.just(()) }
-        let excangeCoordinator = ExchangeCoordinator(rootController: controller,
-                                                     balanceService: self.balanceService)
-        return self.coordinate(to: excangeCoordinator)
-      }).subscribe().disposed(by: self.disposeBag)
+    coins.didTapExchangeButton.flatMap({ [weak self] (_) -> Observable<Void> in
+      guard let `self` = self else { return Observable.just(()) }
+      let excangeCoordinator = ExchangeCoordinator(rootController: controller,
+                                                   balanceService: self.balanceService)
+      return self.coordinate(to: excangeCoordinator)
+    }).subscribe().disposed(by: self.disposeBag)
 
     transactions.didScrollToPoint?.subscribe(onNext: { (point) in
       if controller.segmentedControl.selectedSegmentIndex == 1 {
@@ -73,8 +76,7 @@ class BalanceCoordinator: BaseCoordinator<Void> {
       }
     }).disposed(by: disposeBag)
 
-    balanceService.updateBalance()
-
+    //Showing select wallet
     let selectWalletObservable = viewModel.output.didTapSelectWallet.flatMap({ (_) -> Observable<SelectWalletCoordinationResult> in
       return self.showSelectWallet(rootViewController: controller)
     }).do(onNext: { [weak self] (result) in
@@ -136,6 +138,7 @@ class BalanceCoordinator: BaseCoordinator<Void> {
         }
       }).disposed(by: disposeBag)
 
+    //Updating emoji
     balanceService.account.flatMap { [weak self] (item) -> Observable<Event<(AccountItem?, BalanceService.BalancesResponse)>> in
       guard let `self` = self, let address = item?.address else { return Observable.empty() }
       return Observable.zip(self.balanceService.account, self.balanceService.balances(address: address)).materialize()
@@ -168,13 +171,18 @@ class BalanceCoordinator: BaseCoordinator<Void> {
   func showAddWallet(inViewController: UIViewController) -> Observable<AddWalletCoordinatorResult> {
     let addWalletCoordinator = AddWalletCoordinator(rootViewController: inViewController,
                                                     authService: authService)
-    return self.coordinate(to: addWalletCoordinator)
+    return coordinate(to: addWalletCoordinator)
   }
-  
+
   //Showing Edit Title
   func showEditTitle(inViewController: UIViewController, account: AccountItem) -> Observable<EditWalletTitleCoordinatorResult> {
     let editTitleCoordinator = EditWalletTitleCoordinator(rootViewController: inViewController, authService: self.authService, account: account)
-    return self.coordinate(to: editTitleCoordinator)
+    return coordinate(to: editTitleCoordinator)
+  }
+
+  func showDelegated(inViewController: UINavigationController, balanceService: BalanceService) -> Observable<Void> {
+    let delegatedCoordinator = DelegatedCoordinator(rootViewController: inViewController, balanceService: balanceService)
+    return coordinate(to: delegatedCoordinator)
   }
 
 }
