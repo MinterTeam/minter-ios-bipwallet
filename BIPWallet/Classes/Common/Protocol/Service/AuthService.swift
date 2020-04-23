@@ -16,10 +16,6 @@ enum AuthState {
   case hasAccount
 }
 
-protocol AuthStateProvider {
-  var authState: AuthState { get }
-}
-
 enum AuthServiceError: Error {
   case invalidMnemonic
   case dublicateAddress
@@ -28,10 +24,12 @@ enum AuthServiceError: Error {
 }
 
 protocol AuthService {
+  var authState: AuthState { get }
   func accounts() -> [AccountItem]
   func hasAccount() -> Bool
   func addAccount(mnemonic: String, title: String?) throws -> AccountItem?
   func addAccount(with mnemonic: String, title: String?) -> Observable<AccountItem>
   func updateAccount(account: AccountItem) -> Observable<Void>
   func logout()
+  func selectedAccount() -> AccountItem?
 }

@@ -8,8 +8,8 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <customFonts key="customFonts">
-        <array key="Ubuntu-R.ttf">
-            <string>Ubuntu</string>
+        <array key="Inter-SemiBold.otf">
+            <string>Inter-SemiBold</string>
         </array>
     </customFonts>
     <scenes>
@@ -25,67 +25,10 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="808"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="18" sectionFooterHeight="18" translatesAutoresizingMaskIntoConstraints="NO" id="QIn-IF-gZi">
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="singleLineEtched" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="18" sectionFooterHeight="18" translatesAutoresizingMaskIntoConstraints="NO" id="QIn-IF-gZi">
                                 <rect key="frame" x="0.0" y="0.0" width="414" height="808"/>
                                 <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                                 <inset key="separatorInset" minX="18" minY="0.0" maxX="0.0" maxY="0.0"/>
-                                <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="SettingsAvatarTableViewCell" rowHeight="90" id="kQ5-Nq-JJa" customClass="SettingsAvatarTableViewCell" customModule="MinterWallet" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="55.5" width="414" height="90"/>
-                                        <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="kQ5-Nq-JJa" id="iK9-gU-2tv">
-                                            <rect key="frame" x="0.0" y="0.0" width="414" height="90"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                            <subviews>
-                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="8df-zu-SIs">
-                                                    <rect key="frame" x="10" y="10" width="70" height="70"/>
-                                                    <subviews>
-                                                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="AvatarPlaceholderImage" translatesAutoresizingMaskIntoConstraints="NO" id="VGG-UW-amr">
-                                                            <rect key="frame" x="10" y="10" width="50" height="50"/>
-                                                            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                            <constraints>
-                                                                <constraint firstAttribute="height" constant="50" id="ElR-Gb-BX5"/>
-                                                                <constraint firstAttribute="width" constant="50" id="voH-r4-WXT"/>
-                                                            </constraints>
-                                                        </imageView>
-                                                    </subviews>
-                                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                    <constraints>
-                                                        <constraint firstAttribute="trailing" secondItem="VGG-UW-amr" secondAttribute="trailing" constant="10" id="aDd-D5-mPP"/>
-                                                        <constraint firstItem="VGG-UW-amr" firstAttribute="top" secondItem="8df-zu-SIs" secondAttribute="top" constant="10" id="ibx-oM-LNh"/>
-                                                        <constraint firstAttribute="bottom" secondItem="VGG-UW-amr" secondAttribute="bottom" constant="10" id="pXY-vv-fws"/>
-                                                        <constraint firstItem="VGG-UW-amr" firstAttribute="leading" secondItem="8df-zu-SIs" secondAttribute="leading" constant="10" id="xZ2-cb-Bra"/>
-                                                    </constraints>
-                                                </view>
-                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="b5H-Mj-j59" customClass="DefaultButton" customModule="MinterWallet" customModuleProvider="target">
-                                                    <rect key="frame" x="90" y="20" width="304" height="50"/>
-                                                    <constraints>
-                                                        <constraint firstAttribute="height" constant="50" id="V28-Ed-J2t"/>
-                                                    </constraints>
-                                                    <state key="normal" title="CHANGE USERPIC"/>
-                                                    <userDefinedRuntimeAttributes>
-                                                        <userDefinedRuntimeAttribute type="string" keyPath="pattern" value="blank"/>
-                                                    </userDefinedRuntimeAttributes>
-                                                    <connections>
-                                                        <action selector="changeAvatarDidTap:" destination="kQ5-Nq-JJa" eventType="touchUpInside" id="zn9-dh-cSA"/>
-                                                    </connections>
-                                                </button>
-                                            </subviews>
-                                            <constraints>
-                                                <constraint firstAttribute="bottom" secondItem="8df-zu-SIs" secondAttribute="bottom" constant="10" id="0F8-66-BGE"/>
-                                                <constraint firstItem="8df-zu-SIs" firstAttribute="leading" secondItem="iK9-gU-2tv" secondAttribute="leading" constant="10" id="FtU-73-qrZ"/>
-                                                <constraint firstItem="8df-zu-SIs" firstAttribute="top" secondItem="iK9-gU-2tv" secondAttribute="top" constant="10" id="PfE-1L-tw2"/>
-                                                <constraint firstItem="b5H-Mj-j59" firstAttribute="centerY" secondItem="8df-zu-SIs" secondAttribute="centerY" id="dMw-ne-teg"/>
-                                                <constraint firstAttribute="trailing" secondItem="b5H-Mj-j59" secondAttribute="trailing" constant="20" id="oGs-eb-xw9"/>
-                                                <constraint firstItem="b5H-Mj-j59" firstAttribute="leading" secondItem="8df-zu-SIs" secondAttribute="trailing" constant="10" id="oaI-jp-6C4"/>
-                                            </constraints>
-                                        </tableViewCellContentView>
-                                        <connections>
-                                            <outlet property="avatarImageView" destination="VGG-UW-amr" id="ZYe-v1-lzW"/>
-                                            <outlet property="changeAvatarButton" destination="b5H-Mj-j59" id="FE7-AP-Zbj"/>
-                                        </connections>
-                                    </tableViewCell>
-                                </prototypes>
                             </tableView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -98,31 +41,63 @@
                         <viewLayoutGuide key="safeArea" id="sMM-E4-JXg"/>
                     </view>
                     <navigationItem key="navigationItem" title="Settings" id="RFN-Tw-KEH">
-                        <barButtonItem key="backBarButtonItem" title="Back" id="9Eu-zO-OeS"/>
+                        <barButtonItem key="backBarButtonItem" title=" " id="9Eu-zO-OeS"/>
+                        <barButtonItem key="rightBarButtonItem" title="Item" image="LogoutIcon" id="k52-Zb-tw0">
+                            <color key="tintColor" red="0.45882352941176469" green="0.45882352941176469" blue="0.45882352941176469" alpha="0.84705882352941175" colorSpace="deviceRGB"/>
+                        </barButtonItem>
                     </navigationItem>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" translucent="NO" prompted="NO"/>
                     <simulatedTabBarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
+                        <outlet property="footer" destination="k6F-D8-7VA" id="clc-PW-lEX"/>
+                        <outlet property="logoutItem" destination="k52-Zb-tw0" id="2zp-lO-qwF"/>
                         <outlet property="tableView" destination="QIn-IF-gZi" id="aGn-La-vgq"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="G58-LU-9oo" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <view contentMode="scaleToFill" id="k6F-D8-7VA">
-                    <rect key="frame" x="0.0" y="0.0" width="377" height="53"/>
+                    <rect key="frame" x="0.0" y="0.0" width="377" height="192"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <subviews>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6Ji-yW-7XX">
-                            <rect key="frame" x="10" y="26.5" width="357" height="0.0"/>
-                            <fontDescription key="fontDescription" name="Ubuntu" family="Ubuntu" pointSize="13"/>
-                            <nil key="textColor"/>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="HELP &amp; SUPPORT" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gyF-i4-elN">
+                            <rect key="frame" x="16" y="15" width="345" height="29"/>
+                            <fontDescription key="fontDescription" name="Inter-SemiBold" family="Inter" pointSize="11"/>
+                            <color key="textColor" red="0.55686274509803924" green="0.55686274509803924" blue="0.55686274509803924" alpha="1" colorSpace="deviceRGB"/>
                             <nil key="highlightedColor"/>
                         </label>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="VS3-Aq-NsL" customClass="DefaultButton" customModule="BIPWallet" customModuleProvider="target">
+                            <rect key="frame" x="16" y="60" width="345" height="50"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="50" id="Pgk-7T-XN0"/>
+                            </constraints>
+                            <state key="normal" title="Our Channel"/>
+                            <userDefinedRuntimeAttributes>
+                                <userDefinedRuntimeAttribute type="string" keyPath="pattern" value="blank"/>
+                            </userDefinedRuntimeAttributes>
+                        </button>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xMb-nT-TzM" customClass="DefaultButton" customModule="BIPWallet" customModuleProvider="target">
+                            <rect key="frame" x="16" y="126" width="345" height="50"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="50" id="bWh-41-uQ0"/>
+                            </constraints>
+                            <state key="normal" title="Support Chat"/>
+                            <userDefinedRuntimeAttributes>
+                                <userDefinedRuntimeAttribute type="string" keyPath="pattern" value="blank"/>
+                            </userDefinedRuntimeAttributes>
+                        </button>
                     </subviews>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <constraints>
-                        <constraint firstItem="6Ji-yW-7XX" firstAttribute="centerY" secondItem="k6F-D8-7VA" secondAttribute="centerY" id="AuN-5g-YLF"/>
-                        <constraint firstItem="6Ji-yW-7XX" firstAttribute="leading" secondItem="k6F-D8-7VA" secondAttribute="leading" constant="10" id="QpE-sZ-MLR"/>
-                        <constraint firstAttribute="trailing" secondItem="6Ji-yW-7XX" secondAttribute="trailing" constant="10" id="YxQ-h4-Z7Q"/>
+                        <constraint firstItem="xMb-nT-TzM" firstAttribute="top" secondItem="VS3-Aq-NsL" secondAttribute="bottom" constant="16" id="0ix-Ta-3Dv"/>
+                        <constraint firstItem="VS3-Aq-NsL" firstAttribute="leading" secondItem="Hem-ZK-cRv" secondAttribute="leading" constant="16" id="2lL-VV-KWY"/>
+                        <constraint firstItem="xMb-nT-TzM" firstAttribute="leading" secondItem="VS3-Aq-NsL" secondAttribute="leading" id="6XU-Nk-epf"/>
+                        <constraint firstItem="xMb-nT-TzM" firstAttribute="trailing" secondItem="VS3-Aq-NsL" secondAttribute="trailing" id="7JA-r8-RPQ"/>
+                        <constraint firstItem="gyF-i4-elN" firstAttribute="leading" secondItem="k6F-D8-7VA" secondAttribute="leading" constant="16" id="Mpb-jg-ydz"/>
+                        <constraint firstItem="gyF-i4-elN" firstAttribute="top" secondItem="k6F-D8-7VA" secondAttribute="top" constant="15" id="VQb-4B-ev9"/>
+                        <constraint firstItem="Hem-ZK-cRv" firstAttribute="bottom" secondItem="xMb-nT-TzM" secondAttribute="bottom" constant="16" id="Yui-2v-nGQ"/>
+                        <constraint firstItem="Hem-ZK-cRv" firstAttribute="trailing" secondItem="VS3-Aq-NsL" secondAttribute="trailing" constant="16" id="nVv-9I-8bO"/>
+                        <constraint firstItem="VS3-Aq-NsL" firstAttribute="top" secondItem="gyF-i4-elN" secondAttribute="bottom" constant="16" id="rxR-BC-Ufb"/>
+                        <constraint firstAttribute="trailing" secondItem="gyF-i4-elN" secondAttribute="trailing" constant="16" id="tGX-0R-pna"/>
                     </constraints>
                     <viewLayoutGuide key="safeArea" id="Hem-ZK-cRv"/>
                 </view>
@@ -131,6 +106,6 @@
         </scene>
     </scenes>
     <resources>
-        <image name="AvatarPlaceholderImage" width="26" height="26"/>
+        <image name="LogoutIcon" width="18" height="18"/>
     </resources>
 </document>

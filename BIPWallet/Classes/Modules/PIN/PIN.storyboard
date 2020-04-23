@@ -1,0 +1,327 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="16096" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16087"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <array key="Ubuntu-B.ttf">
+            <string>Ubuntu-Bold</string>
+        </array>
+        <array key="Ubuntu-R.ttf">
+            <string>Ubuntu</string>
+        </array>
+    </customFonts>
+    <scenes>
+        <!--View Controller-->
+        <scene sceneID="fUv-JI-aic">
+            <objects>
+                <viewController storyboardIdentifier="PINViewController" hidesBottomBarWhenPushed="YES" useStoryboardIdentifierAsRestorationIdentifier="YES" id="gws-Gm-9Xu" customClass="PINViewController" customModule="BIPWallet" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="gb6-Iz-Hms">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Please enter 4-digit PIN" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Zna-dE-jhE">
+                                <rect key="frame" x="133" y="225" width="148.5" height="16"/>
+                                <fontDescription key="fontDescription" name="Ubuntu-Bold" family="Ubuntu" pointSize="14"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="767-Dd-Qe8" customClass="CBPinEntryView" customModule="MinterWallet" customModuleProvider="target">
+                                <rect key="frame" x="163" y="265" width="88" height="16"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="16" id="Ibi-j8-fjU"/>
+                                    <constraint firstAttribute="width" constant="88" id="UVa-3U-LkG"/>
+                                </constraints>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="boolean" keyPath="isSecure" value="YES"/>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="keyboardType">
+                                        <integer key="value" value="4"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="color" keyPath="entryDefaultBorderColour">
+                                        <color key="value" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="color" keyPath="entryTextColour">
+                                        <color key="value" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="color" keyPath="entryBackgroundColour">
+                                        <color key="value" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="color" keyPath="entryErrorBorderColour">
+                                        <color key="value" red="0.93333333330000001" green="0.13725490200000001" blue="0.16862745100000001" alpha="1" colorSpace="deviceRGB"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="entryBorderWidth">
+                                        <real key="value" value="2"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="entryCornerRadius">
+                                        <real key="value" value="8"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="length">
+                                        <integer key="value" value="4"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="spacing">
+                                        <real key="value" value="8"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="color" keyPath="entryBorderColour">
+                                        <color key="value" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="color" keyPath="entryEditingBackgroundColour">
+                                        <color key="value" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="string" keyPath="secureCharacter" value="●"/>
+                                </userDefinedRuntimeAttributes>
+                            </view>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" adjustsImageWhenHighlighted="NO" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="RFx-Yq-IZ2">
+                                <rect key="frame" x="83" y="329" width="72" height="72"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="72" id="cAe-hA-xwf"/>
+                                    <constraint firstAttribute="height" constant="72" id="hBY-N2-GCp"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="Ubuntu" family="Ubuntu" pointSize="30"/>
+                                <state key="normal" title="1" backgroundImage="pinButtonIcon">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </state>
+                                <state key="selected" backgroundImage="pinSelectedButtonIcon"/>
+                                <state key="highlighted" backgroundImage="pinSelectedButtonIcon"/>
+                                <connections>
+                                    <action selector="buttonTapWithSender:" destination="gws-Gm-9Xu" eventType="touchUpInside" id="T6e-59-KA8"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" adjustsImageWhenHighlighted="NO" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="eau-TV-RmL">
+                                <rect key="frame" x="171" y="329" width="72" height="72"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="72" id="Tj2-B4-TUL"/>
+                                    <constraint firstAttribute="height" constant="72" id="uGj-mW-iud"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="Ubuntu" family="Ubuntu" pointSize="30"/>
+                                <state key="normal" title="2" backgroundImage="pinButtonIcon">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </state>
+                                <state key="selected" backgroundImage="pinSelectedButtonIcon"/>
+                                <state key="highlighted" backgroundImage="pinSelectedButtonIcon"/>
+                                <connections>
+                                    <action selector="buttonTapWithSender:" destination="gws-Gm-9Xu" eventType="touchUpInside" id="D9a-vT-rgn"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" adjustsImageWhenHighlighted="NO" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="63X-cH-1RO">
+                                <rect key="frame" x="259" y="329" width="72" height="72"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="72" id="3Bw-0R-7QK"/>
+                                    <constraint firstAttribute="width" constant="72" id="K2z-F0-VBO"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="Ubuntu" family="Ubuntu" pointSize="30"/>
+                                <state key="normal" title="3" backgroundImage="pinButtonIcon">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </state>
+                                <state key="selected" backgroundImage="pinSelectedButtonIcon"/>
+                                <state key="highlighted" backgroundImage="pinSelectedButtonIcon"/>
+                                <connections>
+                                    <action selector="buttonTapWithSender:" destination="gws-Gm-9Xu" eventType="touchUpInside" id="eaZ-ZI-p65"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dIF-xm-ZNK">
+                                <rect key="frame" x="83" y="417" width="72" height="72"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="72" id="Hay-NU-33z"/>
+                                    <constraint firstAttribute="width" constant="72" id="r5c-dE-kL4"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="Ubuntu" family="Ubuntu" pointSize="30"/>
+                                <state key="normal" title="4" backgroundImage="pinButtonIcon">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </state>
+                                <state key="selected" backgroundImage="pinSelectedButtonIcon"/>
+                                <state key="highlighted" backgroundImage="pinSelectedButtonIcon"/>
+                                <connections>
+                                    <action selector="buttonTapWithSender:" destination="gws-Gm-9Xu" eventType="touchUpInside" id="k48-wq-qY8"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="d7s-Os-Cy9">
+                                <rect key="frame" x="171" y="417" width="72" height="72"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="72" id="dYs-9l-BIa"/>
+                                    <constraint firstAttribute="height" constant="72" id="rYD-Md-boX"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="Ubuntu" family="Ubuntu" pointSize="30"/>
+                                <state key="normal" title="5" backgroundImage="pinButtonIcon">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </state>
+                                <state key="selected" backgroundImage="pinSelectedButtonIcon"/>
+                                <state key="highlighted" backgroundImage="pinSelectedButtonIcon"/>
+                                <connections>
+                                    <action selector="buttonTapWithSender:" destination="gws-Gm-9Xu" eventType="touchUpInside" id="agj-6z-36j"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tk9-FI-jBm">
+                                <rect key="frame" x="259" y="417" width="72" height="72"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="72" id="viY-YQ-OWA"/>
+                                    <constraint firstAttribute="height" constant="72" id="ydy-48-DoF"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="Ubuntu" family="Ubuntu" pointSize="30"/>
+                                <state key="normal" title="6" backgroundImage="pinButtonIcon">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </state>
+                                <state key="selected" backgroundImage="pinSelectedButtonIcon"/>
+                                <state key="highlighted" backgroundImage="pinSelectedButtonIcon"/>
+                                <connections>
+                                    <action selector="buttonTapWithSender:" destination="gws-Gm-9Xu" eventType="touchUpInside" id="N5J-gW-hJ3"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Xcr-0d-Ye6">
+                                <rect key="frame" x="83" y="505" width="72" height="72"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="72" id="kz6-bu-8e5"/>
+                                    <constraint firstAttribute="height" constant="72" id="stU-1f-yJW"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="Ubuntu" family="Ubuntu" pointSize="30"/>
+                                <state key="normal" title="7" backgroundImage="pinButtonIcon">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </state>
+                                <state key="selected" backgroundImage="pinSelectedButtonIcon"/>
+                                <state key="highlighted" backgroundImage="pinSelectedButtonIcon"/>
+                                <connections>
+                                    <action selector="buttonTapWithSender:" destination="gws-Gm-9Xu" eventType="touchUpInside" id="Nv3-ru-jZg"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1zE-Vb-hfd">
+                                <rect key="frame" x="171" y="505" width="72" height="72"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="72" id="EI3-tP-Ejm"/>
+                                    <constraint firstAttribute="height" constant="72" id="p0q-5X-B4z"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="Ubuntu" family="Ubuntu" pointSize="30"/>
+                                <state key="normal" title="8" backgroundImage="pinButtonIcon">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </state>
+                                <state key="selected" backgroundImage="pinSelectedButtonIcon"/>
+                                <state key="highlighted" backgroundImage="pinSelectedButtonIcon"/>
+                                <connections>
+                                    <action selector="buttonTapWithSender:" destination="gws-Gm-9Xu" eventType="touchUpInside" id="YE9-rK-2FO"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="U2b-Gn-wwv">
+                                <rect key="frame" x="259" y="505" width="72" height="72"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="72" id="05N-T7-EeM"/>
+                                    <constraint firstAttribute="height" constant="72" id="AnB-r1-ObF"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="Ubuntu" family="Ubuntu" pointSize="30"/>
+                                <state key="normal" title="9" backgroundImage="pinButtonIcon">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </state>
+                                <state key="selected" backgroundImage="pinSelectedButtonIcon"/>
+                                <state key="highlighted" backgroundImage="pinSelectedButtonIcon"/>
+                                <connections>
+                                    <action selector="buttonTapWithSender:" destination="gws-Gm-9Xu" eventType="touchUpInside" id="50M-HO-dkB"/>
+                                </connections>
+                            </button>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="IUn-YA-PqS">
+                                <rect key="frame" x="0.0" y="176" width="83" height="10"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="10" id="RKm-7H-kac"/>
+                                </constraints>
+                            </view>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="1WA-t7-k5q">
+                                <rect key="frame" x="331" y="176" width="83" height="10"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="10" id="jHc-Qc-qdX"/>
+                                </constraints>
+                            </view>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="puu-hf-5DQ">
+                                <rect key="frame" x="171" y="593" width="72" height="72"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="72" id="2yk-Fy-h1v"/>
+                                    <constraint firstAttribute="width" constant="72" id="57a-f9-gy2"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="Ubuntu" family="Ubuntu" pointSize="30"/>
+                                <state key="normal" title="0" backgroundImage="pinButtonIcon">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </state>
+                                <state key="selected" backgroundImage="pinSelectedButtonIcon"/>
+                                <state key="highlighted" backgroundImage="pinSelectedButtonIcon"/>
+                                <connections>
+                                    <action selector="buttonTapWithSender:" destination="gws-Gm-9Xu" eventType="touchUpInside" id="hgM-Qy-i8T"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="oQq-RP-LrC">
+                                <rect key="frame" x="270" y="604" width="50" height="50"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="50" id="hPV-Ha-5am"/>
+                                    <constraint firstAttribute="height" constant="50" id="k1y-qz-POi"/>
+                                </constraints>
+                                <state key="normal" image="pinBackspaceButton"/>
+                                <connections>
+                                    <action selector="backspaceTap:" destination="gws-Gm-9Xu" eventType="touchUpInside" id="C88-kp-cTP"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" red="0.31372549020000001" green="0.18039215689999999" blue="0.76078431369999999" alpha="1" colorSpace="deviceRGB"/>
+                        <constraints>
+                            <constraint firstItem="1zE-Vb-hfd" firstAttribute="centerY" secondItem="Xcr-0d-Ye6" secondAttribute="centerY" id="3ru-F3-Xzk"/>
+                            <constraint firstItem="1zE-Vb-hfd" firstAttribute="leading" secondItem="Xcr-0d-Ye6" secondAttribute="trailing" constant="16" id="3yK-xr-AwO"/>
+                            <constraint firstItem="Xcr-0d-Ye6" firstAttribute="leading" secondItem="dIF-xm-ZNK" secondAttribute="leading" id="4oQ-Rt-y4g"/>
+                            <constraint firstItem="1WA-t7-k5q" firstAttribute="top" secondItem="IUn-YA-PqS" secondAttribute="top" id="7cl-QB-Ybw"/>
+                            <constraint firstItem="U2b-Gn-wwv" firstAttribute="leading" secondItem="1zE-Vb-hfd" secondAttribute="trailing" constant="16" id="9oH-u7-VfC"/>
+                            <constraint firstItem="dIF-xm-ZNK" firstAttribute="top" secondItem="RFx-Yq-IZ2" secondAttribute="bottom" constant="16" id="DOq-iO-a8h"/>
+                            <constraint firstItem="3rk-XQ-50i" firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="puu-hf-5DQ" secondAttribute="bottom" constant="10" id="DmE-Os-fhZ"/>
+                            <constraint firstItem="63X-cH-1RO" firstAttribute="leading" secondItem="eau-TV-RmL" secondAttribute="trailing" constant="16" id="EIY-vU-kOd"/>
+                            <constraint firstItem="IUn-YA-PqS" firstAttribute="top" secondItem="3rk-XQ-50i" secondAttribute="top" constant="132" id="GGP-pj-L4R"/>
+                            <constraint firstItem="1WA-t7-k5q" firstAttribute="width" secondItem="IUn-YA-PqS" secondAttribute="width" id="Gjd-8S-ieL"/>
+                            <constraint firstItem="puu-hf-5DQ" firstAttribute="centerX" secondItem="1zE-Vb-hfd" secondAttribute="centerX" id="IPx-tg-fzK"/>
+                            <constraint firstItem="d7s-Os-Cy9" firstAttribute="centerY" secondItem="3rk-XQ-50i" secondAttribute="centerY" priority="999" id="LhC-ed-uS7"/>
+                            <constraint firstItem="tk9-FI-jBm" firstAttribute="leading" secondItem="d7s-Os-Cy9" secondAttribute="trailing" constant="16" id="Luk-20-SOz"/>
+                            <constraint firstItem="RFx-Yq-IZ2" firstAttribute="leading" secondItem="IUn-YA-PqS" secondAttribute="trailing" id="O9r-fj-Uyl"/>
+                            <constraint firstItem="767-Dd-Qe8" firstAttribute="top" secondItem="Zna-dE-jhE" secondAttribute="bottom" constant="24" id="Q1O-46-7x5"/>
+                            <constraint firstItem="dIF-xm-ZNK" firstAttribute="leading" secondItem="RFx-Yq-IZ2" secondAttribute="leading" id="TME-gE-T6A"/>
+                            <constraint firstItem="d7s-Os-Cy9" firstAttribute="centerY" secondItem="dIF-xm-ZNK" secondAttribute="centerY" id="ZqK-A9-GdR"/>
+                            <constraint firstItem="63X-cH-1RO" firstAttribute="centerY" secondItem="RFx-Yq-IZ2" secondAttribute="centerY" id="bbC-wz-4ld"/>
+                            <constraint firstItem="IUn-YA-PqS" firstAttribute="leading" secondItem="3rk-XQ-50i" secondAttribute="leading" id="cMr-hi-vWH"/>
+                            <constraint firstItem="Zna-dE-jhE" firstAttribute="centerX" secondItem="3rk-XQ-50i" secondAttribute="centerX" id="cbO-mZ-Pfr"/>
+                            <constraint firstItem="1WA-t7-k5q" firstAttribute="leading" secondItem="63X-cH-1RO" secondAttribute="trailing" id="dTi-Q3-YpM"/>
+                            <constraint firstItem="1WA-t7-k5q" firstAttribute="trailing" secondItem="3rk-XQ-50i" secondAttribute="trailing" id="enz-4E-Fh6"/>
+                            <constraint firstItem="tk9-FI-jBm" firstAttribute="centerY" secondItem="dIF-xm-ZNK" secondAttribute="centerY" id="fHV-K4-TxN"/>
+                            <constraint firstItem="eau-TV-RmL" firstAttribute="centerY" secondItem="RFx-Yq-IZ2" secondAttribute="centerY" id="fnI-JF-I0y"/>
+                            <constraint firstItem="puu-hf-5DQ" firstAttribute="top" secondItem="1zE-Vb-hfd" secondAttribute="bottom" constant="16" id="hr1-XD-RDC"/>
+                            <constraint firstItem="767-Dd-Qe8" firstAttribute="centerX" secondItem="3rk-XQ-50i" secondAttribute="centerX" id="igG-xL-FE4"/>
+                            <constraint firstItem="oQq-RP-LrC" firstAttribute="centerY" secondItem="puu-hf-5DQ" secondAttribute="centerY" id="l0N-FM-CY3"/>
+                            <constraint firstItem="Xcr-0d-Ye6" firstAttribute="top" secondItem="dIF-xm-ZNK" secondAttribute="bottom" constant="16" id="nSJ-6j-nCv"/>
+                            <constraint firstItem="oQq-RP-LrC" firstAttribute="centerX" secondItem="U2b-Gn-wwv" secondAttribute="centerX" id="oeJ-Jr-oKN"/>
+                            <constraint firstItem="d7s-Os-Cy9" firstAttribute="leading" secondItem="dIF-xm-ZNK" secondAttribute="trailing" constant="16" id="oru-HF-xWU"/>
+                            <constraint firstItem="U2b-Gn-wwv" firstAttribute="centerY" secondItem="Xcr-0d-Ye6" secondAttribute="centerY" id="qbm-Rb-sqD"/>
+                            <constraint firstItem="eau-TV-RmL" firstAttribute="leading" secondItem="RFx-Yq-IZ2" secondAttribute="trailing" constant="16" id="wh1-Ue-cH0"/>
+                            <constraint firstItem="RFx-Yq-IZ2" firstAttribute="top" secondItem="767-Dd-Qe8" secondAttribute="bottom" priority="999" constant="48" id="whb-NV-KCu"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="3rk-XQ-50i"/>
+                    </view>
+                    <connections>
+                        <outlet property="button0" destination="puu-hf-5DQ" id="ZWP-2a-tVS"/>
+                        <outlet property="button1" destination="RFx-Yq-IZ2" id="EIR-ZN-nU7"/>
+                        <outlet property="button2" destination="eau-TV-RmL" id="s8m-fc-KDT"/>
+                        <outlet property="button3" destination="63X-cH-1RO" id="MMH-gX-5Hx"/>
+                        <outlet property="button4" destination="dIF-xm-ZNK" id="XkZ-To-uOm"/>
+                        <outlet property="button5" destination="d7s-Os-Cy9" id="Qnp-uK-jbR"/>
+                        <outlet property="button6" destination="tk9-FI-jBm" id="fJ0-G8-btQ"/>
+                        <outlet property="button7" destination="Xcr-0d-Ye6" id="El2-MX-Rkg"/>
+                        <outlet property="button8" destination="1zE-Vb-hfd" id="wQk-EE-f1f"/>
+                        <outlet property="button9" destination="U2b-Gn-wwv" id="6AU-9B-9eg"/>
+                        <outlet property="descTitle" destination="Zna-dE-jhE" id="8C2-om-vax"/>
+                        <outlet property="pinView" destination="767-Dd-Qe8" id="Mpv-ce-49E"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="vDf-9E-Dxf" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="224.63768115942031" y="97.767857142857139"/>
+        </scene>
+    </scenes>
+    <resources>
+        <image name="pinBackspaceButton" width="23" height="16"/>
+        <image name="pinButtonIcon" width="88" height="88"/>
+        <image name="pinSelectedButtonIcon" width="128" height="128"/>
+    </resources>
+</document>

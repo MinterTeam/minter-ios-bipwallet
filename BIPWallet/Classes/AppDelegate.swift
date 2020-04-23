@@ -42,13 +42,22 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     window = UIWindow()
 
+    let pinService = SecureStoragePINService()
     let authService = LocalStorageAuthService(storage: SecureStorage(namespace: "Auth"),
-                                              accountManager: AccountManager())
+                                              accountManager: AccountManager(),
+                                              pinService: pinService
+    )
+
     let appCoordinator = AppCoordinator(window: window!,
-                                        authStateProvider: authService)
+                                        authService: authService,
+                                        pinService: pinService)
     appCoordinator.start()
         .subscribe()
         .disposed(by: disposeBag)
+
+    UIApplication.shared.rx.applicationDidBecomeActive.flatMap { (state) -> Observable<Void> in
+      return appCoordinator.start()
+    }.subscribe().disposed(by: disposeBag)
 
     appearance()
 

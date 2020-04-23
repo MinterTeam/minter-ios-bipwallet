@@ -11,17 +11,19 @@ import MinterCore
 import MinterMy
 import RxSwift
 
-final class LocalStorageAuthService: AuthService, AuthStateProvider {
+final class LocalStorageAuthService: AuthService {
 
   // Storage to store PKs
   private let storage: Storage
   // Manager to manage DB records
   private let accountManager: AccountManager
   private let databaseStorage = RealmDatabaseStorage.shared
+  private let pinService: PINService
 
-  init(storage: Storage, accountManager: AccountManager) {
+  init(storage: Storage, accountManager: AccountManager, pinService: PINService) {
     self.storage = storage
     self.accountManager = accountManager
+    self.pinService = pinService
   }
 
   // MARK: - AuthService
@@ -86,23 +88,15 @@ final class LocalStorageAuthService: AuthService, AuthStateProvider {
 
   func logout() {
     storage.removeAll()
+    databaseStorage.removeAll()
+    accountManager.setRandomEncryptionKeyIfNotExists()
   }
 
   // MARK: - AuthStateProvider
 
   var authState: AuthState {
-    return self.hasAccount() ? .hasAccount : .noAccount
+    return self.hasAccount() ? (!self.pinService.isUnlocked() ? .pinNeeded : .hasAccount) : .noAccount
   }
-}
-
-extension LocalStorageAuthService {
-
-  convenience init() {
-    let storage = SecureStorage(namespace: "Auth")
-    let accountManager = AccountManager()
-    self.init(storage: storage, accountManager: accountManager)
-  }
-
 }
 
 extension LocalStorageAuthService {

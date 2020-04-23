@@ -8,6 +8,7 @@
 
 import UIKit
 import RxSwift
+import RxCocoa
 import RxDataSources
 
 class SettingsViewController: BaseViewController, Controller, StoryboardInitializable {
@@ -15,6 +16,8 @@ class SettingsViewController: BaseViewController, Controller, StoryboardInitiali
   // MARK: -
 
   @IBOutlet weak var tableView: UITableView!
+  @IBOutlet weak var logoutItem: UIBarButtonItem!
+  @IBOutlet weak var footer: UIView!
 
   // MARK: - ControllerProtocol
 
@@ -29,6 +32,17 @@ class SettingsViewController: BaseViewController, Controller, StoryboardInitiali
     viewModel.output.sections
       .bind(to: tableView.rx.items(dataSource: rxDataSource!))
       .disposed(by: disposeBag)
+
+    self.rx.viewWillAppear.asDriver(onErrorJustReturn: false).map { _ in }
+      .drive(viewModel.input.viewWillAppear).disposed(by: disposeBag)
+
+    tableView.rx.modelSelected(BaseCellItem.self).asDriver()
+      .drive(viewModel.input.didSelectModel)
+      .disposed(by: disposeBag)
+
+    logoutItem.rx.tap.asDriver()
+      .drive(viewModel.input.didTapLogout)
+      .disposed(by: disposeBag)
   }
 
   // MARK: - ViewController
@@ -37,6 +51,9 @@ class SettingsViewController: BaseViewController, Controller, StoryboardInitiali
     super.viewDidLoad()
 
     registerCells()
+
+    footer.frame = CGRect(x: 0, y: 0, width: tableView.bounds.width, height: 200)
+    self.tableView.tableFooterView = footer
 
     rxDataSource?.animationConfiguration = AnimationConfiguration(insertAnimation: .top,
                                                                   reloadAnimation: .none,

@@ -33,7 +33,7 @@ class BalanceCoordinator: BaseCoordinator<Void> {
 
     var transactionsViewController: UIViewController?
 
-    let coins = CoinsCoordinator(balanceService: balanceService)
+    let coins = CoinsCoordinator(balanceService: balanceService, authService: authService)
     let transactions = TransactionsCoordinator(viewController: &transactionsViewController,
                                                balanceService: balanceService)
 

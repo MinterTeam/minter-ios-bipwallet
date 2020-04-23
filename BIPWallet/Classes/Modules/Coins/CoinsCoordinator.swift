@@ -18,16 +18,18 @@ class CoinsCoordinator: BaseCoordinator<Void> {
   var viewController: CoinsViewController?
 
   let balanceService: BalanceService
+  let authService: AuthService
 
-  init(balanceService: BalanceService) {
+  init(balanceService: BalanceService, authService: AuthService) {
     self.balanceService = balanceService
+    self.authService = authService
   }
 
   override func start() -> Observable<Void> {
     let controller = CoinsViewController.initFromStoryboard(name: "Coins")
 
-    let localAuthService = LocalStorageAuthService()
-    guard let account = localAuthService.selectedAccount() else {
+//    let localAuthService = LocalStorageAuthService(storage: <#Storage#>, accountManager: <#AccountManager#>, pinService: <#PINService#>)
+    guard let account = self.authService.selectedAccount() else {
       return Observable.empty()
     }
 

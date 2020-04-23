@@ -15,14 +15,15 @@ class WalletCoordinator: BaseCoordinator<Void> {
 
   let authService: AuthService
   let balanceService: BalanceService
+  let pinService: PINService
 
-  init(window: UIWindow) {
+  init(window: UIWindow, authService: AuthService, pinService: PINService) {
     self.window = window
+    self.authService = authService
+    self.pinService = pinService
 
-    let localAuthService = LocalStorageAuthService()
-    let address = (localAuthService.selectedAccount()?.address ?? "")
+    let address = (self.authService.selectedAccount()?.address ?? "")
 
-    self.authService = localAuthService
     self.balanceService = ExplorerBalanceService(address: address)
 
     super.init()
@@ -75,19 +76,24 @@ class WalletCoordinator: BaseCoordinator<Void> {
     let settings = UINavigationController()
     settings.tabBarItem = settingsTabbarItem
 
-    let settingsCoordinator = SettingsCoordinator(navigationController: settings)
-    coordinate(to: settingsCoordinator).subscribe().disposed(by: disposeBag)
-
-//    let coordinators = [balance, send, settings].map { (coordinator) -> Observable<UIViewController> in
-//      return self.coordinate(to: coordinator)
-//    }
-//    Observable.combineLatest(coordinators).subscribe(onNext: { (vcs) in
-//      controller.viewControllers = vcs
-//    }).disposed(by: disposeBag)
+    let settingsCoordinator = SettingsCoordinator(navigationController: settings,
+                                                  authService: self.authService,
+                                                  pinService: self.pinService)
 
     controller.viewControllers = [balance, send, settings]
 
-    return Observable.never()
+//    UIApplication.shared.rx.applicationDidBecomeActive.subscribe(onNext: { (_) in
+//      if !self.pinService.isUnlocked() {
+//        let
+//        self.coordinate(to: )
+//      }
+//    }).disposed(by: disposeBag)
+
+    return coordinate(to: settingsCoordinator).map {_ in Void() }
   }
+
+//  func showPINObservable() -> Observable<Void> {
+////    let coordinator = PINCoordinator()
+//  }
 
 }

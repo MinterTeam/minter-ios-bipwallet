@@ -12,38 +12,54 @@ final class AppCoordinator: BaseCoordinator<Void> {
 
   private let window: UIWindow
 
-  var authStateProvider: AuthStateProvider
+  var authService: AuthService
+  private let pinService: PINService
 
-  init(window: UIWindow, authStateProvider: AuthStateProvider) {
+  init(window: UIWindow, authService: AuthService, pinService: PINService) {
     self.window = window
-    self.authStateProvider = authStateProvider
+    self.authService = authService
+    self.pinService = pinService
   }
 
   override func start() -> Observable<Void> {
-    switch authStateProvider.authState {
+    switch authService.authState {
     case .hasAccount:
-      return startWallet()
+      startWallet().flatMap { (_) -> Observable<Void> in
+        return self.start()
+      }.subscribe().disposed(by: self.disposeBag)
 
     case .noAccount:
-      return startWelcome().flatMap { (_) -> Observable<Void> in
+      startWelcome().flatMap { (_) -> Observable<Void> in
         return self.start()
-      }
+      }.subscribe().disposed(by: self.disposeBag)
 
     case .pinNeeded:
-      return startPin()
+      startPin().flatMap({ (result) -> Observable<Void> in
+        switch result {
+        case .success:
+          return self.start()
+
+        default:
+          return self.startWelcome()
+        }
+      }).subscribe().disposed(by: disposeBag)
     }
+    return Observable.never()
   }
 
   private func startWelcome() -> Observable<Void> {
-    return coordinate(to: WelcomeCoordinator(window: window))
+    return coordinate(to: WelcomeCoordinator(window: window, authService: self.authService))
   }
 
   private func startWallet() -> Observable<Void> {
-    return coordinate(to: WalletCoordinator(window: window))
+    return coordinate(to: WalletCoordinator(window: window, authService: authService, pinService: self.pinService))
   }
 
-  private func startPin() -> Observable<Void> {
-    return coordinate(to: WalletCoordinator(window: window))
+  private func startPin() -> Observable<PINCoordinatorResult> {
+    let navigation = UINavigationController()
+    window.rootViewController = navigation
+    let coordinator = PINCoordinator(navigationController: navigation, pinService: self.pinService)
+    return coordinate(to: coordinator)
   }
 
 }

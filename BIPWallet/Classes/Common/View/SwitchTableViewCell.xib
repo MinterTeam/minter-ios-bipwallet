@@ -34,7 +34,7 @@
                             <constraint firstAttribute="width" constant="51" id="3aY-LR-fsD"/>
                         </constraints>
                         <color key="tintColor" red="0.31372549020000001" green="0.18039215689999999" blue="0.76078431369999999" alpha="1" colorSpace="deviceRGB"/>
-                        <color key="onTintColor" red="0.31372549020000001" green="0.18039215689999999" blue="0.76078431369999999" alpha="1" colorSpace="deviceRGB"/>
+                        <color key="onTintColor" red="0.0" green="0.77647058823529413" blue="0.21568627450980393" alpha="1" colorSpace="deviceRGB"/>
                         <connections>
                             <action selector="didSwitch:" destination="U2E-q8-Qmy" eventType="valueChanged" id="Wkz-Pi-Yxz"/>
                         </connections>

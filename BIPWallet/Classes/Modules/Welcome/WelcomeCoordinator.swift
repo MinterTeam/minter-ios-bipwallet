@@ -13,9 +13,11 @@ import SafariServices
 class WelcomeCoordinator: BaseCoordinator<Void> {
 
   private let window: UIWindow
+  private let authService: AuthService
 
-  init(window: UIWindow) {
+  init(window: UIWindow, authService: AuthService) {
     self.window = window
+    self.authService = authService
   }
 
   override func start() -> Observable<Void> {
@@ -50,9 +52,6 @@ class WelcomeCoordinator: BaseCoordinator<Void> {
     let safariViewController = SFSafariViewController(url: url)
     viewController.present(safariViewController, animated: true) {}
   }
-
-  private let authService = LocalStorageAuthService(storage: SecureStorage(namespace: "Auth"),
-                                                    accountManager: AccountManager())
 
   func showSignIn(in viewController: UIViewController) -> Observable<Void> {
     let coordinator = SignInCoordinator(rootViewController: viewController, authService: authService)

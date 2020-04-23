@@ -11,7 +11,8 @@ import RxSwift
 
 class SwitchTableViewCellItem: BaseCellItem {
   var title: String = ""
-  var isOnObservable: Observable<Bool>?
+  var isOn = false
+  var isOnSubject = PublishSubject<Bool>()
 }
 
 protocol SwitchTableViewCellDelegate: class {
@@ -52,9 +53,10 @@ class SwitchTableViewCell: BaseCell {
     }
 
     self.label.text = item.title
+    self.switch.isOn = item.isOn
 
-    item.isOnObservable?.asDriver(onErrorJustReturn: false)
-      .drive(self.switch.rx.isOn).disposed(by: disposeBag)
+    item.isOnSubject.distinctUntilChanged().bind(to: self.switch.rx.isOn).disposed(by: disposeBag)
+    self.switch.rx.isOn.skip(1).distinctUntilChanged().bind(to: item.isOnSubject).disposed(by: disposeBag)
   }
 
   override func prepareForReuse() {

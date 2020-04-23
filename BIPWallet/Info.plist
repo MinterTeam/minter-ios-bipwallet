@@ -24,6 +24,8 @@
 	<true/>
 	<key>NSCameraUsageDescription</key>
 	<string>To be able to scan QR</string>
+	<key>NSFaceIDUsageDescription</key>
+	<string>To be able to enter via Face ID</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>Inter-Bold.otf</string>

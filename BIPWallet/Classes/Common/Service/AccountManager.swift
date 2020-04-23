@@ -16,9 +16,7 @@ class AccountManager {
 	init(secureStorage: Storage = SecureStorage()) {
 		self.secureStorage = secureStorage
 
-    if nil == self.encryptionKey() {
-      self.save(password: self.generateRandomPassword(length: 32))
-    }
+    setRandomEncryptionKeyIfNotExists()
 	}
 
 	enum AccountManagerError: Error {
@@ -73,9 +71,11 @@ class AccountManager {
 		return newPk
 	}
 
-	func generateRandomPassword(length: Int) -> String {
-		return String.random(length: length)
-	}
+  func setRandomEncryptionKeyIfNotExists() {
+    if nil == self.encryptionKey() {
+      self.save(password: String.random(length: 32))
+    }
+  }
 
 	//save hash of password
 	func save(password: String) {
