@@ -33,6 +33,7 @@ class WalletCoordinator: BaseCoordinator<Void> {
     let controller = WalletViewController.initFromStoryboard(name: "Wallet")
     controller.viewControllers = []
     controller.viewModel = WalletViewModel(dependency: WalletViewModel.Dependency())
+    controller.tabBar.tintColor = .mainPurpleColor()
 
     window.rootViewController = controller
 
@@ -61,7 +62,7 @@ class WalletCoordinator: BaseCoordinator<Void> {
                                       image: UIImage(named: "SendIcon"),
                                       selectedImage: nil)
 
-    let send = UINavigationController()
+    let send = WhiteNavigationController()
     send.tabBarItem = sendTabbarItem
 
     let sendCoordinator = SendCoordinator(navigationController: send,
@@ -73,7 +74,7 @@ class WalletCoordinator: BaseCoordinator<Void> {
                                           image: UIImage(named: "SettingsIcon"),
                                           selectedImage: nil)
 
-    let settings = UINavigationController()
+    let settings = WhiteNavigationController()
     settings.tabBarItem = settingsTabbarItem
 
     let settingsCoordinator = SettingsCoordinator(navigationController: settings,
@@ -82,18 +83,6 @@ class WalletCoordinator: BaseCoordinator<Void> {
 
     controller.viewControllers = [balance, send, settings]
 
-//    UIApplication.shared.rx.applicationDidBecomeActive.subscribe(onNext: { (_) in
-//      if !self.pinService.isUnlocked() {
-//        let
-//        self.coordinate(to: )
-//      }
-//    }).disposed(by: disposeBag)
-
     return coordinate(to: settingsCoordinator).map {_ in Void() }
   }
-
-//  func showPINObservable() -> Observable<Void> {
-////    let coordinator = PINCoordinator()
-//  }
-
 }

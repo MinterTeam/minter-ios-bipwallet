@@ -15,11 +15,6 @@ class TransactionViewController: BaseViewController, Controller, StoryboardIniti
   // MARK: - IBOutlet
 
   @IBOutlet weak var tableView: UITableView!
-//  {
-//    didSet {
-//      tableView.rowHeight = UITableView.automaticDimension
-//    }
-//  }
 
   // MARK: - ControllerProtocol
 
@@ -51,6 +46,7 @@ class TransactionViewController: BaseViewController, Controller, StoryboardIniti
       .sections
       .bind(to: tableView.rx.items(dataSource: rxDataSource!))
       .disposed(by: disposeBag)
+
   }
 
   // MARK: - ViewController
@@ -69,7 +65,7 @@ class TransactionViewController: BaseViewController, Controller, StoryboardIniti
                                                                   deleteAnimation: .automatic)
 
     rxDataSource = RxTableViewSectionedAnimatedDataSource<BaseTableSectionItem>(
-      configureCell: { [weak self] dataSource, tableView, indexPath, sm in
+      configureCell: { dataSource, tableView, indexPath, sm in
 
         guard let item = try? dataSource.model(at: indexPath) as? BaseCellItem,
           let cell = tableView.dequeueReusableCell(withIdentifier: item.reuseIdentifier) as? ConfigurableCell else {

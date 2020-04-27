@@ -3,7 +3,7 @@
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16086"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16087"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -26,9 +26,39 @@
                                 <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                                 <color key="separatorColor" red="0.8862745098" green="0.8862745098" blue="0.8862745098" alpha="1" colorSpace="custom" customColorSpace="deviceRGB"/>
                                 <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                <prototypes>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="noTransactionCell" id="waJ-RU-iAM" customClass="BaseCell" customModule="BIPWallet" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="55.5" width="414" height="76"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="waJ-RU-iAM" id="Oca-d1-yDR">
+                                            <rect key="frame" x="0.0" y="0.0" width="414" height="76"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="No transactions yet" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eqe-5G-k3v">
+                                                    <rect key="frame" x="36" y="27" width="342" height="22"/>
+                                                    <fontDescription key="fontDescription" name="Inter-SemiBold" family="Inter" pointSize="18"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstAttribute="bottomMargin" secondItem="eqe-5G-k3v" secondAttribute="bottom" constant="16" id="eaQ-1c-nBm"/>
+                                                <constraint firstItem="eqe-5G-k3v" firstAttribute="top" secondItem="Oca-d1-yDR" secondAttribute="topMargin" constant="16" id="gkC-49-lkm"/>
+                                                <constraint firstItem="eqe-5G-k3v" firstAttribute="leading" secondItem="Oca-d1-yDR" secondAttribute="leadingMargin" constant="16" id="pCd-zQ-I1X"/>
+                                                <constraint firstAttribute="trailingMargin" secondItem="eqe-5G-k3v" secondAttribute="trailing" constant="16" id="uFY-9k-56e"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                </prototypes>
                             </tableView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="No transactions yet" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CLD-4l-70M">
-                                <rect key="frame" x="186" y="437" width="161" height="21"/>
+                            <view contentMode="scaleToFill" id="vbe-E6-xKs">
+                                <rect key="frame" x="0.0" y="0.0" width="414" height="49"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" red="0.1843137255" green="0.1137254902" blue="0.41176470590000003" alpha="1" colorSpace="deviceRGB"/>
+                                <viewLayoutGuide key="safeArea" id="pYk-qW-DSX"/>
+                            </view>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="No transactions yet" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CLD-4l-70M">
+                                <rect key="frame" x="126.5" y="696" width="161" height="21"/>
                                 <fontDescription key="fontDescription" name="Inter-SemiBold" family="Inter" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
@@ -37,17 +67,21 @@
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <constraints>
                             <constraint firstItem="Whn-ZE-c7s" firstAttribute="trailing" secondItem="tR0-cY-Wvz" secondAttribute="trailing" id="19S-oK-5eB"/>
+                            <constraint firstItem="vbe-E6-xKs" firstAttribute="leading" secondItem="Whn-ZE-c7s" secondAttribute="leading" id="MrU-NX-kbN"/>
                             <constraint firstItem="Whn-ZE-c7s" firstAttribute="leading" secondItem="tR0-cY-Wvz" secondAttribute="leading" id="NcJ-IK-B7i"/>
-                            <constraint firstItem="CLD-4l-70M" firstAttribute="centerY" secondItem="Whn-ZE-c7s" secondAttribute="centerY" id="bPF-24-p0z"/>
+                            <constraint firstItem="vbe-E6-xKs" firstAttribute="top" secondItem="Whn-ZE-c7s" secondAttribute="top" id="h2D-aa-2gC"/>
                             <constraint firstAttribute="bottom" secondItem="Whn-ZE-c7s" secondAttribute="bottom" id="h4B-qK-uKg"/>
                             <constraint firstItem="Whn-ZE-c7s" firstAttribute="top" secondItem="nJa-uP-JE9" secondAttribute="top" id="jQ5-pT-yZZ"/>
                             <constraint firstItem="CLD-4l-70M" firstAttribute="centerX" secondItem="Whn-ZE-c7s" secondAttribute="centerX" id="oHf-7s-ban"/>
+                            <constraint firstItem="CLD-4l-70M" firstAttribute="top" secondItem="Whn-ZE-c7s" secondAttribute="bottom" constant="-200" id="pOA-l5-qKR"/>
+                            <constraint firstItem="vbe-E6-xKs" firstAttribute="trailing" secondItem="Whn-ZE-c7s" secondAttribute="trailing" id="qyZ-nU-7Sd"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="tR0-cY-Wvz"/>
                     </view>
                     <connections>
                         <outlet property="noTransactionsLabel" destination="CLD-4l-70M" id="STh-Wg-pyM"/>
                         <outlet property="tableView" destination="Whn-ZE-c7s" id="o45-45-s52"/>
+                        <outlet property="upperView" destination="vbe-E6-xKs" id="VXd-WW-Qg0"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="36g-UO-9Om" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>

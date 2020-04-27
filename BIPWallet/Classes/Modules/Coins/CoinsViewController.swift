@@ -16,6 +16,7 @@ class CoinsViewController: BaseViewController, Controller, StoryboardInitializab
 
   // MARK: -
 
+  @IBOutlet weak var upperView: UIView!
   @IBOutlet weak var tableView: UITableView!
 
   // MARK: - ControllerProtocol
@@ -49,7 +50,7 @@ class CoinsViewController: BaseViewController, Controller, StoryboardInitializab
     tableView.rx.setDelegate(self).disposed(by: disposeBag)
 
     rxDataSource = RxTableViewSectionedAnimatedDataSource<BaseTableSectionItem>(
-      configureCell: { [weak self] dataSource, tableView, indexPath, sm in
+      configureCell: { dataSource, tableView, indexPath, sm in
 
         guard let item = try? dataSource.model(at: indexPath) as? BaseCellItem,
           let cell = tableView.dequeueReusableCell(withIdentifier: item.reuseIdentifier) as? ConfigurableCell else {
@@ -62,6 +63,15 @@ class CoinsViewController: BaseViewController, Controller, StoryboardInitializab
     configure(with: viewModel)
 
     tableView.contentInset = UIEdgeInsets(top: 230, left: 0, bottom: 0, right: 0)
+
+    tableView.rx.didScroll.subscribe(onNext: { [weak self] (_) in
+      guard let `self` = self else { return }
+      if self.tableView.contentOffset.y < -self.tableView.contentInset.top {
+        self.upperView.alpha = 1.0
+      } else {
+        self.upperView.alpha = 0.0
+      }
+    }).disposed(by: disposeBag)
   }
 
 }

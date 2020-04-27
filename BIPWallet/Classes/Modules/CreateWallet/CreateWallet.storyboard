@@ -3,7 +3,7 @@
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16086"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16087"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -24,7 +24,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="jje-zm-RSO" customClass="HandlerView" customModule="BIPWallet" customModuleProvider="target">
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="jje-zm-RSO" customClass="HandlerVerticalSnapDraggableView" customModule="BIPWallet" customModuleProvider="target">
                                 <rect key="frame" x="8" y="575.5" width="398" height="286.5"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="HOK-RX-O9I" customClass="DefaultButton" customModule="BIPWallet" customModuleProvider="target">
@@ -39,6 +39,9 @@
                                             <userDefinedRuntimeAttribute type="string" keyPath="pattern" value="purple"/>
                                         </userDefinedRuntimeAttributes>
                                     </button>
+                                    <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="medium" translatesAutoresizingMaskIntoConstraints="NO" id="x0a-XF-nPc">
+                                        <rect key="frame" x="189" y="235.5" width="20" height="20"/>
+                                    </activityIndicatorView>
                                     <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="6ea-42-xHk">
                                         <rect key="frame" x="316" y="167.5" width="51" height="31"/>
                                     </switch>
@@ -130,6 +133,7 @@
                                     <constraint firstAttribute="trailing" secondItem="nTB-Jj-k9G" secondAttribute="trailing" constant="16" id="4Q7-wW-q4d"/>
                                     <constraint firstItem="vWl-Yh-han" firstAttribute="centerY" secondItem="6ea-42-xHk" secondAttribute="centerY" id="5Hv-zX-cKI"/>
                                     <constraint firstItem="vWl-Yh-han" firstAttribute="leading" secondItem="HOK-RX-O9I" secondAttribute="leading" constant="16" id="5pZ-ov-dlC"/>
+                                    <constraint firstItem="x0a-XF-nPc" firstAttribute="centerY" secondItem="HOK-RX-O9I" secondAttribute="centerY" id="7zW-W4-Uk4"/>
                                     <constraint firstAttribute="trailing" secondItem="Og5-e6-xQB" secondAttribute="trailing" constant="16" id="9ZY-8H-AqB"/>
                                     <constraint firstAttribute="trailing" secondItem="HOK-RX-O9I" secondAttribute="trailing" constant="16" id="AA4-Mc-bAu"/>
                                     <constraint firstItem="6ea-42-xHk" firstAttribute="leading" secondItem="vWl-Yh-han" secondAttribute="trailing" constant="5" id="CWc-Mn-gcI"/>
@@ -147,6 +151,7 @@
                                     <constraint firstItem="vWl-Yh-han" firstAttribute="top" secondItem="Og5-e6-xQB" secondAttribute="bottom" constant="27" id="hwj-kQ-oYM"/>
                                     <constraint firstItem="Og5-e6-xQB" firstAttribute="top" secondItem="nTB-Jj-k9G" secondAttribute="bottom" constant="14" id="n0c-sm-575"/>
                                     <constraint firstItem="HOK-RX-O9I" firstAttribute="top" secondItem="6ea-42-xHk" secondAttribute="bottom" constant="22" id="o3O-Ls-N5h"/>
+                                    <constraint firstItem="x0a-XF-nPc" firstAttribute="centerX" secondItem="HOK-RX-O9I" secondAttribute="centerX" id="tar-R8-AUy"/>
                                 </constraints>
                             </view>
                         </subviews>
@@ -160,6 +165,7 @@
                     </view>
                     <connections>
                         <outlet property="activateButton" destination="HOK-RX-O9I" id="QuI-O0-Wiw"/>
+                        <outlet property="activityIndicator" destination="x0a-XF-nPc" id="Q2P-Xh-Jlm"/>
                         <outlet property="copiedIndicator" destination="voD-2W-Nq7" id="39i-q7-TpA"/>
                         <outlet property="mainView" destination="jje-zm-RSO" id="Oe7-tD-70d"/>
                         <outlet property="mnemonicButton" destination="2fm-ZJ-Dps" id="QE1-5h-ZJg"/>

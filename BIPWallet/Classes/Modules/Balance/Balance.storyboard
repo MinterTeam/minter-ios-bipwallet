@@ -3,7 +3,7 @@
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16086"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16087"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -17,8 +17,8 @@
         <scene sceneID="GZM-ux-e3z">
             <objects>
                 <viewController storyboardIdentifier="BalanceViewController" title=" " useStoryboardIdentifierAsRestorationIdentifier="YES" id="b1B-CA-8a6" customClass="BalanceViewController" customModule="BIPWallet" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="woN-k6-82S">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                    <view key="view" multipleTouchEnabled="YES" contentMode="scaleToFill" id="woN-k6-82S">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="808"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" alwaysBounceVertical="YES" alwaysBounceHorizontal="YES" translatesAutoresizingMaskIntoConstraints="NO" id="uTW-SA-zQg">
@@ -30,41 +30,41 @@
                                     <outlet property="delegate" destination="b1B-CA-8a6" id="uEA-jS-8Iq"/>
                                 </connections>
                             </scrollView>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Jcw-bC-189">
-                                <rect key="frame" x="0.0" y="44" width="414" height="180.5"/>
+                            <view multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Jcw-bC-189">
+                                <rect key="frame" x="0.0" y="0.0" width="414" height="163.5"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" alpha="0.69999999999999996" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Available Balance" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LZU-RC-aW4">
-                                        <rect key="frame" x="48" y="16" width="110.5" height="16"/>
+                                        <rect key="frame" x="48" y="16" width="350" height="16"/>
                                         <fontDescription key="fontDescription" name="Inter-SemiBold" family="Inter" pointSize="13"/>
                                         <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0.0000 BIP" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1jl-Ro-hiQ">
-                                        <rect key="frame" x="48" y="38" width="162" height="36"/>
+                                        <rect key="frame" x="48" y="38" width="350" height="36"/>
                                         <fontDescription key="fontDescription" name="Inter-SemiBold" family="Inter" pointSize="30"/>
                                         <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="+ 300.3933 BIP today" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hRj-4M-g3L">
-                                        <rect key="frame" x="48" y="76" width="148" height="17"/>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hRj-4M-g3L">
+                                        <rect key="frame" x="48" y="76" width="0.0" height="0.0"/>
                                         <fontDescription key="fontDescription" name="Inter-SemiBold" family="Inter" pointSize="14"/>
                                         <color key="textColor" red="0.20392156862745098" green="0.7803921568627451" blue="0.34901960784313724" alpha="1" colorSpace="deviceRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" alpha="0.69999999999999996" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Delegated Balance" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ecJ-97-sxu">
-                                        <rect key="frame" x="48" y="117" width="118" height="16"/>
+                                        <rect key="frame" x="48" y="100" width="118" height="16"/>
                                         <fontDescription key="fontDescription" name="Inter-SemiBold" family="Inter" pointSize="13"/>
                                         <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0.0000 BIP" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0vM-Ic-kBX">
-                                        <rect key="frame" x="48" y="136" width="86.5" height="19.5"/>
+                                        <rect key="frame" x="48" y="119" width="86.5" height="19.5"/>
                                         <fontDescription key="fontDescription" name="Inter-SemiBold" family="Inter" pointSize="16"/>
                                         <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="BalanceDelegatedDisclosureImage" translatesAutoresizingMaskIntoConstraints="NO" id="1hC-UY-7sX">
-                                        <rect key="frame" x="379" y="124.5" width="24" height="24"/>
+                                        <rect key="frame" x="379" y="107.5" width="24" height="24"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="24" id="zb6-Xi-gjT"/>
                                             <constraint firstAttribute="height" constant="24" id="zz8-5M-i9v"/>
@@ -76,6 +76,8 @@
                                 </subviews>
                                 <color key="backgroundColor" red="0.18431372549019609" green="0.11372549019607843" blue="0.41176470588235292" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
+                                    <constraint firstAttribute="trailing" secondItem="LZU-RC-aW4" secondAttribute="trailing" constant="16" id="5sU-yp-F1b"/>
+                                    <constraint firstAttribute="trailing" secondItem="1jl-Ro-hiQ" secondAttribute="trailing" constant="16" id="CMN-Ej-Ytq"/>
                                     <constraint firstAttribute="bottom" secondItem="1hC-UY-7sX" secondAttribute="bottom" constant="32" id="DkF-NQ-T6P"/>
                                     <constraint firstItem="ZpQ-ES-i6q" firstAttribute="top" secondItem="ecJ-97-sxu" secondAttribute="top" id="KpG-DL-Gv2"/>
                                     <constraint firstItem="LZU-RC-aW4" firstAttribute="top" secondItem="Jcw-bC-189" secondAttribute="top" constant="16" id="NNM-dd-MLa"/>
@@ -95,8 +97,8 @@
                                     <constraint firstItem="hRj-4M-g3L" firstAttribute="top" secondItem="1jl-Ro-hiQ" secondAttribute="bottom" constant="2" id="uLz-BC-e6K"/>
                                 </constraints>
                             </view>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ZBL-0Z-dM2">
-                                <rect key="frame" x="0.0" y="224.5" width="414" height="69"/>
+                            <view multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ZBL-0Z-dM2">
+                                <rect key="frame" x="0.0" y="163.5" width="414" height="69"/>
                                 <subviews>
                                     <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="bordered" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="8vz-1R-ytc">
                                         <rect key="frame" x="16" y="16" width="382" height="31"/>
@@ -109,7 +111,7 @@
                                         </segments>
                                     </segmentedControl>
                                 </subviews>
-                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstAttribute="trailing" secondItem="8vz-1R-ytc" secondAttribute="trailing" constant="16" id="Pbd-jy-h22"/>
                                     <constraint firstItem="8vz-1R-ytc" firstAttribute="leading" secondItem="ZBL-0Z-dM2" secondAttribute="leading" constant="16" id="WxV-p9-6h3"/>
@@ -134,8 +136,11 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="gS7-dX-vnJ"/>
                     </view>
+                    <extendedEdge key="edgesForExtendedLayout" bottom="YES"/>
+                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" translucent="NO" prompted="NO"/>
                     <connections>
                         <outlet property="availableBalance" destination="1jl-Ro-hiQ" id="H3B-9m-8Nt"/>
+                        <outlet property="balanceTitle" destination="LZU-RC-aW4" id="Psl-ch-bhC"/>
                         <outlet property="containerView" destination="uTW-SA-zQg" id="atq-Rw-5gR"/>
                         <outlet property="containerViewHeightConstraint" destination="uCx-0C-5jB" id="SOp-Lw-B7G"/>
                         <outlet property="delegatedBalance" destination="0vM-Ic-kBX" id="BuU-Jr-v2M"/>

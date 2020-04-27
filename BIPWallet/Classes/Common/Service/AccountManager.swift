@@ -210,7 +210,9 @@ class AccountManager {
                          address: "Mx" + dbModel.address.stripMinterHexPrefix(),
                          emoji: dbModel.emoji,
                          lastSelected: Date(timeIntervalSince1970: dbModel.lastSelected))
-		}
+    }.sorted(by: { (account1, account2) -> Bool in
+      return account1.lastSelected > account2.lastSelected
+    })
 		return res
 	}
 

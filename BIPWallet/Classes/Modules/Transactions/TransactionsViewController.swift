@@ -14,6 +14,7 @@ import RxAppState
 
 class TransactionsViewController: BaseViewController, Controller, StoryboardInitializable {
 
+  @IBOutlet weak var upperView: UIView!
   @IBOutlet weak var noTransactionsLabel: UILabel!
   @IBOutlet weak var tableView: UITableView!
 
@@ -72,6 +73,15 @@ class TransactionsViewController: BaseViewController, Controller, StoryboardInit
     configure(with: viewModel)
 
     tableView.contentInset = UIEdgeInsets(top: 230, left: 0, bottom: 0, right: 0)
+
+    tableView.rx.didScroll.subscribe(onNext: { [weak self] (_) in
+      guard let `self` = self else { return }
+      if self.tableView.contentOffset.y < -self.tableView.contentInset.top {
+        self.upperView.alpha = 1.0
+      } else {
+        self.upperView.alpha = 0.0
+      }
+    }).disposed(by: disposeBag)
   }
 }
 

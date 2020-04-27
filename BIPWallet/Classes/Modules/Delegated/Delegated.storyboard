@@ -3,13 +3,16 @@
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16086"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16087"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <customFonts key="customFonts">
         <array key="Inter-Medium.otf">
             <string>Inter-Medium</string>
+        </array>
+        <array key="Inter-SemiBold.otf">
+            <string>Inter-SemiBold</string>
         </array>
         <array key="Ubuntu-M.ttf">
             <string>Ubuntu-Medium</string>
@@ -143,11 +146,19 @@
                                     </tableViewCell>
                                 </prototypes>
                             </tableView>
+                            <label opaque="NO" userInteractionEnabled="NO" alpha="0.0" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="No delegations yet" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hOI-jh-zgq">
+                                <rect key="frame" x="125.5" y="393" width="163.5" height="22"/>
+                                <fontDescription key="fontDescription" name="Inter-SemiBold" family="Inter" pointSize="18"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
+                            <constraint firstItem="hOI-jh-zgq" firstAttribute="centerY" secondItem="iuC-kD-CCL" secondAttribute="centerY" id="1qk-fu-7h4"/>
                             <constraint firstAttribute="bottom" secondItem="iuC-kD-CCL" secondAttribute="bottom" id="6D6-ex-aZt"/>
                             <constraint firstItem="iuC-kD-CCL" firstAttribute="trailing" secondItem="Xto-aH-6bY" secondAttribute="trailing" id="9lQ-WU-6q5"/>
+                            <constraint firstItem="hOI-jh-zgq" firstAttribute="centerX" secondItem="iuC-kD-CCL" secondAttribute="centerX" id="V6b-BR-4Sj"/>
                             <constraint firstItem="iuC-kD-CCL" firstAttribute="top" secondItem="lhp-q4-UAD" secondAttribute="top" id="gI5-my-QoU"/>
                             <constraint firstItem="iuC-kD-CCL" firstAttribute="leading" secondItem="Xto-aH-6bY" secondAttribute="leading" id="sVk-x0-bXI"/>
                         </constraints>
@@ -156,6 +167,7 @@
                     <extendedEdge key="edgesForExtendedLayout" bottom="YES"/>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" translucent="NO" prompted="NO"/>
                     <connections>
+                        <outlet property="noContactsLabel" destination="hOI-jh-zgq" id="ifu-Nh-QyY"/>
                         <outlet property="tableView" destination="iuC-kD-CCL" id="N7K-xV-xV8"/>
                     </connections>
                 </viewController>

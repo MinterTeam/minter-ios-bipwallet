@@ -21,7 +21,6 @@ class SendViewController: BaseViewController,
   // MARK: - IBOutlet
 
   let fakeTextField = UITextField()
-  @IBOutlet weak var scanQRButton: UIBarButtonItem!
   @IBOutlet weak var txScanButton: UIBarButtonItem!
   @IBOutlet weak var tableView: UITableView! {
     didSet {
@@ -42,6 +41,14 @@ class SendViewController: BaseViewController,
 
   // MARK: -
 
+  override var preferredStatusBarStyle: UIStatusBarStyle {
+    if #available(iOS 13.0, *) {
+      return .darkContent
+    } else {
+      return .default
+    }
+  }
+
   var popupViewController: PopupViewController?
 
   lazy var readerVC: QRCodeReaderViewController = {
@@ -52,6 +59,36 @@ class SendViewController: BaseViewController,
     }
     return QRCodeReaderViewController(builder: builder)
   }()
+
+  var walletSelectorButton = UIButton()
+  let walletLabel = UILabel(frame: CGRect(x: 0, y: 0, width: 150, height: 30))
+  var walletSelectorView: UIView {
+    let customView = UIView(frame: CGRect(x: 0, y: 0, width: 173, height: 100))
+    walletLabel.isUserInteractionEnabled = false
+    walletLabel.textColor = .mainBlackColor()
+    walletLabel.font = UIFont.boldFont(of: 18.0)
+    let expandImageView = UIImageView(image: UIImage(named: "WalletsExpandImage")!)
+    expandImageView.isUserInteractionEnabled = false
+    customView.addSubview(walletLabel)
+    customView.addSubview(expandImageView)
+
+    walletLabel.snp.makeConstraints { (maker) in
+      maker.top.equalTo(customView).offset(9)
+      maker.left.equalTo(customView)
+      maker.height.equalTo(21)
+      maker.right.equalTo(customView).offset(-25)
+    }
+    expandImageView.snp.makeConstraints { (maker) in
+      maker.centerY.equalTo(walletLabel)
+      maker.left.equalTo(walletLabel.snp.right).offset(15)
+    }
+    customView.isUserInteractionEnabled = false
+    customView.addSubview(walletSelectorButton)
+    walletSelectorButton.snp.makeConstraints { (maker) in
+      maker.top.left.right.bottom.equalTo(customView)
+    }
+    return customView
+  }
 
   // MARK: - ControllerProtocol
 
@@ -64,8 +101,6 @@ class SendViewController: BaseViewController,
   override func viewDidLoad() {
     super.viewDidLoad()
 
-    self.navigationController?.navigationBar.shadowImage = UIImage(named: "NavigationBarShadowImage")
-
     registerCells()
     configure(with: viewModel)
 
@@ -74,6 +109,7 @@ class SendViewController: BaseViewController,
 
     tableView.beginUpdates()
     tableView.endUpdates()
+    self.view.layoutIfNeeded()
   }
 
   // MARK: -
@@ -153,13 +189,6 @@ extension SendViewController {
         }
       }).disposed(by: disposeBag)
 
-    txScanButton
-      .rx
-      .tap
-      .asDriver()
-      .drive(viewModel.input.txScanButtonDidTap)
-      .disposed(by: disposeBag)
-
     viewModel.output.errorNotification
       .asDriver(onErrorJustReturn: nil)
       .filter({ (notification) -> Bool in
@@ -171,10 +200,7 @@ extension SendViewController {
         banner.show()
       }).disposed(by: disposeBag)
 
-    viewModel
-      .output
-      .txErrorNotification
-      .asDriver(onErrorJustReturn: nil)
+    viewModel.output.txErrorNotification.asDriver(onErrorJustReturn: nil)
       .drive(onNext: { [weak self] (notification) in
         guard nil != notification else {
           return
@@ -186,10 +212,7 @@ extension SendViewController {
         banner.show()
       }).disposed(by: disposeBag)
 
-    viewModel
-      .output
-      .popup
-      .asDriver(onErrorJustReturn: nil)
+    viewModel.output.popup.asDriver(onErrorJustReturn: nil)
       .drive(onNext: { [weak self] (popup) in
         if popup == nil {
           self?.popupViewController?.dismiss(animated: true, completion: nil)
@@ -216,9 +239,7 @@ extension SendViewController {
         }
       }).disposed(by: disposeBag)
 
-    viewModel
-      .sections
-      .asObservable()
+    viewModel.sections.asObservable()
       .subscribe(onNext: { [weak self] (_) in
         self?.tableView.reloadData()
         guard let selectedPickerItem = self?.viewModel.selectedPickerItem() else {
@@ -231,40 +252,29 @@ extension SendViewController {
         }
       }).disposed(by: disposeBag)
 
-    viewModel
-      .output
-      .showViewController
-      .asDriver(onErrorJustReturn: nil)
+    viewModel.output.showViewController.asDriver(onErrorJustReturn: nil)
       .drive(onNext: { [weak self] (viewController) in
         guard let viewController = viewController else { return }
         self?.tabBarController?.present(viewController, animated: true, completion: nil)
       }).disposed(by: disposeBag)
 
-    txScanButton
-      .rx
-      .tap
-      .asDriver()
+    txScanButton.rx.tap.asDriver()
+      .drive(onNext: { [weak self] (_) in
+        guard let `self` = self else { return }
+        self.present(self.readerVC, animated: true, completion: nil)
+      }).disposed(by: disposeBag)
+
+    txScanButton.rx.tap.asDriver()
       .drive(viewModel.input.txScanButtonDidTap)
       .disposed(by: disposeBag)
 
-    txScanButton
-      .rx
-      .tap
-      .subscribe({ [weak self] (_) in
-        self?.present(self!.readerVC, animated: true, completion: nil)
-      }).disposed(by: disposeBag)
-
-    viewModel
-      .output
-      .openAppSettings
+    viewModel.output.openAppSettings
       .asDriver(onErrorJustReturn: ())
       .drive(onNext: { [weak self] in
 //        self?.openAppSpecificSettings()
       }).disposed(by: disposeBag)
 
-    viewModel
-      .output
-      .updateTableHeight
+    viewModel.output.updateTableHeight
       .asDriver(onErrorJustReturn: ())
       .drive(onNext: { [weak self] (_) in
         self?.tableView.beginUpdates()
@@ -282,6 +292,21 @@ extension SendViewController {
           
         })
     }).disposed(by: disposeBag)
+
+    viewModel.output
+      .wallet
+      .subscribe(onNext: { [weak self] (val) in
+        guard let `self` = self else { return }
+        self.walletLabel.text = val
+        let button = UIBarButtonItem(customView: self.walletSelectorView)
+        self.navigationItem.setLeftBarButton(button, animated: true)
+    }).disposed(by: disposeBag)
+
+    //Input
+    walletSelectorButton.rx.tap
+      .asDriver()
+      .drive(viewModel.input.didTapSelectWallet)
+      .disposed(by: disposeBag)
 
     readerVC.completionBlock = { [weak self] (result: QRCodeReaderResult?) in
       self?.readerVC.stopScanning()

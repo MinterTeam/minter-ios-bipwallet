@@ -8,7 +8,7 @@
 
 import UIKit
 
-class SeparatorTableViewCellItem : BaseCellItem {}
+class SeparatorTableViewCellItem: BaseCellItem {}
 
 class SeparatorTableViewCell: BaseCell {
 

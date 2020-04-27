@@ -31,4 +31,12 @@ class WalletViewController: UITabBarController, Controller, StoryboardInitializa
     configure(with: viewModel)
   }
 
+  override var childForStatusBarStyle: UIViewController? {
+    let candidate = self.viewControllers?[safe: self.selectedIndex]
+    if let navBar = candidate as? UINavigationController {
+      return navBar.viewControllers.last
+    }
+    return candidate
+  }
+
 }

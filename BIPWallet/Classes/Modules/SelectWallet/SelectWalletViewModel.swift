@@ -17,7 +17,7 @@ class SelectWalletViewModel: BaseViewModel, ViewModel {
 
   lazy var accounts = self.dependency.authService.accounts()
 
-  private var sections = PublishSubject<[BaseTableSectionItem]>()
+  private var sections = BehaviorSubject<[BaseTableSectionItem]>(value: [])
   private var didCancel = PublishSubject<Void>()
   private var didSelectItem = PublishSubject<IndexPath>()
   private var didSelect = PublishSubject<String>()
@@ -73,21 +73,22 @@ class SelectWalletViewModel: BaseViewModel, ViewModel {
 
   func didSelectObserable() -> Observable<String> {
     return didSelectItem.filter({ (indexPath) -> Bool in
-      return self.accounts[safe: indexPath.row] != nil
+      return self.accounts[safe: indexPath.row/2] != nil
     }).map { (indexPath) -> String in
-      return self.accounts[indexPath.row].address
+      return self.accounts[indexPath.row/2].address
     }
   }
 
   func showAddObservable() -> Observable<Void> {
     return didSelectItem.filter({ (indexPath) -> Bool in
-      return self.accounts[safe: indexPath.row] == nil
+      return self.accounts[safe: indexPath.row/2] == nil
     }).map { (_) -> Void in
       return Void()
     }
   }
 
   func bind() {
+//    self.createSections(accounts: self.accounts)
     viewDidLoad.subscribe(onNext: { [weak self] (_) in
       guard let `self` = self else { return }
       self.createSections(accounts: self.accounts)
@@ -107,7 +108,12 @@ class SelectWalletViewModel: BaseViewModel, ViewModel {
       walletCell.didTapEdit.map { (_) -> AccountItem in
         return account
       }.subscribe(showEdit).disposed(by: disposeBag)
+
       items.append(walletCell)
+
+      let separator = SeparatorTableViewCellItem(reuseIdentifier: "SeparatorTableViewCell",
+                                                 identifier: String.random())
+      items.append(separator)
     }
 
     if accounts.count < 5 {

@@ -8,6 +8,7 @@
 
 import UIKit
 import RxSwift
+import RxRouting
 import MinterCore
 import MinterExplorer
 import MinterMy
@@ -55,13 +56,35 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         .subscribe()
         .disposed(by: disposeBag)
 
-    UIApplication.shared.rx.applicationDidBecomeActive.flatMap { (state) -> Observable<Void> in
-      return appCoordinator.start()
-    }.subscribe().disposed(by: disposeBag)
+    UIApplication.shared.rx.didOpenApp.skip(1)
+      .filter({ (_) -> Bool in
+        return !pinService.isUnlocked()
+      })
+      .flatMap { (state) -> Observable<Void> in
+        return appCoordinator.start()
+      }.subscribe().disposed(by: disposeBag)
+
+    RxRouting.instance
+    .register("minter://tx/<transaction>")
+    .subscribe(onNext: { result in
+      print(result)
+      if let vc = RawTransactionRouter.rawTransactionViewController(with: result.url) {
+        self.window?.rootViewController?.present(vc, animated: true, completion: nil)
+      }
+    }).disposed(by: disposeBag)
 
     appearance()
 
     return true
+  }
+  
+  func application(_ app: UIApplication,
+                   open url: URL,
+                   options: [UIApplication.OpenURLOptionsKey: Any] = [:]) -> Bool {
+    if RxRouting.instance.handle(url: url) {
+        return true
+    }
+    return false
   }
 
 }
@@ -104,7 +127,7 @@ extension AppDelegate {
     UINavigationBar.appearance().isTranslucent = false
 
     UITabBarItem.appearance().setTitleTextAttributes([
-      NSAttributedString.Key.foregroundColor: UIColor(hex: 0x8A8A8F)!,
+      NSAttributedString.Key.foregroundColor: UIColor.mainPurpleColor(),
       NSAttributedString.Key.font : UIFont.mediumFont(of: 11.0)
     ], for: .normal)
     UITabBarItem.appearance().setTitleTextAttributes([

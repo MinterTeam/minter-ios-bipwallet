@@ -3,10 +3,15 @@
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16086"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16087"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
+    <customFonts key="customFonts">
+        <array key="Inter-Medium.otf">
+            <string>Inter-Medium</string>
+        </array>
+    </customFonts>
     <scenes>
         <!--Sign In View Controller-->
         <scene sceneID="eWV-7p-cak">
@@ -29,13 +34,44 @@
                                         <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="17"/>
                                         <textInputTraits key="textInputTraits" autocapitalizationType="sentences" returnKeyType="go"/>
                                     </textView>
+                                    <view alpha="0.0" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="eiz-l5-jzQ">
+                                        <rect key="frame" x="16" y="66" width="366" height="70"/>
+                                        <subviews>
+                                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" animating="YES" style="medium" translatesAutoresizingMaskIntoConstraints="NO" id="i8t-LI-atN">
+                                                <rect key="frame" x="37" y="25" width="20" height="20"/>
+                                            </activityIndicatorView>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Please wait a few seconds…" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zTp-ml-XrA">
+                                                <rect key="frame" x="73" y="24.5" width="228.5" height="21"/>
+                                                <fontDescription key="fontDescription" name="Inter-Medium" family="Inter" pointSize="17"/>
+                                                <nil key="textColor"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                        </subviews>
+                                        <color key="backgroundColor" red="0.96862745100000003" green="0.96078431369999995" blue="1" alpha="1" colorSpace="deviceRGB"/>
+                                        <constraints>
+                                            <constraint firstItem="i8t-LI-atN" firstAttribute="centerY" secondItem="eiz-l5-jzQ" secondAttribute="centerY" id="8ZF-oB-uys"/>
+                                            <constraint firstItem="i8t-LI-atN" firstAttribute="leading" secondItem="eiz-l5-jzQ" secondAttribute="leading" constant="37" id="WtR-Ai-pFX"/>
+                                            <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="zTp-ml-XrA" secondAttribute="trailing" constant="10" id="jjv-xd-2zA"/>
+                                            <constraint firstItem="zTp-ml-XrA" firstAttribute="leading" secondItem="i8t-LI-atN" secondAttribute="trailing" constant="16" id="krr-UZ-Txi"/>
+                                            <constraint firstItem="zTp-ml-XrA" firstAttribute="centerY" secondItem="i8t-LI-atN" secondAttribute="centerY" id="mXY-YZ-MQs"/>
+                                        </constraints>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                                <integer key="value" value="8"/>
+                                            </userDefinedRuntimeAttribute>
+                                        </userDefinedRuntimeAttributes>
+                                    </view>
                                 </subviews>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                                 <constraints>
                                     <constraint firstAttribute="trailing" secondItem="yr6-mv-2QK" secondAttribute="trailing" constant="16" id="04D-KT-5fv"/>
                                     <constraint firstAttribute="bottom" secondItem="yr6-mv-2QK" secondAttribute="bottom" constant="16" id="2LP-TA-rTO"/>
                                     <constraint firstItem="yr6-mv-2QK" firstAttribute="leading" secondItem="XdO-Hr-RLG" secondAttribute="leading" constant="16" id="2Yw-6V-dVt"/>
+                                    <constraint firstAttribute="trailing" secondItem="eiz-l5-jzQ" secondAttribute="trailing" constant="16" id="2wj-t3-huT"/>
+                                    <constraint firstAttribute="bottom" secondItem="eiz-l5-jzQ" secondAttribute="bottom" constant="16" id="8E5-kI-c15"/>
                                     <constraint firstAttribute="height" constant="152" id="AGt-uj-es5"/>
+                                    <constraint firstItem="eiz-l5-jzQ" firstAttribute="leading" secondItem="XdO-Hr-RLG" secondAttribute="leading" constant="16" id="Q3I-f2-p6v"/>
+                                    <constraint firstItem="eiz-l5-jzQ" firstAttribute="top" secondItem="yr6-mv-2QK" secondAttribute="top" id="fts-PN-bzo"/>
                                 </constraints>
                             </view>
                         </subviews>
@@ -48,8 +84,10 @@
                         <viewLayoutGuide key="safeArea" id="5RY-e3-YCs"/>
                     </view>
                     <connections>
+                        <outlet property="activateButtonActivityIndicator" destination="i8t-LI-atN" id="Ckn-Mx-fAo"/>
                         <outlet property="bottomConstraint" destination="E9L-CC-4yL" id="qrk-Fl-cBe"/>
                         <outlet property="mainView" destination="XdO-Hr-RLG" id="QG5-Ps-rfg"/>
+                        <outlet property="mainViewLoaderView" destination="eiz-l5-jzQ" id="IFM-y9-qxb"/>
                         <outlet property="textView" destination="yr6-mv-2QK" id="uM8-Hl-Xd7"/>
                     </connections>
                 </viewController>

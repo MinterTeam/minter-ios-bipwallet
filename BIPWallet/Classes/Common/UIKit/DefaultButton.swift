@@ -27,11 +27,32 @@ class DefaultButton: UIButton {
 
 	// MARK: -
 
+  enum DefaultButtonColor: String {
+    case green
+    case black
+
+    func color() -> UIColor? {
+      switch self {
+      case .green:
+        return UIColor.mainGreenColor()
+      case .black:
+        return UIColor.mainBlackColor()
+      }
+    }
+  }
+
 	@IBInspectable var pattern: String? {
 		didSet {
 			self.updateAppearance()
 		}
 	}
+  
+  @IBInspectable var color: String? {
+    didSet {
+      self.updateAppearance()
+    }
+  }
+
 
 	func updateAppearance() {
 
@@ -56,11 +77,18 @@ class DefaultButton: UIButton {
 			self.layer.borderColor = UIColor.white.cgColor
 			self.setTitleColor(.white, for: .normal)
 		} else if pattern == "filled" {
-      self.backgroundColor = .mainWhiteColor()
-      self.layer.borderColor = UIColor.mainWhiteColor().cgColor
-			self.setTitleColor(.black, for: .normal)
+      if let colorName = self.color,
+        let color = DefaultButtonColor(rawValue: colorName)?.color() {
+          self.backgroundColor = color
+          self.layer.borderColor = color.cgColor
+          self.setTitleColor(.white, for: .normal)
+      } else {
+        self.backgroundColor = .mainWhiteColor()
+        self.layer.borderColor = UIColor.mainWhiteColor().cgColor
+        self.setTitleColor(.black, for: .normal)
+      }
 			self.layer.borderWidth = 0.0
-			addShadow()
+//			addShadow()
     } else if pattern == "purple" {
       self.layer.borderWidth = 0.0
       self.setBackgroundImage(UIImage(named: "DefaultButtonActive"), for: .normal)
@@ -71,7 +99,7 @@ class DefaultButton: UIButton {
 			self.layer.borderWidth = 0.0
 			self.backgroundColor = .white
 			self.setTitleColor(UIColor.mainColor(), for: .normal)
-			addShadow()
+//			addShadow()
 		}
 	}
 

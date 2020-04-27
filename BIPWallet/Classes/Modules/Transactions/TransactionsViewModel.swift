@@ -81,6 +81,11 @@ class TransactionsViewModel: BaseViewModel, ViewModel, TransactionViewableViewMo
       self?.loadTransactions(address: address)
     }).disposed(by: disposeBag)
 
+    dependency.balanceService.balances().withLatestFrom(dependency.balanceService.account).subscribe(onNext: { [weak self] (account) in
+      guard let address = account?.address else { return }
+      self?.loadTransactions(address: address)
+    }).disposed(by: disposeBag)
+
     Observable.combineLatest(viewDidLoad, transactions).map({ (val) -> [MinterExplorer.Transaction] in
       return val.1
     }).subscribe(onNext: { [weak self] (transactions) in
@@ -150,6 +155,9 @@ class TransactionsViewModel: BaseViewModel, ViewModel, TransactionViewableViewMo
       convertButton.title = "All Transactions".localized()
       convertButton.didTapButtonSubject.subscribe(didTapShowAll).disposed(by: disposeBag)
       cellItems.append(convertButton)
+    } else {
+      let noTransactions = BaseCellItem(reuseIdentifier: "noTransactionCell", identifier: "noTransactionCell")
+      cellItems.append(noTransactions)
     }
     section1.items = cellItems
     sections.onNext([section1])

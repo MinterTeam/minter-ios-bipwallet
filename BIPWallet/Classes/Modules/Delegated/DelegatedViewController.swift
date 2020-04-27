@@ -20,6 +20,7 @@ class DelegatedViewController: BaseViewController, Controller, StoryboardInitial
 
   // MARK: -
 
+  @IBOutlet weak var noContactsLabel: UILabel!
   @IBOutlet weak var tableView: UITableView!
 
   let rightBarItem = UIBarButtonItem(image: UIImage(named: "ContactsAddButtonIcon"), landscapeImagePhone: nil, style: .plain, target: nil, action: nil)
@@ -43,7 +44,12 @@ class DelegatedViewController: BaseViewController, Controller, StoryboardInitial
     rightBarItem.rx.tap.asDriver().drive(viewModel.input.didTapAdd).disposed(by: disposeBag)
 
     //Output
-    viewModel.output.sections
+    viewModel
+      .output
+      .sections
+      .do(onNext: { [weak self] (items) in
+        self?.noContactsLabel.alpha = items.count > 0 ? 0.0 : 1.0
+      })
       .bind(to: tableView.rx.items(dataSource: rxDataSource!))
       .disposed(by: disposeBag)
 

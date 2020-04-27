@@ -47,6 +47,14 @@ class SettingsViewController: BaseViewController, Controller, StoryboardInitiali
 
   // MARK: - ViewController
 
+  override var preferredStatusBarStyle: UIStatusBarStyle {
+    if #available(iOS 13.0, *) {
+      return .darkContent
+    } else {
+      return .default
+    }
+  }
+
   override func viewDidLoad() {
     super.viewDidLoad()
 
@@ -72,6 +80,8 @@ class SettingsViewController: BaseViewController, Controller, StoryboardInitiali
         return cell
       })
 
+    tableView.contentInset = UIEdgeInsets(top: -35, left: 0, bottom: 0, right: 0)
+
     configure(with: viewModel)
   }
 
@@ -86,8 +96,8 @@ class SettingsViewController: BaseViewController, Controller, StoryboardInitiali
                        forCellReuseIdentifier: "BlankTableViewCell")
     tableView.register(UINib(nibName: "SwitchTableViewCell", bundle: nil),
                        forCellReuseIdentifier: "SwitchTableViewCell")
-    tableView.register(UINib(nibName: "ContactPickerHeader", bundle: nil),
-                       forHeaderFooterViewReuseIdentifier: "ContactPickerHeader")
+    tableView.register(UINib(nibName: "SettingsTableHeaderView", bundle: nil),
+                       forHeaderFooterViewReuseIdentifier: "SettingsTableHeaderView")
   }
 
 }
@@ -98,14 +108,14 @@ extension SettingsViewController: UITableViewDelegate {
     guard (rxDataSource?.sectionModels[section].header?.count ?? 0) > 0 else {
       return nil
     }
-    let view = tableView.dequeueReusableHeaderFooterView(withIdentifier: "ContactPickerHeader") as? ContactPickerHeader
-    view?.titleLabel?.text = rxDataSource?.sectionModels[section].header
+    let view = tableView.dequeueReusableHeaderFooterView(withIdentifier: "SettingsTableHeaderView") as? SettingsTableHeaderView
+    view?.headerView?.text = rxDataSource?.sectionModels[section].header
     return view
   }
 
   func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
     if (rxDataSource?.sectionModels[section].header?.count ?? 0) > 0 {
-      return 46
+      return 38
     }
     return 0.1
   }

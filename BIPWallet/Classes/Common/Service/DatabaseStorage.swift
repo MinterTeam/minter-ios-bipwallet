@@ -47,12 +47,6 @@ class RealmDatabaseStorage: DatabaseStorage {
       assert(true, "Should be an instance of Object")
       return
     }
-    
-    print(String(describing: type(of: oldObj))) //old.classForCoder
-//    
-//    try! realm.write {// swiftlint:disable:this force_try
-//      
-//    }
   }
 
   func update(updates: (() -> ())?) throws {

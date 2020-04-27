@@ -10,16 +10,28 @@ import Foundation
 import RxSwift
 import MinterCore
 
-class BalanceViewModel: BaseViewModel, ViewModel {
+class BalanceViewModel: BaseViewModel, ViewModel, WalletSelectableViewModel {
+
+  typealias BalanceHeaderItem = (title: String?, text: NSAttributedString?, animated: Bool)
+
+  enum BalanceType: String {
+    case balanceBIP
+    case totalBalanceBIP
+    case totalBalanceUSD
+  }
+
+  var changedBalanceTypeSubject =
+    BehaviorSubject<BalanceType>(value: BalanceType.balanceBIP)
 
   // MARK: -
 
-  private var needsToUpdateBalance = PublishSubject<Void>()
-  private var availabaleBalance = PublishSubject<NSAttributedString>()
-  private var delegatedBalance = PublishSubject<String>()
-  private var didTapSelectWallet = PublishSubject<Void>()
-  private var didTapDelegatedBalance = PublishSubject<Void>()
-  private var wallet = PublishSubject<String>()
+  private let needsToUpdateBalance = PublishSubject<Void>()
+  private let availabaleBalance = PublishSubject<NSAttributedString>()
+  private let delegatedBalance = PublishSubject<String>()
+  private let didTapSelectWallet = PublishSubject<Void>()
+  private let didTapDelegatedBalance = PublishSubject<Void>()
+  private let wallet = PublishSubject<String>()
+  private let didTapBalance = PublishSubject<Void>()
 
   // MARK: - ViewModel
 
@@ -31,6 +43,7 @@ class BalanceViewModel: BaseViewModel, ViewModel {
     var needsToUpdateBalance: AnyObserver<Void>
     var didTapSelectWallet: AnyObserver<Void>
     var didTapDelegatedBalance: AnyObserver<Void>
+    var didTapBalance: AnyObserver<Void>
   }
 
   struct Output {
@@ -39,10 +52,12 @@ class BalanceViewModel: BaseViewModel, ViewModel {
     var didTapSelectWallet: Observable<Void>
     var wallet: Observable<String?>
     var showDelegated: Observable<Void>
+    var balanceTitle: Observable<String?>
   }
 
   struct Dependency {
     var balanceService: BalanceService
+//    var appSettings: AppSettings
   }
 
   init(dependency: Dependency) {
@@ -52,14 +67,23 @@ class BalanceViewModel: BaseViewModel, ViewModel {
 
     self.input = Input(needsToUpdateBalance: needsToUpdateBalance.asObserver(),
                        didTapSelectWallet: didTapSelectWallet.asObserver(),
-                       didTapDelegatedBalance: didTapDelegatedBalance.asObserver()
+                       didTapDelegatedBalance: didTapDelegatedBalance.asObserver(),
+                       didTapBalance: didTapBalance.asObserver()
     )
 
     self.output = Output(availabaleBalance: availabaleBalance.asObservable(),
                          delegatedBalance: delegatedBalance.asObservable(),
                          didTapSelectWallet: didTapSelectWallet.map { $0 },
                          wallet: walletObservable(),
-                         showDelegated: didTapDelegatedBalance.asObservable()
+                         showDelegated: didTapDelegatedBalance.asObservable(),
+                         balanceTitle: changedBalanceTypeSubject.map({ (type) -> String? in
+                          switch type {
+                          case .balanceBIP:
+                            return "Available Balance"
+                          default:
+                            return "Total Balance"
+                          }
+                         })
     )
 
     bind()
@@ -81,15 +105,71 @@ class BalanceViewModel: BaseViewModel, ViewModel {
     }).disposed(by: disposeBag)
 
     dependency.balanceService.updateDelegated()
+
+    didTapBalance.skip(1)
+      .withLatestFrom(Observable.combineLatest(self.dependency.balanceService.balances(), self.changedBalanceTypeSubject.asObservable()))
+      .subscribe(onNext: { [weak self] (val) in
+        let balance = val.0.baseCoinBalance
+        let usdBalance = val.0.totalUSDBalance
+        let totalBalance = val.0.totalMainCoinBalance
+        let balanceType = val.1
+
+        var newBalanceType: BalanceType
+        var resultBalance: Decimal
+
+        switch balanceType {
+        case .totalBalanceUSD:
+          newBalanceType = .balanceBIP
+          resultBalance = balance
+        case .balanceBIP:
+          newBalanceType = .totalBalanceBIP
+          resultBalance = totalBalance
+        case .totalBalanceBIP:
+          newBalanceType = .totalBalanceUSD
+          resultBalance = usdBalance
+        }
+
+        self?.changedBalanceTypeSubject.onNext(newBalanceType)
+//        AppSettingsManager.shared.balanceType = newBalanceType.rawValue
+//        AppSettingsManager.shared.save()
+        if let headerItem = self?.balanceHeaderItem(balanceType: newBalanceType,
+                                           balance: resultBalance,
+                                           isUSD: newBalanceType == .totalBalanceUSD) {
+          self?.availabaleBalance.onNext(headerItem.text!)
+        }
+      }).disposed(by: disposeBag)
   }
 
-  func walletObservable() -> Observable<String?> {
-    return self.dependency.balanceService.account.map { (item) -> String? in
-      return (item?.emoji ?? "") + "  " + (item?.title ?? TransactionTitleHelper.title(from: item?.address ?? ""))
-    }
+  // MARK: -
+
+  var balanceService: BalanceService! {
+    return self.dependency.balanceService
+  }
+
+  func showWalletObservable() -> Observable<Void> {
+    return didTapSelectWallet.map { $0 }
   }
 
   private let coinFormatter = CurrencyNumberFormatter.coinFormatter
+
+  private func balanceHeaderItem(
+    balanceType: BalanceType,
+    balance: Decimal,
+    isUSD: Bool) -> BalanceHeaderItem {
+    var text: NSAttributedString?
+    var title: String?
+
+    switch balanceType {
+    case .balanceBIP:
+      title = "Available Balance".localized()
+    case .totalBalanceBIP:
+      title = "Total Balance".localized()
+    case .totalBalanceUSD:
+      title = "Total Balance".localized()
+    }
+    text = headerViewTitleText(with: balance, isUSD: isUSD)
+    return BalanceHeaderItem(title: title, text: text, animated: false)
+  }
 
   private func headerViewTitleText(with balance: Decimal, isUSD: Bool = false) -> NSAttributedString {
     let formatter = isUSD ? CurrencyNumberFormatter.USDFormatter : coinFormatter

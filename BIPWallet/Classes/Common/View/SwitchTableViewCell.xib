@@ -23,13 +23,13 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DCF-H5-7dD">
-                        <rect key="frame" x="16" y="14" width="333" height="22"/>
+                        <rect key="frame" x="16" y="14" width="333" height="21"/>
                         <fontDescription key="fontDescription" name="Inter-SemiBold" family="Inter" pointSize="14"/>
                         <color key="textColor" red="0.098039215690000001" green="0.098039215690000001" blue="0.098039215690000001" alpha="1" colorSpace="deviceRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="utk-n2-RoY">
-                        <rect key="frame" x="359" y="9.5" width="53" height="31"/>
+                        <rect key="frame" x="359" y="9" width="53" height="31"/>
                         <constraints>
                             <constraint firstAttribute="width" constant="51" id="3aY-LR-fsD"/>
                         </constraints>
@@ -46,7 +46,7 @@
                     <constraint firstItem="DCF-H5-7dD" firstAttribute="leading" secondItem="Y4B-oZ-XOb" secondAttribute="leading" constant="16" id="AXk-wM-WK9"/>
                     <constraint firstAttribute="trailing" secondItem="utk-n2-RoY" secondAttribute="trailing" constant="16" id="Kd2-50-GmS"/>
                     <constraint firstItem="DCF-H5-7dD" firstAttribute="top" secondItem="Y4B-oZ-XOb" secondAttribute="top" constant="14" id="P2p-qc-RyA"/>
-                    <constraint firstAttribute="bottom" secondItem="DCF-H5-7dD" secondAttribute="bottom" constant="14" id="nUV-GM-3Ch"/>
+                    <constraint firstAttribute="bottom" secondItem="DCF-H5-7dD" secondAttribute="bottom" constant="15" id="nUV-GM-3Ch"/>
                 </constraints>
             </tableViewCellContentView>
             <viewLayoutGuide key="safeArea" id="GK5-Gb-CJe"/>

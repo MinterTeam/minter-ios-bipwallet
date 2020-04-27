@@ -43,6 +43,10 @@ extension UIColor {
   }
 
   static func textFieldBackgroundColor(alpha: CGFloat = 1) -> UIColor {
+    return UIColor(hex: 0xF4F4F4, alpha: alpha)!
+  }
+  
+  static func activeTextFieldBackgroundColor(alpha: CGFloat = 1) -> UIColor {
     return UIColor(hex: 0xF7F5FF, alpha: alpha)!
   }
 

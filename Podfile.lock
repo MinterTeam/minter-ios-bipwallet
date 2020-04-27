@@ -54,6 +54,8 @@ PODS:
     - RxSwift (~> 5.0)
   - RxRelay (5.0.1):
     - RxSwift (~> 5)
+  - RxRouting (1.1.1):
+    - RxSwift (~> 5.0)
   - RxSwift (5.0.1)
   - RxSwiftExt (5.2.0):
     - RxSwiftExt/Core (= 5.2.0)
@@ -101,6 +103,7 @@ DEPENDENCIES:
   - RxBiBinding
   - RxDataSources
   - RxGesture
+  - RxRouting (from `https://github.com/e-sites/RxRouting.git`)
   - RxSwift
   - RxSwiftExt
   - SnapKit
@@ -164,6 +167,8 @@ EXTERNAL SOURCES:
     :branch: master
     :git: https://github.com/realm/realm-cocoa.git
     :submodules: true
+  RxRouting:
+    :git: https://github.com/e-sites/RxRouting.git
   SwiftValidator:
     :git: https://github.com/jpotts18/SwiftValidator.git
     :tag: 4.2.0
@@ -179,6 +184,9 @@ CHECKOUT OPTIONS:
     :commit: ad6f5f94b023caaec57c99f7a986160f8c087d0c
     :git: https://github.com/realm/realm-cocoa.git
     :submodules: true
+  RxRouting:
+    :commit: bfc1df1026906f5a4830b41c1db550240df2fa09
+    :git: https://github.com/e-sites/RxRouting.git
   SwiftValidator:
     :git: https://github.com/jpotts18/SwiftValidator.git
     :tag: 4.2.0
@@ -211,6 +219,7 @@ SPEC CHECKSUMS:
   RxDataSources: efee07fa4de48477eca0a4611e6d11e2da9c1114
   RxGesture: a3f8dd6adf078110ed5e1c9c30d09d705a09852e
   RxRelay: 89d54507f4fd4d969e6ec1d4bd7f3673640b4640
+  RxRouting: 11805c8eed2eb601c106423ca8ed21b731c07b12
   RxSwift: e2dc62b366a3adf6a0be44ba9f405efd4c94e0c4
   RxSwiftExt: 4ca80336f43c28f11a2825cdd2fc61dd6c044697
   secp256k1.swift: a7e7a214f6db6ce5db32cc6b2b45e5c4dd633634
@@ -227,6 +236,6 @@ SPEC CHECKSUMS:
   XLPagerTabStrip: 63166e21c9844fa30f2d95d30f335e73be5caf22
   YandexMobileMetrica: f18374ee6977a4cd1d0a86298a0df4ad7baf4135
 
-PODFILE CHECKSUM: 560b030fcb661e898f3bcb83c6ada2d46e0e297b
+PODFILE CHECKSUM: 1ccdec2a0deb65219c35b10eb655953c9527890b
 
 COCOAPODS: 1.8.4

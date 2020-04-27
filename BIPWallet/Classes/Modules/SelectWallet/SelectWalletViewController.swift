@@ -46,7 +46,7 @@ class SelectWalletViewController: BaseViewController, Controller, StoryboardInit
       .output
       .sections
       .asDriver(onErrorJustReturn: []).drive(onNext: { [weak self] (sections) in
-        let items = sections.first?.items.count ?? 0
+        let items = sections.first?.items.filter{ $0.reuseIdentifier == "WalletCell" || $0.reuseIdentifier == "AddWalletCell" }.count ?? 0
         self?.tableHeightConstraint.constant = max(0, CGFloat(items) * 59)
         self?.view.layoutIfNeeded()
     }).disposed(by: disposeBag)
@@ -74,7 +74,6 @@ class SelectWalletViewController: BaseViewController, Controller, StoryboardInit
           return UITableViewCell()
         }
         cell.configure(item: item)
-
         return cell
       })
 
@@ -84,11 +83,14 @@ class SelectWalletViewController: BaseViewController, Controller, StoryboardInit
     registerCells()
 
     viewModel.input.viewDidLoad.onNext(())
+
+    view.layoutIfNeeded()
   }
 
   func registerCells() {
     tableView.register(UINib(nibName: "WalletCell", bundle: nil), forCellReuseIdentifier: "WalletCell")
     tableView.register(UINib(nibName: "AddWalletCell", bundle: nil), forCellReuseIdentifier: "AddWalletCell")
+    tableView.register(UINib(nibName: "SeparatorTableViewCell", bundle: nil), forCellReuseIdentifier: "SeparatorTableViewCell")
   }
 
 }

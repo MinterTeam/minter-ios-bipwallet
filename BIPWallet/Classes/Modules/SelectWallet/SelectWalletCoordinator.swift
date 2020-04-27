@@ -45,6 +45,9 @@ class SelectWalletCoordinator: BaseCoordinator<SelectWalletCoordinationResult> {
     viewController.modalPresentationStyle = .overCurrentContext
     viewController.modalTransitionStyle = .crossDissolve
 
+    //HACK to prevent screen being black on tab change when select wallet is presenting
+    self.rootViewController.tabBarController?.rx.didSelect.map{_ in}.subscribe(forceCancel).disposed(by: disposeBag)
+
     rootViewController.present(viewController, animated: true) { [weak self] in
       guard let `self` = self else { return }
       //Configure VC's view to pass touches to underneath views
@@ -63,13 +66,19 @@ class SelectWalletCoordinator: BaseCoordinator<SelectWalletCoordinationResult> {
     return selectWalletResult.take(1)
   }
 
+  private var isClosing = false
+
 }
 
 extension SelectWalletCoordinator: PassthroughViewDelegate {
 
   func willPassHitWith(point: CGPoint, event: UIEvent?) {
+    guard !isClosing else { return }
+    isClosing = true
+
     DispatchQueue.main.asyncAfter(deadline: .now() + 0.2, execute: { [weak self] in
       self?.viewController.dismiss(animated: false, completion: {
+        self?.isClosing = false
         self?.selectWalletResult.onNext(.cancel)
       })
     })

@@ -26,9 +26,12 @@ class CreateWalletCoordinator: BaseCoordinator<Void> {
     let controller = CreateWalletViewController.initFromStoryboard(name: "CreateWallet")
     controller.viewModel = viewModel
 
-    viewModel.output.viewDidDisappear.subscribe(onNext: { [weak self] (_) in
-      self?.rootViewController.hideBlurOverview()
-    }).disposed(by: disposeBag)
+    controller.modalPresentationStyle = .overCurrentContext
+    controller.modalTransitionStyle = .coverVertical
+
+//    viewModel.output.viewDidDisappear.subscribe(onNext: { [weak self] (_) in
+//      self?.rootViewController.hideBlurOverview()
+//    }).disposed(by: disposeBag)
 
     var cardConfig = CardConfiguration()
     cardConfig.horizontalInset = 0.0
@@ -37,13 +40,14 @@ class CreateWalletCoordinator: BaseCoordinator<Void> {
     cardConfig.cornerRadius = 0.0
     cardConfig.backFadeAlpha = 1.0
     cardConfig.dismissAreaHeight = 5
-    CardPresentationController.useSystemPresentationOniOS13 = false
+    CardPresentationController.useSystemPresentationOniOS13 = true
 
-    rootViewController.showBlurOverview()
+//    rootViewController.showBlurOverview()
+    rootViewController.present(controller, animated: true, completion: nil)
 
-    rootViewController.presentCard(ClearBarNavigationController(rootViewController: controller),
-                                   configuration: cardConfig,
-                                   animated: true)
+//    rootViewController.presentCard(ClearBarNavigationController(rootViewController: controller),
+//                                   configuration: cardConfig,
+//                                   animated: true)
 
     return Observable.merge(viewModel.output.mnemonicSaved, viewModel.output.viewDidDisappear.map { _ in Void() })
   }

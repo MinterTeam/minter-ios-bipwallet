@@ -3,12 +3,12 @@
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16086"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16087"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <customFonts key="customFonts">
-        <array key="Inter-Medium.otf">
-            <string>Inter-Medium</string>
+        <array key="Inter-Regular.otf">
+            <string>Inter-Regular</string>
         </array>
     </customFonts>
     <objects>
@@ -40,7 +40,7 @@
                     </imageView>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="obw-Iq-xT8">
                         <rect key="frame" x="34" y="20" width="338" height="17"/>
-                        <fontDescription key="fontDescription" name="Inter-Medium" family="Inter" pointSize="17"/>
+                        <fontDescription key="fontDescription" name="Inter-Regular" family="Inter" pointSize="17"/>
                         <nil key="textColor"/>
                         <nil key="highlightedColor"/>
                     </label>

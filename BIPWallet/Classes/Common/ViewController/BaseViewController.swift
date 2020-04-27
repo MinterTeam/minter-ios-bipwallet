@@ -15,7 +15,6 @@ class BaseViewController: UIViewController {
   var lightImpactFeedbackGenerator: UIImpactFeedbackGenerator = UIImpactFeedbackGenerator(style: .light)
 
   var disposeBag = DisposeBag()
-
 }
 
 extension UIViewController {
@@ -68,4 +67,3 @@ extension UIViewController {
     }
   }
 }
-

@@ -10,17 +10,34 @@ import Foundation
 import MinterCore
 import MinterExplorer
 import RxSwift
+import SwiftCentrifuge
 
 class ExplorerBalanceService: BalanceService {
+
+  private var channel: String
+  private var client: CentrifugeClient?
+  private var isConnected: Bool = false
+  private var addressSubscription: CentrifugeSubscription?
+  private var blockSubscription: CentrifugeSubscription?
 
   private let accountManager = AccountManager()
 
   init(address: String) {
-    try? self.changeAddress("Mx" + address.stripMinterHexPrefix())
+    let adr = "Mx" + address.stripMinterHexPrefix()
+    self.channel = adr
+    try? self.changeAddress(adr)
+
+    self.accountSubject.filter{$0 != nil}.subscribe(onNext: { (item) in
+      if let address = item?.address {
+        self.channel = "Mx" + address.stripMinterHexPrefix()
+        self.websocketConnect()
+      }
+    }).disposed(by: disposeBag)
   }
 
   private var balancesSubject = ReplaySubject<BalancesResponse>.create(bufferSize: 1)
   private var delegatedSubject = ReplaySubject<([AddressDelegation]?, Decimal?)>.create(bufferSize: 1)
+  private var lastBlockDateSubject = ReplaySubject<TimeInterval?>.create(bufferSize: 1)
 
   var disposeBag = DisposeBag()
 
@@ -39,6 +56,10 @@ class ExplorerBalanceService: BalanceService {
       throw BalanceServiceError.incorrectAddress
     }
     self.accountSubject.onNext(account)
+  }
+
+  func lastBlockDate() -> Observable<TimeInterval?> {
+    return lastBlockDateSubject.asObservable()
   }
 
   func balances() -> Observable<BalancesResponse> {
@@ -196,4 +217,79 @@ class ExplorerTransactionService: TransactionService {
     }
   }
 
+}
+
+extension ExplorerBalanceService: CentrifugeClientDelegate, CentrifugeSubscriptionDelegate {
+
+  // MARK: -
+
+  func websocketConnect() {
+      let config = CentrifugeClientConfig()
+      client = CentrifugeClient(url: MinterExplorerWebSocketURL!.absoluteURL.absoluteString + "?format=protobuf",
+                                config: config,
+                                delegate: self)
+    self.client?.connect()
+  }
+
+  private func subscribeAccountBalanceChange() {
+    guard self.isConnected == true else {
+      return
+    }
+
+    do {
+      addressSubscription = try client?.newSubscription(channel: self.channel, delegate: self)
+      addressSubscription?.subscribe()
+    } catch {
+      print("Can not create subscription: \(error)")
+    }
+  }
+
+  private func subscribeBlocksChange() {
+    guard self.isConnected == true else {
+      return
+    }
+
+    do {
+      blockSubscription = try client?.newSubscription(channel: "blocks", delegate: self)
+      blockSubscription?.subscribe()
+    } catch {
+      print("Can not create subscription: \(error)")
+    }
+  }
+
+  private func unsubscribeAccountBalanceChange() {
+    addressSubscription?.unsubscribe()
+  }
+
+  private func unsubscribeBlocksChange() {
+    blockSubscription?.unsubscribe()
+  }
+
+  func onConnect(_ client: CentrifugeClient, _ event: CentrifugeConnectEvent) {
+    self.isConnected = true
+    subscribeAccountBalanceChange()
+    subscribeBlocksChange()
+  }
+
+  func onDisconnect(_ client: CentrifugeClient, _ event: CentrifugeDisconnectEvent) {
+    self.isConnected = false
+  }
+
+  func onPublish(_ subscription: CentrifugeSubscription, _ event: CentrifugePublishEvent) {
+    if subscription.channel == "blocks" {
+      guard let json = try? JSONSerialization.jsonObject(with: event.data, options: []) as? [String: Any] else { return }
+      if let timestamp = json["timestamp"] as? String {
+        let dateFormatter = ISO8601DateFormatter()
+        let blockTimestamp = dateFormatter.date(from: timestamp)?.timeIntervalSince1970
+        if let blockTimestamp = blockTimestamp {
+          self.lastBlockDateSubject.onNext(blockTimestamp)
+        }
+      }
+    } else {
+      DispatchQueue.main.async {
+        self.updateBalance()
+        self.updateDelegated()
+      }
+    }
+  }
 }

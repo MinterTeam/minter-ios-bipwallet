@@ -26,28 +26,33 @@ class SignInCoordinator: BaseCoordinator<Void> {
     let viewModel = SignInViewModel(dependency: SignInViewModel.Dependency(authService: authService))
     controller.viewModel = viewModel
 
-    controller.rx.viewWillDisappear.subscribe(onNext: { [weak self] (_) in
-      self?.rootViewController.hideBlurOverview()
-    }).disposed(by: disposeBag)
+    controller.modalTransitionStyle = .coverVertical
+    controller.modalPresentationStyle = .overCurrentContext
 
-    controller.rx.viewWillAppear.subscribe(onNext: { [weak self] (_) in
-      self?.rootViewController.showBlurOverview()
-    }).disposed(by: disposeBag)
+//    controller.rx.viewWillDisappear.subscribe(onNext: { [weak self] (_) in
+//      self?.rootViewController.hideBlurOverview()
+//    }).disposed(by: disposeBag)
+//
+//    controller.rx.viewWillAppear.subscribe(onNext: { [weak self] (_) in
+//      self?.rootViewController.showBlurOverview()
+//    }).disposed(by: disposeBag)
 
-    var cardConfig = CardConfiguration()
-    cardConfig.horizontalInset = 0.0
-    cardConfig.verticalInset = 0.0
-    cardConfig.verticalSpacing = 0.0
-    cardConfig.cornerRadius = 0.0
-    cardConfig.backFadeAlpha = 1.0
-    cardConfig.dismissAreaHeight = 5
-    CardPresentationController.useSystemPresentationOniOS13 = false
+//    var cardConfig = CardConfiguration()
+//    cardConfig.horizontalInset = 0.0
+//    cardConfig.verticalInset = 0.0
+//    cardConfig.verticalSpacing = 0.0
+//    cardConfig.cornerRadius = 0.0
+//    cardConfig.backFadeAlpha = 1.0
+//    cardConfig.dismissAreaHeight = 5
+//    CardPresentationController.useSystemPresentationOniOS13 = false
+//
+//    rootViewController.presentCard(ClearBarNavigationController(rootViewController: controller),
+//                                   configuration: cardConfig,
+//                                   animated: true)
 
-    rootViewController.presentCard(ClearBarNavigationController(rootViewController: controller),
-                                   configuration: cardConfig,
-                                   animated: true)
+    rootViewController.present(controller, animated: true, completion: nil)
 
-    return Observable.merge(viewModel.output.mnemonicSaved, viewModel.output.viewDidDisappear.map { _ in Void() })
+    return Observable.merge(viewModel.output.mnemonicSaved, viewModel.output.viewDidDisappear.map { _ in Void() }).take(1)
   }
 
 }

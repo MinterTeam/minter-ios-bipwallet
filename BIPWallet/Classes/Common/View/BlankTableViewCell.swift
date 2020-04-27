@@ -8,7 +8,7 @@
 
 import UIKit
 
-class BlankTableViewCellItem : BaseCellItem {
+class BlankTableViewCellItem: BaseCellItem {
 	var color: UIColor?
   var height: CGFloat = 10.0
 }

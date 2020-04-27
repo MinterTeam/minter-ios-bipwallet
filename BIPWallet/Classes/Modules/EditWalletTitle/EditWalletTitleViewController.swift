@@ -38,7 +38,7 @@ class EditWalletTitleViewController: BaseViewController, Controller, StoryboardI
       .disposed(by: disposeBag)
 
     self.rx.viewWillDisappear
-      .asDriver(onErrorJustReturn: true).map { _ in Void() }
+      .asDriver(onErrorJustReturn: true).map{_ in}
       .drive(viewModel.input.willDismiss)
       .disposed(by: disposeBag)
 
@@ -75,18 +75,16 @@ class EditWalletTitleViewController: BaseViewController, Controller, StoryboardI
 
     textField.becomeFirstResponder()
 
-    NotificationCenter
-      .default
-      .rx
+    NotificationCenter.default.rx
       .notification(ViewController.keyboardWillShowNotification)
       .subscribe(onNext: { [weak self] (not) in
         guard let `self` = self else { return }
         guard let keyboardSize = not.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue else { return }
         let keyboardFrame = keyboardSize.cgRectValue
         let keyboardHeight = keyboardFrame.height
-        `self`.bottomConstraint.constant = `self`.view.bounds.height - (`self`.view.bounds.height - keyboardHeight) + 8.0
+        self.bottomConstraint.constant = self.view.bounds.height - (self.view.bounds.height - keyboardHeight) + 8.0
         UIView.animate(withDuration: 0.5) {
-          `self`.view.layoutIfNeeded()
+          self.view.layoutIfNeeded()
         }
       }).disposed(by: disposeBag)
 
@@ -95,6 +93,12 @@ class EditWalletTitleViewController: BaseViewController, Controller, StoryboardI
     }
 
     configure(with: viewModel)
+
+    setNeedsStatusBarAppearanceUpdate()
+  }
+
+  override var prefersStatusBarHidden: Bool {
+    return true
   }
 
 }

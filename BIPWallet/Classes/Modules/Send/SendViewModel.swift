@@ -25,7 +25,7 @@ struct AccountPickerItem {
   var coin: String?
 }
 
-class SendViewModel: BaseViewModel, ViewModel {// swiftlint:disable:this type_body_length
+class SendViewModel: BaseViewModel, ViewModel, WalletSelectableViewModel {// swiftlint:disable:this type_body_length
 
   enum SendViewModelError: Error {
     case noPrivateKey
@@ -44,6 +44,7 @@ class SendViewModel: BaseViewModel, ViewModel {// swiftlint:disable:this type_bo
     var txScanButtonDidTap: AnyObserver<Void>
     var didScanQR: AnyObserver<String?>
     var contact: AnyObserver<ContactItem>
+    var didTapSelectWallet: AnyObserver<Void>
   }
 
   struct Output {
@@ -57,6 +58,7 @@ class SendViewModel: BaseViewModel, ViewModel {// swiftlint:disable:this type_bo
     var showContactsPicker: Observable<Void>
     var recipient: Observable<String?>
     var didProvideAutocomplete: Observable<Void>
+    var wallet: Observable<String?>
   }
 
   struct Dependency {
@@ -64,11 +66,17 @@ class SendViewModel: BaseViewModel, ViewModel {// swiftlint:disable:this type_bo
     var contactsService: ContactsService
   }
 
+  var balanceService: BalanceService! {
+    return self.dependency.balanceService
+  }
+
+  func showWalletObservable() -> Observable<Void> {
+    return didTapSelectWallet.map {_ in}.asObservable()
+  }
+
   // MARK: -
 
-  var title: String {
-    return "Send".localized()
-  }
+  private let didTapSelectWallet = PublishSubject<Void>()
 
   typealias FormChangedObservable = (String?, String?, String?, String?, String)
 
@@ -179,10 +187,15 @@ class SendViewModel: BaseViewModel, ViewModel {// swiftlint:disable:this type_bo
   // MARK: -
 
   init(dependency: Dependency) { // swiftlint:disable:this function_body_length cyclomatic_complexity
+    super.init()
+
+    self.dependency = dependency
+
     self.input = Input(payload: payloadSubject.asObserver(),
                        txScanButtonDidTap: txScanButtonDidTap.asObserver(),
                        didScanQR: didScanQRSubject.asObserver(),
-                       contact: contact.asObserver())
+                       contact: contact.asObserver(),
+                       didTapSelectWallet: didTapSelectWallet.asObserver())
 
     self.output = Output(errorNotification: errorNotificationSubject.asObservable(),
                          txErrorNotification: txErrorNotificationSubject.asObservable(),
@@ -193,12 +206,9 @@ class SendViewModel: BaseViewModel, ViewModel {// swiftlint:disable:this type_bo
                          shouldShowAlert: shouldShowAlertSubject.asObservable(),
                          showContactsPicker: showContactsPicker.asObservable(),
                          recipient: recipientSubject.asObservable(),
-                         didProvideAutocomplete: didProvideAutocomplete.asObservable()
+                         didProvideAutocomplete: didProvideAutocomplete.asObservable(),
+                         wallet: walletObservable()
     )
-
-    self.dependency = dependency
-
-    super.init()
 
     amountSubject
       .asObservable()

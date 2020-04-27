@@ -14,6 +14,7 @@ class CreateWalletViewController: BaseViewController, Controller, StoryboardInit
 
   // MARK: - Outlets
 
+  @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
   @IBOutlet weak var copiedIndicator: UIView!
   @IBOutlet weak var savedSwitch: UISwitch!
   @IBOutlet weak var mnemonicLabel: UILabel!
@@ -26,9 +27,10 @@ class CreateWalletViewController: BaseViewController, Controller, StoryboardInit
     }
   }
   @IBOutlet weak var activateButton: DefaultButton!
-  @IBOutlet weak var mainView: HandlerView! {
+  @IBOutlet weak var mainView: HandlerVerticalSnapDraggableView! {
     didSet {
       mainView.title = "Create Wallet"
+      mainView?.delegate = self
     }
   }
 
@@ -65,6 +67,22 @@ class CreateWalletViewController: BaseViewController, Controller, StoryboardInit
       .asDriver(onErrorJustReturn: false)
       .drive(activateButton.rx.isEnabled)
       .disposed(by: disposeBag)
+
+    viewModel.output.isLoading.asDriver(onErrorJustReturn: false)
+      .drive(onNext: { [weak self] (isLoading) in
+        if isLoading {
+          self?.activityIndicator.startAnimating()
+          self?.activateButton.isEnabled = false
+        } else {
+          self?.activityIndicator.stopAnimating()
+        }
+        self?.activityIndicator.isHidden = !isLoading
+      }).disposed(by: disposeBag)
+
+    viewModel.output.buttonTitle
+      .asDriver(onErrorJustReturn: "")
+      .drive(activateButton.rx.title(for: .disabled)).disposed(by: disposeBag)
+
   }
 
   // MARK: - ViewController
@@ -94,6 +112,49 @@ class CreateWalletViewController: BaseViewController, Controller, StoryboardInit
         }
       }
     }).disposed(by: disposeBag)
+
+    showBlurOverview { [weak self] in
+      self?.dismiss(animated: true) {}
+    }
   }
 
+}
+
+extension CreateWalletViewController: DraggableViewDelegate {
+
+  func panGestureDidChange(_ panGesture: UIPanGestureRecognizer, originalCenter: CGPoint, translation: CGPoint, velocityInView: CGPoint) {
+    guard let targetView = mainView else {
+      return
+    }
+
+    if let mainView = targetView as? DraggableViewDelegate {
+      mainView.panGestureDidChange?(panGesture, originalCenter: originalCenter, translation: translation, velocityInView: velocityInView)
+    }
+
+    let percentage = 1 - translation.y/targetView.bounds.height
+
+    updateBlurView(percentage: percentage)
+  }
+
+  func panGestureDidEnd(_ panGesture: UIPanGestureRecognizer, originalCenter: CGPoint, translation: CGPoint, velocityInView: CGPoint) {
+    guard let targetView = mainView else {
+      return
+    }
+
+    targetView.panGestureDidEnd(panGesture, originalCenter: originalCenter, translation: translation, velocityInView: velocityInView)
+
+    let percentage = translation.y/targetView.bounds.height
+
+    if percentage >= 0.75 {
+      updateBlurView(percentage: 0.0)
+      self.dismiss(animated: true) {}
+    } else {
+      UIView.animate(withDuration: 0.25) {
+        self.view.setNeedsLayout()
+        self.view.setNeedsUpdateConstraints()
+        self.view.layoutIfNeeded()
+      }
+      updateBlurView(percentage: 1.0)
+    }
+  }
 }

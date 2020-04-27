@@ -111,14 +111,14 @@ class TextViewTableViewCell: BaseCell, AutoGrowingTextViewDelegate {
 					}
 				}).disposed(by: disposeBag)
 
-			textView?
-				.rx
-				.text
-				.orEmpty
-				.asObservable()
-				.subscribe(onNext: { [weak self] (val) in
-//					self?.validateDelegate.validate(field: self!, completion: {})
-				}).disposed(by: disposeBag)
+//			textView?
+//				.rx
+//				.text
+//				.orEmpty
+//				.asObservable()
+//				.subscribe(onNext: { [weak self] (val) in
+////					self?.validateDelegate.validate(field: self!, completion: {})
+//				}).disposed(by: disposeBag)
 
 			if let textView = textView {
 				item.titleObservable?.asDriver(onErrorJustReturn: "")

@@ -15,6 +15,8 @@ class DefaultTextView: UITextView {
   override init(frame: CGRect, textContainer: NSTextContainer?) {
     super.init(frame: frame, textContainer: textContainer)
     customize()
+
+//    NotificationCenter.default.removeObserver(self, name: DefaultTextView.textDidBeginEditingNotification, object: nil)
   }
 
   required init?(coder: NSCoder) {
@@ -27,11 +29,11 @@ class DefaultTextView: UITextView {
   }
 
   func customize() {
+
     self.textContainerInset = UIEdgeInsets(top: 14.0, left: 16.0, bottom: 14.0, right: 16.0)
     self.font = UIFont.mediumFont(of: 17.0)
-    self.layer.borderColor = UIColor.textFieldBorderColor().cgColor
-    self.layer.borderWidth = 1
     self.layer.cornerRadius = 8.0
+
     self.backgroundColor = UIColor.textFieldBackgroundColor()
     setupUI()
     startupSetup()
@@ -78,23 +80,44 @@ private extension DefaultTextView {
 
   func addObservers() {
     NotificationCenter.default.addObserver(self, selector: #selector(textChanged(_:)), name: UITextView.textDidChangeNotification, object: nil)
+    NotificationCenter.default.addObserver(self, selector: #selector(didStartEditing(notification:)), name: UITextView.textDidBeginEditingNotification, object: nil)
+    NotificationCenter.default.addObserver(self, selector: #selector(didEndEditing(notification:)), name: UITextView.textDidEndEditingNotification, object: nil)
   }
+
+  @objc func didStartEditing(notification: NSNotification) {
+    guard (notification.object as AnyObject?) === self else { return }
+    self.backgroundColor = UIColor.activeTextFieldBackgroundColor()
+    self.layer.borderColor = UIColor.textFieldBorderColor().cgColor
+    self.layer.borderWidth = 1
+  }
+
+  @objc func didEndEditing(notification: NSNotification) {
+    guard (notification.object as AnyObject?) === self else { return }
+    self.backgroundColor = UIColor.textFieldBackgroundColor()
+    self.layer.borderColor = UIColor.textFieldBorderColor().cgColor
+    self.layer.borderWidth = 0
+  }
+
 }
 
 // MARK: - Actions
 
 private extension DefaultTextView {
+
   @objc func textChanged(_ sender: Notification?) {
     UIView.animate(withDuration: 0.2) {
       self.placeholderLabel.alpha = self.text.count == 0 ? 1 : 0
     }
   }
+
 }
 
 // MARK: - Public methods
 
 extension DefaultTextView {
+
   public func setPlaceholder(_ placeholder: String) {
     placeholderLabel.text = placeholder
   }
+
 }

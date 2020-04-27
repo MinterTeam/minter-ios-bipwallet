@@ -18,8 +18,13 @@ class BalanceViewController: SegmentedPagerTabStripViewController, Controller, S
   var disposeBag = DisposeBag()
   var controllers = [UIViewController]()
 
+  override var preferredStatusBarStyle: UIStatusBarStyle {
+    return .lightContent
+  }
+
   // MARK: - IBOutlet
 
+  @IBOutlet weak var balanceTitle: UILabel!
   @IBOutlet weak var containerViewHeightConstraint: NSLayoutConstraint!
   @IBOutlet weak var segmentedControlView: UIView!
   @IBOutlet weak var availableBalance: UILabel!
@@ -32,7 +37,7 @@ class BalanceViewController: SegmentedPagerTabStripViewController, Controller, S
     let customView = UIView(frame: CGRect(x: 0, y: 0, width: 173, height: 100))
     walletLabel.isUserInteractionEnabled = false
     walletLabel.textColor = .white
-    walletLabel.font = UIFont.semiBoldFont(of: 18.0)
+    walletLabel.font = UIFont.boldFont(of: 18.0)
     let expandImageView = UIImageView(image: UIImage(named: "WalletsExpandImage")!)
     expandImageView.isUserInteractionEnabled = false
     customView.addSubview(walletLabel)
@@ -96,6 +101,13 @@ class BalanceViewController: SegmentedPagerTabStripViewController, Controller, S
         self.navigationItem.setLeftBarButton(button, animated: true)
     }).disposed(by: disposeBag)
 
+    viewModel.output.balanceTitle.asDriver(onErrorJustReturn: nil)
+      .drive(self.balanceTitle.rx.text)
+      .disposed(by: disposeBag)
+
+    Observable.of(self.availableBalance.rx.tapGesture(), self.balanceTitle.rx.tapGesture()).merge().when(.ended)
+      .map {_ in}.subscribe(viewModel.input.didTapBalance).disposed(by: disposeBag)
+
   }
 
   // MARK: - ViewController
@@ -107,8 +119,17 @@ class BalanceViewController: SegmentedPagerTabStripViewController, Controller, S
 
     segmentedControl.setFont(UIFont.semiBoldFont(of: 14.0))
 
+    let scanQRItem = UIBarButtonItem(image: UIImage(named: "ScanQRIcon"), style: .plain, target: nil, action: nil)
+    scanQRItem.tintColor = .white
+
+    let shareItem = UIBarButtonItem(image: UIImage(named: "ShareIcon"), style: .plain, target: nil, action: nil)
+    shareItem.tintColor = .white
+
+    self.navigationItem.rightBarButtonItems = [scanQRItem, shareItem]
+
     //HACK: to layout child view controllers
     view.layoutIfNeeded()
+    self.setNeedsStatusBarAppearanceUpdate()
   }
 
   override func viewWillAppear(_ animated: Bool) {

@@ -76,8 +76,62 @@ class BalanceCoordinator: BaseCoordinator<Void> {
       }
     }).disposed(by: disposeBag)
 
+    self.bindSelectWallet(with: controller, viewModel: viewModel)
+
+    //Updating emoji
+    balanceService.account.flatMap { [weak self] (item) -> Observable<Event<(AccountItem?, BalanceService.BalancesResponse)>> in
+      guard let `self` = self, let address = item?.address else { return Observable.empty() }
+      return Observable.zip(self.balanceService.account, self.balanceService.balances(address: address)).materialize()
+    }.flatMap({ (event) -> Observable<Void> in
+      switch event {
+      case .next(let val):
+        guard let account = val.0 else { return Observable.empty() }
+        account.emoji = AccountItem.emoji(for: val.1.totalMainCoinBalance)
+        //Updating account emoji on getting newest balance data
+        return self.authService.updateAccount(account: account)
+      case .completed:
+        return Observable.empty()
+      case .error(_):
+        return Observable.empty()
+      }
+    }).subscribe().disposed(by: disposeBag)
+
+    navigationController.setViewControllers([controller], animated: false)
+    return Observable.never()
+  }
+
+  func showDelegated(inViewController: UINavigationController, balanceService: BalanceService) -> Observable<Void> {
+    let delegatedCoordinator = DelegatedCoordinator(rootViewController: inViewController, balanceService: balanceService)
+    return coordinate(to: delegatedCoordinator)
+  }
+
+}
+
+extension BalanceCoordinator {
+
+  //Showing Select Wallet
+  func showSelectWallet(rootViewController: UIViewController) -> Observable<SelectWalletCoordinationResult> {
+    let selectWalletCoordinator = SelectWalletCoordinator(rootViewController: rootViewController,
+                                                          authService: authService)
+    return coordinate(to: selectWalletCoordinator)
+  }
+
+  //Showing Add Wallet
+  func showAddWallet(inViewController: UIViewController) -> Observable<AddWalletCoordinatorResult> {
+    let addWalletCoordinator = AddWalletCoordinator(rootViewController: inViewController,
+                                                    authService: authService)
+    return coordinate(to: addWalletCoordinator)
+  }
+
+  //Showing Edit Title
+  func showEditTitle(inViewController: UIViewController, account: AccountItem) -> Observable<EditWalletTitleCoordinatorResult> {
+    let editTitleCoordinator = EditWalletTitleCoordinator(rootViewController: inViewController, authService: self.authService, account: account)
+    return coordinate(to: editTitleCoordinator)
+  }
+
+  func bindSelectWallet(with controller: UIViewController, viewModel: WalletSelectableViewModel) {
     //Showing select wallet
-    let selectWalletObservable = viewModel.output.didTapSelectWallet.flatMap({ (_) -> Observable<SelectWalletCoordinationResult> in
+    let selectWalletObservable = viewModel.showWalletObservable().flatMap({ (_) -> Observable<SelectWalletCoordinationResult> in
       return self.showSelectWallet(rootViewController: controller)
     }).do(onNext: { [weak self] (result) in
       switch result {
@@ -114,7 +168,7 @@ class BalanceCoordinator: BaseCoordinator<Void> {
     selectWalletObservable
       .filter({ (result) -> Bool in
         switch result {
-        case .edit(let _):
+        case .edit(_):
           return true
         default:
           return false
@@ -138,51 +192,6 @@ class BalanceCoordinator: BaseCoordinator<Void> {
         }
       }).disposed(by: disposeBag)
 
-    //Updating emoji
-    balanceService.account.flatMap { [weak self] (item) -> Observable<Event<(AccountItem?, BalanceService.BalancesResponse)>> in
-      guard let `self` = self, let address = item?.address else { return Observable.empty() }
-      return Observable.zip(self.balanceService.account, self.balanceService.balances(address: address)).materialize()
-    }.flatMap({ (event) -> Observable<Void> in
-      switch event {
-      case .next(let val):
-        guard let account = val.0 else { return Observable.empty() }
-        account.emoji = AccountItem.emoji(for: val.1.totalMainCoinBalance)
-        //Updating account emoji on getting newest balance data
-        return self.authService.updateAccount(account: account)
-      case .completed:
-        return Observable.empty()
-      case .error(let _):
-        return Observable.empty()
-      }
-    }).subscribe().disposed(by: disposeBag)
-
-    navigationController.setViewControllers([controller], animated: false)
-    return Observable.never()
-  }
-
-  //Showing Select Wallet
-  func showSelectWallet(rootViewController: UIViewController) -> Observable<SelectWalletCoordinationResult> {
-    let selectWalletCoordinator = SelectWalletCoordinator(rootViewController: rootViewController,
-                                                          authService: authService)
-    return coordinate(to: selectWalletCoordinator)
-  }
-
-  //Showing Add Wallet
-  func showAddWallet(inViewController: UIViewController) -> Observable<AddWalletCoordinatorResult> {
-    let addWalletCoordinator = AddWalletCoordinator(rootViewController: inViewController,
-                                                    authService: authService)
-    return coordinate(to: addWalletCoordinator)
-  }
-
-  //Showing Edit Title
-  func showEditTitle(inViewController: UIViewController, account: AccountItem) -> Observable<EditWalletTitleCoordinatorResult> {
-    let editTitleCoordinator = EditWalletTitleCoordinator(rootViewController: inViewController, authService: self.authService, account: account)
-    return coordinate(to: editTitleCoordinator)
-  }
-
-  func showDelegated(inViewController: UINavigationController, balanceService: BalanceService) -> Observable<Void> {
-    let delegatedCoordinator = DelegatedCoordinator(rootViewController: inViewController, balanceService: balanceService)
-    return coordinate(to: delegatedCoordinator)
   }
 
 }
