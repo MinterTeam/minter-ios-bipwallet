@@ -167,6 +167,7 @@
 		FA6223302454537B006089EC /* WhiteNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA62232F2454537B006089EC /* WhiteNavigationController.swift */; };
 		FA6223332455DA75006089EC /* SettingsTableHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA6223322455DA75006089EC /* SettingsTableHeaderView.swift */; };
 		FA6223352455DAC5006089EC /* SettingsTableHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = FA6223342455DAC5006089EC /* SettingsTableHeaderView.xib */; };
+		FA62233724583B97006089EC /* RecipientInfoService.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA62233624583B96006089EC /* RecipientInfoService.swift */; };
 		FA663D3623FEEAD60029D5D0 /* BaseCellItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA663D3423FEEAD60029D5D0 /* BaseCellItem.swift */; };
 		FA663D3723FEEAD60029D5D0 /* BaseTableSectionItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA663D3523FEEAD60029D5D0 /* BaseTableSectionItem.swift */; };
 		FA663D3923FEEB150029D5D0 /* BaseCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA663D3823FEEB150029D5D0 /* BaseCell.swift */; };
@@ -488,6 +489,7 @@
 		FA62232F2454537B006089EC /* WhiteNavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WhiteNavigationController.swift; sourceTree = "<group>"; };
 		FA6223322455DA75006089EC /* SettingsTableHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsTableHeaderView.swift; sourceTree = "<group>"; };
 		FA6223342455DAC5006089EC /* SettingsTableHeaderView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SettingsTableHeaderView.xib; sourceTree = "<group>"; };
+		FA62233624583B96006089EC /* RecipientInfoService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipientInfoService.swift; sourceTree = "<group>"; };
 		FA663D3423FEEAD60029D5D0 /* BaseCellItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BaseCellItem.swift; sourceTree = "<group>"; };
 		FA663D3523FEEAD60029D5D0 /* BaseTableSectionItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BaseTableSectionItem.swift; sourceTree = "<group>"; };
 		FA663D3823FEEB150029D5D0 /* BaseCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BaseCell.swift; sourceTree = "<group>"; };
@@ -1447,6 +1449,7 @@
 				FAF04BD82449929E004CBC07 /* TransactionService.swift */,
 				FA6AFB4C244E25A000CCBE19 /* PINService.swift */,
 				FA62230F24507A92006089EC /* AppSettings.swift */,
+				FA62233624583B96006089EC /* RecipientInfoService.swift */,
 			);
 			path = Service;
 			sourceTree = "<group>";
@@ -1837,6 +1840,7 @@
 				FA3BDE9D242BE9B70076A7F4 /* PopupViewModel.swift in Sources */,
 				FA3BDE2A24251C7A0076A7F4 /* Validators.swift in Sources */,
 				AAECC4888291B535131A228A /* SignInViewModel.swift in Sources */,
+				FA62233724583B97006089EC /* RecipientInfoService.swift in Sources */,
 				E267E578C4157B7DDDA7A08C /* SignInCoordinator.swift in Sources */,
 				FAE162F82403E2EE007E9CAD /* TransactionCell.swift in Sources */,
 				FACA65BD23F7965700399359 /* DefaultTextView.swift in Sources */,

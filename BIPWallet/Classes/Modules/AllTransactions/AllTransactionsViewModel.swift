@@ -20,8 +20,16 @@ class AllTransactionsViewModel: BaseViewModel, ViewModel, TransactionViewableVie
 
   // MARK: - TransactionViewableViewModel
 
-  var addressBook: [String: String] = [:]
   var address: String?
+
+  func titleFor(recipient: String) -> String? {
+    return self.dependency.recipientInfoService.title(for: recipient)
+  }
+
+  func avatarURLFor(recipient: String) -> URL? {
+    self.dependency.recipientInfoService.avatarURL(for: recipient)
+  }
+
   private var isLoading = true
   private var stopSearching = false
   private var isLoadingObservable = PublishSubject<Bool>()
@@ -31,16 +39,17 @@ class AllTransactionsViewModel: BaseViewModel, ViewModel, TransactionViewableVie
 
   // MARK: -
 
-  private var transactions = BehaviorSubject<[MinterExplorer.Transaction]>(value: [])
-  private var sections = PublishSubject<[BaseTableSectionItem]>()
-  private var viewWillAppear = PublishSubject<Void>()
-  private var didSelectItem = PublishSubject<IndexPath>()
-  private var showTransaction = PublishSubject<MinterExplorer.Transaction?>()
-  private var didTapShowAll = PublishSubject<Void>()
-  private var willDisplayCell = PublishSubject<WillDisplayCellEvent>()
-  private var filterAllTaped = PublishSubject<Void>()
-  private var filterIncomingTaped = PublishSubject<Void>()
-  private var filterOutgoingTaped = PublishSubject<Void>()
+  private let transactions = BehaviorSubject<[MinterExplorer.Transaction]>(value: [])
+  private let sections = PublishSubject<[BaseTableSectionItem]>()
+  private let viewWillAppear = PublishSubject<Void>()
+  private let didSelectItem = PublishSubject<IndexPath>()
+  private let modelSelected = PublishSubject<BaseCellItem?>()
+  private let showTransaction = PublishSubject<MinterExplorer.Transaction?>()
+  private let didTapShowAll = PublishSubject<Void>()
+  private let willDisplayCell = PublishSubject<WillDisplayCellEvent>()
+  private let filterAllTaped = PublishSubject<Void>()
+  private let filterIncomingTaped = PublishSubject<Void>()
+  private let filterOutgoingTaped = PublishSubject<Void>()
 
   // MARK: - ViewModel
 
@@ -56,6 +65,7 @@ class AllTransactionsViewModel: BaseViewModel, ViewModel, TransactionViewableVie
     var filterAllTaped: AnyObserver<Void>
     var filterIncomingTaped: AnyObserver<Void>
     var filterOutgoingTaped: AnyObserver<Void>
+    var modelSelected: AnyObserver<BaseCellItem?>
   }
 
   struct Output {
@@ -68,6 +78,7 @@ class AllTransactionsViewModel: BaseViewModel, ViewModel, TransactionViewableVie
   struct Dependency {
     var transactionService: TransactionService
     var balanceService: BalanceService
+    var recipientInfoService: RecipientInfoService
   }
 
   init(dependency: Dependency) {
@@ -79,7 +90,8 @@ class AllTransactionsViewModel: BaseViewModel, ViewModel, TransactionViewableVie
                        willDisplayCell: willDisplayCell.asObserver(),
                        filterAllTaped: filterAllTaped.asObserver(),
                        filterIncomingTaped: filterIncomingTaped.asObserver(),
-                       filterOutgoingTaped: filterOutgoingTaped.asObserver()
+                       filterOutgoingTaped: filterOutgoingTaped.asObserver(),
+                       modelSelected: modelSelected.asObserver()
     )
 
     self.output = Output(sections: sections.asObservable(),
@@ -160,6 +172,14 @@ class AllTransactionsViewModel: BaseViewModel, ViewModel, TransactionViewableVie
     }).filter({ (transaction) -> Bool in
       return nil != transaction
     }).subscribe(showTransaction).disposed(by: disposeBag)
+
+    modelSelected.map({ (item) -> MinterExplorer.Transaction? in
+      guard let hash = (item as? TransactionCellItem)?.txHash else { return nil }
+      return (try? self.transactions.value() ?? [])?.filter({ (tx) -> Bool in
+        return tx.hash == hash
+      }).first
+    }).subscribe(showTransaction).disposed(by: disposeBag)
+
   }
 
   // MARK: -

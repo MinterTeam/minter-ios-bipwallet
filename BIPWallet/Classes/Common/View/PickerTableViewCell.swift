@@ -8,7 +8,7 @@
 
 import UIKit
 
-class PickerTableViewCellItem : BaseCellItem {
+class PickerTableViewCellItem: BaseCellItem {
 	var title: String?
 	var selected: PickerTableViewCellPickerItem?
 }
@@ -46,10 +46,9 @@ class PickerTableViewCell: BaseCell, UITextFieldDelegate {
 			rightView.addSubview(imageView)
 			rightView.isUserInteractionEnabled = false
 			selectField.layer.cornerRadius = 8.0
-//			selectField.layer.borderWidth = 2
-//			selectField.layer.borderColor = UIColor.mainGreyColor(alpha: 0.4).cgColor
 			selectField.rightView = rightView
 			selectField.rightViewMode = .always
+      selectField.layer.borderWidth = 0
 		}
 	}
 

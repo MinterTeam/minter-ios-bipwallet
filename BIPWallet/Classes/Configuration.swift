@@ -53,7 +53,7 @@ enum Environment: String {
 
 	var explorerWebURL: String {
 		switch self {
-		case .dev: return "https://explorer.testnet.minter.network"
+		case .dev: return "https://testnet.explorer.minter.network"
 		case .prod: return "https://explorer.minter.network"
 		}
 	}

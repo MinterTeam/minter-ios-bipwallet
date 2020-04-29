@@ -24,10 +24,12 @@ class BalanceViewController: SegmentedPagerTabStripViewController, Controller, S
 
   // MARK: - IBOutlet
 
+  @IBOutlet weak var balanceView: PassthroughView!
   @IBOutlet weak var balanceTitle: UILabel!
   @IBOutlet weak var containerViewHeightConstraint: NSLayoutConstraint!
   @IBOutlet weak var segmentedControlView: UIView!
   @IBOutlet weak var availableBalance: UILabel!
+  @IBOutlet weak var delegatedBalanceTitle: UILabel!
   @IBOutlet weak var delegatedBalance: UILabel!
   @IBOutlet weak var delegatedBalanceButton: UIButton!
 
@@ -107,6 +109,25 @@ class BalanceViewController: SegmentedPagerTabStripViewController, Controller, S
 
     Observable.of(self.availableBalance.rx.tapGesture(), self.balanceTitle.rx.tapGesture()).merge().when(.ended)
       .map {_ in}.subscribe(viewModel.input.didTapBalance).disposed(by: disposeBag)
+
+//    let containerViewTap = containerView.rx.tapGesture().when(.ended).share()
+//
+//    containerViewTap.filter { (recognizer) -> Bool in
+//      let point = recognizer.location(in: self.balanceView)
+//      return self.availableBalance.frame.contains(point) || self.balanceTitle.frame.contains(point)
+//    }.map {_ in}.subscribe(viewModel.input.didTapBalance).disposed(by: disposeBag)
+//
+//    containerViewTap.filter { (recognizer) -> Bool in
+//      let point = recognizer.location(in: self.balanceView)
+//      return self.delegatedBalanceTitle.frame.contains(point) || self.delegatedBalance.frame.contains(point)
+//    }.map {_ in}.subscribe(viewModel.input.didTapDelegatedBalance).disposed(by: disposeBag)
+
+//    containerViewTap.filter({ (recognizer) -> Bool in
+//      let point = recognizer.location(in: self.segmentedControlView)
+//      return self.segmentedControl.frame.contains(point)
+//    }).subscribe(onNext: { (_) in
+////      self.segmentedControl.tap
+//    }).disposed(by: disposeBag)
 
   }
 

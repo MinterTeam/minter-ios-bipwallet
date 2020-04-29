@@ -28,7 +28,6 @@ class CoinsCoordinator: BaseCoordinator<Void> {
   override func start() -> Observable<Void> {
     let controller = CoinsViewController.initFromStoryboard(name: "Coins")
 
-//    let localAuthService = LocalStorageAuthService(storage: <#Storage#>, accountManager: <#AccountManager#>, pinService: <#PINService#>)
     guard let account = self.authService.selectedAccount() else {
       return Observable.empty()
     }

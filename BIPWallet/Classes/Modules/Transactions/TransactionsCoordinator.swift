@@ -29,20 +29,24 @@ class TransactionsCoordinator: BaseCoordinator<Void> {
   override func start() -> Observable<Void> {
 
     let transactionService = ExplorerTransactionService()
+    let infoService = ExplorerRecipientInfoService(contactsService: LocalStorageContactsService())
     let dependency = TransactionsViewModel.Dependency(transactionService: transactionService,
-                                                      balanceService: balanceService)
+                                                      balanceService: balanceService,
+                                                      infoService: infoService)
     let viewModel = TransactionsViewModel(dependency: dependency)
 
     viewModel.output.showTransaction.flatMap({ [weak self] (transaction) -> Observable<Void> in
       guard let `self` = self, let transaction = transaction else { return Observable.empty() }
       let transactionCoordinator = TransactionCoordinator(transaction: transaction,
-                                                          rootViewController: self.сontroller)
+                                                          rootViewController: self.сontroller,
+                                                          recipientInfoService: infoService)
       return self.coordinate(to: transactionCoordinator)
     }).subscribe().disposed(by: self.disposeBag)
 
     viewModel.output.showAllTransactions.flatMap { (_) -> Observable<Void> in
       guard let navigationController = self.сontroller.navigationController else { return Observable.empty() }
-      return self.showAllTransactions(navigationController: navigationController)
+      return self.showAllTransactions(navigationController: navigationController,
+                                      recipientInfoService: infoService)
     }.subscribe().disposed(by: disposeBag)
 
     сontroller.viewModel = viewModel
@@ -56,8 +60,8 @@ class TransactionsCoordinator: BaseCoordinator<Void> {
     return Observable.never()
   }
 
-  func showAllTransactions(navigationController: UINavigationController) -> Observable<Void> {
-    let coordinator = AllTransactionsCoordinator(navigationController: navigationController, balanceService: self.balanceService)
+  func showAllTransactions(navigationController: UINavigationController, recipientInfoService: RecipientInfoService) -> Observable<Void> {
+    let coordinator = AllTransactionsCoordinator(navigationController: navigationController, balanceService: self.balanceService, recipientInfoService: recipientInfoService)
     return coordinate(to: coordinator)
   }
 

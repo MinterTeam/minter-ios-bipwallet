@@ -14,9 +14,23 @@ import RxAppState
 
 class TransactionsViewController: BaseViewController, Controller, StoryboardInitializable {
 
-  @IBOutlet weak var upperView: UIView!
   @IBOutlet weak var noTransactionsLabel: UILabel!
   @IBOutlet weak var tableView: UITableView!
+
+  var refreshControl: UIRefreshControl! {
+    didSet {
+      refreshControl.tintColor = .white
+      refreshControl.translatesAutoresizingMaskIntoConstraints = false
+      refreshControl.addTarget(self, action:
+        #selector(CoinsViewController.handleRefresh(_:)),
+                               for: UIControl.Event.valueChanged)
+    }
+  }
+
+  @objc func handleRefresh(_ refreshControl: UIRefreshControl) {
+//    SoundHelper.playSoundIfAllowed(type: .refresh)
+    refreshControl.endRefreshing()
+  }
 
   // MARK: - ControllerProtocol
 
@@ -73,15 +87,16 @@ class TransactionsViewController: BaseViewController, Controller, StoryboardInit
     configure(with: viewModel)
 
     tableView.contentInset = UIEdgeInsets(top: 230, left: 0, bottom: 0, right: 0)
+    
+    refreshControl = UIRefreshControl()
 
-    tableView.rx.didScroll.subscribe(onNext: { [weak self] (_) in
-      guard let `self` = self else { return }
-      if self.tableView.contentOffset.y < -self.tableView.contentInset.top {
-        self.upperView.alpha = 1.0
-      } else {
-        self.upperView.alpha = 0.0
-      }
-    }).disposed(by: disposeBag)
+    self.tableView.addSubview(self.refreshControl)
+
+    refreshControl.snp.makeConstraints { (maker) in
+      maker.top.equalTo(self.tableView).offset(-270)
+      maker.centerX.equalTo(self.tableView)
+      maker.width.height.equalTo(30)
+    }
   }
 }
 

@@ -15,8 +15,6 @@ class DefaultTextView: UITextView {
   override init(frame: CGRect, textContainer: NSTextContainer?) {
     super.init(frame: frame, textContainer: textContainer)
     customize()
-
-//    NotificationCenter.default.removeObserver(self, name: DefaultTextView.textDidBeginEditingNotification, object: nil)
   }
 
   required init?(coder: NSCoder) {
@@ -71,6 +69,7 @@ private extension DefaultTextView {
 }
 
 // MARK: - Startup
+
 private extension DefaultTextView {
   func startupSetup() {
     addObservers()

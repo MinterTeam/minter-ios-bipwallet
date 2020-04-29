@@ -12,7 +12,8 @@ import MinterExplorer
 import MinterMy
 
 protocol TransactionViewableViewModel: class {
-  var addressBook: [String: String] {get set}
+  func titleFor(recipient: String) -> String?
+  func avatarURLFor(recipient: String) -> URL?
   var address: String? {get}
 }
 
@@ -29,18 +30,24 @@ extension TransactionViewableViewModel {
 
     var title = ""
     if hasAddress {
-      title = transaction.data?.to ?? ""
+      title = self.titleFor(recipient: transaction.data?.to ?? "") ?? transaction.data?.to ?? ""
       signMultiplier = -1.0
     } else {
-      title = transaction.from ?? ""
+      title = self.titleFor(recipient: transaction.from ?? "") ?? transaction.from ?? ""
     }
 
     let transactionCellItem = TransactionCellItem(reuseIdentifier: "TransactionCell",
                                                    identifier: "TransactionCellItem_\(sectionId)")
     transactionCellItem.txHash = transaction.hash
     transactionCellItem.title = title
+
     let avatarAddress = ((signMultiplier > 0 ? transaction.from : transaction.data?.to) ?? "")
     transactionCellItem.imageURL = MinterMyAPIURL.avatarAddress(address: avatarAddress).url()
+
+    if let avatarURL =  self.avatarURLFor(recipient: avatarAddress) {
+      transactionCellItem.imageURL = avatarURL
+    }
+
     if let data = transaction.data as? MinterExplorer.SendCoinTransactionData {
       transactionCellItem.coin = data.coin
       let amount = (data.amount ?? 0) * Decimal(signMultiplier)
@@ -60,10 +67,12 @@ extension TransactionViewableViewModel {
 
     var title = ""
     if hasAddress {
-      title = transaction.data?.to ?? ""
+      let addr = transaction.data?.to ?? ""
+      title = self.titleFor(recipient: addr) ?? addr
       signMultiplier = -1.0
     } else {
-      title = transaction.from ?? ""
+      let addr = transaction.from ?? ""
+      title = self.titleFor(recipient: addr) ?? addr
     }
 
     let transactionCellItem = TransactionCellItem(reuseIdentifier: "TransactionCell",
@@ -72,6 +81,9 @@ extension TransactionViewableViewModel {
     transactionCellItem.title = title
     let txAddress = ((signMultiplier > 0 ? transaction.from : transaction.data?.to) ?? "")
     transactionCellItem.imageURL = MinterMyAPIURL.avatarAddress(address: txAddress).url()
+    if let avatarURL =  self.avatarURLFor(recipient: txAddress) {
+      transactionCellItem.imageURL = avatarURL
+    }
 
     if let data = transaction.data as? MultisendCoinTransactionData {
       if let val = data.values?.filter({ (val) -> Bool in
@@ -92,7 +104,7 @@ extension TransactionViewableViewModel {
       }
 
       if (transactionCellItem.title?.count ?? 0) == 0 {
-        transactionCellItem.title = transaction.from
+        transactionCellItem.title = self.titleFor(recipient: transaction.from ?? "") ?? transaction.from
         if let from = transaction.from {
           transactionCellItem.imageURL = MinterMyAPIURL.avatarAddress(address: from).url()
         }
@@ -110,9 +122,11 @@ extension TransactionViewableViewModel {
 
     var title = ""
     if hasAddress {
-      title = transaction.data?.to ?? ""
+      let addr = transaction.data?.to ?? ""
+      title = self.titleFor(recipient: addr) ?? ""
     } else {
-      title = transaction.from ?? ""
+      let addr = transaction.from ?? ""
+      title = self.titleFor(recipient: addr) ?? ""
     }
 
     let transactionCellItem = TransactionCellItem(reuseIdentifier: "TransactionCell",
@@ -156,9 +170,16 @@ extension TransactionViewableViewModel {
       let amount = Decimal(signMultiplier) * (data.value ?? 0)
       transactionCellItem.amount = CurrencyNumberFormatter.formattedDecimal(with: amount,
                                                                             formatter: CurrencyNumberFormatter.transactionFormatter)
-      transactionCellItem.title = data.coin ?? ""
+      
+      if let transactionData = transactionItem.data as? DelegateTransactionData, let publicKey = transactionData.pubKey {
+        transactionCellItem.title = self.titleFor(recipient: publicKey) ?? publicKey
+        transactionCellItem.imageURL = self.avatarURLFor(recipient: publicKey)
+      } else {
+        transactionCellItem.title = data.coin ?? ""
+      }
       transactionCellItem.type = transaction.type == .unbond ? "Unbond".localized() : "Delegate".localized()
       transactionCellItem.image = transaction.type == .unbond ? UIImage(named: "unbondImage") : UIImage(named: "delegateImage")
+      
     }
     return transactionCellItem
   }

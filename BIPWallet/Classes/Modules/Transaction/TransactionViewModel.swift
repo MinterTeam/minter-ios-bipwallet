@@ -15,11 +15,13 @@ class TransactionViewModel: BaseViewModel, ViewModel {
 
   // MARK: -
 
-  private var transaction: MinterExplorer.Transaction
-  private var viewWillAppear = PublishSubject<Void>()
-  private var viewDidDisappear = PublishSubject<Void>()
-  private var sections = PublishSubject<[BaseTableSectionItem]>()
-  var didDismiss = PublishSubject<Void>()
+  private let transaction: MinterExplorer.Transaction
+  private let viewWillAppear = PublishSubject<Void>()
+  private let viewDidDisappear = PublishSubject<Void>()
+  private let sections = PublishSubject<[BaseTableSectionItem]>()
+  private let didDismiss = PublishSubject<Void>()
+  private let didTapShare = PublishSubject<Void>()
+  private let copied = PublishSubject<Void>()
 
   // MARK: - ViewModel
 
@@ -35,20 +37,27 @@ class TransactionViewModel: BaseViewModel, ViewModel {
   struct Output {
     var didDismiss: Observable<Void>
     var sections: Observable<[BaseTableSectionItem]>
+    var didTapShare: Observable<Void>
+    var copied: Observable<Void>
   }
 
   struct Dependency {
-
+    var recipientInfoService: RecipientInfoService
   }
 
   init(transaction: MinterExplorer.Transaction, dependency: Dependency) {
     self.transaction = transaction
 
     self.input = Input(viewWillAppear: viewWillAppear.asObserver(),
-                       viewDidDisappear: viewDidDisappear.asObserver())
+                       viewDidDisappear: viewDidDisappear.asObserver()
+    )
 
     self.output = Output(didDismiss: didDismiss.asObservable(),
-                         sections: sections.asObservable())
+                         sections: sections.asObservable(),
+                         didTapShare: didTapShare.asObservable(),
+                         copied: copied.asObservable()
+    )
+
     self.dependency = dependency
 
     super.init()
@@ -65,15 +74,13 @@ class TransactionViewModel: BaseViewModel, ViewModel {
     }).disposed(by: disposeBag)
 
     viewDidDisappear.subscribe(didDismiss).disposed(by: disposeBag)
-
   }
 
   private let fullDateFormatter = TransactionDateFormatter.transactionFullDateFormatter
   private let coinFormatter = CurrencyNumberFormatter.coinFormatter
 
   func createSections() {
-    var section1 = BaseTableSectionItem(identifier: "TransactionSection",
-                                        header: " ")
+    var section1 = BaseTableSectionItem(identifier: "TransactionSection", header: " ")
 
     var cellItems = [BaseCellItem]()
     if let txData = transaction.data as? SendCoinTransactionData {
@@ -138,11 +145,12 @@ class TransactionViewModel: BaseViewModel, ViewModel {
     feeBlock.value2 = String(transaction.block ?? 0)
     cellItems.append(feeBlock)
 
-    let convertButton = ButtonTableViewCellItem(reuseIdentifier: "ButtonTableViewCell",
+    let shareButton = ButtonTableViewCellItem(reuseIdentifier: "ButtonTableViewCell",
                                                 identifier: "ButtonTableViewCell_ShareTransactions")
-    convertButton.buttonPattern = "blank"
-    convertButton.title = "Share Transaction".localized()
-    cellItems.append(convertButton)
+    shareButton.buttonPattern = "blank"
+    shareButton.title = "Share Transaction".localized()
+    shareButton.didTapButtonSubject.subscribe(didTapShare).disposed(by: disposeBag)
+    cellItems.append(shareButton)
 
     return cellItems
   }
@@ -153,11 +161,16 @@ class TransactionViewModel: BaseViewModel, ViewModel {
     let from = TransactionAddressCellItem(reuseIdentifier: "TransactionAddressCell",
                                           identifier: "TransactionAddressCell_From")
     from.address = transaction.from
-    from.name = ""//transaction.from
+    from.name = ""
     from.title = "From"
     if let address = transaction.from {
       from.avatarURL = MinterMyAPIURL.avatarAddress(address: address).url()
+      from.name = self.dependency.recipientInfoService.title(for: address) ?? ""
     }
+    from.didTapAddress.subscribe(onNext: { [weak self] (_) in
+      UIPasteboard.general.string = self?.transaction.from
+      self?.copied.onNext(())
+    }).disposed(by: disposeBag)
     cellItems.append(from)
 
     let blank1 = BlankTableViewCellItem(reuseIdentifier: "BlankTableViewCell",
@@ -169,11 +182,16 @@ class TransactionViewModel: BaseViewModel, ViewModel {
     let to = TransactionAddressCellItem(reuseIdentifier: "TransactionAddressCell",
                                         identifier: "TransactionAddressCell_To")
     to.address = data.sender
-    to.name = ""//transaction.from
+    to.name = ""
     to.title = "To"
     if let address = data.sender {
       to.avatarURL = MinterMyAPIURL.avatarAddress(address: address).url()
+      from.name = self.dependency.recipientInfoService.title(for: address) ?? ""
     }
+    to.didTapAddress.subscribe(onNext: { [weak self] (_) in
+      UIPasteboard.general.string = data.sender
+      self?.copied.onNext(())
+    }).disposed(by: disposeBag)
     cellItems.append(to)
 
     let blank2 = BlankTableViewCellItem(reuseIdentifier: "BlankTableViewCell",
@@ -236,11 +254,12 @@ class TransactionViewModel: BaseViewModel, ViewModel {
     feeBlock.value2 = String(transaction.block ?? 0)
     cellItems.append(feeBlock)
 
-    let convertButton = ButtonTableViewCellItem(reuseIdentifier: "ButtonTableViewCell",
+    let shareButton = ButtonTableViewCellItem(reuseIdentifier: "ButtonTableViewCell",
                                                 identifier: "ButtonTableViewCell_ShareTransactions")
-    convertButton.buttonPattern = "blank"
-    convertButton.title = "Share Transaction".localized()
-    cellItems.append(convertButton)
+    shareButton.buttonPattern = "blank"
+    shareButton.title = "Share Transaction".localized()
+    shareButton.didTapButtonSubject.subscribe(didTapShare).disposed(by: disposeBag)
+    cellItems.append(shareButton)
 
     return cellItems
   }
@@ -251,11 +270,16 @@ class TransactionViewModel: BaseViewModel, ViewModel {
     let from = TransactionAddressCellItem(reuseIdentifier: "TransactionAddressCell",
                                           identifier: "TransactionAddressCell_From")
     from.address = transaction.from
-    from.name = ""//transaction.from
+    from.name = ""
     from.title = "From"
     if let address = transaction.from {
       from.avatarURL = MinterMyAPIURL.avatarAddress(address: address).url()
+      from.name = self.dependency.recipientInfoService.title(for: address) ?? ""
     }
+    from.didTapAddress.subscribe(onNext: { [weak self] (_) in
+      UIPasteboard.general.string = self?.transaction.from
+      self?.copied.onNext(())
+    }).disposed(by: disposeBag)
     cellItems.append(from)
 
     let blank1 = BlankTableViewCellItem(reuseIdentifier: "BlankTableViewCell",
@@ -333,11 +357,12 @@ class TransactionViewModel: BaseViewModel, ViewModel {
     feeBlock.value2 = String(transaction.block ?? 0)
     cellItems.append(feeBlock)
 
-    let convertButton = ButtonTableViewCellItem(reuseIdentifier: "ButtonTableViewCell",
+    let shareButton = ButtonTableViewCellItem(reuseIdentifier: "ButtonTableViewCell",
                                                 identifier: "ButtonTableViewCell_ShareTransactions")
-    convertButton.buttonPattern = "blank"
-    convertButton.title = "Share Transaction".localized()
-    cellItems.append(convertButton)
+    shareButton.buttonPattern = "blank"
+    shareButton.title = "Share Transaction".localized()
+    shareButton.didTapButtonSubject.subscribe(didTapShare).disposed(by: disposeBag)
+    cellItems.append(shareButton)
 
     return cellItems
   }
@@ -348,11 +373,16 @@ class TransactionViewModel: BaseViewModel, ViewModel {
     let from = TransactionAddressCellItem(reuseIdentifier: "TransactionAddressCell",
                                           identifier: "TransactionAddressCell_From")
     from.address = transaction.from
-    from.name = ""//transaction.from
+    from.name = ""
     from.title = "From"
     if let address = transaction.from {
       from.avatarURL = MinterMyAPIURL.avatarAddress(address: address).url()
+      from.name = self.dependency.recipientInfoService.title(for: address) ?? ""
     }
+    from.didTapAddress.subscribe(onNext: { [weak self] (_) in
+      UIPasteboard.general.string = self?.transaction.from
+      self?.copied.onNext(())
+    }).disposed(by: disposeBag)
     cellItems.append(from)
 
     let blank1 = BlankTableViewCellItem(reuseIdentifier: "BlankTableViewCell",
@@ -364,11 +394,16 @@ class TransactionViewModel: BaseViewModel, ViewModel {
     let to = TransactionAddressCellItem(reuseIdentifier: "TransactionAddressCell",
                                         identifier: "TransactionAddressCell_To")
     to.address = transaction.data?.to
-    to.name = ""//transaction.from
+    to.name = ""
     to.title = "To"
     if let address = transaction.data?.to {
       to.avatarURL = MinterMyAPIURL.avatarAddress(address: address).url()
+      to.name = self.dependency.recipientInfoService.title(for: address) ?? ""
     }
+    to.didTapAddress.subscribe(onNext: { [weak self] (_) in
+      UIPasteboard.general.string = self?.transaction.data?.to
+      self?.copied.onNext(())
+    }).disposed(by: disposeBag)
     cellItems.append(to)
 
     let blank2 = BlankTableViewCellItem(reuseIdentifier: "BlankTableViewCell",
@@ -431,11 +466,12 @@ class TransactionViewModel: BaseViewModel, ViewModel {
     feeBlock.value2 = String(transaction.block ?? 0)
     cellItems.append(feeBlock)
 
-    let convertButton = ButtonTableViewCellItem(reuseIdentifier: "ButtonTableViewCell",
+    let shareButton = ButtonTableViewCellItem(reuseIdentifier: "ButtonTableViewCell",
                                                 identifier: "ButtonTableViewCell_ShareTransactions")
-    convertButton.buttonPattern = "blank"
-    convertButton.title = "Share Transaction".localized()
-    cellItems.append(convertButton)
+    shareButton.buttonPattern = "blank"
+    shareButton.title = "Share Transaction".localized()
+    shareButton.didTapButtonSubject.subscribe(didTapShare).disposed(by: disposeBag)
+    cellItems.append(shareButton)
 
     return cellItems
   }
@@ -446,11 +482,16 @@ class TransactionViewModel: BaseViewModel, ViewModel {
     let from = TransactionAddressCellItem(reuseIdentifier: "TransactionAddressCell",
                                           identifier: "TransactionAddressCell_From")
     from.address = transaction.from
-    from.name = ""//transaction.from
+    from.name = ""
     from.title = "From"
     if let address = transaction.from {
       from.avatarURL = MinterMyAPIURL.avatarAddress(address: address).url()
+      from.name = self.dependency.recipientInfoService.title(for: address) ?? ""
     }
+    from.didTapAddress.subscribe(onNext: { [weak self] (_) in
+      UIPasteboard.general.string = self?.transaction.from
+      self?.copied.onNext(())
+    }).disposed(by: disposeBag)
     cellItems.append(from)
 
     let blank1 = BlankTableViewCellItem(reuseIdentifier: "BlankTableViewCell",
@@ -459,14 +500,17 @@ class TransactionViewModel: BaseViewModel, ViewModel {
     blank1.color = .white
     cellItems.append(blank1)
 
-//    let signMultiplier = transaction.type == .unbond ? 1.0 : -1.0
-
     let to = TransactionAddressCellItem(reuseIdentifier: "TransactionAddressCell",
                                         identifier: "TransactionAddressCell_To")
     to.address = transaction.data?.to
-    to.name = ""//transaction.from
+    to.name = ""
+    to.name = self.dependency.recipientInfoService.title(for: data.pubKey ?? "") ?? ""
     to.title = "To"
     to.address = data.pubKey
+    to.didTapAddress.subscribe(onNext: { [weak self] (_) in
+      UIPasteboard.general.string = data.pubKey
+      self?.copied.onNext(())
+    }).disposed(by: disposeBag)
     to.avatar = transaction.type == .unbond ? UIImage(named: "UnbondIcon") : UIImage(named: "DelegateIcon")
     cellItems.append(to)
 
@@ -488,7 +532,7 @@ class TransactionViewModel: BaseViewModel, ViewModel {
       cellItems.append(payloadItem)
 
       let separator2 = SeparatorTableViewCellItem(reuseIdentifier: "SeparatorTableViewCell",
-                                                 identifier: "SeparatorTableViewCell")
+                                                  identifier: "SeparatorTableViewCell")
       cellItems.append(separator2)
     }
 
@@ -530,11 +574,12 @@ class TransactionViewModel: BaseViewModel, ViewModel {
     feeBlock.value2 = String(transaction.block ?? 0)
     cellItems.append(feeBlock)
 
-    let convertButton = ButtonTableViewCellItem(reuseIdentifier: "ButtonTableViewCell",
-                                                identifier: "ButtonTableViewCell_ShareTransactions")
-    convertButton.buttonPattern = "blank"
-    convertButton.title = "Share Transaction".localized()
-    cellItems.append(convertButton)
+    let shareButton = ButtonTableViewCellItem(reuseIdentifier: "ButtonTableViewCell",
+                                              identifier: "ButtonTableViewCell_ShareTransactions")
+    shareButton.buttonPattern = "blank"
+    shareButton.title = "Share Transaction".localized()
+    shareButton.didTapButtonSubject.subscribe(didTapShare).disposed(by: disposeBag)
+    cellItems.append(shareButton)
 
     return cellItems
   }
@@ -545,11 +590,16 @@ class TransactionViewModel: BaseViewModel, ViewModel {
     let from = TransactionAddressCellItem(reuseIdentifier: "TransactionAddressCell",
                                           identifier: "TransactionAddressCell_From")
     from.address = transaction.from
-    from.name = ""//transaction.from
+    from.name = ""
     from.title = "From"
     if let address = transaction.from {
       from.avatarURL = MinterMyAPIURL.avatarAddress(address: address).url()
+      from.name = self.dependency.recipientInfoService.title(for: address) ?? ""
     }
+    from.didTapAddress.subscribe(onNext: { [weak self] (_) in
+      UIPasteboard.general.string = self?.transaction.from
+      self?.copied.onNext(())
+    }).disposed(by: disposeBag)
     cellItems.append(from)
 
     let blank1 = BlankTableViewCellItem(reuseIdentifier: "BlankTableViewCell",
@@ -563,9 +613,14 @@ class TransactionViewModel: BaseViewModel, ViewModel {
       let to = TransactionAddressCellItem(reuseIdentifier: "TransactionAddressCell",
                                           identifier: "TransactionAddressCell_address_\(i)")
       to.address = value.to
-      to.name = ""//transaction.from
+      to.name = ""
       to.title = "To"
       to.avatarURL = MinterMyAPIURL.avatarAddress(address: value.to).url()
+      to.name = self.dependency.recipientInfoService.title(for: value.to) ?? ""
+      to.didTapAddress.subscribe(onNext: { [weak self] (_) in
+        UIPasteboard.general.string = value.to
+        self?.copied.onNext(())
+      }).disposed(by: disposeBag)
       cellItems.append(to)
 
       let amountCoin = TransactionTwoColumnCellItem(reuseIdentifier: "TransactionTwoColumnCell",
@@ -635,11 +690,18 @@ class TransactionViewModel: BaseViewModel, ViewModel {
     feeBlock.value2 = String(transaction.block ?? 0)
     cellItems.append(feeBlock)
 
-    let convertButton = ButtonTableViewCellItem(reuseIdentifier: "ButtonTableViewCell",
-                                                identifier: "ButtonTableViewCell_ShareTransactions")
-    convertButton.buttonPattern = "blank"
-    convertButton.title = "Share Transaction".localized()
-    cellItems.append(convertButton)
+    let blank4 = BlankTableViewCellItem(reuseIdentifier: "BlankTableViewCell",
+                                        identifier: "BlankTableViewCell_BeforeShare")
+    blank4.height = 10.0
+    blank4.color = .white
+    cellItems.append(blank4)
+
+    let shareButton = ButtonTableViewCellItem(reuseIdentifier: "ButtonTableViewCell",
+                                              identifier: "ButtonTableViewCell_ShareTransactions")
+    shareButton.buttonPattern = "blank"
+    shareButton.title = "Share Transaction".localized()
+    shareButton.didTapButtonSubject.subscribe(didTapShare).disposed(by: disposeBag)
+    cellItems.append(shareButton)
 
     return cellItems
   }

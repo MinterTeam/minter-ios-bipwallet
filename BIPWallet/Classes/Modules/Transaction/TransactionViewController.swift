@@ -47,6 +47,10 @@ class TransactionViewController: BaseViewController, Controller, StoryboardIniti
       .bind(to: tableView.rx.items(dataSource: rxDataSource!))
       .disposed(by: disposeBag)
 
+    viewModel.output.copied.subscribe(onNext: { (_) in
+      BannerHelper.performCopiedNotification()
+      }).disposed(by: disposeBag)
+
   }
 
   // MARK: - ViewController
@@ -75,7 +79,6 @@ class TransactionViewController: BaseViewController, Controller, StoryboardIniti
         return cell
     })
 
-//    tableView.rx.setDelegate(self).disposed(by: disposeBag)
     configure(with: viewModel)
   }
 

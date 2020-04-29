@@ -78,10 +78,7 @@ class SignInViewModel: BaseViewModel, ViewModel {
   // MARK: -
 
   func bind() {
-    didTapGo.withLatestFrom(mnemonics).distinctUntilChanged()
-//    .filter({ (str) -> Bool in
-//      return str?.hasSuffix("\n") ?? false
-//    })
+    didTapGo.withLatestFrom(mnemonics)
       .map { $0?.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines) ?? "" }
       .filter({ (str) -> Bool in
         return mnemonicIsValid(str)

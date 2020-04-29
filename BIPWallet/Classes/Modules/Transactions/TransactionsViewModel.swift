@@ -15,11 +15,19 @@ class TransactionsViewModel: BaseViewModel, ViewModel, TransactionViewableViewMo
 
   // MARK: - TransactionViewableViewModel
 
-  var addressBook: [String: String] = [:]
   var address: String?
-  private var isLoading: Bool = false
+
+  func titleFor(recipient: String) -> String? {
+    return self.dependency.infoService.title(for: recipient)
+  }
+
+  func avatarURLFor(recipient: String) -> URL? {
+    return self.dependency.infoService.avatarURL(for: recipient)
+  }
 
   // MARK: -
+
+  private var isLoading: Bool = false
 
   private var transactions = BehaviorSubject<[MinterExplorer.Transaction]>(value: [])
   private var sections = PublishSubject<[BaseTableSectionItem]>()
@@ -50,6 +58,7 @@ class TransactionsViewModel: BaseViewModel, ViewModel, TransactionViewableViewMo
   struct Dependency {
     var transactionService: TransactionService
     var balanceService: BalanceService
+    var infoService: RecipientInfoService
   }
 
   init(dependency: Dependency) {
@@ -86,7 +95,7 @@ class TransactionsViewModel: BaseViewModel, ViewModel, TransactionViewableViewMo
       self?.loadTransactions(address: address)
     }).disposed(by: disposeBag)
 
-    Observable.combineLatest(viewDidLoad, transactions).map({ (val) -> [MinterExplorer.Transaction] in
+    Observable.combineLatest(viewDidLoad, transactions, self.dependency.infoService.isReady()).map({ (val) -> [MinterExplorer.Transaction] in
       return val.1
     }).subscribe(onNext: { [weak self] (transactions) in
       self?.createSections(isLoading: self?.isLoading ?? false, transactions: transactions)

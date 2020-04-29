@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="15705" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="16096" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15706"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16087"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -82,6 +82,7 @@
                 <outlet property="addressLabel" destination="p2n-1h-IoT" id="uz6-Ot-dgo"/>
                 <outlet property="avatar" destination="x3l-yt-1aC" id="RrK-mj-hk5"/>
                 <outlet property="name" destination="xX7-8a-u6f" id="TDs-MY-o5g"/>
+                <outlet property="nameTopConstraint" destination="7kp-IW-q1C" id="3do-rq-BjS"/>
                 <outlet property="title" destination="JGR-Ov-iPH" id="vzR-ic-BPP"/>
             </connections>
             <point key="canvasLocation" x="66.666666666666671" y="87.053571428571431"/>

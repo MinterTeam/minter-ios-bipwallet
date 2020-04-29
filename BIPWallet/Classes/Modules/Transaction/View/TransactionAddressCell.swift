@@ -8,6 +8,7 @@
 
 import UIKit
 import AlamofireImage
+import RxSwift
 
 class TransactionAddressCellItem: BaseCellItem {
   var avatarURL: URL?
@@ -15,6 +16,8 @@ class TransactionAddressCellItem: BaseCellItem {
   var title: String?
   var name: String?
   var address: String?
+
+  var didTapAddress = PublishSubject<Void>()
 }
 
 class TransactionAddressCell: BaseCell {
@@ -26,6 +29,7 @@ class TransactionAddressCell: BaseCell {
   @IBOutlet weak var name: UILabel!
   @IBOutlet weak var address: UIButton!
   @IBOutlet weak var addressLabel: UILabel!
+  @IBOutlet weak var nameTopConstraint: NSLayoutConstraint!
 
   // MARK: -
 
@@ -57,8 +61,14 @@ class TransactionAddressCell: BaseCell {
     }
     title.text = item.title
     name.text = item.name
+    if item.name == nil || item.name == "" {
+      nameTopConstraint.constant = 0
+    } else {
+      nameTopConstraint.constant = 3
+    }
     address.setTitle(item.address, for: .normal)
     addressLabel.text = item.address
+    address.rx.tap.subscribe(item.didTapAddress).disposed(by: disposeBag)
   }
 
 }

@@ -35,8 +35,13 @@ class AllTransactionsViewController: BaseViewController, Controller, StoryboardI
       .drive(viewModel.input.viewWillAppear)
       .disposed(by: disposeBag)
 
-    tableView.rx.itemSelected.asDriver()
-      .drive(viewModel.input.didSelectItem)
+//    tableView.rx.itemSelected.asDriver()
+//      .drive(viewModel.input.didSelectItem)
+//      .disposed(by: disposeBag)
+
+    tableView.rx.modelSelected(BaseCellItem.self)
+      .asDriver()
+      .drive(viewModel.input.modelSelected)
       .disposed(by: disposeBag)
 
     filterAll.rx.tap.asDriver()
@@ -91,7 +96,7 @@ class AllTransactionsViewController: BaseViewController, Controller, StoryboardI
 
     registerCells()
 
-    rxDataSource?.animationConfiguration = AnimationConfiguration(insertAnimation: .fade,
+    rxDataSource?.animationConfiguration = AnimationConfiguration(insertAnimation: .bottom,
                                                                   reloadAnimation: .none,
                                                                   deleteAnimation: .automatic)
 

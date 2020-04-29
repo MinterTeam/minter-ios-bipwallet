@@ -45,7 +45,22 @@ class ExchangeCoordinator: BaseCoordinator<Void> {
     coordinate(to: get).subscribe().disposed(by: disposeBag)
 
     viewController.controllers = [getViewController!, spendViewController!]
-    rootController.presentCard(viewController, animated: true)
+
+    var cardConfig = CardConfiguration()
+    cardConfig.horizontalInset = 0.0
+    cardConfig.verticalInset = 0.0
+    cardConfig.verticalSpacing = 20.0
+    cardConfig.cornerRadius = 0.0
+    cardConfig.backFadeAlpha = 1.0
+    cardConfig.dismissAreaHeight = 5
+    CardPresentationController.useSystemPresentationOniOS13 = true
+
+    //Seem to be a bug, but without "main.async" it delays
+    DispatchQueue.main.async { [weak self] in
+      self?.rootController.presentCard(viewController,
+                                       configuration: cardConfig,
+                                       animated: true)
+    }
 
     return viewModel.output.viewDidDisappear
   }

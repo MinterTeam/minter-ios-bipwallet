@@ -27,11 +27,24 @@ class ExplorerBalanceService: BalanceService {
     self.channel = adr
     try? self.changeAddress(adr)
 
-    self.accountSubject.filter{$0 != nil}.subscribe(onNext: { (item) in
+    self.accountSubject.filter{$0 != nil}.subscribe(onNext: { [weak self] (item) in
       if let address = item?.address {
-        self.channel = "Mx" + address.stripMinterHexPrefix()
-        self.websocketConnect()
+        self?.channel = "Mx" + address.stripMinterHexPrefix()
+        self?.websocketConnect()
       }
+    }).disposed(by: disposeBag)
+
+    UIApplication.shared.rx.didOpenApp.withLatestFrom(self.accountSubject).subscribe(onNext: { [weak self] (item) in
+      if let address = item?.address {
+        self?.channel = "Mx" + address.stripMinterHexPrefix()
+        self?.websocketConnect()
+      }
+    }).disposed(by: disposeBag)
+
+    UIApplication.shared.rx.applicationWillResignActive.subscribe(onNext: { [weak self] (_) in
+      self?.unsubscribeBlocksChange()
+      self?.unsubscribeAccountBalanceChange()
+      self?.websocketDisconnect()
     }).disposed(by: disposeBag)
   }
 
@@ -229,6 +242,10 @@ extension ExplorerBalanceService: CentrifugeClientDelegate, CentrifugeSubscripti
                                 config: config,
                                 delegate: self)
     self.client?.connect()
+  }
+
+  func websocketDisconnect() {
+    self.client?.disconnect()
   }
 
   private func subscribeAccountBalanceChange() {
