@@ -11,6 +11,8 @@ import RxSwift
 
 class SendCoordinator: BaseCoordinator<Void> {
 
+  var recipient = PublishSubject<String?>()
+
   private let navigationController: UINavigationController
 
   let authService: AuthService
@@ -43,6 +45,8 @@ class SendCoordinator: BaseCoordinator<Void> {
       }).map({ (item) -> ContactItem in
         return item!
       }).subscribe(viewModel.input.contact).disposed(by: disposeBag)
+
+    recipient.subscribe(viewModel.input.didScanQR).disposed(by: disposeBag)
 
     self.bindSelectWallet(with: controller, viewModel: viewModel)
 

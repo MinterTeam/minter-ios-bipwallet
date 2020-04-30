@@ -11,8 +11,8 @@
         <array key="Inter-Medium.otf">
             <string>Inter-Medium</string>
         </array>
-        <array key="Inter-Regular.otf">
-            <string>Inter-Regular</string>
+        <array key="Inter-SemiBold.otf">
+            <string>Inter-SemiBold</string>
         </array>
     </customFonts>
     <objects>
@@ -30,8 +30,8 @@
                         <constraints>
                             <constraint firstAttribute="height" constant="13" id="OFG-JX-M0N"/>
                         </constraints>
-                        <fontDescription key="fontDescription" name="Inter-Regular" family="Inter" pointSize="11"/>
-                        <color key="textColor" red="0.55686274509803924" green="0.55686274509803924" blue="0.55686274509803924" alpha="0.84705882352941175" colorSpace="deviceRGB"/>
+                        <fontDescription key="fontDescription" name="Inter-SemiBold" family="Inter" pointSize="11"/>
+                        <color key="textColor" red="0.55686274509803924" green="0.55686274509803924" blue="0.55686274509803924" alpha="1" colorSpace="custom" customColorSpace="deviceRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="WdO-qK-Cix" customClass="DashedView" customModule="BIPWallet" customModuleProvider="target">

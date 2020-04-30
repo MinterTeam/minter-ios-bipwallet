@@ -9,6 +9,7 @@
 import Foundation
 import MinterCore
 import BigInt
+import RxSwift
 
 class RawTransactionRouter {
 
@@ -164,6 +165,28 @@ class RawTransactionRouter {
 //    viewController.navigationBar.barStyle = .black
 //    (viewController.viewControllers.first as? RawTransactionViewController)?.viewModel = viewModel
     return viewController
+  }
+
+}
+
+class RawTransactionCoordinator: BaseCoordinator<Void> {
+
+  let rootViewController: UIViewController
+  let url: URL
+
+  init(rootViewController: UIViewController, url: URL) {
+    self.rootViewController = rootViewController
+    self.url = url
+  }
+
+  override func start() -> Observable<Void> {
+    guard let controller = RawTransactionRouter.rawTransactionViewController(with: url) else {
+      return Observable.empty()
+    }
+
+    rootViewController.present(controller, animated: true, completion: nil)
+
+    return controller.rx.viewDidDisappear.map{_ in}.take(1)
   }
 
 }

@@ -35,6 +35,7 @@ class ButtonTableViewCellItem: BaseCellItem {
 
 	var title: String?
 	var buttonPattern: String?
+  var buttonColor: String?
 	var isButtonEnabled = true
 	var isButtonEnabledObservable: Observable<Bool>?
 	var isLoadingObserver: Observable<Bool>?
@@ -82,6 +83,9 @@ class ButtonTableViewCell: BaseCell {
 		if let buttonItem = item as? ButtonTableViewCellItem {
 			button?.setTitle(buttonItem.title, for: .normal)
 			button?.pattern = buttonItem.buttonPattern
+      if let color = buttonItem.buttonColor {
+        button?.color = buttonItem.buttonColor
+      }
 			button?.isEnabled = buttonItem.isButtonEnabled
 			activityIndicator?.isHidden = true
 

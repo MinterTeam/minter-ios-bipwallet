@@ -100,6 +100,8 @@ class PINViewController: BaseViewController, Controller, StoryboardInitializable
 
     pinView.becomeFirstResponder()
     pinView.textField.inputView = button0
+
+    self.navigationController?.navigationBar.shadowImage = UIImage()
   }
 
   override func viewDidAppear(_ animated: Bool) {

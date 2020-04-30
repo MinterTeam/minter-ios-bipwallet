@@ -12,6 +12,9 @@ import MinterExplorer
 
 class BalanceCoordinator: BaseCoordinator<Void> {
 
+  //Subject which is triggeren when valid Address or Public key was scaned
+  var didScanRecipient = PublishSubject<String?>()
+
   private let navigationController: UINavigationController
 
   let authService: AuthService
@@ -31,6 +34,12 @@ class BalanceCoordinator: BaseCoordinator<Void> {
     let viewModel = BalanceViewModel(dependency: dependency)
     controller.viewModel = viewModel
 
+    viewModel.output.didTapShare
+      .withLatestFrom(balanceService.account).filter{$0 != nil}.map{$0!}
+      .flatMap{ account in self.showShare(in: controller, account: account) }
+      .subscribe()
+      .disposed(by: disposeBag)
+
     var transactionsViewController: UIViewController?
 
     let coins = CoinsCoordinator(balanceService: balanceService, authService: authService)
@@ -48,6 +57,18 @@ class BalanceCoordinator: BaseCoordinator<Void> {
       guard let `self` = self else { return Observable.just(()) }
       return self.showDelegated(inViewController: self.navigationController, balanceService: self.balanceService)
     }.subscribe().disposed(by: disposeBag)
+
+    viewModel.output.didScanQR
+      .flatMap { (val) -> Observable<Void> in
+        guard let url = URL(string: val ?? "") else {
+          return Observable.empty()
+        }
+        return self.showRawTransaction(rootViewController: controller, url: url)
+      }.subscribe().disposed(by: disposeBag)
+
+    viewModel.output.didScanQR.filter({ (str) -> Bool in
+      return (str?.isValidAddress() ?? false) || (str?.isValidPublicKey() ?? false)
+    }).subscribe(didScanRecipient).disposed(by: disposeBag)
 
     coins.didScrollToPoint?.subscribe(onNext: { (point) in
       if controller.segmentedControl?.selectedSegmentIndex == 0 {
@@ -68,6 +89,7 @@ class BalanceCoordinator: BaseCoordinator<Void> {
     }).subscribe().disposed(by: self.disposeBag)
 
     transactions.didScrollToPoint?.subscribe(onNext: { (point) in
+      print(point)
       if controller.segmentedControl.selectedSegmentIndex == 1 {
         let newPoint = headerInset + point.y
         controller.containerViewHeightConstraint.constant = max(-headerInset, -newPoint)
@@ -79,7 +101,12 @@ class BalanceCoordinator: BaseCoordinator<Void> {
     self.bindSelectWallet(with: controller, viewModel: viewModel)
 
     //Updating emoji
-    balanceService.account.flatMap { [weak self] (item) -> Observable<Event<(AccountItem?, BalanceService.BalancesResponse)>> in
+    balanceService.account.do(onNext: { (_) in
+      controller.containerView?.setContentOffset(CGPoint(x: 0, y: 0), animated: false)
+      controller.containerViewHeightConstraint?.constant = 0
+      coins.viewController?.tableView?.setContentOffset(CGPoint(x: 0, y: -headerInset), animated: false)
+      (transactionsViewController as? TransactionsViewController)?.tableView?.setContentOffset(CGPoint(x: 0, y: -headerInset), animated: false)
+    }).flatMap { [weak self] (item) -> Observable<Event<(AccountItem?, BalanceService.BalancesResponse)>> in
       guard let `self` = self, let address = item?.address else { return Observable.empty() }
       return Observable.zip(self.balanceService.account, self.balanceService.balances(address: address)).materialize()
     }.flatMap({ (event) -> Observable<Void> in
@@ -100,14 +127,14 @@ class BalanceCoordinator: BaseCoordinator<Void> {
     return Observable.never()
   }
 
+}
+
+extension BalanceCoordinator {
+
   func showDelegated(inViewController: UINavigationController, balanceService: BalanceService) -> Observable<Void> {
     let delegatedCoordinator = DelegatedCoordinator(rootViewController: inViewController, balanceService: balanceService)
     return coordinate(to: delegatedCoordinator)
   }
-
-}
-
-extension BalanceCoordinator {
 
   //Showing Select Wallet
   func showSelectWallet(rootViewController: UIViewController) -> Observable<SelectWalletCoordinationResult> {
@@ -127,6 +154,16 @@ extension BalanceCoordinator {
   func showEditTitle(inViewController: UIViewController, account: AccountItem) -> Observable<EditWalletTitleCoordinatorResult> {
     let editTitleCoordinator = EditWalletTitleCoordinator(rootViewController: inViewController, authService: self.authService, account: account)
     return coordinate(to: editTitleCoordinator)
+  }
+
+  func showShare(in viewController: UIViewController, account: AccountItem) -> Observable<Void> {
+    let coordinator = ShareCoordinator(rootViewController: viewController, account: account)
+    return coordinate(to: coordinator)
+  }
+
+  func showRawTransaction(rootViewController: UIViewController, url: URL) -> Observable<Void> {
+    let coordinator = RawTransactionCoordinator(rootViewController: rootViewController, url: url)
+    return coordinate(to: coordinator)
   }
 
   func bindSelectWallet(with controller: UIViewController, viewModel: WalletSelectableViewModel) {

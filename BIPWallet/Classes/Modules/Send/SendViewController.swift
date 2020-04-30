@@ -271,7 +271,7 @@ extension SendViewController {
     viewModel.output.openAppSettings
       .asDriver(onErrorJustReturn: ())
       .drive(onNext: { [weak self] in
-//        self?.openAppSpecificSettings()
+        self?.openAppSpecificSettings()
       }).disposed(by: disposeBag)
 
     viewModel.output.updateTableHeight
@@ -381,8 +381,8 @@ extension SendViewController {
 //    AnalyticsHelper.defaultAnalytics.track(event: .sentCoinPopupViewTransactionButton)
     viewController.dismiss(animated: true) { [weak self] in
       if let url = self?.viewModel.lastTransactionExplorerURL() {
-//        let vc = BaseSafariViewController(url: url)
-//        self?.present(vc, animated: true) {}
+        let vc = SFSafariViewController(url: url)
+        self?.present(vc, animated: true) {}
       }
     }
   }
@@ -394,8 +394,8 @@ extension SendViewController {
 //    AnalyticsHelper.defaultAnalytics.track(event: .sentCoinPopupShareTransactionButton)
     viewController.dismiss(animated: true) { [weak self] in
       if let url = self?.viewModel.lastTransactionExplorerURL() {
-//        let vc = ActivityRouter.activityViewController(activities: [url], sourceView: self!.view)
-//        self?.present(vc, animated: true, completion: nil)
+        let vc = UIActivityViewController(activityItems: [url], applicationActivities: nil)
+        self?.present(vc, animated: true, completion: nil)
       }
     }
   }
@@ -451,6 +451,17 @@ extension SendViewController {
     readerVC.modalPresentationStyle = .formSheet
     present(readerVC, animated: true, completion: nil)
   }
+
+  @objc func openAppSpecificSettings() {
+    guard let url = URL(string: UIApplication.openSettingsURLString), UIApplication.shared.canOpenURL(url) else {
+      return
+    }
+
+//    let optionsKeyDictionary = [UIApplication.OpenExternalURLOptionsKey(rawValue: "universalLinksOnly"): NSNumber(value: true)]
+    UIApplication.shared.open(url, options: [:]) { (_) in
+    }
+  }
+
 }
 
 extension SendViewController: ValidatableCellDelegate {

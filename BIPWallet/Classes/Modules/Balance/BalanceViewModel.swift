@@ -32,6 +32,8 @@ class BalanceViewModel: BaseViewModel, ViewModel, WalletSelectableViewModel {
   private let didTapDelegatedBalance = PublishSubject<Void>()
   private let wallet = PublishSubject<String>()
   private let didTapBalance = PublishSubject<Void>()
+  private let didTapShare = PublishSubject<Void>()
+  private let didScanQR = PublishSubject<String?>()
 
   // MARK: - ViewModel
 
@@ -44,6 +46,8 @@ class BalanceViewModel: BaseViewModel, ViewModel, WalletSelectableViewModel {
     var didTapSelectWallet: AnyObserver<Void>
     var didTapDelegatedBalance: AnyObserver<Void>
     var didTapBalance: AnyObserver<Void>
+    var didTapShare: AnyObserver<Void>
+    var didScanQR: AnyObserver<String?>
   }
 
   struct Output {
@@ -53,6 +57,8 @@ class BalanceViewModel: BaseViewModel, ViewModel, WalletSelectableViewModel {
     var wallet: Observable<String?>
     var showDelegated: Observable<Void>
     var balanceTitle: Observable<String?>
+    var didTapShare: Observable<Void>
+    var didScanQR: Observable<String?>
   }
 
   struct Dependency {
@@ -68,7 +74,9 @@ class BalanceViewModel: BaseViewModel, ViewModel, WalletSelectableViewModel {
     self.input = Input(needsToUpdateBalance: needsToUpdateBalance.asObserver(),
                        didTapSelectWallet: didTapSelectWallet.asObserver(),
                        didTapDelegatedBalance: didTapDelegatedBalance.asObserver(),
-                       didTapBalance: didTapBalance.asObserver()
+                       didTapBalance: didTapBalance.asObserver(),
+                       didTapShare: didTapShare.asObserver(),
+                       didScanQR: didScanQR.asObserver()
     )
 
     self.output = Output(availabaleBalance: availabaleBalance.asObservable(),
@@ -83,7 +91,9 @@ class BalanceViewModel: BaseViewModel, ViewModel, WalletSelectableViewModel {
                           default:
                             return "Total Balance"
                           }
-                         })
+                         }),
+                         didTapShare: didTapShare.asObservable(),
+                         didScanQR: didScanQR.asObservable()
     )
 
     bind()

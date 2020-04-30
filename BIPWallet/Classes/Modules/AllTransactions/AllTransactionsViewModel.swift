@@ -175,7 +175,7 @@ class AllTransactionsViewModel: BaseViewModel, ViewModel, TransactionViewableVie
 
     modelSelected.map({ (item) -> MinterExplorer.Transaction? in
       guard let hash = (item as? TransactionCellItem)?.txHash else { return nil }
-      return (try? self.transactions.value() ?? [])?.filter({ (tx) -> Bool in
+      return (try? self.transactions.value())?.filter({ (tx) -> Bool in
         return tx.hash == hash
       }).first
     }).subscribe(showTransaction).disposed(by: disposeBag)

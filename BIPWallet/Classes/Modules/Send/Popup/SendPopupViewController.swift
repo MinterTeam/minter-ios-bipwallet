@@ -29,21 +29,7 @@ class SendPopupViewController: PopupViewController, Controller, StoryboardInitia
 	weak var delegate: SendPopupViewControllerDelegate?
 
 	// MARK: - IBOutlet
-
-	@IBOutlet weak var avatarWrapper: UIView! {
-		didSet {
-			avatarWrapper.layer.cornerRadius = 25.0
-			avatarWrapper?.layer.applySketchShadow(color: UIColor(hex: 0x000000, alpha: 0.2)!,
-																						 alpha: 1, x: 0, y: 2, blur: 18, spread: 0)
-		}
-	}
 	@IBOutlet weak var amountTitle: UILabel!
-	@IBOutlet weak var avatarImage: UIImageView! {
-		didSet {
-			avatarImage.backgroundColor = .white
-			avatarImage.makeBorderWithCornerRadius(radius: 25, borderColor: .clear, borderWidth: 4)		
-		}
-	}
 	@IBOutlet weak var userLabel: UILabel!
 	@IBOutlet weak var actionButton: DefaultButton!
 	@IBOutlet weak var cancelButton: DefaultButton!
@@ -55,6 +41,7 @@ class SendPopupViewController: PopupViewController, Controller, StoryboardInitia
 		acitionButtonActivityIndicator?.startAnimating()
 		acitionButtonActivityIndicator?.alpha = 1.0
 		sender.isEnabled = false
+    sender.setTitle("", for: .normal)
 		self.delegate?.didFinish(viewController: self)
 	}
 
@@ -92,12 +79,7 @@ class SendPopupViewController: PopupViewController, Controller, StoryboardInitia
 		popupTitle.text = viewModel?.popupTitle
 
 		amountTitle.text = String((viewModel?.amountString ?? "") + " " + (viewModel?.coin ?? "")).uppercased()
-		avatarImage.image = UIImage(named: "AvatarPlaceholderImage")
-		if let img = viewModel?.avatarImage {
-			avatarImage.image = img
-		} else if let avatarURL = viewModel?.avatarImageURL {
-			avatarImage.af_setImage(withURL: avatarURL, filter: RoundedCornersFilter(radius: 25.0))
-		}
+
 		userLabel.text = viewModel?.username
 		actionButton.setTitle(viewModel?.buttonTitle ?? "", for: .normal)
 		cancelButton.setTitle(viewModel?.cancelTitle ?? "", for: .normal)

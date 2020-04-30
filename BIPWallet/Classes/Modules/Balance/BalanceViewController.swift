@@ -63,6 +63,15 @@ class BalanceViewController: SegmentedPagerTabStripViewController, Controller, S
     return customView
   }
 
+  lazy var readerVC: QRCodeReaderViewController = {
+    let builder = QRCodeReaderViewControllerBuilder {
+      $0.reader = QRCodeReader(metadataObjectTypes: [.qr],
+                               captureDevicePosition: .back)
+      $0.showSwitchCameraButton = false
+    }
+    return QRCodeReaderViewController(builder: builder)
+  }()
+
   // MARK: - ControllerProtocol
 
   typealias ViewModelType = BalanceViewModel
@@ -110,28 +119,32 @@ class BalanceViewController: SegmentedPagerTabStripViewController, Controller, S
     Observable.of(self.availableBalance.rx.tapGesture(), self.balanceTitle.rx.tapGesture()).merge().when(.ended)
       .map {_ in}.subscribe(viewModel.input.didTapBalance).disposed(by: disposeBag)
 
-//    let containerViewTap = containerView.rx.tapGesture().when(.ended).share()
-//
-//    containerViewTap.filter { (recognizer) -> Bool in
-//      let point = recognizer.location(in: self.balanceView)
-//      return self.availableBalance.frame.contains(point) || self.balanceTitle.frame.contains(point)
-//    }.map {_ in}.subscribe(viewModel.input.didTapBalance).disposed(by: disposeBag)
-//
-//    containerViewTap.filter { (recognizer) -> Bool in
-//      let point = recognizer.location(in: self.balanceView)
-//      return self.delegatedBalanceTitle.frame.contains(point) || self.delegatedBalance.frame.contains(point)
-//    }.map {_ in}.subscribe(viewModel.input.didTapDelegatedBalance).disposed(by: disposeBag)
+    containerViewTap.filter { (recognizer) -> Bool in
+      let point = recognizer.location(in: self.balanceView)
+      return self.availableBalance.frame.contains(point) || self.balanceTitle.frame.contains(point)
+    }.map {_ in}.subscribe(viewModel.input.didTapBalance).disposed(by: disposeBag)
 
-//    containerViewTap.filter({ (recognizer) -> Bool in
-//      let point = recognizer.location(in: self.segmentedControlView)
-//      return self.segmentedControl.frame.contains(point)
-//    }).subscribe(onNext: { (_) in
-////      self.segmentedControl.tap
-//    }).disposed(by: disposeBag)
+    containerViewTap.filter { (recognizer) -> Bool in
+      let point = recognizer.location(in: self.balanceView)
+      return self.delegatedBalanceTitle.frame.contains(point) || self.delegatedBalance.frame.contains(point)
+    }.map {_ in}.subscribe(viewModel.input.didTapDelegatedBalance).disposed(by: disposeBag)
 
+    shareItem.rx.tap.asDriver().drive(viewModel.input.didTapShare).disposed(by: disposeBag)
+
+    readerVC.completionBlock = { [weak self] (result: QRCodeReaderResult?) in
+      self?.readerVC.stopScanning()
+      self?.readerVC.dismiss(animated: true) {
+        if let res = result?.value {
+          self?.viewModel.input.didScanQR.onNext(res)
+        }
+      }
+    }
   }
 
   // MARK: - ViewController
+
+  let shareItem = UIBarButtonItem(image: UIImage(named: "ShareIcon"), style: .plain, target: nil, action: nil)
+  let scanQRItem = UIBarButtonItem(image: UIImage(named: "ScanQRIcon"), style: .plain, target: nil, action: nil)
 
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -140,13 +153,16 @@ class BalanceViewController: SegmentedPagerTabStripViewController, Controller, S
 
     segmentedControl.setFont(UIFont.semiBoldFont(of: 14.0))
 
-    let scanQRItem = UIBarButtonItem(image: UIImage(named: "ScanQRIcon"), style: .plain, target: nil, action: nil)
     scanQRItem.tintColor = .white
-
-    let shareItem = UIBarButtonItem(image: UIImage(named: "ShareIcon"), style: .plain, target: nil, action: nil)
+    
     shareItem.tintColor = .white
 
     self.navigationItem.rightBarButtonItems = [scanQRItem, shareItem]
+    
+    scanQRItem.rx.tap.subscribe(onNext: { [weak self] (_) in
+      guard let `self` = self else { return }
+      self.present(self.readerVC, animated: true, completion: nil)
+    }).disposed(by: disposeBag)
 
     //HACK: to layout child view controllers
     view.layoutIfNeeded()
@@ -164,5 +180,18 @@ class BalanceViewController: SegmentedPagerTabStripViewController, Controller, S
   override public func viewControllers(for pagerTabStripController: PagerTabStripViewController) -> [UIViewController] {
     return controllers
   }
+
+  lazy var containerViewTap = self.containerView.rx.tapGesture(configuration: { gesture, delegate in
+
+    delegate.beginPolicy = .custom({ (gestureRecognizer) -> Bool in
+      let point1 = gestureRecognizer.location(in: self.balanceView)
+      let inBalance = self.availableBalance.frame.contains(point1) || self.balanceTitle.frame.contains(point1)
+
+      let point2 = gestureRecognizer.location(in: self.balanceView)
+      let inDelegated = self.delegatedBalanceTitle.frame.contains(point2) || self.delegatedBalance.frame.contains(point2)
+
+      return (inBalance || inDelegated)
+    })
+  }).when(.ended).share()
 
 }

@@ -86,6 +86,8 @@ class TransactionsViewModel: BaseViewModel, ViewModel, TransactionViewableViewMo
     dependency.balanceService.account.map({ (account) -> String? in
       return account?.address
     }).filter { $0 != nil}.map{$0!}.subscribe(onNext: { [weak self] (address) in
+      self?.createSections(transactions: [])
+
       self?.address = address
       self?.loadTransactions(address: address)
     }).disposed(by: disposeBag)

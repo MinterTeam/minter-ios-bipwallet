@@ -30,13 +30,16 @@ class DefaultButton: UIButton {
   enum DefaultButtonColor: String {
     case green
     case black
+    case purple
 
     func color() -> UIColor? {
       switch self {
       case .green:
-        return UIColor.mainGreenColor()
+        return .mainGreenColor()
       case .black:
-        return UIColor.mainBlackColor()
+        return .mainBlackColor()
+      case .purple:
+        return .mainPurpleColor()
       }
     }
   }

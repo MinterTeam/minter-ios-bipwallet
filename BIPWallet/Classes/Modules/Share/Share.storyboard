@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="16096" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16087"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <array key="Inter-Medium.otf">
+            <string>Inter-Medium</string>
+        </array>
+    </customFonts>
+    <scenes>
+        <!--Share View Controller-->
+        <scene sceneID="Y2P-Yb-QYA">
+            <objects>
+                <viewController storyboardIdentifier="ShareViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="5vx-i9-wl9" customClass="ShareViewController" customModule="BIPWallet" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="jPP-BZ-24f" customClass="HandlerView" customModule="BIPWallet" customModuleProvider="target">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Aeb-tI-2Bt" customClass="DefaultButton" customModule="BIPWallet" customModuleProvider="target">
+                                <rect key="frame" x="24" y="571" width="366" height="50"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="50" id="2iZ-VP-1kM"/>
+                                </constraints>
+                                <state key="normal" title="Share Wallet"/>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="string" keyPath="pattern" value="filled"/>
+                                    <userDefinedRuntimeAttribute type="string" keyPath="color" value="purple"/>
+                                </userDefinedRuntimeAttributes>
+                            </button>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ydz-47-Rvh">
+                                <rect key="frame" x="24" y="497" width="366" height="50"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="249" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Jso-Aq-D0K">
+                                        <rect key="frame" x="14" y="14" width="290" height="20"/>
+                                        <fontDescription key="fontDescription" name="Inter-Medium" family="Inter" pointSize="17"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="iEU-85-m4F">
+                                        <rect key="frame" x="318" y="13" width="24" height="22"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="24" id="UIa-J2-f0f"/>
+                                        </constraints>
+                                        <state key="normal" image="CopyIcon"/>
+                                    </button>
+                                </subviews>
+                                <color key="backgroundColor" red="0.95686274509803915" green="0.95686274509803915" blue="0.95686274509803915" alpha="1" colorSpace="deviceRGB"/>
+                                <constraints>
+                                    <constraint firstItem="Jso-Aq-D0K" firstAttribute="leading" secondItem="ydz-47-Rvh" secondAttribute="leading" constant="14" id="4cj-eG-mVG"/>
+                                    <constraint firstItem="iEU-85-m4F" firstAttribute="leading" secondItem="Jso-Aq-D0K" secondAttribute="trailing" constant="14" id="Izn-Ae-N1T"/>
+                                    <constraint firstAttribute="bottom" secondItem="Jso-Aq-D0K" secondAttribute="bottom" constant="16" id="e9G-nA-gT3"/>
+                                    <constraint firstItem="iEU-85-m4F" firstAttribute="centerY" secondItem="Jso-Aq-D0K" secondAttribute="centerY" id="esH-U0-YD6"/>
+                                    <constraint firstAttribute="trailing" secondItem="iEU-85-m4F" secondAttribute="trailing" constant="24" id="nlq-vw-7qx"/>
+                                    <constraint firstItem="Jso-Aq-D0K" firstAttribute="top" secondItem="ydz-47-Rvh" secondAttribute="top" constant="14" id="r0t-tr-nlJ"/>
+                                </constraints>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                        <integer key="value" value="8"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                            </view>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="MQ2-Yq-zac">
+                                <rect key="frame" x="24" y="107" width="366" height="366"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" secondItem="MQ2-Yq-zac" secondAttribute="height" multiplier="1:1" id="mtU-kO-h4U"/>
+                                </constraints>
+                            </imageView>
+                        </subviews>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <constraints>
+                            <constraint firstItem="ydz-47-Rvh" firstAttribute="top" secondItem="MQ2-Yq-zac" secondAttribute="bottom" constant="24" id="0tT-5z-qs7"/>
+                            <constraint firstItem="Fu2-Ab-9Qk" firstAttribute="trailing" secondItem="MQ2-Yq-zac" secondAttribute="trailing" constant="24" id="AtA-nW-7xz"/>
+                            <constraint firstItem="Aeb-tI-2Bt" firstAttribute="leading" secondItem="Fu2-Ab-9Qk" secondAttribute="leading" constant="24" id="FwP-D9-WiO"/>
+                            <constraint firstItem="Aeb-tI-2Bt" firstAttribute="top" secondItem="ydz-47-Rvh" secondAttribute="bottom" constant="24" id="JvA-s3-UB5"/>
+                            <constraint firstItem="Fu2-Ab-9Qk" firstAttribute="trailing" secondItem="Aeb-tI-2Bt" secondAttribute="trailing" constant="24" id="exx-y0-g38"/>
+                            <constraint firstItem="Fu2-Ab-9Qk" firstAttribute="trailing" secondItem="ydz-47-Rvh" secondAttribute="trailing" constant="24" id="fDu-yp-8Sv"/>
+                            <constraint firstItem="ydz-47-Rvh" firstAttribute="leading" secondItem="Fu2-Ab-9Qk" secondAttribute="leading" constant="24" id="pTl-Zx-BX2"/>
+                            <constraint firstItem="MQ2-Yq-zac" firstAttribute="top" secondItem="Fu2-Ab-9Qk" secondAttribute="top" constant="63" id="shG-8A-aUV"/>
+                            <constraint firstItem="MQ2-Yq-zac" firstAttribute="leading" secondItem="Fu2-Ab-9Qk" secondAttribute="leading" constant="24" id="wEZ-Y2-rb7"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="Fu2-Ab-9Qk"/>
+                    </view>
+                    <connections>
+                        <outlet property="address" destination="Jso-Aq-D0K" id="51y-Df-KVY"/>
+                        <outlet property="copyButton" destination="iEU-85-m4F" id="Fge-0P-p3N"/>
+                        <outlet property="qrCode" destination="MQ2-Yq-zac" id="E3p-FF-O0I"/>
+                        <outlet property="shareButton" destination="Aeb-tI-2Bt" id="6wb-b1-RZK"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="t2n-aV-lYg" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="56.521739130434788" y="113.83928571428571"/>
+        </scene>
+    </scenes>
+    <resources>
+        <image name="CopyIcon" width="20" height="22"/>
+    </resources>
+</document>

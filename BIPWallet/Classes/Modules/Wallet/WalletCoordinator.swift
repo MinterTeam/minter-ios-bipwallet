@@ -70,6 +70,12 @@ class WalletCoordinator: BaseCoordinator<Void> {
                                           authService: authService)
     coordinate(to: sendCoordinator).subscribe().disposed(by: disposeBag)
 
+    //Passing address/public key which was scanned on Balance screen
+    balanceCoordiantor.didScanRecipient.subscribe(onNext: { val in
+      sendCoordinator.recipient.onNext(val)
+      controller.selectedIndex = 1
+    }).disposed(by: disposeBag)
+
     let settingsTabbarItem = UITabBarItem(title: "Settings".localized(),
                                           image: UIImage(named: "SettingsIcon"),
                                           selectedImage: nil)

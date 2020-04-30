@@ -258,20 +258,17 @@ class RawTransactionViewModel: BaseViewModel, ViewModel {// swiftlint:disable:th
 		fee.subtitle = self.commissionText(for: 1, payloadData: payloadData)
 		fee.subtitleObservable = self.gasObservable
 
-		let separator = SeparatorTableViewCellItem(reuseIdentifier: "SeparatorTableViewCell",
-																							 identifier: CellIdentifierPrefix.separator.rawValue)
-
 		let blank = BlankTableViewCellItem(reuseIdentifier: "BlankTableViewCell",
 																			 identifier: CellIdentifierPrefix.blank.rawValue)
     let blank0 = BlankTableViewCellItem(reuseIdentifier: "BlankTableViewCell",
                                         identifier: CellIdentifierPrefix.blank.rawValue + "_0")
     blank0.height = 16.0
-    
 
 		let button = ButtonTableViewCellItem(reuseIdentifier: "ButtonTableViewCell",
 																				 identifier: CellIdentifierPrefix.button.rawValue)
 		button.title = "Proceed".localized()
-		button.buttonPattern = "purple"
+		button.buttonPattern = "filled"
+    button.buttonColor = "green"
 		button.output?.didTapButton
 			.asDriver(onErrorJustReturn: ())
 			.drive(proceedButtonDidTapSubject.asObserver())
@@ -280,7 +277,7 @@ class RawTransactionViewModel: BaseViewModel, ViewModel {// swiftlint:disable:th
 		let cancelButton = ButtonTableViewCellItem(reuseIdentifier: "ButtonTableViewCell",
 																							 identifier: CellIdentifierPrefix.cancelButton.rawValue)
 		cancelButton.title = "Cancel".localized()
-		cancelButton.buttonPattern = "blank"
+		cancelButton.buttonPattern = "blank_black"
 		cancelButton.output?.didTapButton
 			.asDriver(onErrorJustReturn: ())
 			.drive(cancelButtonDidTapSubject.asObserver())

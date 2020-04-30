@@ -280,17 +280,17 @@ YOU ARE ABOUT TO SEND SEED PHRASE IN THE MESSAGE ATTACHED TO THIS TRANSACTION.\n
     didScanQRSubject
       .asObservable()
       .subscribe(onNext: { [weak self] (val) in
-//        let url = URL(string: val ?? "")
-//        if true == val?.isValidPublicKey() || true == val?.isValidAddress() {
-//          self?.recipientSubject.accept(val)
-//          return
-//        } else if
-//          let url = url,
-//          let rawViewController = RawTransactionRouter.rawTransactionViewController(with: url) {
-//            self?.showViewControllerSubject.onNext(rawViewController)
-//            return
-//        }
-//        self?.errorNotificationSubject.onNext(NotifiableError(title: "Invalid transaction data".localized(), text: nil))
+        let url = URL(string: val ?? "")
+        if true == val?.isValidPublicKey() || true == val?.isValidAddress() {
+          self?.recipientSubject.accept(val)
+          return
+        } else if
+          let url = url,
+          let rawViewController = RawTransactionRouter.rawTransactionViewController(with: url) {
+            self?.showViewControllerSubject.onNext(rawViewController)
+            return
+        }
+        self?.errorNotificationSubject.onNext(NotifiableError(title: "Invalid transaction data".localized(), text: nil))
       }).disposed(by: disposeBag)
 
 //    NotificationCenter
@@ -618,12 +618,14 @@ YOU ARE ABOUT TO SEND SEED PHRASE IN THE MESSAGE ATTACHED TO THIS TRANSACTION.\n
   // MARK: -
 
   func send() {
-    dependency.balanceService.account.filter({ (item) -> Bool in
-      return (item?.address ?? "").isValidAddress()
-    }).map({ (account) -> String in
-      return account?.address ?? ""
-    })
-    .flatMap({ (address) -> Observable<(Int, Int)> in
+    Observable<Void>.just(())
+      .withLatestFrom(dependency.balanceService.account)
+      .filter({ (item) -> Bool in
+        return (item?.address ?? "").isValidAddress()
+      }).map({ (account) -> String in
+        return account?.address ?? ""
+      })
+      .flatMap({ (address) -> Observable<(Int, Int)> in
         return Observable.combineLatest(
           GateManager.shared.nonce(address: address),
           GateManager.shared.minGas())
@@ -907,20 +909,20 @@ extension SendViewModel {
       viewModel.avatarImageURL = MinterMyAPIURL.avatarAddress(address: address).url()
     }
     viewModel.popupTitle = "You're Sending".localized()
-    viewModel.buttonTitle = "SEND".localized()
-    viewModel.cancelTitle = "CANCEL".localized()
+    viewModel.buttonTitle = "Send".localized()
+    viewModel.cancelTitle = "Cancel".localized()
     return viewModel
   }
 
   func sentViewModel(to: String, address: String) -> SentPopupViewModel {
     let viewModel = SentPopupViewModel()
-    viewModel.actionButtonTitle = "VIEW TRANSACTION".localized()
+    viewModel.actionButtonTitle = "View Transaction".localized()
     if to.isValidPublicKey() {
       viewModel.avatarImage = UIImage(named: "delegateImage")
     } else {
       viewModel.avatarImageURL = MinterMyAPIURL.avatarAddress(address: address).url()
     }
-    viewModel.secondButtonTitle = "CLOSE".localized()
+    viewModel.secondButtonTitle = "Close".localized()
     viewModel.username = to
     viewModel.title = "Success!".localized()
     return viewModel
