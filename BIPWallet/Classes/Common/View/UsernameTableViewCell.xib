@@ -22,7 +22,7 @@
                 <rect key="frame" x="0.0" y="0.0" width="884" height="293"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="252" text=" " textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Yt2-Ox-ZWa">
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="252" text=" " textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Yt2-Ox-ZWa" customClass="UHBCustomLabel" customModule="BIPWallet" customModuleProvider="target">
                         <rect key="frame" x="24" y="5" width="3" height="14"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="14" id="UEw-KG-ZfA"/>
@@ -30,9 +30,14 @@
                         <fontDescription key="fontDescription" name="Inter-SemiBold" family="Inter" pointSize="11"/>
                         <color key="textColor" red="0.5568627451" green="0.5568627451" blue="0.5568627451" alpha="1" colorSpace="deviceRGB"/>
                         <nil key="highlightedColor"/>
+                        <userDefinedRuntimeAttributes>
+                            <userDefinedRuntimeAttribute type="number" keyPath="characterSpacing">
+                                <real key="value" value="0.40000000000000002"/>
+                            </userDefinedRuntimeAttribute>
+                        </userDefinedRuntimeAttributes>
                     </label>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="249" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" text=" " textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4sV-v6-h8c">
-                        <rect key="frame" x="37" y="0.0" width="823" height="15"/>
+                        <rect key="frame" x="37" y="0.0" width="823" height="14"/>
                         <fontDescription key="fontDescription" name="Inter-SemiBold" family="Inter" pointSize="12"/>
                         <color key="textColor" red="0.93333333330000001" green="0.13725490200000001" blue="0.16862745100000001" alpha="1" colorSpace="deviceRGB"/>
                         <nil key="highlightedColor"/>

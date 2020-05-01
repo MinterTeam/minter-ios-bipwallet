@@ -66,8 +66,9 @@ class SendViewController: BaseViewController,
     let customView = UIView(frame: CGRect(x: 0, y: 0, width: 173, height: 100))
     walletLabel.isUserInteractionEnabled = false
     walletLabel.textColor = .mainBlackColor()
-    walletLabel.font = UIFont.boldFont(of: 18.0)
+    walletLabel.font = UIFont.semiBoldFont(of: 18.0)
     let expandImageView = UIImageView(image: UIImage(named: "WalletsExpandImage")!)
+    expandImageView.tintColor = .secondaryGreyColor()
     expandImageView.isUserInteractionEnabled = false
     customView.addSubview(walletLabel)
     customView.addSubview(expandImageView)
@@ -503,7 +504,7 @@ extension SendViewController {
 
   func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
     if nil != viewModel.sections.value[safe: section]?.header {
-      return 24
+      return 27
     }
     return 0.1
   }

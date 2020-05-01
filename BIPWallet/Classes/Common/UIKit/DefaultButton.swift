@@ -31,6 +31,7 @@ class DefaultButton: UIButton {
     case green
     case black
     case purple
+    case red
 
     func color() -> UIColor? {
       switch self {
@@ -40,6 +41,8 @@ class DefaultButton: UIButton {
         return .mainBlackColor()
       case .purple:
         return .mainPurpleColor()
+      case .red:
+        return .mainRedColor()
       }
     }
   }
@@ -91,7 +94,6 @@ class DefaultButton: UIButton {
         self.setTitleColor(.black, for: .normal)
       }
 			self.layer.borderWidth = 0.0
-//			addShadow()
     } else if pattern == "purple" {
       self.layer.borderWidth = 0.0
       self.setBackgroundImage(UIImage(named: "DefaultButtonActive"), for: .normal)
@@ -102,7 +104,6 @@ class DefaultButton: UIButton {
 			self.layer.borderWidth = 0.0
 			self.backgroundColor = .white
 			self.setTitleColor(UIColor.mainColor(), for: .normal)
-//			addShadow()
 		}
 	}
 

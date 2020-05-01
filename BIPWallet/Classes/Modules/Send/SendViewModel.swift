@@ -459,7 +459,7 @@ YOU ARE ABOUT TO SEND SEED PHRASE IN THE MESSAGE ATTACHED TO THIS TRANSACTION.\n
 
     let blank5 = BlankTableViewCellItem(reuseIdentifier: "BlankTableViewCell",
                                         identifier: "BlankTableViewCell5")
-    blank5.height = 11.0
+    blank5.height = 19.0
 
     let amount = AmountTextFieldTableViewCellItem(reuseIdentifier: "AmountTextFieldTableViewCell",
                                                   identifier: CellIdentifierPrefix.amount.rawValue)

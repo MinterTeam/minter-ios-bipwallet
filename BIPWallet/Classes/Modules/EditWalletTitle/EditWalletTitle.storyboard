@@ -3,7 +3,7 @@
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16086"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16087"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -17,7 +17,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="QIT-cL-xmK" customClass="HandlerVerticalSnapDraggableView" customModule="BIPWallet" customModuleProvider="target">
-                                <rect key="frame" x="8" y="750" width="398" height="130"/>
+                                <rect key="frame" x="8" y="618" width="398" height="262"/>
                                 <subviews>
                                     <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Up to 18 latin letters and numbers..." textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Pmz-ym-gBL" customClass="DefaultTextField" customModule="BIPWallet" customModuleProvider="target">
                                         <rect key="frame" x="16" y="66" width="366" height="48"/>
@@ -27,13 +27,42 @@
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                         <textInputTraits key="textInputTraits" returnKeyType="done"/>
                                     </textField>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="sxk-yF-iVV" customClass="DefaultButton" customModule="BIPWallet" customModuleProvider="target">
+                                        <rect key="frame" x="16" y="130" width="366" height="50"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="50" id="30C-jM-9cM"/>
+                                        </constraints>
+                                        <state key="normal" title="Save Changes"/>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="string" keyPath="pattern" value="filled"/>
+                                            <userDefinedRuntimeAttribute type="string" keyPath="color" value="green"/>
+                                        </userDefinedRuntimeAttributes>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="p55-gU-P7t" customClass="DefaultButton" customModule="BIPWallet" customModuleProvider="target">
+                                        <rect key="frame" x="16" y="196" width="366" height="50"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="50" id="aJo-11-DEz"/>
+                                        </constraints>
+                                        <state key="normal" title="Remove Wallet"/>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="string" keyPath="pattern" value="filled"/>
+                                            <userDefinedRuntimeAttribute type="string" keyPath="color" value="red"/>
+                                        </userDefinedRuntimeAttributes>
+                                    </button>
                                 </subviews>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                                 <constraints>
+                                    <constraint firstItem="sxk-yF-iVV" firstAttribute="leading" secondItem="Pmz-ym-gBL" secondAttribute="leading" id="1g3-nT-8at"/>
+                                    <constraint firstAttribute="bottom" secondItem="p55-gU-P7t" secondAttribute="bottom" constant="16" id="4Pw-IK-uCR"/>
+                                    <constraint firstItem="p55-gU-P7t" firstAttribute="top" secondItem="sxk-yF-iVV" secondAttribute="bottom" constant="16" id="EfM-1G-F7S"/>
+                                    <constraint firstItem="sxk-yF-iVV" firstAttribute="top" secondItem="Pmz-ym-gBL" secondAttribute="bottom" constant="16" id="Idv-Z0-BmF"/>
                                     <constraint firstAttribute="trailing" secondItem="Pmz-ym-gBL" secondAttribute="trailing" constant="16" id="MMF-1Y-gEp"/>
                                     <constraint firstItem="Pmz-ym-gBL" firstAttribute="leading" secondItem="QIT-cL-xmK" secondAttribute="leading" constant="16" id="Rew-hj-54y"/>
-                                    <constraint firstAttribute="bottom" secondItem="Pmz-ym-gBL" secondAttribute="bottom" constant="16" id="kye-et-PGZ"/>
+                                    <constraint firstItem="sxk-yF-iVV" firstAttribute="trailing" secondItem="Pmz-ym-gBL" secondAttribute="trailing" id="UY1-xM-r5X"/>
+                                    <constraint firstItem="p55-gU-P7t" firstAttribute="leading" secondItem="sxk-yF-iVV" secondAttribute="leading" id="hhp-Kx-O4S"/>
                                     <constraint firstItem="Pmz-ym-gBL" firstAttribute="top" secondItem="QIT-cL-xmK" secondAttribute="top" constant="66" id="nFQ-il-F9U"/>
+                                    <constraint firstItem="p55-gU-P7t" firstAttribute="trailing" secondItem="sxk-yF-iVV" secondAttribute="trailing" id="zAN-mR-gFh"/>
+                                    <constraint firstItem="p55-gU-P7t" firstAttribute="height" secondItem="sxk-yF-iVV" secondAttribute="height" id="zLd-OH-SSi"/>
                                 </constraints>
                             </view>
                         </subviews>
@@ -48,6 +77,9 @@
                     <connections>
                         <outlet property="bottomConstraint" destination="31e-kI-KcK" id="BaO-HW-XjK"/>
                         <outlet property="mainView" destination="QIT-cL-xmK" id="dCo-aZ-IgY"/>
+                        <outlet property="removeButton" destination="p55-gU-P7t" id="Shr-8S-fCy"/>
+                        <outlet property="removeButtonBottomConstraint" destination="4Pw-IK-uCR" id="8zM-WR-wrO"/>
+                        <outlet property="saveButton" destination="sxk-yF-iVV" id="Zb3-dn-Kv6"/>
                         <outlet property="textField" destination="Pmz-ym-gBL" id="lV3-fn-jdN"/>
                     </connections>
                 </viewController>

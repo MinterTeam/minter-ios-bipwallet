@@ -11,6 +11,7 @@ import RxSwift
 
 enum EditWalletTitleCoordinatorResult {
   case changedTitle(account: AccountItem)
+  case removed
   case cancel
 }
 
@@ -28,7 +29,10 @@ class EditWalletTitleCoordinator: BaseCoordinator<EditWalletTitleCoordinatorResu
 
   override func start() -> Observable<EditWalletTitleCoordinatorResult> {
     let dependency = EditWalletTitleViewModel.Dependency(authService: authService)
-    let viewModel = EditWalletTitleViewModel(account: account, dependency: dependency)
+    let viewModel = EditWalletTitleViewModel(account: account,
+                                             isLastAccount: authService.accounts().count == 1,
+                                             dependency: dependency)
+
     let controller = EditWalletTitleViewController.initFromStoryboard(name: "EditWalletTitle")
     controller.viewModel = viewModel
 
@@ -37,18 +41,23 @@ class EditWalletTitleCoordinator: BaseCoordinator<EditWalletTitleCoordinatorResu
 
     rootViewController.tabBarController?.present(controller, animated: true)
 
-    viewModel.output.didChange.subscribe(onNext: { (_) in
-      UIView.animate(withDuration: 0.5) {
-        controller.updateBlurView(percentage: 0.0)
-      }
-      controller.dismiss(animated: true, completion: nil)
-    }).disposed(by: disposeBag)
+    Observable.of(viewModel.output.didChange, viewModel.output.didRemove).merge()
+      .subscribe(onNext: { (_) in
+        UIView.animate(withDuration: 0.5) {
+          controller.updateBlurView(percentage: 0.0)
+        }
+        controller.dismiss(animated: true, completion: nil)
+      }).disposed(by: disposeBag)
 
     let changedResult = viewModel.output.didChange.map { _ in
       return EditWalletTitleCoordinatorResult.changedTitle(account: self.account)
     }
 
-    return Observable.merge(changedResult, controller.rx.viewDidDisappear.map { _ in .cancel }).take(1)
+    let removedResult = viewModel.output.didRemove.map { _ -> EditWalletTitleCoordinatorResult in
+      return .removed
+    }
+
+    return Observable.merge(removedResult, changedResult, controller.rx.viewDidDisappear.map { _ in .cancel }).take(1)
   }
 
 }

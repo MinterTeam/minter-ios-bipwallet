@@ -41,6 +41,7 @@ class BalanceViewController: SegmentedPagerTabStripViewController, Controller, S
     walletLabel.textColor = .white
     walletLabel.font = UIFont.boldFont(of: 18.0)
     let expandImageView = UIImageView(image: UIImage(named: "WalletsExpandImage")!)
+    expandImageView.tintColor = .white
     expandImageView.isUserInteractionEnabled = false
     customView.addSubview(walletLabel)
     customView.addSubview(expandImageView)

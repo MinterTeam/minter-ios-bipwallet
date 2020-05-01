@@ -57,6 +57,10 @@ class CreateWalletViewController: BaseViewController, Controller, StoryboardInit
       .drive(viewModel.input.didTapActivate)
       .disposed(by: disposeBag)
 
+    mnemonicButton.rx.tap.asDriver()
+      .drive(viewModel.input.didTapMnemonic)
+      .disposed(by: disposeBag)
+
     //Output
     viewModel.output.mnemonic
       .asDriver(onErrorJustReturn: "")

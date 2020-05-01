@@ -107,6 +107,9 @@ class PINCoordinator: BaseCoordinator<PINCoordinatorResult> {
     } else {
       viewModel.desc = "Please confirm a 4-digit PIN".localized()
     }
+    if self.state != .unlock {
+//      viewModel.isBiometricEnabled = false
+    }
     let viewController = PINViewController.initFromStoryboard(name: "PIN")
     viewController.viewModel = viewModel
     viewController.modalPresentationStyle = .fullScreen

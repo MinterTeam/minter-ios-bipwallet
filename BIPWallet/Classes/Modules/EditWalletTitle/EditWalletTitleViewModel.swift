@@ -22,11 +22,15 @@ class EditWalletTitleViewModel: BaseViewModel, ViewModel {
   private let shakeError = PublishSubject<Void>()
   private let hardImpact = PublishSubject<Void>()
   private let errorMessage = PublishSubject<String>()
-  private let didSubmit = PublishSubject<Void>()
+  private let didTapSave = PublishSubject<Void>()
+  private let didTapRemove = PublishSubject<Void>()
   private let didChange = PublishSubject<Void>()
+  private let didRemove = PublishSubject<Void>()
   private let willDismiss = PublishSubject<Void>()
+  private let shouldHideRemoveButton = PublishSubject<Bool>()
 
   private var accountItem: AccountItem
+  private let isLastAccount: Bool
 
   // MARK: - ViewModel
 
@@ -36,7 +40,8 @@ class EditWalletTitleViewModel: BaseViewModel, ViewModel {
 
   struct Input {
     var title: BehaviorRelay<String?>
-    var didSubmit: AnyObserver<Void>
+    var didTapSave: AnyObserver<Void>
+    var didTapRemove: AnyObserver<Void>
     var willDismiss: AnyObserver<Void>
   }
 
@@ -45,29 +50,35 @@ class EditWalletTitleViewModel: BaseViewModel, ViewModel {
     var hardImpact: Observable<Void>
     var errorMessage: Observable<String>
     var didChange: Observable<Void>
+    var didRemove: Observable<Void>
+    var shouldHideRemoveButton: Observable<Bool>
   }
 
   struct Dependency {
     var authService: AuthService
   }
 
-  init(account: AccountItem, dependency: Dependency) {
+  init(account: AccountItem, isLastAccount: Bool, dependency: Dependency) {
+    self.accountItem = account
+    self.isLastAccount = isLastAccount
+
+    super.init()
+
     self.input = Input(title: title,
-                       didSubmit: didSubmit.asObserver(),
+                       didTapSave: didTapSave.asObserver(),
+                       didTapRemove: didTapRemove.asObserver(),
                        willDismiss: willDismiss.asObserver()
     )
 
     self.output = Output(shakeError: shakeError.asObservable(),
                          hardImpact: hardImpact.asObservable(),
                          errorMessage: errorMessage.asObservable(),
-                         didChange: didChange.asObservable()
+                         didChange: didChange.asObservable(),
+                         didRemove: didRemove.asObservable(),
+                         shouldHideRemoveButton: Observable.of(self.isLastAccount)
     )
 
     self.dependency = dependency
-
-    self.accountItem = account
-
-    super.init()
 
     bind()
   }
@@ -75,12 +86,7 @@ class EditWalletTitleViewModel: BaseViewModel, ViewModel {
   // MARK: -
 
   func bind() {
-    //Stop receiveing didSubmit events on VC dismiss
-    willDismiss.subscribe(onNext: { (_) in
-      self.didSubmit.onCompleted()
-    }).disposed(by: disposeBag)
-
-    didSubmit.withLatestFrom(title).filter({ (title) -> Bool in
+    didTapSave.withLatestFrom(title).filter({ (title) -> Bool in
       return true
     }).flatMap { [weak self] (title) -> Observable<Event<String>> in
       guard let `self` = self else { return Observable.empty() }
@@ -98,6 +104,12 @@ class EditWalletTitleViewModel: BaseViewModel, ViewModel {
         return Observable.empty()
       }
     }).subscribe(didChange).disposed(by: disposeBag)
+
+    didTapRemove.subscribe(onNext: { (_) in
+      try? self.dependency.authService.remove(account: self.accountItem)
+      self.didRemove.onNext(())
+    }).disposed(by: disposeBag)
+
   }
 
   func validateForm(_ title: String?) -> Observable<String> {

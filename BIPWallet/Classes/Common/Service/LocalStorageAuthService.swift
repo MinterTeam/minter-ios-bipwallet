@@ -85,6 +85,16 @@ final class LocalStorageAuthService: AuthService {
     }
     return AccountItem(title: newTitle, address: address)
   }
+  
+  func remove(account: AccountItem) throws {
+    let address = account.address.stripMinterHexPrefix()
+
+    storage.removeObject(forKey: address)
+    let accounts = (self.databaseStorage.objects(class: AccountDataBaseModel.self, query: "address='\(address)'") as? [AccountDataBaseModel]) ?? []
+    if !accounts.isEmpty, let acc = accounts.first {
+      try databaseStorage.delete(object: acc)
+    }
+  }
 
   func logout() {
     storage.removeAll()
@@ -100,6 +110,15 @@ final class LocalStorageAuthService: AuthService {
 }
 
 extension LocalStorageAuthService {
+  
+//  func remove(account: AccountItem) -> Observable<Void> {
+//    return Observable<Void>.create { (observer) -> Disposable in
+//      let accounts = self.databaseStorage.objects(class: AccountDataBaseModel.self, query: "address='\(account.address.stripMinterHexPrefix())'") as? [AccountDataBaseModel]
+//
+//
+//
+//    }
+//  }
 
   func updateAccount(account: AccountItem) -> Observable<Void> {
     return Observable<Void>.create { (observer) -> Disposable in
@@ -128,13 +147,14 @@ extension LocalStorageAuthService {
         }
 
         DispatchQueue.main.async {
-          let accounts = self.databaseStorage.objects(class: AccountDataBaseModel.self, query: "address='\(address.stripMinterHexPrefix())'") as? [AccountDataBaseModel]
+          let titleQuery = (title?.isEmpty ?? true) ? "" : " or title='\(title ?? "")'"
+          let accounts = self.databaseStorage.objects(class: AccountDataBaseModel.self, query: "address='\(address.stripMinterHexPrefix())'\(titleQuery)") as? [AccountDataBaseModel]
 
           //No repeated accounts allowed
           guard (accounts ?? []).filter({ (acc) -> Bool in
             if acc.address == address { return true }
             return (title != nil ? (acc.title == title) : false)
-          }).count == 0 else {
+          }).isEmpty else {
             observer.onError(AuthServiceError.dublicateAddress)
             return
           }
@@ -146,7 +166,7 @@ extension LocalStorageAuthService {
             return
           }
 
-          let newTitle = title// ?? "Mx" + TransactionTitleHelper.title(from: address)
+          let newTitle = title
 
           let dbModel = AccountDataBaseModel()
           dbModel.address = address

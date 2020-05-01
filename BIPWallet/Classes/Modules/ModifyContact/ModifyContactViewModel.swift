@@ -172,7 +172,7 @@ class ModifyContactViewModel: BaseViewModel, ViewModel {
   }
 
   func normalizeName(name: String) -> String {
-    return name.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines).lowercased()
+    return name.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)//.lowercased()
   }
 
   func isValidName(name: String) -> Bool {

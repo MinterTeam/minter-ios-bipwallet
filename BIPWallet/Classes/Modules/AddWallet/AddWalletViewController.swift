@@ -72,6 +72,10 @@ class AddWalletViewController: BaseViewController, Controller, StoryboardInitial
       .drive(viewModel.input.didTapActivate)
       .disposed(by: disposeBag)
 
+    mnemonicButton.rx.tap.asDriver()
+      .drive(viewModel.input.didTapMnemonic)
+      .disposed(by: disposeBag)
+
     (mnemonicTextView.rx.text <-> viewModel.input.signInMnemonics).disposed(by: disposeBag)
     (titleTextField.rx.text <-> viewModel.input.signInTitle).disposed(by: disposeBag)
     titleTextField.rx.controlEvent(.editingDidEndOnExit).subscribe(viewModel.input.titleDidEndEditing).disposed(by: disposeBag)
@@ -99,7 +103,7 @@ class AddWalletViewController: BaseViewController, Controller, StoryboardInitial
     }).disposed(by: disposeBag)
 
     viewModel.output.shakeError.subscribe(onNext: { [weak self] (_) in
-      self?.mainView.shakeError(duration: 0.07, repeatCount: 2)
+      self?.mainView?.shakeError(duration: 0.07, repeatCount: 2)
     }).disposed(by: disposeBag)
 
     viewModel.output.isLoading.subscribe(onNext: { [weak self] (val) in
@@ -125,8 +129,8 @@ class AddWalletViewController: BaseViewController, Controller, StoryboardInitial
     view.addSubview(self.generateView)
     generateView.snp.makeConstraints { (maker) in
       self.generateViewBottomConstraint = maker.bottom.equalTo(self.view).offset(-34).constraint
-      maker.leading.equalTo(self.view).offset(16)
-      maker.trailing.equalTo(self.view).offset(-16)
+      maker.leading.equalTo(self.view).offset(8)
+      maker.trailing.equalTo(self.view).offset(-8)
     }
 
     configure(with: viewModel)

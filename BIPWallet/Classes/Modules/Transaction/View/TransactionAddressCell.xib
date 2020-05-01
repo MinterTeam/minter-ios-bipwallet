@@ -23,7 +23,7 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="x3l-yt-1aC">
-                        <rect key="frame" x="20" y="36" width="24" height="24"/>
+                        <rect key="frame" x="20" y="37" width="24" height="24"/>
                         <constraints>
                             <constraint firstAttribute="width" constant="24" id="4tZ-3t-afU"/>
                             <constraint firstAttribute="height" constant="24" id="5Ds-5F-Mw5"/>
@@ -39,19 +39,19 @@
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="252" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xX7-8a-u6f">
-                        <rect key="frame" x="64" y="32" width="240" height="17"/>
+                        <rect key="frame" x="64" y="33" width="240" height="17"/>
                         <fontDescription key="fontDescription" name="Inter-SemiBold" family="Inter" pointSize="14"/>
                         <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" userInteractionEnabled="NO" alpha="0.0" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="p2n-1h-IoT">
-                        <rect key="frame" x="64" y="52" width="217" height="41"/>
+                        <rect key="frame" x="64" y="46" width="217" height="47"/>
                         <fontDescription key="fontDescription" name="Inter-SemiBold" family="Inter" pointSize="14"/>
                         <nil key="textColor"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <button opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="249" verticalCompressionResistancePriority="1000" contentHorizontalAlignment="leading" contentVerticalAlignment="top" buttonType="roundedRect" lineBreakMode="characterWrap" translatesAutoresizingMaskIntoConstraints="NO" id="ZY9-t4-DEE">
-                        <rect key="frame" x="64" y="52" width="217" height="29"/>
+                        <rect key="frame" x="64" y="46" width="217" height="47"/>
                         <fontDescription key="fontDescription" name="Inter-SemiBold" family="Inter" pointSize="14"/>
                         <state key="normal">
                             <color key="titleColor" red="0.31372549019607843" green="0.1803921568627451" blue="0.76078431372549016" alpha="1" colorSpace="deviceRGB"/>
@@ -59,21 +59,22 @@
                     </button>
                 </subviews>
                 <constraints>
-                    <constraint firstItem="x3l-yt-1aC" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="36" id="02W-bc-KAn"/>
-                    <constraint firstItem="ZY9-t4-DEE" firstAttribute="top" secondItem="xX7-8a-u6f" secondAttribute="bottom" constant="3" id="69C-C8-q4n"/>
+                    <constraint firstItem="x3l-yt-1aC" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="37" id="02W-bc-KAn"/>
+                    <constraint firstItem="ZY9-t4-DEE" firstAttribute="trailing" secondItem="p2n-1h-IoT" secondAttribute="trailing" id="4Mr-iY-oML"/>
+                    <constraint firstItem="ZY9-t4-DEE" firstAttribute="top" secondItem="p2n-1h-IoT" secondAttribute="top" id="5gF-RQ-Hv3"/>
                     <constraint firstAttribute="trailing" secondItem="JGR-Ov-iPH" secondAttribute="trailing" constant="16" id="69o-1U-PUg"/>
-                    <constraint firstItem="xX7-8a-u6f" firstAttribute="top" secondItem="JGR-Ov-iPH" secondAttribute="bottom" constant="9" id="7kp-IW-q1C"/>
+                    <constraint firstItem="xX7-8a-u6f" firstAttribute="top" secondItem="JGR-Ov-iPH" secondAttribute="bottom" constant="10" id="7kp-IW-q1C"/>
                     <constraint firstItem="JGR-Ov-iPH" firstAttribute="leading" secondItem="x3l-yt-1aC" secondAttribute="trailing" constant="20" id="Fod-mL-Inv"/>
                     <constraint firstAttribute="bottom" secondItem="p2n-1h-IoT" secondAttribute="bottom" constant="5" id="Ki9-R3-ILg"/>
+                    <constraint firstItem="p2n-1h-IoT" firstAttribute="top" secondItem="xX7-8a-u6f" secondAttribute="bottom" constant="-4" id="RrT-Gg-6Os"/>
                     <constraint firstAttribute="trailing" secondItem="xX7-8a-u6f" secondAttribute="trailing" constant="16" id="TQJ-Dk-je0"/>
                     <constraint firstItem="xX7-8a-u6f" firstAttribute="leading" secondItem="JGR-Ov-iPH" secondAttribute="leading" id="ZNe-V0-nDh"/>
                     <constraint firstAttribute="trailing" secondItem="p2n-1h-IoT" secondAttribute="trailing" constant="39" id="aKm-ay-PzL"/>
-                    <constraint firstItem="ZY9-t4-DEE" firstAttribute="leading" secondItem="xX7-8a-u6f" secondAttribute="leading" id="hbd-Py-6ui"/>
+                    <constraint firstItem="ZY9-t4-DEE" firstAttribute="leading" secondItem="p2n-1h-IoT" secondAttribute="leading" id="jWE-bR-Hi9"/>
                     <constraint firstItem="p2n-1h-IoT" firstAttribute="leading" secondItem="x3l-yt-1aC" secondAttribute="trailing" constant="20" id="k4o-Gf-804"/>
-                    <constraint firstAttribute="trailing" secondItem="ZY9-t4-DEE" secondAttribute="trailing" constant="39" id="rti-RG-J7t"/>
                     <constraint firstItem="JGR-Ov-iPH" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="9" id="tYY-PZ-8W9"/>
+                    <constraint firstItem="ZY9-t4-DEE" firstAttribute="bottom" secondItem="p2n-1h-IoT" secondAttribute="bottom" id="tiA-ty-sP2"/>
                     <constraint firstItem="x3l-yt-1aC" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="20" id="yh4-qV-upW"/>
-                    <constraint firstItem="p2n-1h-IoT" firstAttribute="top" secondItem="xX7-8a-u6f" secondAttribute="bottom" constant="3" id="zEQ-3J-gdm"/>
                 </constraints>
             </tableViewCellContentView>
             <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>

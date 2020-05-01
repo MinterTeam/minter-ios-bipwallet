@@ -43,8 +43,8 @@ class LocalStorageContactsService: ContactsService {
     }
 
     return Observable<Void>.create { (observer) -> Disposable in
-      let res = self.storage.objects(class: ContactEntryDataBaseModel.self, query: "name='\(name)' or address='\(address)'") ?? []
-      if res.count > 0 {
+      let res = self.storage.objects(class: ContactEntryDataBaseModel.self, query: "name contains[c] '\(name.lowercased())' or address='\(address)'") ?? []
+      if !res.isEmpty {
         observer.onError(ContactsServiceError.dublicateContact)
       } else {
         let contactObject = ContactEntryDataBaseModel()
@@ -65,7 +65,7 @@ class LocalStorageContactsService: ContactsService {
   func contact(by name: String) -> Observable<ContactItem?> {
     return Observable.create { (observer) -> Disposable in
       let res = self.storage.objects(class: ContactEntryDataBaseModel.self,
-                                     query: "name='\(name)'") ?? []
+                                     query: "name contains[c] '\(name.lowercased())'") ?? []
 
       if let model = res.first as? ContactEntryDataBaseModel {
         let contact = ContactItem(name: model.name, address: model.address)
@@ -82,7 +82,7 @@ class LocalStorageContactsService: ContactsService {
     return Observable.create { (observer) -> Disposable in
       let name = item.name ?? ""
       let address = item.address ?? ""
-      if let res = (self.storage.objects(class: ContactEntryDataBaseModel.self, query: "name='\(name)' AND address='\(address)'") ?? []).first {
+      if let res = (self.storage.objects(class: ContactEntryDataBaseModel.self, query: "name contains[c] '\(name.lowercased())' AND address='\(address)'") ?? []).first {
         do {
           try self.storage.delete(object: res)
           observer.onNext(())
@@ -116,7 +116,7 @@ class LocalStorageContactsService: ContactsService {
       }
 
       //Removing the old one
-      if let res = (self.storage.objects(class: ContactEntryDataBaseModel.self, query: "name='\(oldName)' AND address='\(oldAddress)'") ?? []).first {
+      if let res = (self.storage.objects(class: ContactEntryDataBaseModel.self, query: "name contains[c] '\(oldName.lowercased())' AND address='\(oldAddress)'") ?? []).first {
         do {
           try self.storage.delete(object: res)
         } catch {
@@ -125,7 +125,7 @@ class LocalStorageContactsService: ContactsService {
         }
       }
 
-      let res = self.storage.objects(class: ContactEntryDataBaseModel.self, query: "name='\(name)' or address='\(address)'") ?? []
+      let res = self.storage.objects(class: ContactEntryDataBaseModel.self, query: "name contains[c] '\(name.lowercased())' or address='\(address)'") ?? []
       if res.count > 0 {
         observer.onError(ContactsServiceError.dublicateContact)
         addOld()

@@ -62,9 +62,9 @@ class TransactionAddressCell: BaseCell {
     title.text = item.title
     name.text = item.name
     if item.name == nil || item.name == "" {
-      nameTopConstraint.constant = 0
+      nameTopConstraint.constant = 8
     } else {
-      nameTopConstraint.constant = 3
+      nameTopConstraint.constant = 10
     }
     address.setTitle(item.address, for: .normal)
     addressLabel.text = item.address

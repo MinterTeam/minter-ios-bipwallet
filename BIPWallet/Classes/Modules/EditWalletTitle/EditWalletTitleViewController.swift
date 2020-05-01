@@ -21,6 +21,9 @@ class EditWalletTitleViewController: BaseViewController, Controller, StoryboardI
     }
   }
   @IBOutlet weak var textField: DefaultTextField!
+  @IBOutlet weak var saveButton: DefaultButton!
+  @IBOutlet weak var removeButton: DefaultButton!
+  @IBOutlet weak var removeButtonBottomConstraint: NSLayoutConstraint!
 
   // MARK: - ControllerProtocol
 
@@ -32,15 +35,13 @@ class EditWalletTitleViewController: BaseViewController, Controller, StoryboardI
     //Input
     (self.textField.rx.text <-> self.viewModel.input.title).disposed(by: disposeBag)
 
-    self.textField.rx
-      .controlEvent(.editingDidEnd)
-      .subscribe(viewModel.input.didSubmit)
-      .disposed(by: disposeBag)
-
     self.rx.viewWillDisappear
       .asDriver(onErrorJustReturn: true).map{_ in}
       .drive(viewModel.input.willDismiss)
       .disposed(by: disposeBag)
+
+    self.saveButton.rx.tap.asDriver().drive(viewModel.input.didTapSave).disposed(by: disposeBag)
+    self.removeButton.rx.tap.asDriver().drive(viewModel.input.didTapRemove).disposed(by: disposeBag)
 
     //Output
     self.viewModel.output
@@ -58,6 +59,13 @@ class EditWalletTitleViewController: BaseViewController, Controller, StoryboardI
 
     self.viewModel.output.shakeError.subscribe(onNext: { [weak self] (_) in
       self?.mainView.shakeError(duration: 0.07, repeatCount: 2)
+    }).disposed(by: disposeBag)
+
+    self.viewModel.output.shouldHideRemoveButton.subscribe(onNext: { [weak self] shouldHide in
+      if shouldHide {
+        self?.removeButton.isHidden = true
+        self?.removeButtonBottomConstraint?.constant = -50
+      }
     }).disposed(by: disposeBag)
 
   }

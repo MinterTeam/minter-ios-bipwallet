@@ -223,6 +223,7 @@
 		FA9E519D23ED9976007263B9 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FA9E519B23ED9976007263B9 /* LaunchScreen.storyboard */; };
 		FA9E51A823ED9976007263B9 /* BIPWalletTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA9E51A723ED9976007263B9 /* BIPWalletTests.swift */; };
 		FA9E51B323ED9976007263B9 /* BIPWalletUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA9E51B223ED9976007263B9 /* BIPWalletUITests.swift */; };
+		FA9FCBC2245C7E18002A6B75 /* Inter.otf in Resources */ = {isa = PBXBuildFile; fileRef = FA9FCBC1245C7E18002A6B75 /* Inter.otf */; };
 		FAAE57D124473E690035CE99 /* Delegated.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FAAE57D024473E680035CE99 /* Delegated.storyboard */; };
 		FAAE57D424473EE10035CE99 /* DelegatedTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAAE57D324473EE10035CE99 /* DelegatedTableViewCell.swift */; };
 		FACA652C23F2AAAF00399359 /* BaseCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = FACA652B23F2AAAF00399359 /* BaseCoordinator.swift */; };
@@ -290,6 +291,7 @@
 		FAD1438B2459761F002C2F1C /* CIImageExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAD143872459761F002C2F1C /* CIImageExtension.swift */; };
 		FAD1438C2459761F002C2F1C /* CIColorExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAD143882459761F002C2F1C /* CIColorExtension.swift */; };
 		FAD1438D2459761F002C2F1C /* QRCode.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAD143892459761F002C2F1C /* QRCode.swift */; };
+		FAD1438F245C1B83002C2F1C /* UILabel+Letterspacing.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAD1438E245C1B83002C2F1C /* UILabel+Letterspacing.swift */; };
 		FAE01A2F244B720C00C5EB96 /* AccountService.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAE01A2E244B720C00C5EB96 /* AccountService.swift */; };
 		FAE01A31244B72A700C5EB96 /* LocalStorageAccountService.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAE01A30244B72A700C5EB96 /* LocalStorageAccountService.swift */; };
 		FAE162D22402EE36007E9CAD /* UISegmentedControl+Font.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAE162D12402EE36007E9CAD /* UISegmentedControl+Font.swift */; };
@@ -559,6 +561,7 @@
 		FA9E51AE23ED9976007263B9 /* BIPWalletUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BIPWalletUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		FA9E51B223ED9976007263B9 /* BIPWalletUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BIPWalletUITests.swift; sourceTree = "<group>"; };
 		FA9E51B423ED9976007263B9 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		FA9FCBC1245C7E18002A6B75 /* Inter.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Inter.otf; sourceTree = "<group>"; };
 		FAAE57D024473E680035CE99 /* Delegated.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Delegated.storyboard; sourceTree = "<group>"; };
 		FAAE57D324473EE10035CE99 /* DelegatedTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DelegatedTableViewCell.swift; sourceTree = "<group>"; };
 		FACA652B23F2AAAF00399359 /* BaseCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseCoordinator.swift; sourceTree = "<group>"; };
@@ -627,6 +630,7 @@
 		FAD143872459761F002C2F1C /* CIImageExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CIImageExtension.swift; sourceTree = "<group>"; };
 		FAD143882459761F002C2F1C /* CIColorExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CIColorExtension.swift; sourceTree = "<group>"; };
 		FAD143892459761F002C2F1C /* QRCode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QRCode.swift; sourceTree = "<group>"; };
+		FAD1438E245C1B83002C2F1C /* UILabel+Letterspacing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UILabel+Letterspacing.swift"; sourceTree = "<group>"; };
 		FAE01A2E244B720C00C5EB96 /* AccountService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountService.swift; sourceTree = "<group>"; };
 		FAE01A30244B72A700C5EB96 /* LocalStorageAccountService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalStorageAccountService.swift; sourceTree = "<group>"; };
 		FAE162D12402EE36007E9CAD /* UISegmentedControl+Font.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UISegmentedControl+Font.swift"; sourceTree = "<group>"; };
@@ -1383,6 +1387,7 @@
 				FACA65C823FA97B300399359 /* UIView+ShakeError.swift */,
 				FAE162D12402EE36007E9CAD /* UISegmentedControl+Font.swift */,
 				FA91D5882434B56200F901AF /* UIViewController+BackgroundTap.swift */,
+				FAD1438E245C1B83002C2F1C /* UILabel+Letterspacing.swift */,
 			);
 			path = Helper;
 			sourceTree = "<group>";
@@ -1407,6 +1412,7 @@
 		FACA659123F6C1EA00399359 /* Inter */ = {
 			isa = PBXGroup;
 			children = (
+				FA9FCBC1245C7E18002A6B75 /* Inter.otf */,
 				FACA659223F6C1EA00399359 /* Inter-Bold.otf */,
 				FACA659323F6C1EA00399359 /* Inter-Regular.otf */,
 				FACA659423F6C1EA00399359 /* Inter-SemiBoldItalic.otf */,
@@ -1683,6 +1689,7 @@
 				FA6AFB45244DC25100CCBE19 /* SwitchTableViewCell.xib in Resources */,
 				FAAE57D124473E690035CE99 /* Delegated.storyboard in Resources */,
 				FA787472242109EC0039E2BB /* TransactionKeyValueCell.xib in Resources */,
+				FA9FCBC2245C7E18002A6B75 /* Inter.otf in Resources */,
 				FAE162F92403E2EE007E9CAD /* TransactionCell.xib in Resources */,
 				FAE621F1240560490040BE4C /* SelectWallet.storyboard in Resources */,
 				FACA65B523F6C1EA00399359 /* Inter-ThinItalic-BETA.otf in Resources */,
@@ -1860,6 +1867,7 @@
 				FACA65D523FAEC5B00399359 /* AccountDataBaseModel.swift in Sources */,
 				23953FDC1CF7AB2FFA46615D /* BalanceViewController.swift in Sources */,
 				FA3BDE3224251D5F0076A7F4 /* McPickerBarButtonItem.swift in Sources */,
+				FAD1438F245C1B83002C2F1C /* UILabel+Letterspacing.swift in Sources */,
 				FACA65C923FA97B300399359 /* UIView+ShakeError.swift in Sources */,
 				FACA65D423FAEB6100399359 /* String+Random.swift in Sources */,
 				FA520BB0241FDC8000146E49 /* TransactionAddressCell.swift in Sources */,
@@ -2166,6 +2174,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 205;
 				DEVELOPMENT_TEAM = A26H28FPZU;
 				INFOPLIST_FILE = BIPWallet/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
@@ -2173,11 +2182,12 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = Minter.BIPWallet;
+				MARKETING_VERSION = 2.0;
+				PRODUCT_BUNDLE_IDENTIFIER = MNT.BipWalletTestnet;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "BIPWallet/BIPWallet-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -2187,6 +2197,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 205;
 				DEVELOPMENT_TEAM = A26H28FPZU;
 				INFOPLIST_FILE = BIPWallet/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
@@ -2194,11 +2205,12 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = Minter.BIPWallet;
+				MARKETING_VERSION = 2.0;
+				PRODUCT_BUNDLE_IDENTIFIER = MNT.BipWalletTestnet;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "BIPWallet/BIPWallet-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};

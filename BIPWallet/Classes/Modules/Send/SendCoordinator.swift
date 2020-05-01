@@ -54,6 +54,10 @@ class SendCoordinator: BaseCoordinator<Void> {
     return Observable.never()
   }
 
+}
+
+extension SendCoordinator {
+
   func showContacts(rootViewController: UIViewController) -> Observable<ContactItem?> {
     let contactsCoordinator = ContactPickerCoordinator(rootViewController: rootViewController)
     return coordinate(to: contactsCoordinator).map { (result) -> ContactItem? in
@@ -65,10 +69,6 @@ class SendCoordinator: BaseCoordinator<Void> {
       }
     }
   }
-
-}
-
-extension SendCoordinator {
 
   //Showing Select Wallet
   func showSelectWallet(rootViewController: UIViewController) -> Observable<SelectWalletCoordinationResult> {
@@ -150,6 +150,10 @@ extension SendCoordinator {
           try? self?.balanceService.changeAddress(account.address)
         case .cancel:
           return
+        case .removed:
+          if let selected = self?.authService.selectedAccount() {
+            try? self?.balanceService.changeAddress(selected.address)
+          }
         }
       }).disposed(by: disposeBag)
 

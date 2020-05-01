@@ -26,7 +26,7 @@ class DefaultTextField: UITextField {
     addObservers()
 
     self.font = UIFont.mediumFont(of: 17.0)
-    self.layer.borderWidth = 0.1
+    self.layer.borderWidth = 0
     self.layer.cornerRadius = 8.0
     self.backgroundColor = UIColor.textFieldBackgroundColor()
   }

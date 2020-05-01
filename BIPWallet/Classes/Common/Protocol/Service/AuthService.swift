@@ -32,4 +32,5 @@ protocol AuthService {
   func updateAccount(account: AccountItem) -> Observable<Void>
   func logout()
   func selectedAccount() -> AccountItem?
+  func remove(account: AccountItem) throws
 }

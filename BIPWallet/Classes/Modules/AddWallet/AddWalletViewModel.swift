@@ -85,7 +85,8 @@ class AddWalletViewModel: BaseViewModel, ViewModel {
 
     self.output = Output(viewDidDisappear: viewDidDisappear.asObservable(),
                          mnemonics: mnemonics.asObservable(),
-                         isButtonEnabled: Observable.combineLatest(isSwichOn, isLoading.startWith(false)).map { $0.0 && !$0.1 },
+                         isButtonEnabled: Observable.combineLatest(isSwichOn, isLoading.startWith(false), mnemonics.asObservable(), title.asObservable())
+                          .map { $0.0 && !$0.1 && mnemonicIsValid($0.2 ?? "") && (($0.3?.isEmpty ?? true) ? true : ($0.3?.isValidWalletTitle() ?? true)) },
                          accountAdded: accountAdded.asObservable(),
                          shakeError: shakeError.asObservable(),
                          errorMessage: errorMessage.asObservable(),
@@ -137,16 +138,16 @@ class AddWalletViewModel: BaseViewModel, ViewModel {
   func observer(observable: (String?, String?)) -> Observable<Event<AccountItem>> {
     return Observable<(String?, String?)>.just(observable)
       .map({ (val) -> (String?, String?) in
-      let mnemonics = val.0
-      let title = val.1
-      let newMnemonics = mnemonics?.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
-      let newTitle = title?.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
-      return (newMnemonics, newTitle)
-    }).flatMap({ (val) -> Observable<(String, String?)> in
-      return self.validateForm(mnemonics: val.0, title: val.1)
-    }).flatMap({ [weak self] (val) -> Observable<Event<AccountItem>> in
-      guard let `self` = self else { return Observable.empty() }
-      return self.dependency.authService.addAccount(with: val.0, title: val.1).materialize()
+        let mnemonics = val.0
+        let title = val.1
+        let newMnemonics = mnemonics?.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
+        let newTitle = title?.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
+        return (newMnemonics, newTitle)
+      }).flatMap({ (val) -> Observable<(String, String?)> in
+        return self.validateForm(mnemonics: val.0, title: val.1)
+      }).flatMap({ [weak self] (val) -> Observable<Event<AccountItem>> in
+        guard let `self` = self else { return Observable.empty() }
+        return self.dependency.authService.addAccount(with: val.0, title: val.1).materialize()
         .do(onNext: { [weak self] (event) in
           switch event {
           case .error(let error):

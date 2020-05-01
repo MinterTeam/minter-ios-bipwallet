@@ -77,12 +77,11 @@ class CreateWalletViewModel: BaseViewModel, ViewModel {
 
   func bind() {
 
-    didTapMnemonic.asObservable().subscribe(onNext: { (_) in
-      guard let mnemonic = try? self.mnemonic.value() else {
+    didTapMnemonic.withLatestFrom(mnemonic).subscribe(onNext: { (mnemonic) in
+      guard let mnemonic = mnemonic else {
         //show error
         return
       }
-
       UIPasteboard.general.string = mnemonic
     }).disposed(by: disposeBag)
 

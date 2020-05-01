@@ -104,12 +104,17 @@ class TransactionViewModel: BaseViewModel, ViewModel {
   func systemTransactionItems(data: TransactionData?) -> [BaseCellItem] {
     var cellItems = [BaseCellItem]()
 
-    if let payload = transaction.payload, payload.count > 0 {
+    if let payload = transaction.payload?.base64Decoded(), payload.count > 0 {
       let payloadItem = TransactionKeyValueCellItem(reuseIdentifier: "TransactionKeyValueCell",
                                                     identifier: "TransactionKeyValueCell_Payload")
       payloadItem.key = "Payload".localized()
       payloadItem.value = payload
       cellItems.append(payloadItem)
+
+      let blank = BlankTableViewCellItem(reuseIdentifier: "BlankTableViewCell",
+                                         identifier: "BlankTableViewCell_\(String.random())")
+      blank.height = 10
+      cellItems.append(blank)
 
       let separator2 = SeparatorTableViewCellItem(reuseIdentifier: "SeparatorTableViewCell",
                                                  identifier: "SeparatorTableViewCell")
@@ -144,6 +149,12 @@ class TransactionViewModel: BaseViewModel, ViewModel {
     feeBlock.key2 = "Block".localized()
     feeBlock.value2 = String(transaction.block ?? 0)
     cellItems.append(feeBlock)
+
+    let blank4 = BlankTableViewCellItem(reuseIdentifier: "BlankTableViewCell",
+                                        identifier: "BlankTableViewCell_BeforeShare")
+    blank4.height = 10.0
+    blank4.color = .white
+    cellItems.append(blank4)
 
     let shareButton = ButtonTableViewCellItem(reuseIdentifier: "ButtonTableViewCell",
                                                 identifier: "ButtonTableViewCell_ShareTransactions")
@@ -204,12 +215,17 @@ class TransactionViewModel: BaseViewModel, ViewModel {
                                                 identifier: "SeparatorTableViewCell")
     cellItems.append(separator1)
 
-    if let payload = transaction.payload, payload.count > 0 {
+    if let payload = transaction.payload?.base64Decoded(), payload.count > 0 {
       let payloadItem = TransactionKeyValueCellItem(reuseIdentifier: "TransactionKeyValueCell",
                                                     identifier: "TransactionKeyValueCell_Payload")
       payloadItem.key = "Payload".localized()
       payloadItem.value = payload
       cellItems.append(payloadItem)
+
+      let blank = BlankTableViewCellItem(reuseIdentifier: "BlankTableViewCell",
+                                         identifier: "BlankTableViewCell_\(String.random())")
+      blank.height = 10
+      cellItems.append(blank)
 
       let separator2 = SeparatorTableViewCellItem(reuseIdentifier: "SeparatorTableViewCell",
                                                  identifier: "SeparatorTableViewCell")
@@ -254,6 +270,12 @@ class TransactionViewModel: BaseViewModel, ViewModel {
     feeBlock.value2 = String(transaction.block ?? 0)
     cellItems.append(feeBlock)
 
+    let blank4 = BlankTableViewCellItem(reuseIdentifier: "BlankTableViewCell",
+                                        identifier: "BlankTableViewCell_BeforeShare")
+    blank4.height = 10.0
+    blank4.color = .white
+    cellItems.append(blank4)
+
     let shareButton = ButtonTableViewCellItem(reuseIdentifier: "ButtonTableViewCell",
                                                 identifier: "ButtonTableViewCell_ShareTransactions")
     shareButton.buttonPattern = "blank"
@@ -292,21 +314,26 @@ class TransactionViewModel: BaseViewModel, ViewModel {
                                                 identifier: "SeparatorTableViewCell")
     cellItems.append(separator1)
 
-    if let payload = transaction.payload, payload.count > 0 {
+    if let payload = transaction.payload?.base64Decoded(), payload.count > 0 {
       let payloadItem = TransactionKeyValueCellItem(reuseIdentifier: "TransactionKeyValueCell",
                                                     identifier: "TransactionKeyValueCell_Payload")
       payloadItem.key = "Payload".localized()
       payloadItem.value = payload
       cellItems.append(payloadItem)
+      
+      let blank = BlankTableViewCellItem(reuseIdentifier: "BlankTableViewCell",
+                                         identifier: "BlankTableViewCell_\(String.random())")
+      blank.height = 10
+      cellItems.append(blank)
 
       let separator2 = SeparatorTableViewCellItem(reuseIdentifier: "SeparatorTableViewCell",
-                                                 identifier: "SeparatorTableViewCell")
+                                                  identifier: "SeparatorTableViewCell")
       cellItems.append(separator2)
     }
 
     if let date = transaction.date {
       let dateItem = TransactionKeyValueCellItem(reuseIdentifier: "TransactionKeyValueCell",
-                                                    identifier: "TransactionKeyValueCell_Timestamp")
+                                                 identifier: "TransactionKeyValueCell_Timestamp")
       dateItem.key = "Timestamp".localized()
       dateItem.value = fullDateFormatter.string(from: date)
       cellItems.append(dateItem)
@@ -357,8 +384,14 @@ class TransactionViewModel: BaseViewModel, ViewModel {
     feeBlock.value2 = String(transaction.block ?? 0)
     cellItems.append(feeBlock)
 
+    let blank4 = BlankTableViewCellItem(reuseIdentifier: "BlankTableViewCell",
+                                        identifier: "BlankTableViewCell_BeforeShare")
+    blank4.height = 10.0
+    blank4.color = .white
+    cellItems.append(blank4)
+
     let shareButton = ButtonTableViewCellItem(reuseIdentifier: "ButtonTableViewCell",
-                                                identifier: "ButtonTableViewCell_ShareTransactions")
+                                              identifier: "ButtonTableViewCell_ShareTransactions")
     shareButton.buttonPattern = "blank"
     shareButton.title = "Share Transaction".localized()
     shareButton.didTapButtonSubject.subscribe(didTapShare).disposed(by: disposeBag)
@@ -387,7 +420,7 @@ class TransactionViewModel: BaseViewModel, ViewModel {
 
     let blank1 = BlankTableViewCellItem(reuseIdentifier: "BlankTableViewCell",
                                         identifier: "BlankTableViewCell_AfterFrom")
-    blank1.height = 23.0
+    blank1.height = 6.0
     blank1.color = .white
     cellItems.append(blank1)
 
@@ -408,7 +441,7 @@ class TransactionViewModel: BaseViewModel, ViewModel {
 
     let blank2 = BlankTableViewCellItem(reuseIdentifier: "BlankTableViewCell",
                                         identifier: "BlankTableViewCell_AfterTo")
-    blank2.height = 17.0
+    blank2.height = 20.0
     blank2.color = .white
     cellItems.append(blank2)
 
@@ -416,21 +449,26 @@ class TransactionViewModel: BaseViewModel, ViewModel {
                                                 identifier: "SeparatorTableViewCell")
     cellItems.append(separator1)
 
-    if let payload = transaction.payload, payload.count > 0 {
+    if let payload = transaction.payload?.base64Decoded(), payload.count > 0 {
       let payloadItem = TransactionKeyValueCellItem(reuseIdentifier: "TransactionKeyValueCell",
                                                     identifier: "TransactionKeyValueCell_Payload")
       payloadItem.key = "Payload".localized()
       payloadItem.value = payload
       cellItems.append(payloadItem)
 
+      let blank = BlankTableViewCellItem(reuseIdentifier: "BlankTableViewCell",
+                                         identifier: "BlankTableViewCell_\(String.random())")
+      blank.height = 10
+      cellItems.append(blank)
+
       let separator2 = SeparatorTableViewCellItem(reuseIdentifier: "SeparatorTableViewCell",
-                                                 identifier: "SeparatorTableViewCell")
+                                                  identifier: "SeparatorTableViewCell")
       cellItems.append(separator2)
     }
 
     if let date = transaction.date {
       let dateItem = TransactionKeyValueCellItem(reuseIdentifier: "TransactionKeyValueCell",
-                                                    identifier: "TransactionKeyValueCell_Timestamp")
+                                                 identifier: "TransactionKeyValueCell_Timestamp")
       dateItem.key = "Timestamp".localized()
       dateItem.value = fullDateFormatter.string(from: date)
       cellItems.append(dateItem)
@@ -466,8 +504,14 @@ class TransactionViewModel: BaseViewModel, ViewModel {
     feeBlock.value2 = String(transaction.block ?? 0)
     cellItems.append(feeBlock)
 
+    let blank4 = BlankTableViewCellItem(reuseIdentifier: "BlankTableViewCell",
+                                        identifier: "BlankTableViewCell_BeforeShare")
+    blank4.height = 10.0
+    blank4.color = .white
+    cellItems.append(blank4)
+
     let shareButton = ButtonTableViewCellItem(reuseIdentifier: "ButtonTableViewCell",
-                                                identifier: "ButtonTableViewCell_ShareTransactions")
+                                              identifier: "ButtonTableViewCell_ShareTransactions")
     shareButton.buttonPattern = "blank"
     shareButton.title = "Share Transaction".localized()
     shareButton.didTapButtonSubject.subscribe(didTapShare).disposed(by: disposeBag)
@@ -496,9 +540,10 @@ class TransactionViewModel: BaseViewModel, ViewModel {
 
     let blank1 = BlankTableViewCellItem(reuseIdentifier: "BlankTableViewCell",
                                         identifier: "BlankTableViewCell_AfterFrom")
-    blank1.height = 23.0
+    blank1.height = 6.0
     blank1.color = .white
     cellItems.append(blank1)
+
 
     let to = TransactionAddressCellItem(reuseIdentifier: "TransactionAddressCell",
                                         identifier: "TransactionAddressCell_To")
@@ -516,7 +561,7 @@ class TransactionViewModel: BaseViewModel, ViewModel {
 
     let blank2 = BlankTableViewCellItem(reuseIdentifier: "BlankTableViewCell",
                                         identifier: "BlankTableViewCell_AfterTo")
-    blank2.height = 17.0
+    blank2.height = 20.0
     blank2.color = .white
     cellItems.append(blank2)
 
@@ -524,12 +569,16 @@ class TransactionViewModel: BaseViewModel, ViewModel {
                                                 identifier: "SeparatorTableViewCell")
     cellItems.append(separator1)
 
-    if let payload = transaction.payload, payload.count > 0 {
+    if let payload = transaction.payload?.base64Decoded(), payload.count > 0 {
       let payloadItem = TransactionKeyValueCellItem(reuseIdentifier: "TransactionKeyValueCell",
                                                     identifier: "TransactionKeyValueCell_Payload")
       payloadItem.key = "Payload".localized()
       payloadItem.value = payload
       cellItems.append(payloadItem)
+
+      let blank = BlankTableViewCellItem(reuseIdentifier: "BlankTableViewCell", identifier: "BlankTableViewCell_\(String.random())")
+      blank.height = 10
+      cellItems.append(blank)
 
       let separator2 = SeparatorTableViewCellItem(reuseIdentifier: "SeparatorTableViewCell",
                                                   identifier: "SeparatorTableViewCell")
@@ -573,6 +622,12 @@ class TransactionViewModel: BaseViewModel, ViewModel {
     feeBlock.key2 = "Block".localized()
     feeBlock.value2 = String(transaction.block ?? 0)
     cellItems.append(feeBlock)
+    
+    let blank4 = BlankTableViewCellItem(reuseIdentifier: "BlankTableViewCell",
+                                        identifier: "BlankTableViewCell_BeforeShare")
+    blank4.height = 10.0
+    blank4.color = .white
+    cellItems.append(blank4)
 
     let shareButton = ButtonTableViewCellItem(reuseIdentifier: "ButtonTableViewCell",
                                               identifier: "ButtonTableViewCell_ShareTransactions")
@@ -604,7 +659,7 @@ class TransactionViewModel: BaseViewModel, ViewModel {
 
     let blank1 = BlankTableViewCellItem(reuseIdentifier: "BlankTableViewCell",
                                         identifier: "BlankTableViewCell_AfterFrom")
-    blank1.height = 23.0
+    blank1.height = 6.0
     blank1.color = .white
     cellItems.append(blank1)
 
@@ -643,18 +698,22 @@ class TransactionViewModel: BaseViewModel, ViewModel {
       cellItems.append(separator1)
     }
 
-    if let payload = transaction.payload, payload.count > 0 {
+    if let payload = transaction.payload?.base64Decoded(), payload.count > 0 {
       let payloadItem = TransactionKeyValueCellItem(reuseIdentifier: "TransactionKeyValueCell",
                                                     identifier: "TransactionKeyValueCell_Payload")
       payloadItem.key = "Payload".localized()
       payloadItem.value = payload
       cellItems.append(payloadItem)
 
-      let blank = BlankTableViewCellItem(reuseIdentifier: "BlankTableViewCell",
-                                         identifier: "BlankTableViewCell_\(String.random())")
-      blank.height = 10.0
-      blank.color = .white
+      let blank = BlankTableViewCellItem(reuseIdentifier: "BlankTableViewCell", identifier: "BlankTableViewCell_\(String.random())")
+      blank.height = 10
       cellItems.append(blank)
+
+      let blank1 = BlankTableViewCellItem(reuseIdentifier: "BlankTableViewCell",
+                                         identifier: "BlankTableViewCell_\(String.random())")
+      blank1.height = 10.0
+      blank1.color = .white
+      cellItems.append(blank1)
 
       let separator2 = SeparatorTableViewCellItem(reuseIdentifier: "SeparatorTableViewCell",
                                                  identifier: "SeparatorTableViewCell_2")

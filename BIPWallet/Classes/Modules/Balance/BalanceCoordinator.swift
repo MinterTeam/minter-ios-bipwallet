@@ -89,7 +89,6 @@ class BalanceCoordinator: BaseCoordinator<Void> {
     }).subscribe().disposed(by: self.disposeBag)
 
     transactions.didScrollToPoint?.subscribe(onNext: { (point) in
-      print(point)
       if controller.segmentedControl.selectedSegmentIndex == 1 {
         let newPoint = headerInset + point.y
         controller.containerViewHeightConstraint.constant = max(-headerInset, -newPoint)
@@ -221,11 +220,15 @@ extension BalanceCoordinator {
       .flatMap({ (account) -> Observable<EditWalletTitleCoordinatorResult> in
         return self.showEditTitle(inViewController: controller, account: account)
       }).subscribe(onNext: { [weak self] (result) in
-        switch result{
+        switch result {
         case .changedTitle(let account):
           try? self?.balanceService.changeAddress(account.address)
         case .cancel:
           return
+        case .removed:
+          if let selected = self?.authService.selectedAccount() {
+            try? self?.balanceService.changeAddress(selected.address)
+          }
         }
       }).disposed(by: disposeBag)
 

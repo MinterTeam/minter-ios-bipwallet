@@ -122,6 +122,10 @@ class AccountManager {
     secureStorage.set(data, forKey: key)
 	}
 
+  func remove(key: String) {
+    secureStorage.removeObject(forKey: key)
+  }
+
   func saveMnemonic(mnemonic: String) throws {
     guard let password = self.encryptionKey() else { throw AccountManagerError.noEncryptionKey }
     try self.save(mnemonic: mnemonic, password: password)

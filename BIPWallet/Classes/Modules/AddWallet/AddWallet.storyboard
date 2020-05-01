@@ -47,13 +47,18 @@
                                             <userDefinedRuntimeAttribute type="string" keyPath="pattern" value="blank"/>
                                         </userDefinedRuntimeAttributes>
                                     </button>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Or enter seed-phrase to your existing wallet" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="z8U-XI-dhY">
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Or enter seed-phrase to your existing wallet" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="z8U-XI-dhY" customClass="UHBCustomLabel" customModule="BIPWallet" customModuleProvider="target">
                                         <rect key="frame" x="16" y="128" width="366" height="13"/>
                                         <fontDescription key="fontDescription" name="Inter-SemiBold" family="Inter" pointSize="11"/>
                                         <color key="textColor" red="0.5568627451" green="0.5568627451" blue="0.5568627451" alpha="1" colorSpace="deviceRGB"/>
                                         <nil key="highlightedColor"/>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="characterSpacing">
+                                                <real key="value" value="0.40000000000000002"/>
+                                            </userDefinedRuntimeAttribute>
+                                        </userDefinedRuntimeAttributes>
                                     </label>
-                                    <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="AhH-H1-eVQ" customClass="DefaultTextField" customModule="BIPWallet" customModuleProvider="target">
+                                    <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Up to 18 latin letters and numbers..." textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="AhH-H1-eVQ" customClass="DefaultTextField" customModule="BIPWallet" customModuleProvider="target">
                                         <rect key="frame" x="16" y="258" width="366" height="48"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="48" id="ESj-kK-jbs"/>
@@ -61,11 +66,16 @@
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                         <textInputTraits key="textInputTraits" returnKeyType="done"/>
                                     </textField>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Add a title to your wallet (you can do it later)" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dG3-ZJ-gxe">
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Add a title to your wallet (you can do it later)" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dG3-ZJ-gxe" customClass="UHBCustomLabel" customModule="BIPWallet" customModuleProvider="target">
                                         <rect key="frame" x="16" y="235" width="366" height="13"/>
                                         <fontDescription key="fontDescription" name="Inter-SemiBold" family="Inter" pointSize="11"/>
                                         <color key="textColor" red="0.5568627451" green="0.5568627451" blue="0.5568627451" alpha="1" colorSpace="deviceRGB"/>
                                         <nil key="highlightedColor"/>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="characterSpacing">
+                                                <real key="value" value="0.40000000000000002"/>
+                                            </userDefinedRuntimeAttribute>
+                                        </userDefinedRuntimeAttributes>
                                     </label>
                                     <view alpha="0.0" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="5Tk-Nw-tyl">
                                         <rect key="frame" x="16" y="64" width="366" height="242"/>
@@ -73,11 +83,16 @@
                                             <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" animating="YES" style="medium" translatesAutoresizingMaskIntoConstraints="NO" id="YRo-uP-6se">
                                                 <rect key="frame" x="37" y="111" width="20" height="20"/>
                                             </activityIndicatorView>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Please wait a few seconds…" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YGv-KS-NKI">
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Please wait a few seconds…" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YGv-KS-NKI" customClass="UHBCustomLabel" customModule="BIPWallet" customModuleProvider="target">
                                                 <rect key="frame" x="73" y="110.5" width="228.5" height="21"/>
                                                 <fontDescription key="fontDescription" name="Inter-Medium" family="Inter" pointSize="17"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
+                                                <userDefinedRuntimeAttributes>
+                                                    <userDefinedRuntimeAttribute type="number" keyPath="characterSpacing">
+                                                        <real key="value" value="0.40000000000000002"/>
+                                                    </userDefinedRuntimeAttribute>
+                                                </userDefinedRuntimeAttributes>
                                             </label>
                                         </subviews>
                                         <color key="backgroundColor" red="0.96862745098039216" green="0.96078431372549022" blue="1" alpha="1" colorSpace="deviceRGB"/>
@@ -164,28 +179,33 @@
                             </userDefinedRuntimeAttributes>
                         </button>
                         <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" ambiguous="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="4KF-g9-TTT">
-                            <rect key="frame" x="316" y="167.5" width="51" height="31"/>
+                            <rect key="frame" x="316" y="165.5" width="51" height="31"/>
                         </switch>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="I've saved the phrase" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Rq4-SY-3fd">
-                            <rect key="frame" x="32" y="173" width="279" height="20"/>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="I've saved the phrase" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Rq4-SY-3fd" customClass="UHBCustomLabel" customModule="BIPWallet" customModuleProvider="target">
+                            <rect key="frame" x="32" y="171" width="279" height="20"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="20" id="Grz-Of-h59"/>
                             </constraints>
                             <fontDescription key="fontDescription" name="Inter-Medium" family="Inter" pointSize="17"/>
                             <nil key="textColor"/>
                             <nil key="highlightedColor"/>
+                            <userDefinedRuntimeAttributes>
+                                <userDefinedRuntimeAttribute type="number" keyPath="characterSpacing">
+                                    <real key="value" value="0.40000000000000002"/>
+                                </userDefinedRuntimeAttribute>
+                            </userDefinedRuntimeAttributes>
                         </label>
                         <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Fts-h0-Ret">
-                            <rect key="frame" x="16" y="116" width="366" height="30"/>
+                            <rect key="frame" x="16" y="116" width="366" height="28"/>
                             <subviews>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="PNZ-7Q-FJK">
-                                    <rect key="frame" x="16" y="14" width="334" height="2"/>
+                                    <rect key="frame" x="16" y="14" width="334" height="0.0"/>
                                     <fontDescription key="fontDescription" name="Inter-Medium" family="Inter" pointSize="17"/>
                                     <nil key="textColor"/>
                                     <nil key="highlightedColor"/>
                                 </label>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ZUW-8B-Vxe">
-                                    <rect key="frame" x="0.0" y="0.0" width="366" height="30"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="366" height="28"/>
                                 </button>
                             </subviews>
                             <color key="backgroundColor" red="0.96862745100000003" green="0.96078431369999995" blue="1" alpha="1" colorSpace="deviceRGB"/>
@@ -228,10 +248,10 @@
                             <nil key="highlightedColor"/>
                         </label>
                         <view alpha="0.0" contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="TYo-aW-NNe">
-                            <rect key="frame" x="16" y="116" width="366" height="30"/>
+                            <rect key="frame" x="16" y="116" width="366" height="28"/>
                             <subviews>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Copied!" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="K30-CC-7UK">
-                                    <rect key="frame" x="151" y="4.5" width="64.5" height="21"/>
+                                    <rect key="frame" x="151" y="3.5" width="64.5" height="21"/>
                                     <fontDescription key="fontDescription" name="Inter-SemiBold" family="Inter" pointSize="17"/>
                                     <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     <nil key="highlightedColor"/>
@@ -248,7 +268,7 @@
                                 </userDefinedRuntimeAttribute>
                             </userDefinedRuntimeAttributes>
                         </view>
-                        <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="vUe-q0-t0e" customClass="DefaultTextField" customModule="BIPWallet" customModuleProvider="target">
+                        <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Up to 18 latin letters and numbers..." textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="vUe-q0-t0e" customClass="DefaultTextField" customModule="BIPWallet" customModuleProvider="target">
                             <rect key="frame" x="16" y="237.5" width="366" height="48"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="48" id="C1U-0g-vFZ"/>
@@ -256,11 +276,16 @@
                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
                             <textInputTraits key="textInputTraits"/>
                         </textField>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Add a title to your wallet (you can do it later)" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="weF-NH-bNv">
-                            <rect key="frame" x="16" y="212.5" width="366" height="13"/>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Add a title to your wallet (you can do it later)" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="weF-NH-bNv" customClass="UHBCustomLabel" customModule="BIPWallet" customModuleProvider="target">
+                            <rect key="frame" x="16" y="214.5" width="366" height="13"/>
                             <fontDescription key="fontDescription" name="Inter-SemiBold" family="Inter" pointSize="11"/>
                             <color key="textColor" red="0.5568627451" green="0.5568627451" blue="0.5568627451" alpha="1" colorSpace="deviceRGB"/>
                             <nil key="highlightedColor"/>
+                            <userDefinedRuntimeAttributes>
+                                <userDefinedRuntimeAttribute type="number" keyPath="characterSpacing">
+                                    <real key="value" value="0.40000000000000002"/>
+                                </userDefinedRuntimeAttribute>
+                            </userDefinedRuntimeAttributes>
                         </label>
                         <activityIndicatorView opaque="NO" alpha="0.0" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="medium" translatesAutoresizingMaskIntoConstraints="NO" id="3fh-dD-so6">
                             <rect key="frame" x="189" y="316.5" width="20" height="20"/>
@@ -295,7 +320,7 @@
                         <constraint firstAttribute="trailing" secondItem="9aT-r6-gmI" secondAttribute="trailing" constant="16" id="opk-sC-LOA"/>
                         <constraint firstItem="BiT-G9-egX" firstAttribute="trailing" secondItem="weF-NH-bNv" secondAttribute="trailing" constant="16" id="rEO-ma-69J"/>
                         <constraint firstItem="3fh-dD-so6" firstAttribute="centerY" secondItem="M29-jO-c2R" secondAttribute="centerY" id="u3i-TK-UX0"/>
-                        <constraint firstItem="weF-NH-bNv" firstAttribute="top" secondItem="4KF-g9-TTT" secondAttribute="bottom" constant="14" id="zG8-01-RI0"/>
+                        <constraint firstItem="weF-NH-bNv" firstAttribute="top" secondItem="4KF-g9-TTT" secondAttribute="bottom" constant="21" id="zG8-01-RI0"/>
                     </constraints>
                     <viewLayoutGuide key="safeArea" id="BiT-G9-egX"/>
                 </view>
