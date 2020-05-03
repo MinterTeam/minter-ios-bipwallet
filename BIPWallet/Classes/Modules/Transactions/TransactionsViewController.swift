@@ -51,6 +51,10 @@ class TransactionsViewController: BaseViewController, Controller, StoryboardInit
       .drive(viewModel.input.didSelectItem)
       .disposed(by: disposeBag)
 
+    self.refreshControl?.rx.controlEvent(.valueChanged)
+      .asDriver().drive(viewModel.input.didRefresh)
+      .disposed(by: disposeBag)
+
     //Output
     viewModel.output.sections
       .bind(to: tableView.rx.items(dataSource: rxDataSource!))
@@ -58,6 +62,10 @@ class TransactionsViewController: BaseViewController, Controller, StoryboardInit
 
     viewModel.output.showNoTransactions.map { $0 ? 1.0 : 0.0 }
       .asDriver(onErrorJustReturn: 0.0).drive(noTransactionsLabel.rx.alpha)
+      .disposed(by: disposeBag)
+    
+    viewModel.output.isLoading.asDriver(onErrorJustReturn: false)
+      .drive(refreshControl.rx.isRefreshing)
       .disposed(by: disposeBag)
   }
 
@@ -84,7 +92,6 @@ class TransactionsViewController: BaseViewController, Controller, StoryboardInit
     })
 
     tableView.rx.setDelegate(self).disposed(by: disposeBag)
-    configure(with: viewModel)
 
     tableView.contentInset = UIEdgeInsets(top: 230, left: 0, bottom: 0, right: 0)
     
@@ -97,6 +104,8 @@ class TransactionsViewController: BaseViewController, Controller, StoryboardInit
       maker.centerX.equalTo(self.tableView)
       maker.width.height.equalTo(30)
     }
+    
+    configure(with: viewModel)
   }
 }
 

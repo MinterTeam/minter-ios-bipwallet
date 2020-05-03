@@ -21,6 +21,7 @@ class CoinsViewModel: BaseViewModel, ViewModel {
   private var sections = PublishSubject<[BaseTableSectionItem]>()
   private var viewDidLoad = PublishSubject<Void>()
   private var didTapExchangeButton = PublishSubject<Void>()
+  private let didRefresh = PublishSubject<Void>()
 
   private var isLoading = false
 
@@ -33,6 +34,7 @@ class CoinsViewModel: BaseViewModel, ViewModel {
   struct Input {
     var coins: AnyObserver<BalanceModel>
     var viewDidLoad: AnyObserver<Void>
+    var didRefresh: AnyObserver<Void>
   }
 
   struct Output {
@@ -45,10 +47,15 @@ class CoinsViewModel: BaseViewModel, ViewModel {
   }
 
   init(dependency: Dependency) {
+
     self.input = Input(coins: coins.asObserver(),
-                       viewDidLoad: viewDidLoad.asObserver())
+                       viewDidLoad: viewDidLoad.asObserver(),
+                       didRefresh: didRefresh.asObserver()
+    )
+
     self.output = Output(sections: sections.asObservable(),
                          didTapExchangeButton: didTapExchangeButton.asObservable())
+
     self.dependency = dependency
 
     super.init()
@@ -59,9 +66,7 @@ class CoinsViewModel: BaseViewModel, ViewModel {
   func bind() {
     dependency.balanceService
       .balances()
-      .do(onNext: { (txs) in
-        
-      }, onError: { [weak self] (error) in
+      .do(onError: { [weak self] (error) in
         self?.isLoading = false
         let coins = (try? self?.coins.value()) ?? [:]
         self?.createSections(isLoading: self?.isLoading, coins: coins)
@@ -73,8 +78,7 @@ class CoinsViewModel: BaseViewModel, ViewModel {
         self?.isLoading = true
         let coins = (try? self?.coins.value()) ?? [:]
         self?.createSections(isLoading: self?.isLoading, coins: coins)
-      })
-      .subscribe(onNext: { [weak self] (coins) in
+      }).subscribe(onNext: { [weak self] (coins) in
         self?.isLoading = false
         self?.coins.onNext(coins.balances)
       }).disposed(by: disposeBag)
@@ -83,6 +87,11 @@ class CoinsViewModel: BaseViewModel, ViewModel {
       return val.1
     }).subscribe(onNext: { [weak self] (coins) in
       self?.createSections(isLoading: self?.isLoading ?? false, coins: coins)
+    }).disposed(by: disposeBag)
+
+    didRefresh.subscribe(onNext: { (_) in
+      self.dependency.balanceService.updateBalance()
+      self.dependency.balanceService.updateDelegated()
     }).disposed(by: disposeBag)
 
   }

@@ -27,7 +27,12 @@ class TransactionsViewModel: BaseViewModel, ViewModel, TransactionViewableViewMo
 
   // MARK: -
 
-  private var isLoading: Bool = false
+  private var isLoading: Bool = false {
+    didSet {
+      isLoadingObservable.onNext(isLoading)
+    }
+  }
+  private let isLoadingObservable = PublishSubject<Bool>()
 
   private var transactions = BehaviorSubject<[MinterExplorer.Transaction]>(value: [])
   private var sections = PublishSubject<[BaseTableSectionItem]>()
@@ -35,6 +40,7 @@ class TransactionsViewModel: BaseViewModel, ViewModel, TransactionViewableViewMo
   private var didSelectItem = PublishSubject<IndexPath>()
   private var showTransaction = PublishSubject<MinterExplorer.Transaction?>()
   private var didTapShowAll = PublishSubject<Void>()
+  private let didRefresh = PublishSubject<Void>()
 
   // MARK: - ViewModel
 
@@ -46,6 +52,7 @@ class TransactionsViewModel: BaseViewModel, ViewModel, TransactionViewableViewMo
     var transactions: AnyObserver<[MinterExplorer.Transaction]>
     var viewDidLoad: AnyObserver<Void>
     var didSelectItem: AnyObserver<IndexPath>
+    var didRefresh: AnyObserver<Void>
   }
 
   struct Output {
@@ -53,6 +60,7 @@ class TransactionsViewModel: BaseViewModel, ViewModel, TransactionViewableViewMo
     var showTransaction: Observable<MinterExplorer.Transaction?>
     var showNoTransactions: Observable<Bool>
     var showAllTransactions: Observable<Void>
+    var isLoading: Observable<Bool>
   }
 
   struct Dependency {
@@ -62,9 +70,11 @@ class TransactionsViewModel: BaseViewModel, ViewModel, TransactionViewableViewMo
   }
 
   init(dependency: Dependency) {
+
     self.input = Input(transactions: transactions.asObserver(),
                        viewDidLoad: viewDidLoad.asObserver(),
-                       didSelectItem: didSelectItem.asObserver()
+                       didSelectItem: didSelectItem.asObserver(),
+                       didRefresh: didRefresh.asObserver()
     )
 
     self.output = Output(sections: sections.asObservable(),
@@ -72,7 +82,8 @@ class TransactionsViewModel: BaseViewModel, ViewModel, TransactionViewableViewMo
                          showNoTransactions: sections.map({ (items) -> Bool in
                           return items.reduce(0) { $0 + $1.items.count } == 0
                          }),
-                         showAllTransactions: didTapShowAll.asObservable()
+                         showAllTransactions: didTapShowAll.asObservable(),
+                         isLoading: isLoadingObservable
     )
 
     self.dependency = dependency
@@ -92,9 +103,14 @@ class TransactionsViewModel: BaseViewModel, ViewModel, TransactionViewableViewMo
       self?.loadTransactions(address: address)
     }).disposed(by: disposeBag)
 
+    didRefresh.subscribe(onNext: { [weak self] (_) in
+      guard let address = self?.address else { return }
+      self?.loadTransactions(address: address, withoutLoader: true)
+    }).disposed(by: disposeBag)
+
     dependency.balanceService.balances().withLatestFrom(dependency.balanceService.account).subscribe(onNext: { [weak self] (account) in
       guard let address = account?.address else { return }
-      self?.loadTransactions(address: address)
+      self?.loadTransactions(address: address, withoutLoader: true)
     }).disposed(by: disposeBag)
 
     Observable.combineLatest(viewDidLoad, transactions, self.dependency.infoService.isReady()).map({ (val) -> [MinterExplorer.Transaction] in
@@ -116,6 +132,11 @@ class TransactionsViewModel: BaseViewModel, ViewModel, TransactionViewableViewMo
     }).filter({ (transaction) -> Bool in
       return nil != transaction
     }).subscribe(showTransaction).disposed(by: disposeBag)
+
+    didRefresh.subscribe(onNext: { (_) in
+      self.dependency.balanceService.updateBalance()
+      self.dependency.balanceService.updateDelegated()
+    }).disposed(by: disposeBag)
   }
 
   // MARK: -
@@ -181,7 +202,7 @@ class TransactionsViewModel: BaseViewModel, ViewModel, TransactionViewableViewMo
     sections.onNext([section1])
   }
 
-  func loadTransactions(address: String) {
+  func loadTransactions(address: String, withoutLoader: Bool = false) {
     dependency.transactionService
       .transactions(address: "Mx" + address.stripMinterHexPrefix(), filter: nil, page: 0)
       .do(onError: { (error) in
@@ -191,7 +212,9 @@ class TransactionsViewModel: BaseViewModel, ViewModel, TransactionViewableViewMo
       }, onSubscribe: { [weak self] in
         self?.isLoading = true
         let txs = (try? self?.transactions.value()) ?? []
-        self?.createSections(isLoading: self?.isLoading, transactions: txs)
+        if !withoutLoader {
+          self?.createSections(isLoading: self?.isLoading, transactions: txs)
+        }
       })
       .subscribe(onNext: { [weak self] (transactions) in
         self?.isLoading = false

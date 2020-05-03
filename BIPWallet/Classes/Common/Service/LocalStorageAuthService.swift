@@ -140,6 +140,7 @@ extension LocalStorageAuthService {
 
   func addAccount(with mnemonic: String, title: String?) -> Observable<AccountItem> {
     return Observable<AccountItem>.create { (observer) -> Disposable in
+      let title = (title?.isEmpty ?? true) ? nil : title
       DispatchQueue.global().async {
         guard let address = self.accountManager.address(from: mnemonic) else {
           observer.onError(AuthServiceError.invalidMnemonic)

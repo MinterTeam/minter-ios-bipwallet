@@ -48,6 +48,10 @@ class CoinsViewController: BaseViewController, Controller, StoryboardInitializab
       .drive(viewModel.input.viewDidLoad)
       .disposed(by: disposeBag)
 
+    self.refreshControl?.rx.controlEvent(.valueChanged)
+      .asDriver().drive(viewModel.input.didRefresh)
+      .disposed(by: disposeBag)
+
     //Output
     viewModel.output.sections
       .bind(to: tableView.rx.items(dataSource: rxDataSource!))
@@ -78,8 +82,6 @@ class CoinsViewController: BaseViewController, Controller, StoryboardInitializab
         return cell
       })
 
-    configure(with: viewModel)
-
     tableView.contentInset = UIEdgeInsets(top: 230, left: 0, bottom: 0, right: 0)
 
     refreshControl = UIRefreshControl()
@@ -92,6 +94,7 @@ class CoinsViewController: BaseViewController, Controller, StoryboardInitializab
       maker.width.height.equalTo(30)
     }
 
+    configure(with: viewModel)
   }
 
 }
