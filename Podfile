@@ -31,6 +31,7 @@ def shared_pods
   pod 'DeckTransition'
   pod 'CardPresentationController', :git => 'https://github.com/radianttap/CardPresentationController.git'
   pod 'NotificationBannerSwift'
+#  pod 'UIFontComplete'
   #Analytics
 	pod 'YandexMobileMetrica/Dynamic', '3.2.0'
   #Sys

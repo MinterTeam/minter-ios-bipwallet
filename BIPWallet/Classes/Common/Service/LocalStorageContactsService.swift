@@ -23,6 +23,12 @@ class LocalStorageContactsService: ContactsService {
     self.storage = storage
   }
 
+  private var contactsChangedSubject = PublishSubject<Void>()
+
+  func contactsChanged() -> Observable<Void> {
+    return contactsChangedSubject.asObservable()
+  }
+
   func contacts() -> Observable<[ContactItem]> {
     return Observable<[ContactItem]>.create { (observer) -> Disposable in
       DispatchQueue.main.async {
@@ -58,6 +64,7 @@ class LocalStorageContactsService: ContactsService {
         }
       }
       observer.onCompleted()
+      self.contactsChangedSubject.onNext(())
       return Disposables.create()
     }
   }
@@ -93,6 +100,7 @@ class LocalStorageContactsService: ContactsService {
         observer.onError(LocalStorageContactsServiceError.cantFindItem)
       }
       observer.onCompleted()
+      self.contactsChangedSubject.onNext(())
       return Disposables.create()
     }
   }
@@ -142,6 +150,7 @@ class LocalStorageContactsService: ContactsService {
         }
       }
       observer.onCompleted()
+      self.contactsChangedSubject.onNext(())
       return Disposables.create()
     }
   }

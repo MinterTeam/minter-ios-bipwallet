@@ -15,6 +15,7 @@ protocol RecipientInfoService {
   func title(for recipient: String) -> String?
   func avatarURL(for recipient: String) -> URL?
   func isReady() -> Observable<Bool>
+  func didChangeInfo() -> Observable<Void>
 }
 
 class ExplorerRecipientInfoService: RecipientInfoService {
@@ -33,11 +34,16 @@ class ExplorerRecipientInfoService: RecipientInfoService {
     return infoAvatarItems[recipient.stripMinterHexPrefix()]
   }
 
+  func didChangeInfo() -> Observable<Void> {
+    return didChangeInfoSubject.map{_ in}.asObservable()
+  }
+
   // MARK: -
 
   var disposeBag = DisposeBag()
 
   private let isReadySubject = BehaviorSubject<Bool>(value: false)
+  private let didChangeInfoSubject = PublishSubject<Void>()
 
   let contactsService: ContactsService
   let validatorManager = MinterExplorer.ValidatorManager(httpClient: APIClient())
@@ -47,6 +53,26 @@ class ExplorerRecipientInfoService: RecipientInfoService {
 
   init(contactsService: ContactsService) {
     self.contactsService = contactsService
+
+    contactsService.contactsChanged()
+      .throttle(.seconds(1), scheduler: MainScheduler.instance)
+      .flatMap({ (_) -> Observable<Event<[ContactItem]>> in
+        return contactsService.contacts().materialize()
+      })
+    .do(onNext: { (event) in
+      switch event {
+      case .next(let items):
+        items.forEach { (item) in
+          if let address = item.address {
+            self.infoTitleItems[address.stripMinterHexPrefix()] = item.name ?? address
+          }
+        }
+      default:
+        return
+      }
+    })
+    .map { _ in}
+    .subscribe(didChangeInfoSubject).disposed(by: disposeBag)
 
     Observable.combineLatest(loadValidators(), contactsService.contacts()).do(onNext: { (items) in
       items.0.forEach { (item) in

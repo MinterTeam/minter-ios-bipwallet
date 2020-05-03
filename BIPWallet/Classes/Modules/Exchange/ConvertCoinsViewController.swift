@@ -23,7 +23,11 @@ class ConvertCoinsViewController: BaseViewController {
 			feeLabel.layer.zPosition = -1
 		}
 	}
-	@IBOutlet weak var approximately: UILabel!
+  @IBOutlet weak var approximately: UILabel! {
+    didSet {
+      approximately.font = UIFont.semiBoldFont(of: 18.0)
+    }
+  }
 	@IBOutlet weak var buttonActivityIndicator: UIActivityIndicatorView!
 	@IBOutlet weak var getActivityIndicator: UIActivityIndicatorView!
 	@IBOutlet weak var exchangeButton: DefaultButton!

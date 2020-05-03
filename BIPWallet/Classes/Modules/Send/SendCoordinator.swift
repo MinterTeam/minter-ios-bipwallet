@@ -17,11 +17,13 @@ class SendCoordinator: BaseCoordinator<Void> {
 
   let authService: AuthService
   let balanceService: BalanceService
+  let contactsService: ContactsService
 
-  init(navigationController: UINavigationController, balanceService: BalanceService, authService: AuthService) {
+  init(navigationController: UINavigationController, balanceService: BalanceService, authService: AuthService, contactsService: ContactsService) {
     self.navigationController = navigationController
     self.authService = authService
     self.balanceService = balanceService
+    self.contactsService = contactsService
 
     super.init()
 
@@ -29,10 +31,9 @@ class SendCoordinator: BaseCoordinator<Void> {
   }
 
   override func start() -> Observable<Void> {
-    let contactService = LocalStorageContactsService()
     let controller = SendViewController.initFromStoryboard(name: "Send")
     let dependency = SendViewModel.Dependency(balanceService: balanceService,
-                                              contactsService: contactService)
+                                              contactsService: contactsService)
     let viewModel = SendViewModel(dependency: dependency)
     controller.viewModel = viewModel
 
@@ -59,7 +60,7 @@ class SendCoordinator: BaseCoordinator<Void> {
 extension SendCoordinator {
 
   func showContacts(rootViewController: UIViewController) -> Observable<ContactItem?> {
-    let contactsCoordinator = ContactPickerCoordinator(rootViewController: rootViewController)
+    let contactsCoordinator = ContactPickerCoordinator(rootViewController: rootViewController, contactsService: contactsService)
     return coordinate(to: contactsCoordinator).map { (result) -> ContactItem? in
       switch result {
       case .contact(let item):
@@ -129,7 +130,7 @@ extension SendCoordinator {
     selectWalletObservable
       .filter({ (result) -> Bool in
         switch result {
-        case .edit(let _):
+        case .edit(_):
           return true
         default:
           return false

@@ -28,6 +28,8 @@ class SecureStoragePINService: PINService {
         if let backgroundDate = self.lastBackgroundDate, self.hasPIN() {
           if backgroundDate.timeIntervalSinceNow < -self.PINRequiredMinimumSeconds {
             self.unlocked = false
+          } else {
+            self.unlocked = true
           }
         }
         self.lastBackgroundDate = nil
@@ -36,6 +38,8 @@ class SecureStoragePINService: PINService {
     UIApplication.shared.rx.applicationDidEnterBackground
       .subscribe(onNext: { [weak self] (_) in
         self?.lastBackgroundDate = Date()
+        //Blocking on enter to the background, but it can be automatically unlocked
+        self?.unlocked = false
       }).disposed(by: disposeBag)
   }
 

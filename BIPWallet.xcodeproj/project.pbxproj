@@ -150,6 +150,7 @@
 		FA3BDEA4242BEA2A0076A7F4 /* CCMPlayNDropView.m in Sources */ = {isa = PBXBuildFile; fileRef = FA3BDEA3242BEA2A0076A7F4 /* CCMPlayNDropView.m */; };
 		FA3BDEA7242BED2A0076A7F4 /* DroppableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA3BDEA6242BED2A0076A7F4 /* DroppableView.swift */; };
 		FA3BDEA9242BFB730076A7F4 /* GrowingTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA3BDEA8242BFB730076A7F4 /* GrowingTextView.swift */; };
+		FA41B225245D96ED008C0E5C /* Inter.otf in Resources */ = {isa = PBXBuildFile; fileRef = FA9FCBC1245C7E18002A6B75 /* Inter.otf */; };
 		FA46990F2423755400E77373 /* Exchange.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FA46990E2423755400E77373 /* Exchange.storyboard */; };
 		FA520BB0241FDC8000146E49 /* TransactionAddressCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA520BAE241FDC8000146E49 /* TransactionAddressCell.swift */; };
 		FA520BB1241FDC8000146E49 /* TransactionAddressCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FA520BAF241FDC8000146E49 /* TransactionAddressCell.xib */; };
@@ -223,7 +224,6 @@
 		FA9E519D23ED9976007263B9 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FA9E519B23ED9976007263B9 /* LaunchScreen.storyboard */; };
 		FA9E51A823ED9976007263B9 /* BIPWalletTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA9E51A723ED9976007263B9 /* BIPWalletTests.swift */; };
 		FA9E51B323ED9976007263B9 /* BIPWalletUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA9E51B223ED9976007263B9 /* BIPWalletUITests.swift */; };
-		FA9FCBC2245C7E18002A6B75 /* Inter.otf in Resources */ = {isa = PBXBuildFile; fileRef = FA9FCBC1245C7E18002A6B75 /* Inter.otf */; };
 		FAAE57D124473E690035CE99 /* Delegated.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FAAE57D024473E680035CE99 /* Delegated.storyboard */; };
 		FAAE57D424473EE10035CE99 /* DelegatedTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAAE57D324473EE10035CE99 /* DelegatedTableViewCell.swift */; };
 		FACA652C23F2AAAF00399359 /* BaseCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = FACA652B23F2AAAF00399359 /* BaseCoordinator.swift */; };
@@ -253,24 +253,6 @@
 		FACA657123F6B91C00399359 /* UIFont+Default.swift in Sources */ = {isa = PBXBuildFile; fileRef = FACA656E23F6B91C00399359 /* UIFont+Default.swift */; };
 		FACA657223F6B91C00399359 /* UIColor+HEX.swift in Sources */ = {isa = PBXBuildFile; fileRef = FACA656F23F6B91C00399359 /* UIColor+HEX.swift */; };
 		FACA657423F6BE5000399359 /* StoryboardInitializable.swift in Sources */ = {isa = PBXBuildFile; fileRef = FACA657323F6BE5000399359 /* StoryboardInitializable.swift */; };
-		FACA65A423F6C1EA00399359 /* Inter-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = FACA659223F6C1EA00399359 /* Inter-Bold.otf */; };
-		FACA65A523F6C1EA00399359 /* Inter-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = FACA659323F6C1EA00399359 /* Inter-Regular.otf */; };
-		FACA65A623F6C1EA00399359 /* Inter-SemiBoldItalic.otf in Resources */ = {isa = PBXBuildFile; fileRef = FACA659423F6C1EA00399359 /* Inter-SemiBoldItalic.otf */; };
-		FACA65A723F6C1EA00399359 /* Inter-Medium.otf in Resources */ = {isa = PBXBuildFile; fileRef = FACA659523F6C1EA00399359 /* Inter-Medium.otf */; };
-		FACA65A823F6C1EA00399359 /* Inter-Thin-BETA.otf in Resources */ = {isa = PBXBuildFile; fileRef = FACA659623F6C1EA00399359 /* Inter-Thin-BETA.otf */; };
-		FACA65A923F6C1EA00399359 /* Inter-ExtraLight-BETA.otf in Resources */ = {isa = PBXBuildFile; fileRef = FACA659723F6C1EA00399359 /* Inter-ExtraLight-BETA.otf */; };
-		FACA65AA23F6C1EA00399359 /* Inter-Light-BETA.otf in Resources */ = {isa = PBXBuildFile; fileRef = FACA659823F6C1EA00399359 /* Inter-Light-BETA.otf */; };
-		FACA65AB23F6C1EA00399359 /* Inter-ExtraLightItalic-BETA.otf in Resources */ = {isa = PBXBuildFile; fileRef = FACA659923F6C1EA00399359 /* Inter-ExtraLightItalic-BETA.otf */; };
-		FACA65AC23F6C1EA00399359 /* Inter-SemiBold.otf in Resources */ = {isa = PBXBuildFile; fileRef = FACA659A23F6C1EA00399359 /* Inter-SemiBold.otf */; };
-		FACA65AD23F6C1EA00399359 /* Inter-BlackItalic.otf in Resources */ = {isa = PBXBuildFile; fileRef = FACA659B23F6C1EA00399359 /* Inter-BlackItalic.otf */; };
-		FACA65AE23F6C1EA00399359 /* Inter-MediumItalic.otf in Resources */ = {isa = PBXBuildFile; fileRef = FACA659C23F6C1EA00399359 /* Inter-MediumItalic.otf */; };
-		FACA65AF23F6C1EA00399359 /* Inter-Black.otf in Resources */ = {isa = PBXBuildFile; fileRef = FACA659D23F6C1EA00399359 /* Inter-Black.otf */; };
-		FACA65B023F6C1EA00399359 /* Inter-Italic.otf in Resources */ = {isa = PBXBuildFile; fileRef = FACA659E23F6C1EA00399359 /* Inter-Italic.otf */; };
-		FACA65B123F6C1EA00399359 /* Inter-ExtraBold.otf in Resources */ = {isa = PBXBuildFile; fileRef = FACA659F23F6C1EA00399359 /* Inter-ExtraBold.otf */; };
-		FACA65B223F6C1EA00399359 /* Inter-LightItalic-BETA.otf in Resources */ = {isa = PBXBuildFile; fileRef = FACA65A023F6C1EA00399359 /* Inter-LightItalic-BETA.otf */; };
-		FACA65B323F6C1EA00399359 /* Inter-ExtraBoldItalic.otf in Resources */ = {isa = PBXBuildFile; fileRef = FACA65A123F6C1EA00399359 /* Inter-ExtraBoldItalic.otf */; };
-		FACA65B423F6C1EA00399359 /* Inter-BoldItalic.otf in Resources */ = {isa = PBXBuildFile; fileRef = FACA65A223F6C1EA00399359 /* Inter-BoldItalic.otf */; };
-		FACA65B523F6C1EA00399359 /* Inter-ThinItalic-BETA.otf in Resources */ = {isa = PBXBuildFile; fileRef = FACA65A323F6C1EA00399359 /* Inter-ThinItalic-BETA.otf */; };
 		FACA65B723F6D21800399359 /* Configuration.swift in Sources */ = {isa = PBXBuildFile; fileRef = FACA65B623F6D21800399359 /* Configuration.swift */; };
 		FACA65B923F6FF7F00399359 /* SignIn.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FACA65B823F6FF7F00399359 /* SignIn.storyboard */; };
 		FACA65BB23F791DF00399359 /* HandlerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FACA65BA23F791DF00399359 /* HandlerView.swift */; };
@@ -591,24 +573,6 @@
 		FACA656E23F6B91C00399359 /* UIFont+Default.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIFont+Default.swift"; sourceTree = "<group>"; };
 		FACA656F23F6B91C00399359 /* UIColor+HEX.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIColor+HEX.swift"; sourceTree = "<group>"; };
 		FACA657323F6BE5000399359 /* StoryboardInitializable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoryboardInitializable.swift; sourceTree = "<group>"; };
-		FACA659223F6C1EA00399359 /* Inter-Bold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Inter-Bold.otf"; sourceTree = "<group>"; };
-		FACA659323F6C1EA00399359 /* Inter-Regular.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Inter-Regular.otf"; sourceTree = "<group>"; };
-		FACA659423F6C1EA00399359 /* Inter-SemiBoldItalic.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Inter-SemiBoldItalic.otf"; sourceTree = "<group>"; };
-		FACA659523F6C1EA00399359 /* Inter-Medium.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Inter-Medium.otf"; sourceTree = "<group>"; };
-		FACA659623F6C1EA00399359 /* Inter-Thin-BETA.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Inter-Thin-BETA.otf"; sourceTree = "<group>"; };
-		FACA659723F6C1EA00399359 /* Inter-ExtraLight-BETA.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Inter-ExtraLight-BETA.otf"; sourceTree = "<group>"; };
-		FACA659823F6C1EA00399359 /* Inter-Light-BETA.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Inter-Light-BETA.otf"; sourceTree = "<group>"; };
-		FACA659923F6C1EA00399359 /* Inter-ExtraLightItalic-BETA.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Inter-ExtraLightItalic-BETA.otf"; sourceTree = "<group>"; };
-		FACA659A23F6C1EA00399359 /* Inter-SemiBold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Inter-SemiBold.otf"; sourceTree = "<group>"; };
-		FACA659B23F6C1EA00399359 /* Inter-BlackItalic.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Inter-BlackItalic.otf"; sourceTree = "<group>"; };
-		FACA659C23F6C1EA00399359 /* Inter-MediumItalic.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Inter-MediumItalic.otf"; sourceTree = "<group>"; };
-		FACA659D23F6C1EA00399359 /* Inter-Black.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Inter-Black.otf"; sourceTree = "<group>"; };
-		FACA659E23F6C1EA00399359 /* Inter-Italic.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Inter-Italic.otf"; sourceTree = "<group>"; };
-		FACA659F23F6C1EA00399359 /* Inter-ExtraBold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Inter-ExtraBold.otf"; sourceTree = "<group>"; };
-		FACA65A023F6C1EA00399359 /* Inter-LightItalic-BETA.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Inter-LightItalic-BETA.otf"; sourceTree = "<group>"; };
-		FACA65A123F6C1EA00399359 /* Inter-ExtraBoldItalic.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Inter-ExtraBoldItalic.otf"; sourceTree = "<group>"; };
-		FACA65A223F6C1EA00399359 /* Inter-BoldItalic.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Inter-BoldItalic.otf"; sourceTree = "<group>"; };
-		FACA65A323F6C1EA00399359 /* Inter-ThinItalic-BETA.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Inter-ThinItalic-BETA.otf"; sourceTree = "<group>"; };
 		FACA65B623F6D21800399359 /* Configuration.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Configuration.swift; sourceTree = "<group>"; };
 		FACA65B823F6FF7F00399359 /* SignIn.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = SignIn.storyboard; sourceTree = "<group>"; };
 		FACA65BA23F791DF00399359 /* HandlerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HandlerView.swift; sourceTree = "<group>"; };
@@ -1413,24 +1377,6 @@
 			isa = PBXGroup;
 			children = (
 				FA9FCBC1245C7E18002A6B75 /* Inter.otf */,
-				FACA659223F6C1EA00399359 /* Inter-Bold.otf */,
-				FACA659323F6C1EA00399359 /* Inter-Regular.otf */,
-				FACA659423F6C1EA00399359 /* Inter-SemiBoldItalic.otf */,
-				FACA659523F6C1EA00399359 /* Inter-Medium.otf */,
-				FACA659623F6C1EA00399359 /* Inter-Thin-BETA.otf */,
-				FACA659723F6C1EA00399359 /* Inter-ExtraLight-BETA.otf */,
-				FACA659823F6C1EA00399359 /* Inter-Light-BETA.otf */,
-				FACA659923F6C1EA00399359 /* Inter-ExtraLightItalic-BETA.otf */,
-				FACA659A23F6C1EA00399359 /* Inter-SemiBold.otf */,
-				FACA659B23F6C1EA00399359 /* Inter-BlackItalic.otf */,
-				FACA659C23F6C1EA00399359 /* Inter-MediumItalic.otf */,
-				FACA659D23F6C1EA00399359 /* Inter-Black.otf */,
-				FACA659E23F6C1EA00399359 /* Inter-Italic.otf */,
-				FACA659F23F6C1EA00399359 /* Inter-ExtraBold.otf */,
-				FACA65A023F6C1EA00399359 /* Inter-LightItalic-BETA.otf */,
-				FACA65A123F6C1EA00399359 /* Inter-ExtraBoldItalic.otf */,
-				FACA65A223F6C1EA00399359 /* Inter-BoldItalic.otf */,
-				FACA65A323F6C1EA00399359 /* Inter-ThinItalic-BETA.otf */,
 			);
 			path = Inter;
 			sourceTree = "<group>";
@@ -1628,10 +1574,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				FACA65B023F6C1EA00399359 /* Inter-Italic.otf in Resources */,
 				FAE5A1BA23FD337700808B21 /* Wallet.storyboard in Resources */,
 				FA6AFB4B244DEE1800CCBE19 /* Settings.storyboard in Resources */,
-				FACA65AB23F6C1EA00399359 /* Inter-ExtraLightItalic-BETA.otf in Resources */,
 				FA16967C24421EDB00F36FF2 /* AllTransactions.storyboard in Resources */,
 				FA3BDE212423C5DC0076A7F4 /* CoinAutocompleteCell.xib in Resources */,
 				FA9E519D23ED9976007263B9 /* LaunchScreen.storyboard in Resources */,
@@ -1639,35 +1583,27 @@
 				FA6AFB51244EF45E00CCBE19 /* PIN.storyboard in Resources */,
 				FA3BDE8A242BAB960076A7F4 /* SendPayloadTableViewCell.xib in Resources */,
 				FA62232424517C93006089EC /* RawTransaction.storyboard in Resources */,
-				FACA65AA23F6C1EA00399359 /* Inter-Light-BETA.otf in Resources */,
 				FA520BB1241FDC8000146E49 /* TransactionAddressCell.xib in Resources */,
-				FACA65A823F6C1EA00399359 /* Inter-Thin-BETA.otf in Resources */,
-				FACA65AF23F6C1EA00399359 /* Inter-Black.otf in Resources */,
 				FA62232324517C93006089EC /* RawTransactionFieldTableViewCell.xib in Resources */,
 				FA3BDE87242BAA5E0076A7F4 /* AmountTextFieldTableViewCell.xib in Resources */,
 				FAF317872421189500D1556C /* TransactionTwoColumnCell.xib in Resources */,
 				FA169675243CB55C00F36FF2 /* AddWallet.storyboard in Resources */,
-				FACA65B123F6C1EA00399359 /* Inter-ExtraBold.otf in Resources */,
 				FA39EA102404D20200757020 /* LoadingTableViewCell.xib in Resources */,
 				FAF04BD024486EEB004CBC07 /* DelegateUnbond.storyboard in Resources */,
+				FA41B225245D96ED008C0E5C /* Inter.otf in Resources */,
 				FA3BDE69242BA5110076A7F4 /* TextViewTableViewCell.xib in Resources */,
 				FA91D58C243630AF00F901AF /* ContactPickerHeader.xib in Resources */,
 				FA663D3E23FEEB830029D5D0 /* CoinTableViewCell.xib in Resources */,
 				FA663D49240019210029D5D0 /* SeparatorTableViewCell.xib in Resources */,
-				FACA65A923F6C1EA00399359 /* Inter-ExtraLight-BETA.otf in Resources */,
-				FACA65AE23F6C1EA00399359 /* Inter-MediumItalic.otf in Resources */,
-				FACA65A723F6C1EA00399359 /* Inter-Medium.otf in Resources */,
 				FA3BDE75242BA7000076A7F4 /* UsernameTableViewCell.xib in Resources */,
 				FACA655B23F6B69400399359 /* Welcome.storyboard in Resources */,
 				FA3BDE0D2423C5000076A7F4 /* Convert.storyboard in Resources */,
 				FA3BDE41242B7DA40076A7F4 /* Send.storyboard in Resources */,
-				FACA65AC23F6C1EA00399359 /* Inter-SemiBold.otf in Resources */,
 				FA3BDE65242BA4640076A7F4 /* PickerTableViewCell.xib in Resources */,
 				FA78746D242107700039E2BB /* BlankTableViewCell.xib in Resources */,
 				FA6AFB48244DC31800CCBE19 /* DisclosureTableViewCell.xib in Resources */,
 				FA169677243E7CCD00F36FF2 /* EditWalletTitle.storyboard in Resources */,
 				FA3BDEA0242BE9BC0076A7F4 /* Popup.storyboard in Resources */,
-				FACA65B223F6C1EA00399359 /* Inter-LightItalic-BETA.otf in Resources */,
 				FAE621FA24076DA10040BE4C /* AddWalletCell.xib in Resources */,
 				FAE621FC240D1AF00040BE4C /* Transaction.storyboard in Resources */,
 				FA663D4E240019300029D5D0 /* ButtonTableViewCell.xib in Resources */,
@@ -1675,11 +1611,7 @@
 				FA46990F2423755400E77373 /* Exchange.storyboard in Resources */,
 				FA663D4423FFDEFA0029D5D0 /* Coins.storyboard in Resources */,
 				FA3BDE70242BA6630076A7F4 /* TextFieldTableViewCell.xib in Resources */,
-				FACA65A523F6C1EA00399359 /* Inter-Regular.otf in Resources */,
-				FACA65B423F6C1EA00399359 /* Inter-BoldItalic.otf in Resources */,
-				FACA65AD23F6C1EA00399359 /* Inter-BlackItalic.otf in Resources */,
 				FAD143842459754A002C2F1C /* Share.storyboard in Resources */,
-				FACA65B323F6C1EA00399359 /* Inter-ExtraBoldItalic.otf in Resources */,
 				FA9E519A23ED9976007263B9 /* Assets.xcassets in Resources */,
 				FAE5A1BC23FD34D800808B21 /* Balance.storyboard in Resources */,
 				FA3BDE79242BA7540076A7F4 /* TwoTitleTableViewCell.xib in Resources */,
@@ -1689,18 +1621,14 @@
 				FA6AFB45244DC25100CCBE19 /* SwitchTableViewCell.xib in Resources */,
 				FAAE57D124473E690035CE99 /* Delegated.storyboard in Resources */,
 				FA787472242109EC0039E2BB /* TransactionKeyValueCell.xib in Resources */,
-				FA9FCBC2245C7E18002A6B75 /* Inter.otf in Resources */,
 				FAE162F92403E2EE007E9CAD /* TransactionCell.xib in Resources */,
 				FAE621F1240560490040BE4C /* SelectWallet.storyboard in Resources */,
-				FACA65B523F6C1EA00399359 /* Inter-ThinItalic-BETA.otf in Resources */,
 				FA91D575242FD54600F901AF /* ContactPicker.storyboard in Resources */,
 				FA91D56C242E0F0100F901AF /* SendHeader.xib in Resources */,
 				FA91D571242E0FD200F901AF /* DefaultHeader.xib in Resources */,
 				FACA65B923F6FF7F00399359 /* SignIn.storyboard in Resources */,
 				FA663D4623FFDF1A0029D5D0 /* Transactions.storyboard in Resources */,
 				FA91D584243209A000F901AF /* ModifyContact.storyboard in Resources */,
-				FACA65A423F6C1EA00399359 /* Inter-Bold.otf in Resources */,
-				FACA65A623F6C1EA00399359 /* Inter-SemiBoldItalic.otf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2174,7 +2102,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 205;
+				CURRENT_PROJECT_VERSION = 206;
 				DEVELOPMENT_TEAM = A26H28FPZU;
 				INFOPLIST_FILE = BIPWallet/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
@@ -2197,7 +2125,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 205;
+				CURRENT_PROJECT_VERSION = 206;
 				DEVELOPMENT_TEAM = A26H28FPZU;
 				INFOPLIST_FILE = BIPWallet/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;

@@ -17,8 +17,16 @@ class TransactionKeyValueCell: BaseCell {
 
   // MARK: - IBOutlet
 
-  @IBOutlet weak var key: UILabel!
-  @IBOutlet weak var value: UILabel!
+  @IBOutlet weak var key: UILabel! {
+    didSet {
+      key.font = UIFont.semiBoldFont(of: 11.0)
+    }
+  }
+  @IBOutlet weak var value: UILabel! {
+    didSet {
+      value.font = UIFont.semiBoldFont(of: 14.0)
+    }
+  }
 
   // MARK: -
 

@@ -161,6 +161,7 @@ class AllTransactionsViewModel: BaseViewModel, ViewModel, TransactionViewableVie
         return account?.address
       }).filter { $0 != nil }.map{ $0! }.subscribe(onNext: { [weak self] (address) in
         guard let `self` = self else { return }
+        self.address = address
         self.createSections(transactions: [])
         self.loadTransactions(address: address, filter: self.filter, page: self.page)
       }).disposed(by: disposeBag)

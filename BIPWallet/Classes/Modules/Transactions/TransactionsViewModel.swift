@@ -103,6 +103,12 @@ class TransactionsViewModel: BaseViewModel, ViewModel, TransactionViewableViewMo
       self?.createSections(isLoading: self?.isLoading ?? false, transactions: transactions)
     }).disposed(by: disposeBag)
 
+    //If contacts changed - reload cells
+    self.dependency.infoService.didChangeInfo().throttle(.seconds(1), scheduler: MainScheduler.instance)
+      .withLatestFrom(transactions).subscribe(onNext: { [weak self] (transactions) in
+      self?.createSections(isLoading: self?.isLoading ?? false, transactions: transactions)
+    }).disposed(by: disposeBag)
+
     didSelectItem.map({ (indexPath) -> IndexPath in
       return IndexPath(row: indexPath.row/2, section: indexPath.section)
     }).map({ (indexPath) -> MinterExplorer.Transaction? in
@@ -120,7 +126,8 @@ class TransactionsViewModel: BaseViewModel, ViewModel, TransactionViewableViewMo
     var cellItems = [BaseCellItem]()
 
     if isLoading ?? false {
-      let loadingCell = LoadingTableViewCellItem(reuseIdentifier: "LoadingTableViewCell", identifier: "LoadingTableViewCell")
+      let loadingCell = LoadingTableViewCellItem(reuseIdentifier: "LoadingTableViewCell",
+                                                 identifier: "LoadingTableViewCell")
       cellItems.append(loadingCell)
     }
 
@@ -177,9 +184,7 @@ class TransactionsViewModel: BaseViewModel, ViewModel, TransactionViewableViewMo
   func loadTransactions(address: String) {
     dependency.transactionService
       .transactions(address: "Mx" + address.stripMinterHexPrefix(), filter: nil, page: 0)
-      .do(onNext: { (txs) in
-        
-      }, onError: { (error) in
+      .do(onError: { (error) in
         self.isLoading = false
       }, onCompleted: {
         self.isLoading = false

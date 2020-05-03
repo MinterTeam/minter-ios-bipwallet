@@ -8,8 +8,8 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <customFonts key="customFonts">
-        <array key="Inter-Medium.otf">
-            <string>Inter-Medium</string>
+        <array key="Inter.otf">
+            <string>Inter_Medium</string>
         </array>
     </customFonts>
     <scenes>
@@ -22,7 +22,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Aeb-tI-2Bt" customClass="DefaultButton" customModule="BIPWallet" customModuleProvider="target">
-                                <rect key="frame" x="24" y="571" width="366" height="50"/>
+                                <rect key="frame" x="24" y="572" width="366" height="50"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="50" id="2iZ-VP-1kM"/>
                                 </constraints>
@@ -33,16 +33,16 @@
                                 </userDefinedRuntimeAttributes>
                             </button>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ydz-47-Rvh">
-                                <rect key="frame" x="24" y="497" width="366" height="50"/>
+                                <rect key="frame" x="24" y="497" width="366" height="51"/>
                                 <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="249" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Jso-Aq-D0K">
-                                        <rect key="frame" x="14" y="14" width="290" height="20"/>
-                                        <fontDescription key="fontDescription" name="Inter-Medium" family="Inter" pointSize="17"/>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="249" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Jso-Aq-D0K" customClass="SlashedZeroesLabel" customModule="BIPWallet" customModuleProvider="target">
+                                        <rect key="frame" x="14" y="14" width="290" height="21"/>
+                                        <fontDescription key="fontDescription" name="Inter_Medium" family="Inter" pointSize="17"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="iEU-85-m4F">
-                                        <rect key="frame" x="318" y="13" width="24" height="22"/>
+                                        <rect key="frame" x="318" y="13.5" width="24" height="22"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="24" id="UIa-J2-f0f"/>
                                         </constraints>

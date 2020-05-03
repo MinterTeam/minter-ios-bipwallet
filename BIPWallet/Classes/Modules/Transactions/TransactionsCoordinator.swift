@@ -15,9 +15,14 @@ class TransactionsCoordinator: BaseCoordinator<Void> {
 
   private var сontroller = TransactionsViewController.initFromStoryboard(name: "Transactions")
   var balanceService: BalanceService
+  var recipientInfoService: RecipientInfoService
 
-  init(viewController: inout UIViewController?, balanceService: BalanceService) {
+  init(viewController: inout UIViewController?,
+       balanceService: BalanceService,
+       recipientInfoService: RecipientInfoService) {
+
     self.balanceService = balanceService
+    self.recipientInfoService = recipientInfoService
 
     super.init()
 
@@ -29,24 +34,23 @@ class TransactionsCoordinator: BaseCoordinator<Void> {
   override func start() -> Observable<Void> {
 
     let transactionService = ExplorerTransactionService()
-    let infoService = ExplorerRecipientInfoService(contactsService: LocalStorageContactsService())
     let dependency = TransactionsViewModel.Dependency(transactionService: transactionService,
                                                       balanceService: balanceService,
-                                                      infoService: infoService)
+                                                      infoService: self.recipientInfoService)
     let viewModel = TransactionsViewModel(dependency: dependency)
 
     viewModel.output.showTransaction.flatMap({ [weak self] (transaction) -> Observable<Void> in
       guard let `self` = self, let transaction = transaction else { return Observable.empty() }
       let transactionCoordinator = TransactionCoordinator(transaction: transaction,
                                                           rootViewController: self.сontroller,
-                                                          recipientInfoService: infoService)
+                                                          recipientInfoService: self.recipientInfoService)
       return self.coordinate(to: transactionCoordinator)
     }).subscribe().disposed(by: self.disposeBag)
 
     viewModel.output.showAllTransactions.flatMap { (_) -> Observable<Void> in
       guard let navigationController = self.сontroller.navigationController else { return Observable.empty() }
       return self.showAllTransactions(navigationController: navigationController,
-                                      recipientInfoService: infoService)
+                                      recipientInfoService: self.recipientInfoService)
     }.subscribe().disposed(by: disposeBag)
 
     сontroller.viewModel = viewModel

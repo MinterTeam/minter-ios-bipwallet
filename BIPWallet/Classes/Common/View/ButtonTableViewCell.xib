@@ -8,8 +8,8 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <customFonts key="customFonts">
-        <array key="Inter-SemiBold.otf">
-            <string>Inter-SemiBold</string>
+        <array key="Inter.otf">
+            <string>Inter_Semi-Bold</string>
         </array>
     </customFonts>
     <objects>
@@ -27,7 +27,7 @@
                         <constraints>
                             <constraint firstAttribute="height" constant="50" id="LCe-wt-Q4D"/>
                         </constraints>
-                        <fontDescription key="fontDescription" name="Inter-SemiBold" family="Inter" pointSize="18"/>
+                        <fontDescription key="fontDescription" name="Inter_Semi-Bold" family="Inter" pointSize="18"/>
                         <state key="normal" title="ALL TRANSACTIONS"/>
                         <userDefinedRuntimeAttributes>
                             <userDefinedRuntimeAttribute type="string" keyPath="pattern" value="blank"/>

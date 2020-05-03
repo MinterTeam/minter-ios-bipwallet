@@ -3,13 +3,13 @@
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16086"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16087"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <customFonts key="customFonts">
-        <array key="Inter-Medium.otf">
-            <string>Inter-Medium</string>
+        <array key="Inter.otf">
+            <string>Inter_Medium</string>
         </array>
     </customFonts>
     <objects>
@@ -27,7 +27,7 @@
                         <constraints>
                             <constraint firstAttribute="height" constant="20" id="SeM-T9-9Qg"/>
                         </constraints>
-                        <fontDescription key="fontDescription" name="Inter-Medium" family="Inter" pointSize="17"/>
+                        <fontDescription key="fontDescription" name="Inter_Medium" family="Inter" pointSize="17"/>
                         <nil key="textColor"/>
                         <nil key="highlightedColor"/>
                     </label>

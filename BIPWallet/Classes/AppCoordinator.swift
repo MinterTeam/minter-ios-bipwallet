@@ -47,6 +47,29 @@ final class AppCoordinator: BaseCoordinator<Void> {
     return Observable.never()
   }
 
+  func start(with url: URL) -> Observable<Void> {
+    switch authService.authState {
+      case .pinNeeded:
+        return startPin().flatMap({ (result) -> Observable<Void> in
+          switch result {
+          case .success:
+            return self.start(with: url)
+          default:
+            return Observable.empty()
+          }
+        })
+
+      case .hasAccount:
+        return self.start().do(onSubscribed: {
+          let rawCoordinator = RawTransactionCoordinator(rootViewController: self.window.rootViewController!, url: url)
+          self.coordinate(to: rawCoordinator).timeout(.seconds(3), scheduler: MainScheduler.instance).subscribe().disposed(by: self.disposeBag)
+        })
+
+      default:
+        return Observable.empty()
+    }
+  }
+
   private func startWelcome() -> Observable<Void> {
     return coordinate(to: WelcomeCoordinator(window: window, authService: self.authService))
   }

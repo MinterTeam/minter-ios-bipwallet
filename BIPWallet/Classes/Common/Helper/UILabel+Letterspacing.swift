@@ -7,12 +7,20 @@
 //
 import UIKit
 
+class SlashedZeroesLabel: UHBCustomLabel {
+  
+  required init?(coder: NSCoder) {
+    super.init(coder: coder)
+
+    self.font = font.slashedZeroes()
+  }
+}
+
 open class UHBCustomLabel: UILabel {
     @IBInspectable open var characterSpacing:CGFloat = 1 {
         didSet {
             updateWithSpacing()
         }
-
     }
 
     open override var text: String? {
@@ -34,7 +42,7 @@ open class UHBCustomLabel: UILabel {
         }
     }
     func updateWithSpacing() {
-        let attributedString = self.attributedText == nil ? NSMutableAttributedString(string: self.text ?? "") : NSMutableAttributedString(attributedString: attributedText!)
+      let attributedString = self.attributedText == nil ? NSMutableAttributedString(string: self.text ?? "") : NSMutableAttributedString(attributedString: attributedText!)
       attributedString.addAttribute(NSAttributedString.Key.kern, value: self.characterSpacing, range: NSRange(location: 0, length: attributedString.length))
         super.attributedText = attributedString
     }

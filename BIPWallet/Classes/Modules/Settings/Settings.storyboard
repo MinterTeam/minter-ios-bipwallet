@@ -8,8 +8,8 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <customFonts key="customFonts">
-        <array key="Inter-SemiBold.otf">
-            <string>Inter-SemiBold</string>
+        <array key="Inter.otf">
+            <string>Inter_Semi-Bold</string>
         </array>
     </customFonts>
     <scenes>
@@ -61,7 +61,7 @@
                     <subviews>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="HELP &amp; SUPPORT" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gyF-i4-elN">
                             <rect key="frame" x="16" y="15" width="345" height="29"/>
-                            <fontDescription key="fontDescription" name="Inter-SemiBold" family="Inter" pointSize="11"/>
+                            <fontDescription key="fontDescription" name="Inter_Semi-Bold" family="Inter" pointSize="11"/>
                             <color key="textColor" red="0.55686274509803924" green="0.55686274509803924" blue="0.55686274509803924" alpha="1" colorSpace="deviceRGB"/>
                             <nil key="highlightedColor"/>
                         </label>

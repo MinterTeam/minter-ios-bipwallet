@@ -25,8 +25,16 @@ class TransactionTwoColumnCell: BaseCell {
 
   @IBOutlet weak var key1: UILabel!
   @IBOutlet weak var key2: UILabel!
-  @IBOutlet weak var value1: UIButton!
-  @IBOutlet weak var value2: UIButton!
+  @IBOutlet weak var value1: UIButton! {
+    didSet {
+      value1.titleLabel?.font = UIFont.semiBoldFont(of: 14.0)
+    }
+  }
+  @IBOutlet weak var value2: UIButton! {
+    didSet {
+      value2.titleLabel?.font = UIFont.semiBoldFont(of: 14.0)
+    }
+  }
 
   // MARK: -
 
@@ -55,7 +63,6 @@ class TransactionTwoColumnCell: BaseCell {
 
     value1.isEnabled = item.value1Interactable
     value2.isEnabled = item.value2Interactable
-    
   }
 
 }

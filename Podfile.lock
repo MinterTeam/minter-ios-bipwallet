@@ -78,6 +78,7 @@ PODS:
   - Swinject (2.7.1)
   - TPKeyboardAvoiding (1.3.3)
   - TrezorCrypto (0.0.9)
+  - UIFontComplete (4.0.0)
   - XLPagerTabStrip (8.1.1)
   - YandexMobileMetrica/Dynamic (3.2.0)
 
@@ -112,6 +113,7 @@ DEPENDENCIES:
   - SwiftValidator (from `https://github.com/jpotts18/SwiftValidator.git`, tag `4.2.0`)
   - Swinject
   - TPKeyboardAvoiding
+  - UIFontComplete
   - XLPagerTabStrip (~> 8.0)
   - YandexMobileMetrica/Dynamic (= 3.2.0)
 
@@ -151,6 +153,7 @@ SPEC REPOS:
     - Swinject
     - TPKeyboardAvoiding
     - TrezorCrypto
+    - UIFontComplete
     - XLPagerTabStrip
     - YandexMobileMetrica
 
@@ -233,9 +236,10 @@ SPEC CHECKSUMS:
   Swinject: ddf78b8486dd9b71a667b852cad919ab4484478e
   TPKeyboardAvoiding: 6dd3fe3268b8f2627beb7ff3d82a3cacbdf66a36
   TrezorCrypto: bfeea47a052dca2c77d4a39e1e183865e52de14d
+  UIFontComplete: 9542d390ee6114412a585d979b09fe820896695d
   XLPagerTabStrip: 63166e21c9844fa30f2d95d30f335e73be5caf22
   YandexMobileMetrica: f18374ee6977a4cd1d0a86298a0df4ad7baf4135
 
-PODFILE CHECKSUM: 1ccdec2a0deb65219c35b10eb655953c9527890b
+PODFILE CHECKSUM: e40ab5d09bf50851c91afbb766b6ff14dd1d356c
 
 COCOAPODS: 1.8.4

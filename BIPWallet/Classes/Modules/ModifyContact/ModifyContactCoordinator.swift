@@ -14,15 +14,16 @@ class ModifyContactCoordinator: BaseCoordinator<ContactItem?> {
 
   private var rootViewController: UIViewController
   private var contactItem: ContactItem?
+  let contactsService: ContactsService
 
-  init(contactItem: ContactItem? = nil, rootViewController: UIViewController) {
+  init(contactItem: ContactItem? = nil, rootViewController: UIViewController, contactsService: ContactsService) {
     self.rootViewController = rootViewController
     self.contactItem = contactItem
+    self.contactsService = contactsService
   }
 
   override func start() -> Observable<ContactItem?> {
-    let contactService = LocalStorageContactsService()
-    let dependency = ModifyContactViewModel.Dependency(contactsService: contactService)
+    let dependency = ModifyContactViewModel.Dependency(contactsService: contactsService)
     let viewModel = ModifyContactViewModel(contactItem: contactItem, dependency: dependency)
     let viewController = ModifyContactViewController.initFromStoryboard(name: "ModifyContact")
     viewController.viewModel = viewModel

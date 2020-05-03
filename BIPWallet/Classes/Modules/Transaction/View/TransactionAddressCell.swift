@@ -27,8 +27,16 @@ class TransactionAddressCell: BaseCell {
   @IBOutlet weak var avatar: UIImageView!
   @IBOutlet weak var title: UILabel!
   @IBOutlet weak var name: UILabel!
-  @IBOutlet weak var address: UIButton!
-  @IBOutlet weak var addressLabel: UILabel!
+  @IBOutlet weak var address: UIButton! {
+    didSet {
+      address.titleLabel?.font = UIFont.semiBoldFont(of: 14.0)
+    }
+  }
+  @IBOutlet weak var addressLabel: UILabel! {
+    didSet {
+      addressLabel.font = UIFont.semiBoldFont(of: 14.0)
+    }
+  }
   @IBOutlet weak var nameTopConstraint: NSLayoutConstraint!
 
   // MARK: -

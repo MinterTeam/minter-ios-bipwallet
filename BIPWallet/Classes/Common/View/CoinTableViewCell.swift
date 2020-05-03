@@ -38,7 +38,11 @@ class CoinTableViewCell: BaseCell {
 																					 borderWidth: 0)
 		}
 	}
-	@IBOutlet weak var amount: UILabel!
+  @IBOutlet weak var amount: UILabel! {
+    didSet {
+      amount.font = UIFont.semiBoldFont(of: 14.0)
+    }
+  }
 	@IBOutlet weak var coin: UILabel!
 	@IBOutlet weak var amountLeadingConstraint: NSLayoutConstraint! {
 		didSet {

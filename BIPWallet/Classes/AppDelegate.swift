@@ -56,22 +56,20 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         .subscribe()
         .disposed(by: disposeBag)
 
-    UIApplication.shared.rx.didOpenApp.skip(1)
-      .filter({ (_) -> Bool in
-        return !pinService.isUnlocked()
-      })
-      .flatMap { (state) -> Observable<Void> in
-        return appCoordinator.start()
-      }.subscribe().disposed(by: disposeBag)
+    Observable.of(UIApplication.shared.rx.didOpenApp.skip(1).map { _ -> RouteMatchResult? in
+      return nil
+    }, RxRouting.instance.register("mintertestnet://bip.to/tx/<transaction>").map { val -> RouteMatchResult? in
+        return val
+    }).switchLatest().flatMap { (result) -> Observable<Event<Void>> in
 
-    RxRouting.instance
-    .register("minter://tx/<transaction>")
-    .subscribe(onNext: { result in
-      print(result)
-      if let vc = RawTransactionRouter.rawTransactionViewController(with: result.url) {
-        self.window?.rootViewController?.present(vc, animated: true, completion: nil)
+      guard let url = result?.url else {
+        if !pinService.isUnlocked() {
+          return appCoordinator.start().materialize()
+        }
+        return Observable.empty().materialize()
       }
-    }).disposed(by: disposeBag)
+      return appCoordinator.start(with: url).materialize()
+    }.subscribe().disposed(by: disposeBag)
 
     appearance()
 

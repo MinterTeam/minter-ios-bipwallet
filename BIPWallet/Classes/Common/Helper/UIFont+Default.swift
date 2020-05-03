@@ -9,36 +9,41 @@
 import UIKit
 
 let defaultFontNameRegular = "Inter"
-let defaultFontNameMedium = "Inter-Medium"
-let defaultFontNameBold = "Inter-Bold"
-let defaultFontNameSemiBold = "Inter-SemiBold"
-//let defaultFontNameCoursive = "Ubuntu-C"
-let defaultFontNameLight = "Inter-Light"
+let defaultFontNameMedium = "Inter_Medium"
+let defaultFontNameBold = "Inter_Bold"
+let defaultFontNameSemiBold = "Inter_Semi-Bold"
 
 extension UIFont {
 
 	static func defaultFont(of size: CGFloat) -> UIFont {
-		return UIFont(name: defaultFontNameRegular, size: size)!
+		return UIFont(name: defaultFontNameRegular, size: size)!.slashedZeroes()
 	}
-  
+
   static func semiBoldFont(of size: CGFloat) -> UIFont {
-    return UIFont(name: defaultFontNameSemiBold, size: size)!
+    return UIFont(name: defaultFontNameSemiBold, size: size)!.slashedZeroes()
   }
 
 	static func boldFont(of size: CGFloat) -> UIFont {
-		return UIFont(name: defaultFontNameBold, size: size)!
+		return UIFont(name: defaultFontNameBold, size: size)!.slashedZeroes()
 	}
 
 	static func mediumFont(of size: CGFloat) -> UIFont {
-		return UIFont(name: defaultFontNameMedium, size: size)!
+		return UIFont(name: defaultFontNameMedium, size: size)!.slashedZeroes()
 	}
 
-	static func lightFont(of size: CGFloat) -> UIFont {
-		return UIFont(name: defaultFontNameLight, size: size)!
-	}
+  func slashedZeroes() -> UIFont {
+    let originalFontDescriptor = self.fontDescriptor
 
-//	static func coursiveFont(of size: CGFloat) -> UIFont {
-//		return UIFont(name: defaultFontNameCoursive, size: size)!
-//	}
+    let fontDescriptorFeatureSettings = [
+      [UIFontDescriptor.FeatureKey.featureIdentifier: 14,
+        UIFontDescriptor.FeatureKey.typeIdentifier: 4],
+    ]
+
+    let fontDescriptorAttributes = [UIFontDescriptor.AttributeName.featureSettings: fontDescriptorFeatureSettings]
+    let fontDescriptor = originalFontDescriptor.addingAttributes(fontDescriptorAttributes)
+    let font = UIFont(descriptor: fontDescriptor, size: 0)
+
+    return font
+  }
 
 }

@@ -17,17 +17,18 @@ enum ContactPickerResult {
 class ContactPickerCoordinator: BaseCoordinator<ContactPickerResult> {
 
   private let rootViewController: UIViewController
+  let contactsService: ContactsService
 
-  init(rootViewController: UIViewController) {
+  init(rootViewController: UIViewController, contactsService: ContactsService) {
     self.rootViewController = rootViewController
+    self.contactsService = contactsService
 
     super.init()
   }
 
   override func start() -> Observable<ContactPickerResult> {
-    let contactService = LocalStorageContactsService()
     let controller = ContactPickerViewController.initFromStoryboard(name: "ContactPicker")
-    let dependecy = ContactPickerViewModel.Dependency(contactsService: contactService)
+    let dependecy = ContactPickerViewModel.Dependency(contactsService: contactsService)
     let viewModel = ContactPickerViewModel(dependency: dependecy)
     controller.viewModel = viewModel
 
@@ -58,12 +59,12 @@ class ContactPickerCoordinator: BaseCoordinator<ContactPickerResult> {
   }
 
   func showAddContact(from: UIViewController) -> Observable<ContactItem?> {
-    let addContact = ModifyContactCoordinator(rootViewController: from)
+    let addContact = ModifyContactCoordinator(rootViewController: from, contactsService: self.contactsService)
     return coordinate(to: addContact)
   }
 
   func showEditContact(contactItem: ContactItem, from: UIViewController) -> Observable<ContactItem?> {
-    let addContact = ModifyContactCoordinator(contactItem: contactItem, rootViewController: from)
+    let addContact = ModifyContactCoordinator(contactItem: contactItem, rootViewController: from, contactsService: self.contactsService)
     return coordinate(to: addContact)
   }
 

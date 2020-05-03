@@ -9,7 +9,7 @@
 import UIKit
 import RxSwift
 
-class TwoTitleTableViewCellItem : BaseCellItem {
+class TwoTitleTableViewCellItem: BaseCellItem {
 	var title: String?
 	var subtitle: String?
 	var subtitleObservable: Observable<String>?

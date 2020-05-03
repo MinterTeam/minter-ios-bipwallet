@@ -19,11 +19,17 @@ class BalanceCoordinator: BaseCoordinator<Void> {
 
   let authService: AuthService
   let balanceService: BalanceService
+  let recipientInfoService: RecipientInfoService
 
-  init(navigationController: UINavigationController, balanceService: BalanceService, authService: AuthService) {
+  init(navigationController: UINavigationController,
+       balanceService: BalanceService,
+       authService: AuthService,
+       recipientInfoService: RecipientInfoService) {
+
     self.navigationController = navigationController
     self.balanceService = balanceService
     self.authService = authService
+    self.recipientInfoService = recipientInfoService
 
     super.init()
   }
@@ -44,7 +50,8 @@ class BalanceCoordinator: BaseCoordinator<Void> {
 
     let coins = CoinsCoordinator(balanceService: balanceService, authService: authService)
     let transactions = TransactionsCoordinator(viewController: &transactionsViewController,
-                                               balanceService: balanceService)
+                                               balanceService: balanceService,
+                                               recipientInfoService: recipientInfoService)
 
     coordinate(to: coins).subscribe().disposed(by: disposeBag)
     coordinate(to: transactions).subscribe().disposed(by: disposeBag)

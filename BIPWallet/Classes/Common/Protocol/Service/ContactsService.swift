@@ -21,4 +21,5 @@ protocol ContactsService {
   func edit(_ old: ContactItem, newItem: ContactItem) throws -> Observable<Void>
   func contact(by name: String) -> Observable<ContactItem?>
   func delete(_ item: ContactItem) -> Observable<Void>
+  func contactsChanged() -> Observable<Void>
 }

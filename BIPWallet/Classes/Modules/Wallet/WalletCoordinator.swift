@@ -30,6 +30,9 @@ class WalletCoordinator: BaseCoordinator<Void> {
   }
 
   override func start() -> Observable<Void> {
+    let contactsService = LocalStorageContactsService()
+    let recipientInfoService = ExplorerRecipientInfoService(contactsService: contactsService)
+
     let controller = WalletViewController.initFromStoryboard(name: "Wallet")
     controller.viewControllers = []
     controller.viewModel = WalletViewModel(dependency: WalletViewModel.Dependency())
@@ -55,7 +58,8 @@ class WalletCoordinator: BaseCoordinator<Void> {
     balance.tabBarItem = balanceTabbarItem
     let balanceCoordiantor = BalanceCoordinator(navigationController: balance,
                                                 balanceService: balanceService,
-                                                authService: authService)
+                                                authService: authService,
+                                                recipientInfoService: recipientInfoService)
     coordinate(to: balanceCoordiantor).subscribe().disposed(by: disposeBag)
 
     let sendTabbarItem = UITabBarItem(title: "Send".localized(),
@@ -67,7 +71,9 @@ class WalletCoordinator: BaseCoordinator<Void> {
 
     let sendCoordinator = SendCoordinator(navigationController: send,
                                           balanceService: balanceService,
-                                          authService: authService)
+                                          authService: authService,
+                                          contactsService: contactsService
+                                          )
     coordinate(to: sendCoordinator).subscribe().disposed(by: disposeBag)
 
     //Passing address/public key which was scanned on Balance screen

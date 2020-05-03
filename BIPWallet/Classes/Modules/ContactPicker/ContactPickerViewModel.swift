@@ -92,6 +92,7 @@ class ContactPickerViewModel: BaseViewModel, ViewModel {
   func bind() {
 
     Observable.merge(viewWillAppear.asObservable(), didAddContact.asObservable().map { _ in Void() })
+      .throttle(.seconds(1), scheduler: MainScheduler.instance)
       .subscribe(onNext: { [weak self] (_) in
         self?.loadData()
     }).disposed(by: disposeBag)
@@ -121,7 +122,7 @@ class ContactPickerViewModel: BaseViewModel, ViewModel {
       return self.dependency.contactsService.delete(item).materialize()
     }).subscribe(onNext: { [weak self] (res) in
       switch res {
-      case .error(let error):
+      case .error(_):
         break
 
       default:

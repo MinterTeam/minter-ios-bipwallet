@@ -8,8 +8,8 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <customFonts key="customFonts">
-        <array key="Inter-SemiBold.otf">
-            <string>Inter-SemiBold</string>
+        <array key="Inter.otf">
+            <string>Inter_Semi-Bold</string>
         </array>
     </customFonts>
     <objects>
@@ -21,7 +21,7 @@
             <subviews>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VBJ-OA-h4b" customClass="UHBCustomLabel" customModule="BIPWallet" customModuleProvider="target">
                     <rect key="frame" x="48" y="23" width="317" height="20"/>
-                    <fontDescription key="fontDescription" name="Inter-SemiBold" family="Inter" pointSize="11"/>
+                    <fontDescription key="fontDescription" name="Inter_Semi-Bold" family="Inter" pointSize="11"/>
                     <color key="textColor" red="0.5568627451" green="0.5568627451" blue="0.5568627451" alpha="1" colorSpace="deviceRGB"/>
                     <nil key="highlightedColor"/>
                     <userDefinedRuntimeAttributes>
