@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15705" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="16096" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15706"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16087"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -16,13 +16,30 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
+                            <button opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" hasAttributedTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="uzA-Bi-K7a">
+                                <rect key="frame" x="16" y="59" width="382" height="16"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="16" id="3I1-kI-LJa"/>
+                                </constraints>
+                                <inset key="titleEdgeInsets" minX="8" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="8" maxY="0.0"/>
+                                <state key="normal" image="TimerIcon">
+                                    <attributedString key="attributedTitle">
+                                        <fragment content="Button">
+                                            <attributes>
+                                                <font key="NSFont" metaFont="system" size="18"/>
+                                            </attributes>
+                                        </fragment>
+                                    </attributedString>
+                                </state>
+                            </button>
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="wOq-QF-DWh">
                                 <rect key="frame" x="0.0" y="149" width="414" height="747"/>
                                 <viewLayoutGuide key="contentLayoutGuide" id="6yb-xX-L8z"/>
                                 <viewLayoutGuide key="frameLayoutGuide" id="teL-tS-g5O"/>
                             </scrollView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="sve-c5-7GY">
-                                <rect key="frame" x="0.0" y="58" width="414" height="69"/>
+                                <rect key="frame" x="0.0" y="75" width="414" height="69"/>
                                 <subviews>
                                     <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="bordered" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="TXG-e3-Gph">
                                         <rect key="frame" x="16" y="16" width="382" height="31"/>
@@ -49,16 +66,20 @@
                         <constraints>
                             <constraint firstItem="wOq-QF-DWh" firstAttribute="top" secondItem="sve-c5-7GY" secondAttribute="top" id="2Eu-bA-Qwe"/>
                             <constraint firstItem="sve-c5-7GY" firstAttribute="trailing" secondItem="Mcp-VR-4ZM" secondAttribute="trailing" id="7fy-ca-Uc7"/>
-                            <constraint firstItem="sve-c5-7GY" firstAttribute="top" secondItem="dXX-vf-cW6" secondAttribute="top" constant="58" id="Oir-L0-A2y"/>
+                            <constraint firstItem="uzA-Bi-K7a" firstAttribute="leading" secondItem="Mcp-VR-4ZM" secondAttribute="leading" constant="16" id="F5I-5F-gjn"/>
+                            <constraint firstItem="Mcp-VR-4ZM" firstAttribute="trailing" secondItem="uzA-Bi-K7a" secondAttribute="trailing" constant="16" id="H6Z-Ny-aci"/>
+                            <constraint firstItem="sve-c5-7GY" firstAttribute="top" secondItem="dXX-vf-cW6" secondAttribute="top" constant="75" id="Oir-L0-A2y"/>
                             <constraint firstItem="sve-c5-7GY" firstAttribute="leading" secondItem="Mcp-VR-4ZM" secondAttribute="leading" id="aTZ-3Z-Evc"/>
                             <constraint firstAttribute="bottom" secondItem="wOq-QF-DWh" secondAttribute="bottom" constant="20" symbolic="YES" id="diY-Md-Bey"/>
                             <constraint firstItem="wOq-QF-DWh" firstAttribute="leading" secondItem="Mcp-VR-4ZM" secondAttribute="leading" id="taa-20-OwJ"/>
                             <constraint firstItem="wOq-QF-DWh" firstAttribute="trailing" secondItem="Mcp-VR-4ZM" secondAttribute="trailing" id="zC2-e6-l1n"/>
+                            <constraint firstItem="sve-c5-7GY" firstAttribute="top" secondItem="uzA-Bi-K7a" secondAttribute="bottom" id="zlA-a9-T6L"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="Mcp-VR-4ZM"/>
                     </view>
                     <connections>
                         <outlet property="containerView" destination="wOq-QF-DWh" id="Mey-Q5-GfO"/>
+                        <outlet property="lastBalanceButton" destination="uzA-Bi-K7a" id="ykz-CD-qHx"/>
                         <outlet property="segmentedControl" destination="TXG-e3-Gph" id="Eq2-yV-Z0g"/>
                     </connections>
                 </viewController>
@@ -67,4 +88,7 @@
             <point key="canvasLocation" x="231.8840579710145" y="143.97321428571428"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="TimerIcon" width="16" height="16"/>
+    </resources>
 </document>

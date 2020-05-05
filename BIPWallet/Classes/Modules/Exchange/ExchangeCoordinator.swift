@@ -21,7 +21,7 @@ class ExchangeCoordinator: BaseCoordinator<Void> {
   }
 
   override func start() -> Observable<Void> {
-    let dependency = ExchangeViewModel.Dependency()
+    let dependency = ExchangeViewModel.Dependency(balanceService: balanceService)
     let viewModel = ExchangeViewModel(dependency: dependency)
     let viewController = ExchangeViewController.initFromStoryboard(name: "Exchange")
     viewController.viewModel = viewModel

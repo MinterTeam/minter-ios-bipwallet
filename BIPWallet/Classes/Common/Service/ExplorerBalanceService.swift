@@ -19,6 +19,7 @@ class ExplorerBalanceService: BalanceService {
   private var isConnected: Bool = false
   private var addressSubscription: CentrifugeSubscription?
   private var blockSubscription: CentrifugeSubscription?
+  var accountSubscription = [String: CentrifugeSubscription]()
 
   private let accountManager = AccountManager()
 
@@ -28,9 +29,10 @@ class ExplorerBalanceService: BalanceService {
     try? self.changeAddress(adr)
 
     self.accountSubject.filter{$0 != nil}.subscribe(onNext: { [weak self] (item) in
+//      self?.unsubscribeAccountBalanceChange()
       if let address = item?.address {
         self?.channel = "Mx" + address.stripMinterHexPrefix()
-        self?.websocketConnect()
+        self?.subscribeAccountBalanceChange()
       }
     }).disposed(by: disposeBag)
 
@@ -41,7 +43,7 @@ class ExplorerBalanceService: BalanceService {
       }
     }).disposed(by: disposeBag)
 
-    UIApplication.shared.rx.applicationWillResignActive.subscribe(onNext: { [weak self] (_) in
+    UIApplication.shared.rx.applicationDidEnterBackground.subscribe(onNext: { [weak self] (_) in
       self?.unsubscribeBlocksChange()
       self?.unsubscribeAccountBalanceChange()
       self?.websocketDisconnect()
@@ -50,7 +52,7 @@ class ExplorerBalanceService: BalanceService {
 
   private var balancesSubject = ReplaySubject<BalancesResponse>.create(bufferSize: 1)
   private var delegatedSubject = ReplaySubject<([AddressDelegation]?, Decimal?)>.create(bufferSize: 1)
-  private var lastBlockDateSubject = ReplaySubject<TimeInterval?>.create(bufferSize: 1)
+  private var lastBlockAgoSubject = ReplaySubject<TimeInterval?>.create(bufferSize: 1)
 
   var disposeBag = DisposeBag()
 
@@ -71,8 +73,8 @@ class ExplorerBalanceService: BalanceService {
     self.accountSubject.onNext(account)
   }
 
-  func lastBlockDate() -> Observable<TimeInterval?> {
-    return lastBlockDateSubject.asObservable()
+  func lastBlockAgo() -> Observable<TimeInterval?> {
+    return lastBlockAgoSubject.asObservable()
   }
 
   func balances() -> Observable<BalancesResponse> {
@@ -237,10 +239,11 @@ extension ExplorerBalanceService: CentrifugeClientDelegate, CentrifugeSubscripti
   // MARK: -
 
   func websocketConnect() {
-      let config = CentrifugeClientConfig()
-      client = CentrifugeClient(url: MinterExplorerWebSocketURL!.absoluteURL.absoluteString + "?format=protobuf",
-                                config: config,
-                                delegate: self)
+    guard !self.isConnected else { return }
+    let config = CentrifugeClientConfig()
+    client = CentrifugeClient(url: MinterExplorerWebSocketURL!.absoluteURL.absoluteString + "?format=protobuf",
+                              config: config,
+                              delegate: self)
     self.client?.connect()
   }
 
@@ -254,8 +257,10 @@ extension ExplorerBalanceService: CentrifugeClientDelegate, CentrifugeSubscripti
     }
 
     do {
-      addressSubscription = try client?.newSubscription(channel: self.channel, delegate: self)
-      addressSubscription?.subscribe()
+      let subs = try client?.newSubscription(channel: self.channel, delegate: self)
+      subs?.subscribe()
+      accountSubscription[self.channel] = subs
+
     } catch {
       print("Can not create subscription: \(error)")
     }
@@ -275,7 +280,9 @@ extension ExplorerBalanceService: CentrifugeClientDelegate, CentrifugeSubscripti
   }
 
   private func unsubscribeAccountBalanceChange() {
-    addressSubscription?.unsubscribe()
+//    addressSubscription?.unsubscribe()
+    accountSubscription[self.channel]?.unsubscribe()
+    accountSubscription[self.channel] = nil
   }
 
   private func unsubscribeBlocksChange() {
@@ -299,7 +306,7 @@ extension ExplorerBalanceService: CentrifugeClientDelegate, CentrifugeSubscripti
         let dateFormatter = ISO8601DateFormatter()
         let blockTimestamp = dateFormatter.date(from: timestamp)?.timeIntervalSince1970
         if let blockTimestamp = blockTimestamp {
-          self.lastBlockDateSubject.onNext(blockTimestamp)
+          self.lastBlockAgoSubject.onNext(blockTimestamp)
         }
       }
     } else {
@@ -309,4 +316,13 @@ extension ExplorerBalanceService: CentrifugeClientDelegate, CentrifugeSubscripti
       }
     }
   }
+
+  func onJoin(_ sub: CentrifugeSubscription, _ event: CentrifugeJoinEvent) {
+    print(event)
+  }
+
+  func onLeave(_ sub: CentrifugeSubscription, _ event: CentrifugeLeaveEvent) {
+    print(event)
+  }
+
 }

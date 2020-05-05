@@ -499,6 +499,7 @@ extension SendViewController {
 
   func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
     let view = tableView.dequeueReusableHeaderFooterView(withIdentifier: "SendHeader") as? SendHeader
+    view?.configure(timerText: viewModel.output.timerText)
     return view
   }
 

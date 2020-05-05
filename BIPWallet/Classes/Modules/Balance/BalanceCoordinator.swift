@@ -89,7 +89,7 @@ class BalanceCoordinator: BaseCoordinator<Void> {
     }).disposed(by: disposeBag)
 
     coins.didTapExchangeButton.flatMap({ [weak self] (_) -> Observable<Void> in
-      guard let `self` = self else { return Observable.just(()) }
+      guard let `self` = self else { return Observable.empty() }
       let excangeCoordinator = ExchangeCoordinator(rootController: controller,
                                                    balanceService: self.balanceService)
       return self.coordinate(to: excangeCoordinator)

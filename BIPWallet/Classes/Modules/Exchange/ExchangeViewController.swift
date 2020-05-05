@@ -8,9 +8,16 @@
 
 import UIKit
 import RxSwift
+import RxCocoa
 import XLPagerTabStrip
 
 class ExchangeViewController: SegmentedPagerTabStripViewController, Controller, StoryboardInitializable {
+
+  // MARK: -
+
+  @IBOutlet weak var lastBalanceButton: UIButton!
+
+  // MARK: -
 
   var disposeBag = DisposeBag()
 
@@ -21,11 +28,18 @@ class ExchangeViewController: SegmentedPagerTabStripViewController, Controller, 
   var viewModel: ViewModelType!
 
   func configure(with viewModel: ExchangeViewModel) {
+    //Input
     self.rx.viewDidDisappear
       .asDriver(onErrorJustReturn: false)
       .map({ (_) -> Void in
         return ()
       }).drive(self.viewModel.input.viewDidDisappear)
+      .disposed(by: disposeBag)
+
+    //Output
+    viewModel.output.lastUpdated
+      .asDriver(onErrorJustReturn: nil)
+      .drive(lastBalanceButton.rx.attributedTitle(for: .normal))
       .disposed(by: disposeBag)
   }
 
@@ -36,26 +50,6 @@ class ExchangeViewController: SegmentedPagerTabStripViewController, Controller, 
   override func viewDidLoad() {
 
     (view as? HandlerView)?.title = "Coin Exchange".localized()
-
-//    settings.style.selectedBarHeight = 3
-//    settings.style.buttonBarBackgroundColor = .white
-//    settings.style.buttonBarHeight = 48.0
-//    settings.style.buttonBarItemBackgroundColor = .white
-//    settings.style.buttonBarItemFont = UIFont.boldFont(of: 14.0)
-//    settings.style.buttonBarItemsShouldFillAvailiableWidth = true
-//    settings.style.buttonBarItemTitleColor = UIColor.mainColor()
-//    settings.style.selectedBarBackgroundColor = UIColor.mainColor()
-
-//    changeCurrentIndexProgressive = { (oldCell: ButtonBarViewCell?,
-//      newCell: ButtonBarViewCell?,
-//      progressPercentage: CGFloat,
-//      changeCurrentIndex: Bool, animated: Bool) -> Void in
-//
-//      guard changeCurrentIndex == true else { return }
-//
-//      oldCell?.label.textColor = .black
-//      newCell?.label.textColor = UIColor.mainColor()
-//    }
 
     super.viewDidLoad()
 

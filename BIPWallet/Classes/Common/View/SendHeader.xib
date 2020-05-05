@@ -20,7 +20,7 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="SEND COIN" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VBJ-OA-h4b">
-                    <rect key="frame" x="24" y="5" width="341" height="14"/>
+                    <rect key="frame" x="24" y="5" width="61" height="14"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="14" id="5d6-Pp-QRi"/>
                     </constraints>
@@ -28,22 +28,45 @@
                     <color key="textColor" red="0.5568627451" green="0.5568627451" blue="0.5568627451" alpha="1" colorSpace="deviceRGB"/>
                     <nil key="highlightedColor"/>
                 </label>
+                <button opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" contentHorizontalAlignment="right" contentVerticalAlignment="center" lineBreakMode="middleTruncation" hasAttributedTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Sy9-xb-e4f">
+                    <rect key="frame" x="100" y="4" width="251" height="16"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="16" id="fZa-hx-N9d"/>
+                    </constraints>
+                    <inset key="titleEdgeInsets" minX="8" minY="0.0" maxX="0.0" maxY="0.0"/>
+                    <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="8" maxY="0.0"/>
+                    <state key="normal" image="TimerIcon">
+                        <attributedString key="attributedTitle">
+                            <fragment content="Button">
+                                <attributes>
+                                    <font key="NSFont" metaFont="system" size="18"/>
+                                </attributes>
+                            </fragment>
+                        </attributedString>
+                    </state>
+                </button>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
             <constraints>
                 <constraint firstItem="VBJ-OA-h4b" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="24" id="LFC-hp-93t"/>
-                <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="VBJ-OA-h4b" secondAttribute="trailing" priority="999" constant="10" id="QQN-KZ-BWI"/>
                 <constraint firstItem="VBJ-OA-h4b" firstAttribute="top" secondItem="vUN-kp-3ea" secondAttribute="top" constant="5" id="dOG-oN-0Fr"/>
                 <constraint firstItem="vUN-kp-3ea" firstAttribute="bottom" secondItem="VBJ-OA-h4b" secondAttribute="bottom" constant="5" id="dsM-2D-G1P"/>
+                <constraint firstItem="Sy9-xb-e4f" firstAttribute="centerY" secondItem="VBJ-OA-h4b" secondAttribute="centerY" id="msj-Ej-Uct"/>
+                <constraint firstItem="Sy9-xb-e4f" firstAttribute="leading" secondItem="VBJ-OA-h4b" secondAttribute="trailing" constant="15" id="sEh-RX-VVK"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="Sy9-xb-e4f" secondAttribute="trailing" constant="24" id="stY-Hh-Jcp"/>
             </constraints>
             <nil key="simulatedTopBarMetrics"/>
             <nil key="simulatedBottomBarMetrics"/>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
             <connections>
+                <outlet property="timerButton" destination="Sy9-xb-e4f" id="LGU-Pe-NwR"/>
                 <outlet property="titleLabel" destination="VBJ-OA-h4b" id="jOD-Xd-IPe"/>
             </connections>
-            <point key="canvasLocation" x="32.799999999999997" y="193.85307346326837"/>
+            <point key="canvasLocation" x="32.799999999999997" y="193.4032983508246"/>
         </view>
     </objects>
+    <resources>
+        <image name="TimerIcon" width="16" height="16"/>
+    </resources>
 </document>

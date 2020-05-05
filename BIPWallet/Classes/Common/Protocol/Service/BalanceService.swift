@@ -33,6 +33,7 @@ protocol BalanceService {
   func delegatedBalance() -> Observable<([AddressDelegation]?, Decimal?)>
   func updateBalance()
   func updateDelegated()
+  func lastBlockAgo() -> Observable<TimeInterval?>
 
   func balances(address: String) -> Observable<BalancesResponse>
 }

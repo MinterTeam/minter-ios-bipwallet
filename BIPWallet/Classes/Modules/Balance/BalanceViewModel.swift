@@ -26,7 +26,7 @@ class BalanceViewModel: BaseViewModel, ViewModel, WalletSelectableViewModel {
   // MARK: -
 
   private let needsToUpdateBalance = PublishSubject<Void>()
-  private let availabaleBalance = PublishSubject<NSAttributedString>()
+  private let availableBalance = PublishSubject<NSAttributedString>()
   private let delegatedBalance = PublishSubject<String>()
   private let didTapSelectWallet = PublishSubject<Void>()
   private let didTapDelegatedBalance = PublishSubject<Void>()
@@ -34,6 +34,7 @@ class BalanceViewModel: BaseViewModel, ViewModel, WalletSelectableViewModel {
   private let didTapBalance = PublishSubject<Void>()
   private let didTapShare = PublishSubject<Void>()
   private let didScanQR = PublishSubject<String?>()
+  lazy var balanceTitleObservable = Observable.of(Observable<Int>.timer(0, period: 0.5, scheduler: MainScheduler.instance).map {_ in}, self.changedBalanceTypeSubject.map {_ in}).merge()
 
   // MARK: - ViewModel
 
@@ -63,7 +64,6 @@ class BalanceViewModel: BaseViewModel, ViewModel, WalletSelectableViewModel {
 
   struct Dependency {
     var balanceService: BalanceService
-//    var appSettings: AppSettings
   }
 
   init(dependency: Dependency) {
@@ -79,19 +79,15 @@ class BalanceViewModel: BaseViewModel, ViewModel, WalletSelectableViewModel {
                        didScanQR: didScanQR.asObserver()
     )
 
-    self.output = Output(availabaleBalance: availabaleBalance.asObservable(),
+    self.output = Output(availabaleBalance: availableBalance.asObservable(),
                          delegatedBalance: delegatedBalance.asObservable(),
                          didTapSelectWallet: didTapSelectWallet.map { $0 },
                          wallet: walletObservable(),
                          showDelegated: didTapDelegatedBalance.asObservable(),
-                         balanceTitle: changedBalanceTypeSubject.map({ (type) -> String? in
-                          switch type {
-                          case .balanceBIP:
-                            return "Available Balance"
-                          default:
-                            return "Total Balance"
-                          }
-                         }),
+                         balanceTitle: balanceTitleObservable.withLatestFrom(Observable.combineLatest(balanceService.lastBlockAgo(), changedBalanceTypeSubject)).map { lastBlockAgo, balanceType -> String in
+                          let ago = Date().timeIntervalSince1970 - (lastBlockAgo ?? 0)
+                          return self.headerViewLastUpdatedTitleText(balanceType: balanceType, seconds: ago)
+                         },
                          didTapShare: didTapShare.asObservable(),
                          didScanQR: didScanQR.asObservable()
     )
@@ -104,7 +100,7 @@ class BalanceViewModel: BaseViewModel, ViewModel, WalletSelectableViewModel {
   func bind() {
     dependency.balanceService.balances().subscribe(onNext: { [weak self] (val) in
       let headerItem = self?.headerViewTitleText(with: val.baseCoinBalance) ?? NSAttributedString()
-      self?.availabaleBalance.onNext(headerItem)
+      self?.availableBalance.onNext(headerItem)
     }).disposed(by: disposeBag)
 
     dependency.balanceService.delegatedBalance().subscribe(onNext: { (val) in
@@ -116,9 +112,8 @@ class BalanceViewModel: BaseViewModel, ViewModel, WalletSelectableViewModel {
 
     dependency.balanceService.updateDelegated()
 
-    didTapBalance.skip(1)
-      .withLatestFrom(Observable.combineLatest(self.dependency.balanceService.balances(), self.changedBalanceTypeSubject.asObservable()))
-      .subscribe(onNext: { [weak self] (val) in
+    let balanceHeaderText = Observable.combineLatest(self.dependency.balanceService.balances(), self.changedBalanceTypeSubject.asObservable())
+      .map({ (val) -> (BalanceType, NSAttributedString?) in
         let balance = val.0.baseCoinBalance
         let usdBalance = val.0.totalUSDBalance
         let totalBalance = val.0.totalMainCoinBalance
@@ -139,14 +134,19 @@ class BalanceViewModel: BaseViewModel, ViewModel, WalletSelectableViewModel {
           resultBalance = usdBalance
         }
 
-        self?.changedBalanceTypeSubject.onNext(newBalanceType)
+//        self?.changedBalanceTypeSubject.onNext(newBalanceType)
 //        AppSettingsManager.shared.balanceType = newBalanceType.rawValue
 //        AppSettingsManager.shared.save()
-        if let headerItem = self?.balanceHeaderItem(balanceType: newBalanceType,
+        let headerItem = self.balanceHeaderItem(balanceType: newBalanceType,
                                            balance: resultBalance,
-                                           isUSD: newBalanceType == .totalBalanceUSD) {
-          self?.availabaleBalance.onNext(headerItem.text!)
-        }
+                                           isUSD: newBalanceType == .totalBalanceUSD)
+        return (newBalanceType, headerItem.text)
+      })
+
+    didTapBalance.skip(1)
+      .withLatestFrom(balanceHeaderText).subscribe(onNext: { [weak self] val in
+        self?.changedBalanceTypeSubject.onNext(val.0)
+        self?.availableBalance.onNext(val.1 ?? NSAttributedString())
       }).disposed(by: disposeBag)
   }
 
@@ -179,6 +179,24 @@ class BalanceViewModel: BaseViewModel, ViewModel, WalletSelectableViewModel {
     }
     text = headerViewTitleText(with: balance, isUSD: isUSD)
     return BalanceHeaderItem(title: title, text: text, animated: false)
+  }
+
+  func headerViewLastUpdatedTitleText(balanceType: BalanceType, seconds: TimeInterval) -> String {
+    let balanceTypeStr = balanceType == .balanceBIP ? "Available Balance" : "Total Balance"
+    var string = "\(balanceTypeStr) (Updated ".localized()
+    var dateText = "\(Int(seconds)) sec"
+    if seconds < 5 {
+      dateText = "just now".localized()
+    } else if seconds > 60 * 60 {
+      dateText = "more than an hour ago)".localized()
+    } else if seconds > 60 {
+      dateText = "more than a minute ago)".localized()
+    }
+    string.append(dateText)
+    if seconds >= 5 {
+      string.append(" ago)")
+    }
+    return string
   }
 
   private func headerViewTitleText(with balance: Decimal, isUSD: Bool = false) -> NSAttributedString {

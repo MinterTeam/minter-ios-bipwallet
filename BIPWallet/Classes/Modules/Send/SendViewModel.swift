@@ -59,6 +59,7 @@ class SendViewModel: BaseViewModel, ViewModel, WalletSelectableViewModel {// swi
     var recipient: Observable<String?>
     var didProvideAutocomplete: Observable<Void>
     var wallet: Observable<String?>
+    var timerText: Observable<NSAttributedString?>
   }
 
   struct Dependency {
@@ -106,6 +107,7 @@ class SendViewModel: BaseViewModel, ViewModel, WalletSelectableViewModel {// swi
                                     }))
   }
   private let openAppSettingsSubject = PublishSubject<Void>()
+  lazy var balanceTitleObservable = Observable.of(Observable<Int>.timer(0, period: 1, scheduler: MainScheduler.instance).map {_ in}).merge()
 
   let fakePK = Data(hex: "678b3252ce9b013cef922687152fb71d45361b32f8f9a57b0d11cc340881c999").toHexString()
 
@@ -207,7 +209,11 @@ class SendViewModel: BaseViewModel, ViewModel, WalletSelectableViewModel {// swi
                          showContactsPicker: showContactsPicker.asObservable(),
                          recipient: recipientSubject.asObservable(),
                          didProvideAutocomplete: didProvideAutocomplete.asObservable(),
-                         wallet: walletObservable()
+                         wallet: walletObservable(),
+                         timerText: balanceTitleObservable.withLatestFrom(balanceService.lastBlockAgo()).map {
+                          let ago = Date().timeIntervalSince1970 - ($0 ?? 0)
+                          return self.headerViewLastUpdatedTitleText(seconds: ago)
+                         }
     )
 
     amountSubject
@@ -292,19 +298,6 @@ YOU ARE ABOUT TO SEND SEED PHRASE IN THE MESSAGE ATTACHED TO THIS TRANSACTION.\n
         }
         self?.errorNotificationSubject.onNext(NotifiableError(title: "Invalid transaction data".localized(), text: nil))
       }).disposed(by: disposeBag)
-
-//    NotificationCenter
-//      .default
-//      .rx
-//      .notification(sendViewControllerAddressNotification)
-//      .debounce(.seconds(1), scheduler: MainScheduler.instance)
-//      .subscribe(onNext: { [weak self] (not) in
-//        if let recipient = not.userInfo?["address"] as? String {
-//          if recipient.isValidAddress() || recipient.isValidPublicKey() {
-//            self?.recipientSubject.accept(recipient)
-//          }
-//        }
-//      }).disposed(by: disposeBag)
 
     formChangedObservable.subscribe(onNext: { [weak self] (val) in
       let amount = val.2
@@ -529,7 +522,32 @@ YOU ARE ABOUT TO SEND SEED PHRASE IN THE MESSAGE ATTACHED TO THIS TRANSACTION.\n
     let section = BaseTableSectionItem(identifier: "SendSection",
                                        header: "SEND COINS",
                                        items: [blank, coin, blank1, amount, blank2, username, blank3, payload, blank4, fee, blank5, button])
+//    section.timerText = Observable.just(self.headerViewLastUpdatedTitleText(seconds: 3))
     return [section]
+  }
+
+  func headerViewLastUpdatedTitleText(seconds: TimeInterval) -> NSAttributedString {
+    let string = NSMutableAttributedString()
+    string.append(NSAttributedString(string: "Last updated ".localized(),
+                                     attributes: [.foregroundColor: UIColor.mainBlackColor(),
+                                                  .font: UIFont.defaultFont(of: 12.0)]))
+    var dateText = "\(Int(seconds)) seconds"
+    if seconds < 5 {
+      dateText = "just now".localized()
+    } else if seconds > 60 * 60 {
+      dateText = "more than an hour".localized()
+    } else if seconds > 60 {
+      dateText = "more than a minute".localized()
+    }
+    string.append(NSAttributedString(string: dateText,
+                                     attributes: [.foregroundColor: UIColor.mainBlackColor(),
+                                                  .font: UIFont.boldFont(of: 12.0)]))
+    if seconds >= 5 {
+      string.append(NSAttributedString(string: " ago".localized(),
+                                       attributes: [.foregroundColor: UIColor.mainBlackColor(),
+                                                    .font: UIFont.defaultFont(of: 12.0)]))
+    }
+    return string
   }
 
   // MARK: - Validation
