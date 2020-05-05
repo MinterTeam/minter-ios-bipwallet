@@ -185,7 +185,7 @@ class BalanceViewModel: BaseViewModel, ViewModel, WalletSelectableViewModel {
     var string = "\(balanceTypeStr) (Updated ".localized()
     var dateText = "\(Int(seconds)) sec"
     if seconds < 5 {
-      dateText = "just now".localized()
+      dateText = "just now)".localized()
     } else if seconds > 60 * 60 {
       dateText = "more than an hour ago)".localized()
     } else if seconds > 60 {

@@ -65,6 +65,7 @@ class AddWalletViewModel: BaseViewModel, ViewModel {
     var errorMessage: Observable<String>
     var hardImpact: Observable<Void>
     var isLoading: Observable<Bool>
+    var buttonTitle: Observable<String?>
   }
 
   struct Dependency {
@@ -91,7 +92,8 @@ class AddWalletViewModel: BaseViewModel, ViewModel {
                          shakeError: shakeError.asObservable(),
                          errorMessage: errorMessage.asObservable(),
                          hardImpact: hardImpact.asObservable(),
-                         isLoading: isLoading.asObservable()
+                         isLoading: isLoading.asObservable(),
+                         buttonTitle: isLoading.startWith(false).map { $0 ? "" : "Activate Wallet".localized() }
     )
 
     self.dependency = dependency

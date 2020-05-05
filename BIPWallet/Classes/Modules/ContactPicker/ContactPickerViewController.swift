@@ -46,8 +46,11 @@ class ContactPickerViewController: BaseViewController, Controller, StoryboardIni
       .drive(viewModel.input.viewWillAppear)
       .disposed(by: disposeBag)
 
-    didTapEditOnCell.asDriver(onErrorJustReturn: nil).drive(viewModel.input.editItem).disposed(by: disposeBag)
-    didTapDeleteOnCell.asDriver(onErrorJustReturn: nil).drive(viewModel.input.deleteItem).disposed(by: disposeBag)
+    didTapEditOnCell.asDriver(onErrorJustReturn: nil)
+      .drive(viewModel.input.editItem).disposed(by: disposeBag)
+
+    didTapDeleteOnCell.asDriver(onErrorJustReturn: nil)
+      .drive(viewModel.input.deleteItem).disposed(by: disposeBag)
 
     tableView.rx.modelSelected(BaseCellItem.self)
       .asDriver()

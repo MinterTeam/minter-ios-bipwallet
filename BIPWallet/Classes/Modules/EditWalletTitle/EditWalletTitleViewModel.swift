@@ -105,6 +105,7 @@ class EditWalletTitleViewModel: BaseViewModel, ViewModel {
       }
     }).subscribe(didChange).disposed(by: disposeBag)
 
+    //
     didTapRemove.subscribe(onNext: { (_) in
       try? self.dependency.authService.remove(account: self.accountItem)
       self.didRemove.onNext(())

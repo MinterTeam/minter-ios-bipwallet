@@ -10,7 +10,6 @@
     <customFonts key="customFonts">
         <array key="Inter.otf">
             <string>Inter</string>
-            <string>Inter_Bold</string>
             <string>Inter_Medium</string>
             <string>Inter_Semi-Bold</string>
         </array>

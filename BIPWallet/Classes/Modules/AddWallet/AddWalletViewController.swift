@@ -106,6 +106,11 @@ class AddWalletViewController: BaseViewController, Controller, StoryboardInitial
       self?.mainView?.shakeError(duration: 0.07, repeatCount: 2)
     }).disposed(by: disposeBag)
 
+    viewModel.output.buttonTitle
+      .asDriver(onErrorJustReturn: nil)
+      .drive(activateButton.rx.title(for: .disabled))
+      .disposed(by: disposeBag)
+
     viewModel.output.isLoading.subscribe(onNext: { [weak self] (val) in
       if val {
         self?.activateButtonActivityIndicator.startAnimating()
