@@ -79,7 +79,10 @@ class ModifyContactViewModel: BaseViewModel, ViewModel {
 
   func bind() {
 
-    didTapGoButton.subscribe(onNext: { [weak self] (_) in
+    didTapGoButton.do(onSubscribe: { [weak self] in
+      self?.impact.onNext(.light)
+      self?.sound.onNext(.click)
+    }).subscribe(onNext: { [weak self] (_) in
       self?.saveForm()
     }).disposed(by: disposeBag)
 
@@ -105,6 +108,7 @@ class ModifyContactViewModel: BaseViewModel, ViewModel {
     }
     .do(onError: { [weak self] (error) in
       self?.shakeError.onNext(())
+      self?.impact.onNext(.hard)
       var errorTitle = "An Error occured".localized()
       if let error = error as? ModifyContactViewModelError {
         switch error {

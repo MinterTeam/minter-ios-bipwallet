@@ -47,6 +47,9 @@ class CoinsViewModel: BaseViewModel, ViewModel {
   }
 
   init(dependency: Dependency) {
+    super.init()
+
+    self.dependency = dependency
 
     self.input = Input(coins: coins.asObserver(),
                        viewDidLoad: viewDidLoad.asObserver(),
@@ -54,11 +57,8 @@ class CoinsViewModel: BaseViewModel, ViewModel {
     )
 
     self.output = Output(sections: sections.asObservable(),
-                         didTapExchangeButton: didTapExchangeButton.asObservable())
-
-    self.dependency = dependency
-
-    super.init()
+                         didTapExchangeButton: didTapExchangeButton.asObservable()
+    )
 
     bind()
   }
@@ -89,9 +89,14 @@ class CoinsViewModel: BaseViewModel, ViewModel {
       self?.createSections(isLoading: self?.isLoading ?? false, coins: coins)
     }).disposed(by: disposeBag)
 
-    didRefresh.subscribe(onNext: { (_) in
-      self.dependency.balanceService.updateBalance()
-      self.dependency.balanceService.updateDelegated()
+    didRefresh.subscribe(onNext: { [weak self] (_) in
+      self?.dependency.balanceService.updateBalance()
+      self?.dependency.balanceService.updateDelegated()
+    }).disposed(by: disposeBag)
+
+    didTapExchangeButton.subscribe(onNext: { [weak self] (_) in
+      self?.impact.onNext(.light)
+      self?.sound.onNext(.click)
     }).disposed(by: disposeBag)
 
   }

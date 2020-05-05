@@ -103,6 +103,9 @@ class ContactPickerViewModel: BaseViewModel, ViewModel {
       }.first
     }).filter({ (item) -> Bool in
       return item != nil
+    }).do(onNext: { [weak self] (_) in
+      self?.impact.onNext(.light)
+      self?.sound.onNext(.click)
     }).subscribe(didSelectContact).disposed(by: disposeBag)
 
     deleteItem.withLatestFrom(Observable.combineLatest(sections, deleteItem))
@@ -120,6 +123,9 @@ class ContactPickerViewModel: BaseViewModel, ViewModel {
     }).flatMap({ (item) -> Observable<Event<Void>> in
       guard let item = item else { return Observable.error(ContactPickerViewModelError.cantFindContactItem) }
       return self.dependency.contactsService.delete(item).materialize()
+    }).do(onNext: { [weak self] (_) in
+      self?.impact.onNext(.hard)
+      self?.sound.onNext(.click)
     }).subscribe(onNext: { [weak self] (res) in
       switch res {
       case .error(_):
@@ -142,7 +148,10 @@ class ContactPickerViewModel: BaseViewModel, ViewModel {
       }.first
     }).filter({ (item) -> Bool in
       return item != nil
-    }).map { $0! }.subscribe(editContact).disposed(by: disposeBag)
+    }).map { $0! }.do(onNext: { [weak self] (_) in
+      self?.impact.onNext(.light)
+      self?.sound.onNext(.click)
+    }).subscribe(editContact).disposed(by: disposeBag)
 
     Observable.zip(sections, didAddContact).map({ [weak self] (val) -> IndexPath? in
       let sections = val.0

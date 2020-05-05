@@ -31,6 +31,8 @@ class ModifyContactViewController: BaseViewController, Controller, StoryboardIni
   var viewModel: ViewModelType!
 
   func configure(with viewModel: ModifyContactViewModel) {
+    configureDefault()
+
     //Input
     (address.rx.text <-> viewModel.output.address).disposed(by: disposeBag)
     (name.rx.text <-> viewModel.output.name).disposed(by: disposeBag)

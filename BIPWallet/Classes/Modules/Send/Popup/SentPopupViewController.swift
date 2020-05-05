@@ -20,9 +20,11 @@ class SentPopupViewController: PopupViewController, Controller, StoryboardInitia
 	// MARK: -
 
 	typealias ViewModelType = SentPopupViewModel
+
 	var viewModel: SentPopupViewModel!
+
 	func configure(with viewModel: SentPopupViewModel) {
-		
+
 	}
 
 	weak var delegate: SentPopupViewControllerDelegate?
@@ -56,10 +58,6 @@ class SentPopupViewController: PopupViewController, Controller, StoryboardInitia
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		updateUI()
-	}
-
-	override func didReceiveMemoryWarning() {
-		super.didReceiveMemoryWarning()
 	}
 
 	// MARK: -

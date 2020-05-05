@@ -40,6 +40,8 @@ class DelegateUnbondViewController: BaseViewController, Controller, StoryboardIn
   var viewModel: ViewModelType!
 
   func configure(with viewModel: DelegateUnbondViewModel) {
+    configureDefault()
+
     //Output
     viewModel.output.showValidators.subscribe(onNext: { [weak self] data in
       self?.showPicker(data: data) { selected in

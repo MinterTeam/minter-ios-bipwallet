@@ -411,7 +411,11 @@ YOU ARE ABOUT TO SEND SEED PHRASE IN THE MESSAGE ATTACHED TO THIS TRANSACTION.\n
     username.stateObservable = addressStateSubject.asObservable()
     username.keybordType = .emailAddress
     (username.text <-> recipientSubject).disposed(by: disposeBag)
-    username.didTapContacts.subscribe(showContactsPicker).disposed(by: disposeBag)
+    username.didTapContacts.subscribe(onNext: { [weak self] _ in
+      self?.showContactsPicker.onNext(())
+      self?.impact.onNext(.light)
+      self?.sound.onNext(.click)
+    }).disposed(by: disposeBag)
 
     let coin = PickerTableViewCellItem(reuseIdentifier: "PickerTableViewCell",
                                        identifier: CellIdentifierPrefix.coin.rawValue)
@@ -476,6 +480,8 @@ YOU ARE ABOUT TO SEND SEED PHRASE IN THE MESSAGE ATTACHED TO THIS TRANSACTION.\n
         return _self.formatter.formattedDecimal(with: balance)
       })
       .subscribe(onNext: { [weak self] (val) in
+        self?.impact.onNext(.light)
+        self?.sound.onNext(.click)
         self?.amountSubject.accept(val)
       }).disposed(by: disposeBag)
 
@@ -517,12 +523,14 @@ YOU ARE ABOUT TO SEND SEED PHRASE IN THE MESSAGE ATTACHED TO THIS TRANSACTION.\n
       .asDriver(onErrorJustReturn: ())
       .drive(onNext: { [weak self] (_) in
         self?.sendButtonTaped()
+        self?.impact.onNext(.hard)
+        self?.sound.onNext(.bip)
       }).disposed(by: self.disposeBag)
 
     let section = BaseTableSectionItem(identifier: "SendSection",
                                        header: "SEND COINS",
                                        items: [blank, coin, blank1, amount, blank2, username, blank3, payload, blank4, fee, blank5, button])
-//    section.timerText = Observable.just(self.headerViewLastUpdatedTitleText(seconds: 3))
+
     return [section]
   }
 

@@ -85,7 +85,10 @@ class DelegatedViewModel: BaseViewModel, ViewModel {
       self?.loadData()
     }).disposed(by: disposeBag)
 
-    didTapAdd.map { _ in nil }.subscribe(showDelegate).disposed(by: disposeBag)
+    didTapAdd.map { _ in nil }.do(onNext: { [weak self] (_) in
+      self?.impact.onNext(.light)
+      self?.sound.onNext(.click)
+    }).subscribe(showDelegate).disposed(by: disposeBag)
 
     didTapUnbond.map { (indexPath) -> (ValidatorItem?, String?) in
       guard let indexPath = indexPath else { return (nil, nil) }
@@ -105,7 +108,10 @@ class DelegatedViewModel: BaseViewModel, ViewModel {
         return (ValidatorItem(publicKey: publicKey, name: item.validatorName), coin?.key)
       }
       return (nil, nil)
-    }.subscribe(showUnbond).disposed(by: disposeBag)
+    }.do(onNext: { [weak self] (_) in
+      self?.impact.onNext(.light)
+      self?.sound.onNext(.click)
+    }).subscribe(showUnbond).disposed(by: disposeBag)
   }
 
   //Sorting keys according to overall bipValue delegated

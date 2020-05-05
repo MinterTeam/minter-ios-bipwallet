@@ -30,6 +30,8 @@ class ContactPickerViewController: BaseViewController, Controller, StoryboardIni
   var rxDataSource: RxTableViewSectionedAnimatedDataSource<BaseTableSectionItem>?
 
   func configure(with viewModel: ContactPickerViewModel) {
+    configureDefault()
+
     //Input
     addItem.rx
       .tap

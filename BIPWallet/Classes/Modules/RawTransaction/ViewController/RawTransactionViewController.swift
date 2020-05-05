@@ -92,7 +92,7 @@ class RawTransactionViewController: BaseViewController, Controller, StoryboardIn
 			.vibrate
 			.asDriver(onErrorJustReturn: ())
 			.drive(onNext: { [weak self] _ in
-//				SoundHelper.playSoundIfAllowed(type: .bip)
+				SoundHelper.playSoundIfAllowed(type: .bip)
 				self?.hardImpactFeedbackGenerator.prepare()
 				self?.hardImpactFeedbackGenerator.impactOccurred()
 		}).disposed(by: disposeBag)
@@ -145,14 +145,14 @@ extension RawTransactionViewController: SentPopupViewControllerDelegate, Confirm
 	// MARK: - ConfirmPopupViewController Delegate
 
 	func didTapActionButton(viewController: ConfirmPopupViewController) {
-//		SoundHelper.playSoundIfAllowed(type: .click)
+		SoundHelper.playSoundIfAllowed(type: .click)
 		hardImpactFeedbackGenerator.prepare()
 		hardImpactFeedbackGenerator.impactOccurred()
 //		AnalyticsHelper.defaultAnalytics.track(event: .rawTransactionPopupViewTransactionButton)
 	}
 
 	func didTapSecondButton(viewController: ConfirmPopupViewController) {
-//		SoundHelper.playSoundIfAllowed(type: .cancel)
+		SoundHelper.playSoundIfAllowed(type: .cancel)
 		lightImpactFeedbackGenerator.prepare()
 //		AnalyticsHelper.defaultAnalytics.track(event: .rawTransactionPopupCloseButton)
 		viewController.dismiss(animated: true, completion: nil)
@@ -161,7 +161,7 @@ extension RawTransactionViewController: SentPopupViewControllerDelegate, Confirm
 	// MARK: - SentPopupViewControllerDelegate
 
 	func didTapActionButton(viewController: SentPopupViewController) {
-//		SoundHelper.playSoundIfAllowed(type: .click)
+		SoundHelper.playSoundIfAllowed(type: .click)
 		hardImpactFeedbackGenerator.prepare()
 		hardImpactFeedbackGenerator.impactOccurred()
 //		AnalyticsHelper.defaultAnalytics.track(event: .rawTransactionPopupViewTransactionButton)
@@ -177,7 +177,7 @@ extension RawTransactionViewController: SentPopupViewControllerDelegate, Confirm
 	}
 
 	func didTapSecondActionButton(viewController: SentPopupViewController) {
-//		SoundHelper.playSoundIfAllowed(type: .click)
+		SoundHelper.playSoundIfAllowed(type: .click)
 		lightImpactFeedbackGenerator.prepare()
 		lightImpactFeedbackGenerator.impactOccurred()
 //		AnalyticsHelper.defaultAnalytics.track(event: .rawTransactionPopupShareTransactionButton)
@@ -193,7 +193,7 @@ extension RawTransactionViewController: SentPopupViewControllerDelegate, Confirm
 	}
 
 	func didTapSecondButton(viewController: SentPopupViewController) {
-//		SoundHelper.playSoundIfAllowed(type: .cancel)
+		SoundHelper.playSoundIfAllowed(type: .cancel)
 		lightImpactFeedbackGenerator.prepare()
 //		AnalyticsHelper.defaultAnalytics.track(event: .rawTransactionPopupCloseButton)
 		viewController.dismiss(animated: true) { [weak self] in

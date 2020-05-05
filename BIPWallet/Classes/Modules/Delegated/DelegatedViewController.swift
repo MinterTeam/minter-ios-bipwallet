@@ -34,6 +34,8 @@ class DelegatedViewController: BaseViewController, Controller, StoryboardInitial
   typealias ViewModelType = DelegatedViewModel
 
   func configure(with viewModel: DelegatedViewModel) {
+    configureDefault()
+
     //Input
     self.rx.viewDidLoad.bind(to: viewModel.input.viewDidLoad).disposed(by: disposeBag)
 

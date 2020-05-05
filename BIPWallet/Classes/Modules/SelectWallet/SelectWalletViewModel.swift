@@ -88,10 +88,14 @@ class SelectWalletViewModel: BaseViewModel, ViewModel {
   }
 
   func bind() {
-//    self.createSections(accounts: self.accounts)
     viewDidLoad.subscribe(onNext: { [weak self] (_) in
       guard let `self` = self else { return }
       self.createSections(accounts: self.accounts)
+    }).disposed(by: disposeBag)
+
+    didSelectObserable().subscribe(onNext: { [weak self] (_) in
+      self?.impact.onNext(.hard)
+      self?.sound.onNext(.click)
     }).disposed(by: disposeBag)
   }
 

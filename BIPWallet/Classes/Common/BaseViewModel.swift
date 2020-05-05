@@ -9,6 +9,11 @@
 import Foundation
 import RxSwift
 
+enum ImpactType {
+  case light
+  case hard
+}
+
 protocol ViewModel {
   associatedtype Input
   associatedtype Output
@@ -17,8 +22,16 @@ protocol ViewModel {
   var input: Input! { get }
   var output: Output! { get }
   var dependency: Dependency! { get }
+
+  var impact: PublishSubject<ImpactType> { get set }
+  var sound: PublishSubject<SoundType> { get set }
 }
 
 class BaseViewModel {
+
   var disposeBag = DisposeBag()
+
+  var impact = PublishSubject<ImpactType>()
+  var sound = PublishSubject<SoundType>()
+
 }

@@ -274,6 +274,11 @@
 		FAD1438C2459761F002C2F1C /* CIColorExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAD143882459761F002C2F1C /* CIColorExtension.swift */; };
 		FAD1438D2459761F002C2F1C /* QRCode.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAD143892459761F002C2F1C /* QRCode.swift */; };
 		FAD1438F245C1B83002C2F1C /* UILabel+Letterspacing.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAD1438E245C1B83002C2F1C /* UILabel+Letterspacing.swift */; };
+		FADA6F9E24615E2D00FFBCCF /* SoundHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = FADA6F9D24615E2D00FFBCCF /* SoundHelper.swift */; };
+		FADA6FA424615E5200FFBCCF /* pop_down.wav in Resources */ = {isa = PBXBuildFile; fileRef = FADA6FA024615E5200FFBCCF /* pop_down.wav */; };
+		FADA6FA524615E5200FFBCCF /* beep_digi_octave.wav in Resources */ = {isa = PBXBuildFile; fileRef = FADA6FA124615E5200FFBCCF /* beep_digi_octave.wav */; };
+		FADA6FA624615E5200FFBCCF /* pop_zap.wav in Resources */ = {isa = PBXBuildFile; fileRef = FADA6FA224615E5200FFBCCF /* pop_zap.wav */; };
+		FADA6FA724615E5200FFBCCF /* pop_hi.wav in Resources */ = {isa = PBXBuildFile; fileRef = FADA6FA324615E5200FFBCCF /* pop_hi.wav */; };
 		FAE01A2F244B720C00C5EB96 /* AccountService.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAE01A2E244B720C00C5EB96 /* AccountService.swift */; };
 		FAE01A31244B72A700C5EB96 /* LocalStorageAccountService.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAE01A30244B72A700C5EB96 /* LocalStorageAccountService.swift */; };
 		FAE162D22402EE36007E9CAD /* UISegmentedControl+Font.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAE162D12402EE36007E9CAD /* UISegmentedControl+Font.swift */; };
@@ -595,6 +600,11 @@
 		FAD143882459761F002C2F1C /* CIColorExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CIColorExtension.swift; sourceTree = "<group>"; };
 		FAD143892459761F002C2F1C /* QRCode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QRCode.swift; sourceTree = "<group>"; };
 		FAD1438E245C1B83002C2F1C /* UILabel+Letterspacing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UILabel+Letterspacing.swift"; sourceTree = "<group>"; };
+		FADA6F9D24615E2D00FFBCCF /* SoundHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SoundHelper.swift; sourceTree = "<group>"; };
+		FADA6FA024615E5200FFBCCF /* pop_down.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = pop_down.wav; sourceTree = "<group>"; };
+		FADA6FA124615E5200FFBCCF /* beep_digi_octave.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = beep_digi_octave.wav; sourceTree = "<group>"; };
+		FADA6FA224615E5200FFBCCF /* pop_zap.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = pop_zap.wav; sourceTree = "<group>"; };
+		FADA6FA324615E5200FFBCCF /* pop_hi.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = pop_hi.wav; sourceTree = "<group>"; };
 		FAE01A2E244B720C00C5EB96 /* AccountService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountService.swift; sourceTree = "<group>"; };
 		FAE01A30244B72A700C5EB96 /* LocalStorageAccountService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalStorageAccountService.swift; sourceTree = "<group>"; };
 		FAE162D12402EE36007E9CAD /* UISegmentedControl+Font.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UISegmentedControl+Font.swift"; sourceTree = "<group>"; };
@@ -1194,6 +1204,7 @@
 			children = (
 				FADB357723F1A42400FCDBF9 /* Classes */,
 				FA9E519623ED9972007263B9 /* Main.storyboard */,
+				FADA6F9F24615E5200FFBCCF /* Sounds */,
 				FACA657523F6C07E00399359 /* Fonts */,
 				FA9E519923ED9976007263B9 /* Assets.xcassets */,
 				FA9E519B23ED9976007263B9 /* LaunchScreen.storyboard */,
@@ -1325,6 +1336,7 @@
 		FACA655F23F6B85C00399359 /* Helper */ = {
 			isa = PBXGroup;
 			children = (
+				FADA6F9D24615E2D00FFBCCF /* SoundHelper.swift */,
 				FA62232B24517D9E006089EC /* URL+Params.swift */,
 				FA62232924517D17006089EC /* RawTransactionType+Helper.swift */,
 				FA62232724517CF8006089EC /* Data+Base64URL.swift */,
@@ -1400,6 +1412,17 @@
 				FAD143892459761F002C2F1C /* QRCode.swift */,
 			);
 			path = QRCode;
+			sourceTree = "<group>";
+		};
+		FADA6F9F24615E5200FFBCCF /* Sounds */ = {
+			isa = PBXGroup;
+			children = (
+				FADA6FA024615E5200FFBCCF /* pop_down.wav */,
+				FADA6FA124615E5200FFBCCF /* beep_digi_octave.wav */,
+				FADA6FA224615E5200FFBCCF /* pop_zap.wav */,
+				FADA6FA324615E5200FFBCCF /* pop_hi.wav */,
+			);
+			path = Sounds;
 			sourceTree = "<group>";
 		};
 		FADB357723F1A42400FCDBF9 /* Classes */ = {
@@ -1586,13 +1609,16 @@
 				FA520BB1241FDC8000146E49 /* TransactionAddressCell.xib in Resources */,
 				FA62232324517C93006089EC /* RawTransactionFieldTableViewCell.xib in Resources */,
 				FA3BDE87242BAA5E0076A7F4 /* AmountTextFieldTableViewCell.xib in Resources */,
+				FADA6FA724615E5200FFBCCF /* pop_hi.wav in Resources */,
 				FAF317872421189500D1556C /* TransactionTwoColumnCell.xib in Resources */,
 				FA169675243CB55C00F36FF2 /* AddWallet.storyboard in Resources */,
 				FA39EA102404D20200757020 /* LoadingTableViewCell.xib in Resources */,
 				FAF04BD024486EEB004CBC07 /* DelegateUnbond.storyboard in Resources */,
 				FA41B225245D96ED008C0E5C /* Inter.otf in Resources */,
+				FADA6FA524615E5200FFBCCF /* beep_digi_octave.wav in Resources */,
 				FA3BDE69242BA5110076A7F4 /* TextViewTableViewCell.xib in Resources */,
 				FA91D58C243630AF00F901AF /* ContactPickerHeader.xib in Resources */,
+				FADA6FA624615E5200FFBCCF /* pop_zap.wav in Resources */,
 				FA663D3E23FEEB830029D5D0 /* CoinTableViewCell.xib in Resources */,
 				FA663D49240019210029D5D0 /* SeparatorTableViewCell.xib in Resources */,
 				FA3BDE75242BA7000076A7F4 /* UsernameTableViewCell.xib in Resources */,
@@ -1620,6 +1646,7 @@
 				FACA65D723FBEB1C00399359 /* CreateWallet.storyboard in Resources */,
 				FA6AFB45244DC25100CCBE19 /* SwitchTableViewCell.xib in Resources */,
 				FAAE57D124473E690035CE99 /* Delegated.storyboard in Resources */,
+				FADA6FA424615E5200FFBCCF /* pop_down.wav in Resources */,
 				FA787472242109EC0039E2BB /* TransactionKeyValueCell.xib in Resources */,
 				FAE162F92403E2EE007E9CAD /* TransactionCell.xib in Resources */,
 				FAE621F1240560490040BE4C /* SelectWallet.storyboard in Resources */,
@@ -1882,6 +1909,7 @@
 				FA3BDE96242BE9AF0076A7F4 /* SendPopupViewController.swift in Sources */,
 				FA3BDEA7242BED2A0076A7F4 /* DroppableView.swift in Sources */,
 				FA3BDE59242B83C80076A7F4 /* QRCodeReaderViewController.swift in Sources */,
+				FADA6F9E24615E2D00FFBCCF /* SoundHelper.swift in Sources */,
 				FB1474DD9AFFB75F0EA9A397 /* SpendCoinsViewController.swift in Sources */,
 				247204D1E318C906847A4B65 /* SpendCoinsViewModel.swift in Sources */,
 				FA62232624517C93006089EC /* RawTransactionRouter.swift in Sources */,

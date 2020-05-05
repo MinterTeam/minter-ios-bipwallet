@@ -13,6 +13,9 @@ import SnapKit
 
 class BalanceViewController: SegmentedPagerTabStripViewController, Controller, StoryboardInitializable {
 
+  var hardImpactFeedbackGenerator: UIImpactFeedbackGenerator = UIImpactFeedbackGenerator(style: .heavy)
+  var lightImpactFeedbackGenerator: UIImpactFeedbackGenerator = UIImpactFeedbackGenerator(style: .light)
+
   // MARK: -
 
   var disposeBag = DisposeBag()
@@ -144,6 +147,26 @@ class BalanceViewController: SegmentedPagerTabStripViewController, Controller, S
         }
       }
     }
+  }
+
+  func configureDefault() {
+
+    viewModel.impact.asDriver(onErrorJustReturn: .light).drive(onNext: { (type) in
+      switch type {
+      case .light:
+        self.lightImpactFeedbackGenerator.prepare()
+        self.lightImpactFeedbackGenerator.impactOccurred()
+
+      case .hard:
+        self.hardImpactFeedbackGenerator.prepare()
+        self.hardImpactFeedbackGenerator.impactOccurred()
+      }
+    }).disposed(by: disposeBag)
+
+    viewModel.sound.asDriver(onErrorJustReturn: .cancel).drive(onNext: { (type) in
+      SoundHelper.playSoundIfAllowed(type: type)
+    }).disposed(by: disposeBag)
+
   }
 
   // MARK: - ViewController

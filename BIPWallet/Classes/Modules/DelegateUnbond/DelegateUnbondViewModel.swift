@@ -187,7 +187,10 @@ class DelegateUnbondViewModel: BaseViewModel, ViewModel {
 
   func bind() {
 
-    didTapUseMax.withLatestFrom(coin).subscribe(onNext: { (coin) in
+    didTapUseMax.do(onNext: { [weak self] (_) in
+      self?.impact.onNext(.light)
+      self?.sound.onNext(.click)
+    }).withLatestFrom(coin).subscribe(onNext: { (coin) in
       guard let coin = coin, let balance = self.coinsPickerSource[coin]?.balance else { return }
       let balanceStr = CurrencyNumberFormatter.formattedDecimal(with: balance, formatter: self.coinFormatter)
       self.amount.accept(balanceStr)
@@ -237,7 +240,10 @@ class DelegateUnbondViewModel: BaseViewModel, ViewModel {
       self.coin.accept(selectedItem.title)
     }).disposed(by: disposeBag)
 
-    didTapSend.withLatestFrom(self.isValidForm).filter { $0 == true }
+    didTapSend.do(onNext: { [weak self] (_) in
+      self?.impact.onNext(.hard)
+      self?.sound.onNext(.bip)
+    }).withLatestFrom(self.isValidForm).filter { $0 == true }
       .withLatestFrom(Observable.combineLatest(self.form, self.dependency.balanceService.account))
       .do(onNext: { [weak self] (_) in
         self?.isLoading.onNext(true)

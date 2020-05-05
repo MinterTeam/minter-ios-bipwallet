@@ -28,6 +28,8 @@ class SettingsViewController: BaseViewController, Controller, StoryboardInitiali
   var viewModel: ViewModelType!
 
   func configure(with viewModel: SettingsViewModel) {
+    configureDefault()
+
     //Output
     viewModel.output.sections
       .bind(to: tableView.rx.items(dataSource: rxDataSource!))
@@ -36,6 +38,7 @@ class SettingsViewController: BaseViewController, Controller, StoryboardInitiali
     self.rx.viewWillAppear.asDriver(onErrorJustReturn: false).map { _ in }
       .drive(viewModel.input.viewWillAppear).disposed(by: disposeBag)
 
+    //Input
     tableView.rx.modelSelected(BaseCellItem.self).asDriver()
       .drive(viewModel.input.didSelectModel)
       .disposed(by: disposeBag)

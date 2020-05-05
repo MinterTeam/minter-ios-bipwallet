@@ -20,8 +20,7 @@ class BalanceViewModel: BaseViewModel, ViewModel, WalletSelectableViewModel {
     case totalBalanceUSD
   }
 
-  var changedBalanceTypeSubject =
-    BehaviorSubject<BalanceType>(value: BalanceType.balanceBIP)
+  var changedBalanceTypeSubject = BehaviorSubject<BalanceType>(value: BalanceType.balanceBIP)
 
   // MARK: -
 

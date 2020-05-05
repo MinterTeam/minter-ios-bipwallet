@@ -30,7 +30,7 @@ class CoinsViewController: BaseViewController, Controller, StoryboardInitializab
   }
 
   @objc func handleRefresh(_ refreshControl: UIRefreshControl) {
-//    SoundHelper.playSoundIfAllowed(type: .refresh)
+    SoundHelper.playSoundIfAllowed(type: .refresh)
     refreshControl.endRefreshing()
   }
 
@@ -43,6 +43,8 @@ class CoinsViewController: BaseViewController, Controller, StoryboardInitializab
   var rxDataSource: RxTableViewSectionedAnimatedDataSource<BaseTableSectionItem>?
 
   func configure(with viewModel: CoinsViewModel) {
+    configureDefault()
+
     //Input
     self.rx.viewDidLoad.asDriver(onErrorJustReturn: ())
       .drive(viewModel.input.viewDidLoad)

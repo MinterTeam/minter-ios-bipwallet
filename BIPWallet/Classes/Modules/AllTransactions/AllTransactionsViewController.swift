@@ -80,18 +80,27 @@ class AllTransactionsViewController: BaseViewController, Controller, StoryboardI
       self.filterAll.isSelected = true
       self.filterIncoming.isSelected = false
       self.filterOutgoing.isSelected = false
+      SoundHelper.playSoundIfAllowed(type: .refresh)
+      self.lightImpactFeedbackGenerator.prepare()
+      self.lightImpactFeedbackGenerator.impactOccurred()
     }).subscribe().disposed(by: disposeBag)
 
     filterIncoming.rx.tap.do(onNext: { (_) in
       self.filterIncoming.isSelected = true
       self.filterAll.isSelected = false
       self.filterOutgoing.isSelected = false
+      SoundHelper.playSoundIfAllowed(type: .refresh)
+      self.lightImpactFeedbackGenerator.prepare()
+      self.lightImpactFeedbackGenerator.impactOccurred()
     }).subscribe().disposed(by: disposeBag)
 
     filterOutgoing.rx.tap.do(onNext: { (_) in
       self.filterOutgoing.isSelected = true
       self.filterAll.isSelected = false
       self.filterIncoming.isSelected = false
+      SoundHelper.playSoundIfAllowed(type: .refresh)
+      self.lightImpactFeedbackGenerator.prepare()
+      self.lightImpactFeedbackGenerator.impactOccurred()
     }).subscribe().disposed(by: disposeBag)
 
     registerCells()

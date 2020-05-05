@@ -19,7 +19,9 @@ class SendPopupViewController: PopupViewController, Controller, StoryboardInitia
 	// MARK: -
 
 	typealias ViewModelType = SendPopupViewModel
+
 	var viewModel: SendPopupViewModel!
+
 	func configure(with viewModel: SendPopupViewModel) {
 
 	}

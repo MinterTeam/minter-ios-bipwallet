@@ -171,6 +171,7 @@ class SendViewController: BaseViewController,
 extension SendViewController {
 
   func configure(with viewModel: SendViewModel) {// swiftlint:disable:this type_body_length cyclomatic_complexity function_body_length
+    configureDefault()
     autocompleteView.dataSource = viewModel
     autocompleteView.delegate = viewModel
 
@@ -343,9 +344,9 @@ extension SendViewController: PickerTableViewCellDataSource {
 extension SendViewController: ButtonTableViewCellDelegate {
 
   func buttonTableViewCellDidTap(_ cell: ButtonTableViewCell) {
-//    SoundHelper.playSoundIfAllowed(type: .bip)
-//    hardImpactFeedbackGenerator.prepare()
-//    hardImpactFeedbackGenerator.impactOccurred()
+    SoundHelper.playSoundIfAllowed(type: .bip)
+    hardImpactFeedbackGenerator.prepare()
+    hardImpactFeedbackGenerator.impactOccurred()
 //    AnalyticsHelper.defaultAnalytics.track(event: .sendCoinsSendButton)
     tableView.endEditing(true)
   }
@@ -360,15 +361,15 @@ extension SendViewController {
   // MARK: - SendPopupViewControllerDelegate
 
   func didFinish(viewController: SendPopupViewController) {
-//    SoundHelper.playSoundIfAllowed(type: .bip)
-//    lightImpactFeedbackGenerator.prepare()
-//    lightImpactFeedbackGenerator.impactOccurred()
+    SoundHelper.playSoundIfAllowed(type: .bip)
+    lightImpactFeedbackGenerator.prepare()
+    lightImpactFeedbackGenerator.impactOccurred()
 //    AnalyticsHelper.defaultAnalytics.track(event: .sendCoinPopupSendButton)
     viewModel.submitSendButtonTaped()
   }
 
   func didCancel(viewController: SendPopupViewController) {
-//    SoundHelper.playSoundIfAllowed(type: .cancel)
+    SoundHelper.playSoundIfAllowed(type: .cancel)
 //    AnalyticsHelper.defaultAnalytics.track(event: .sendCoinPopupCancelButton)
     viewController.dismiss(animated: true, completion: nil)
   }
@@ -376,9 +377,9 @@ extension SendViewController {
   // MARK: - SentPopupViewControllerDelegate
 
   func didTapActionButton(viewController: SentPopupViewController) {
-//    SoundHelper.playSoundIfAllowed(type: .click)
-//    hardImpactFeedbackGenerator.prepare()
-//    hardImpactFeedbackGenerator.impactOccurred()
+    SoundHelper.playSoundIfAllowed(type: .click)
+    hardImpactFeedbackGenerator.prepare()
+    hardImpactFeedbackGenerator.impactOccurred()
 //    AnalyticsHelper.defaultAnalytics.track(event: .sentCoinPopupViewTransactionButton)
     viewController.dismiss(animated: true) { [weak self] in
       if let url = self?.viewModel.lastTransactionExplorerURL() {
@@ -389,9 +390,9 @@ extension SendViewController {
   }
 
   func didTapSecondActionButton(viewController: SentPopupViewController) {
-//    SoundHelper.playSoundIfAllowed(type: .click)
-//    lightImpactFeedbackGenerator.prepare()
-//    lightImpactFeedbackGenerator.impactOccurred()
+    SoundHelper.playSoundIfAllowed(type: .click)
+    lightImpactFeedbackGenerator.prepare()
+    lightImpactFeedbackGenerator.impactOccurred()
 //    AnalyticsHelper.defaultAnalytics.track(event: .sentCoinPopupShareTransactionButton)
     viewController.dismiss(animated: true) { [weak self] in
       if let url = self?.viewModel.lastTransactionExplorerURL() {
@@ -402,8 +403,8 @@ extension SendViewController {
   }
 
   func didTapSecondButton(viewController: SentPopupViewController) {
-//    SoundHelper.playSoundIfAllowed(type: .cancel)
-//    lightImpactFeedbackGenerator.prepare()
+    SoundHelper.playSoundIfAllowed(type: .cancel)
+    lightImpactFeedbackGenerator.prepare()
 //    AnalyticsHelper.defaultAnalytics.track(event: .sentCoinPopupCloseButton)
     viewController.dismiss(animated: true, completion: nil)
   }

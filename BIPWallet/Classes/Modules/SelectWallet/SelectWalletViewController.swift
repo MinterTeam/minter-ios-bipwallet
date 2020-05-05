@@ -25,6 +25,8 @@ class SelectWalletViewController: BaseViewController, Controller, StoryboardInit
   var viewModel: ViewModelType!
 
   func configure(with viewModel: SelectWalletViewModel) {
+    configureDefault()
+
     //Input
     rx.viewDidLoad.map { _ in return Void() }
       .asDriver(onErrorJustReturn: ())
@@ -85,6 +87,7 @@ class SelectWalletViewController: BaseViewController, Controller, StoryboardInit
     viewModel.input.viewDidLoad.onNext(())
 
     view.layoutIfNeeded()
+    view.layer.applySketchShadow(color: UIColor(hex: 0x000000)!, alpha: 0.3, x: 0, y: 2, blur: 20, spread: 0)
   }
 
   func registerCells() {

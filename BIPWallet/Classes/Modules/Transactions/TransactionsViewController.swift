@@ -28,7 +28,7 @@ class TransactionsViewController: BaseViewController, Controller, StoryboardInit
   }
 
   @objc func handleRefresh(_ refreshControl: UIRefreshControl) {
-//    SoundHelper.playSoundIfAllowed(type: .refresh)
+    SoundHelper.playSoundIfAllowed(type: .refresh)
     refreshControl.endRefreshing()
   }
 
