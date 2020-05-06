@@ -31,6 +31,7 @@ class ContactPickerViewModel: BaseViewModel, ViewModel {
     var didAddContact: AnyObserver<ContactItem?>
     var editItem: AnyObserver<IndexPath?>
     var deleteItem: AnyObserver<IndexPath?>
+    var deleteContact: AnyObserver<ContactItem>
   }
 
   struct Output {
@@ -40,6 +41,7 @@ class ContactPickerViewModel: BaseViewModel, ViewModel {
     var scrollToCell: Observable<IndexPath?>
     var showError: Observable<String?>
     var editContact: Observable<ContactItem>
+    var deleteContact: Observable<ContactItem>
   }
 
   struct Dependency {
@@ -47,6 +49,9 @@ class ContactPickerViewModel: BaseViewModel, ViewModel {
   }
 
   init(dependency: Dependency) {
+    super.init()
+
+    self.dependency = dependency
 
     self.input = Input(didTapAddContact: didTapAddContact.asObserver(),
                        viewWillAppear: viewWillAppear.asObserver(),
@@ -54,7 +59,8 @@ class ContactPickerViewModel: BaseViewModel, ViewModel {
                        modelSelected: modelSelected.asObserver(),
                        didAddContact: didAddContact.asObserver(),
                        editItem: editItem.asObserver(),
-                       deleteItem: deleteItem.asObserver()
+                       deleteItem: deleteItem.asObserver(),
+                       deleteContact: deleteContact.asObserver()
     )
 
     self.output = Output(didSelectContact: didSelectContact.asObservable(),
@@ -62,12 +68,19 @@ class ContactPickerViewModel: BaseViewModel, ViewModel {
                          showAddContact: didTapAddContact.asObservable(),
                          scrollToCell: scrollToCell.asObservable(),
                          showError: showError.asObservable(),
-                         editContact: editContact.asObservable()
+                         editContact: editContact.asObservable(),
+                         deleteContact: deleteItem.withLatestFrom(Observable.combineLatest(sections, deleteItem))
+                           .map({ [weak self] (val) -> ContactItem? in
+                             let sections = val.0
+                             let cellIndexPath = val.1
+
+                             guard let indexPath = cellIndexPath, let model = sections[safe: indexPath.section]?.items[safe: indexPath.row] else { return nil }
+
+                             return self?.contacts.filter { (item) -> Bool in
+                               return (self?.cellIdentifierFor(item: item) ?? "") == model.identifier
+                             }.first
+                           }).filter{ $0 != nil }.map { $0! }
     )
-
-    self.dependency = dependency
-
-    super.init()
 
     bind()
   }
@@ -88,6 +101,7 @@ class ContactPickerViewModel: BaseViewModel, ViewModel {
   private var deleteItem = PublishSubject<IndexPath?>()
   private var showError = PublishSubject<String?>()
   private var editContact = PublishSubject<ContactItem>()
+  private var deleteContact = PublishSubject<ContactItem>()
 
   func bind() {
 
@@ -108,20 +122,35 @@ class ContactPickerViewModel: BaseViewModel, ViewModel {
       self?.sound.onNext(.click)
     }).subscribe(didSelectContact).disposed(by: disposeBag)
 
-    deleteItem.withLatestFrom(Observable.combineLatest(sections, deleteItem))
-      .map({ [weak self] (val) -> ContactItem? in
-      let sections = val.0
-      let cellIndexPath = val.1
+//    deleteItem.withLatestFrom(Observable.combineLatest(sections, deleteItem))
+//      .map({ [weak self] (val) -> ContactItem? in
+//      let sections = val.0
+//      let cellIndexPath = val.1
+//
+//      guard let indexPath = cellIndexPath, let model = sections[safe: indexPath.section]?.items[safe: indexPath.row] else { return nil }
+//
+//      return self?.contacts.filter { (item) -> Bool in
+//        return (self?.cellIdentifierFor(item: item) ?? "") == model.identifier
+//      }.first
+//    }).filter({ (item) -> Bool in
+//      return item != nil
+//    }).flatMap({ (item) -> Observable<Event<Void>> in
+//      guard let item = item else { return Observable.error(ContactPickerViewModelError.cantFindContactItem) }
+//      return self.dependency.contactsService.delete(item).materialize()
+//    }).do(onNext: { [weak self] (_) in
+//      self?.impact.onNext(.hard)
+//      self?.sound.onNext(.click)
+//    }).subscribe(onNext: { [weak self] (res) in
+//      switch res {
+//      case .error(_):
+//        break
+//
+//      default:
+//        self?.loadData()
+//      }
+//    }).disposed(by: disposeBag)
 
-      guard let indexPath = cellIndexPath, let model = sections[safe: indexPath.section]?.items[safe: indexPath.row] else { return nil }
-
-      return self?.contacts.filter { (item) -> Bool in
-        return (self?.cellIdentifierFor(item: item) ?? "") == model.identifier
-      }.first
-    }).filter({ (item) -> Bool in
-      return item != nil
-    }).flatMap({ (item) -> Observable<Event<Void>> in
-      guard let item = item else { return Observable.error(ContactPickerViewModelError.cantFindContactItem) }
+    deleteContact.flatMap({ (item) -> Observable<Event<Void>> in
       return self.dependency.contactsService.delete(item).materialize()
     }).do(onNext: { [weak self] (_) in
       self?.impact.onNext(.hard)

@@ -17,7 +17,7 @@ enum ContactPickerResult {
 class ContactPickerCoordinator: BaseCoordinator<ContactPickerResult> {
 
   private let rootViewController: UIViewController
-  let contactsService: ContactsService
+  private let contactsService: ContactsService
 
   init(rootViewController: UIViewController, contactsService: ContactsService) {
     self.rootViewController = rootViewController
@@ -45,7 +45,7 @@ class ContactPickerCoordinator: BaseCoordinator<ContactPickerResult> {
       }
       return Observable.just((nil))
     }).subscribe(viewModel.input.didAddContact).disposed(by: disposeBag)
-    
+
     viewModel.output.editContact.flatMap({ (val) -> Observable<ContactItem?> in
       if let rootvc = UIApplication.shared.keyWindow?.rootViewController {
         return self.showEditContact(contactItem: val, from: rootvc)
@@ -53,9 +53,22 @@ class ContactPickerCoordinator: BaseCoordinator<ContactPickerResult> {
       return Observable.just((nil))
     }).subscribe(viewModel.input.didAddContact).disposed(by: disposeBag)
 
+    viewModel.output.deleteContact.flatMap { (contact) -> Observable<ContactRemoveConfirmationCoordinatorResult> in
+      guard let rootVC = controller.tabBarController else { return Observable.empty() }
+      return self.showConfirmContactDelete(contactItem: contact, from: rootVC)
+    }.subscribe(onNext: { (result) in
+      switch result {
+      case .confirm(let contact):
+        viewModel.input.deleteContact.onNext(contact)
+
+      case .cancel:
+        return
+      }
+    }).disposed(by: disposeBag)
+
     rootViewController.navigationController?.pushViewController(controller, animated: true)
 
-    return Observable.merge(cancel, contact)
+    return Observable.merge(cancel, contact).take(1)
   }
 
   func showAddContact(from: UIViewController) -> Observable<ContactItem?> {
@@ -66,6 +79,11 @@ class ContactPickerCoordinator: BaseCoordinator<ContactPickerResult> {
   func showEditContact(contactItem: ContactItem, from: UIViewController) -> Observable<ContactItem?> {
     let addContact = ModifyContactCoordinator(contactItem: contactItem, rootViewController: from, contactsService: self.contactsService)
     return coordinate(to: addContact)
+  }
+
+  func showConfirmContactDelete(contactItem: ContactItem, from: UIViewController) -> Observable<ContactRemoveConfirmationCoordinatorResult> {
+    let coordinator = ContactRemoveConfirmationCoordinator(rootViewController: from, contact: contactItem)
+    return coordinate(to: coordinator)
   }
 
 }

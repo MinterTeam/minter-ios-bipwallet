@@ -33,16 +33,11 @@ class ContactPickerViewController: BaseViewController, Controller, StoryboardIni
     configureDefault()
 
     //Input
-    addItem.rx
-      .tap
-      .asDriver()
+    addItem.rx.tap.asDriver()
       .drive(viewModel.input.didTapAddContact)
       .disposed(by: disposeBag)
 
-    self.rx
-      .viewWillAppear
-      .map { _ in Void() }
-      .asDriver(onErrorJustReturn: ())
+    self.rx.viewWillAppear.map { _ in Void() }.asDriver(onErrorJustReturn: ())
       .drive(viewModel.input.viewWillAppear)
       .disposed(by: disposeBag)
 
@@ -52,25 +47,19 @@ class ContactPickerViewController: BaseViewController, Controller, StoryboardIni
     didTapDeleteOnCell.asDriver(onErrorJustReturn: nil)
       .drive(viewModel.input.deleteItem).disposed(by: disposeBag)
 
-    tableView.rx.modelSelected(BaseCellItem.self)
-      .asDriver()
+    tableView.rx.modelSelected(BaseCellItem.self).asDriver()
       .drive(viewModel.input.modelSelected)
       .disposed(by: disposeBag)
 
     //Output
-    viewModel
-      .output
-      .sections
+    viewModel.output.sections
       .do(onNext: { [weak self] (items) in
         self?.noContactsLabel.alpha = items.count > 0 ? 0.0 : 1.0
       })
       .bind(to: tableView.rx.items(dataSource: rxDataSource!))
       .disposed(by: disposeBag)
 
-    viewModel
-      .output
-      .scrollToCell
-      .asDriver(onErrorJustReturn: nil)
+    viewModel.output.scrollToCell.asDriver(onErrorJustReturn: nil)
       .drive(onNext: { [weak self] (indexPath) in
         if let indexPath = indexPath, let cell = self?.tableView.cellForRow(at: indexPath) {
           self?.tableView.scrollToRow(at: indexPath, at: .middle, animated: true)
@@ -80,11 +69,12 @@ class ContactPickerViewController: BaseViewController, Controller, StoryboardIni
             cell.backgroundColor = currentBackgroundColor ?? UIColor.white
           }
         }
-    }).disposed(by: disposeBag)
+      }).disposed(by: disposeBag)
 
-    viewModel.output.showError.asDriver(onErrorJustReturn: nil).drive(onNext: { (message) in
-      BannerHelper.performCopiedNotification(title: message)
-    }).disposed(by: disposeBag)
+    viewModel.output.showError.asDriver(onErrorJustReturn: nil)
+      .drive(onNext: { (message) in
+        BannerHelper.performCopiedNotification(title: message)
+      }).disposed(by: disposeBag)
 
   }
 
@@ -162,9 +152,7 @@ extension ContactPickerViewController: UITableViewDelegate {
     return UISwipeActionsConfiguration(actions: [deleteAction, modifyAction])
   }
 
-  func tableView(_ tableView: UITableView,
-    editingStyleForRowAt indexPath: IndexPath)
-    -> UITableViewCell.EditingStyle {
+  func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle {
       return .none
   }
 

@@ -19,6 +19,7 @@
 		23953FDC1CF7AB2FFA46615D /* BalanceViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3EA027CE7AF8EBD2F11A52F /* BalanceViewController.swift */; };
 		247204D1E318C906847A4B65 /* SpendCoinsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC78D91FF3CC5BFD16244825 /* SpendCoinsViewModel.swift */; };
 		27C803897304BA66C2E1BDA2 /* AllTransactionsCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6689D709B64BA12DDB270A15 /* AllTransactionsCoordinator.swift */; };
+		27D1BCC4816245235DF376AC /* ContactRemoveConfirmationCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB20CE0C43E67DA0D7A37D89 /* ContactRemoveConfirmationCoordinator.swift */; };
 		3118C42D1BC1D9A988E95E75 /* BalanceViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BDF96D21A9400683E4FAC02 /* BalanceViewModel.swift */; };
 		337B40B7306272957F8CA5A7 /* CreateWalletViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57F3B86220F91ADA4775AC9C /* CreateWalletViewController.swift */; };
 		348E055C141F2BA7089A95A1 /* TransactionsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6758512864C31E1DE18DF763 /* TransactionsViewModel.swift */; };
@@ -38,6 +39,7 @@
 		773972312A5D21EF396E0024 /* WalletViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 712FDE60738081AD2E2BB424 /* WalletViewController.swift */; };
 		7B04DC7E52360F2CBBE1871A /* SendViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E871F8E39370EECB321FC97D /* SendViewModel.swift */; };
 		7C78ADBB5FAFCB9ACB61EBF7 /* CreateWalletCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67920BD50DD7AA8BB25A766A /* CreateWalletCoordinator.swift */; };
+		7F537B239CF76A1554900DDC /* ContactRemoveConfirmationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 963FED72BE0E36BC241E2A73 /* ContactRemoveConfirmationViewController.swift */; };
 		8E7C3FE73E3E1DEC3C982D12 /* ShareViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E638131F9218D58AFF825E88 /* ShareViewController.swift */; };
 		8ED3AEAAA9537E278714F7B2 /* DelegatedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC37B274862AEFAF63D16139 /* DelegatedViewController.swift */; };
 		8FAD9334A14929F40714F256 /* WelcomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D8D6F1B1BFA78E3728840F /* WelcomeViewModel.swift */; };
@@ -65,6 +67,7 @@
 		BC7C1BBCBCEA7421F237750A /* PINViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0846D433F1AEAEBB9042D6F0 /* PINViewController.swift */; };
 		C3C143892AD9505632448C7D /* ModifyContactCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7A650AD46FECDEC8ABE46EF /* ModifyContactCoordinator.swift */; };
 		C555964A565D5D0E47D20A33 /* BalanceCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D1767764FF68A27E4AFB8F3 /* BalanceCoordinator.swift */; };
+		D979A8618F9751FFF246A404 /* ContactRemoveConfirmationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F11C9676BD8403551407CEF /* ContactRemoveConfirmationViewModel.swift */; };
 		DF44E76EB74AFA0B80496081 /* SelectWalletViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 739D168636C6E9B691270417 /* SelectWalletViewModel.swift */; };
 		DFBAAA5D30D5C99E980D3F96 /* DelegateUnbondViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8ED7BC3989BDCCDEDFA0902 /* DelegateUnbondViewController.swift */; };
 		E084136C773B6D6BD0EAB0CA /* AllTransactionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED5C5BD42FD95B7ABB8AC9F0 /* AllTransactionsViewController.swift */; };
@@ -279,6 +282,7 @@
 		FADA6FA524615E5200FFBCCF /* beep_digi_octave.wav in Resources */ = {isa = PBXBuildFile; fileRef = FADA6FA124615E5200FFBCCF /* beep_digi_octave.wav */; };
 		FADA6FA624615E5200FFBCCF /* pop_zap.wav in Resources */ = {isa = PBXBuildFile; fileRef = FADA6FA224615E5200FFBCCF /* pop_zap.wav */; };
 		FADA6FA724615E5200FFBCCF /* pop_hi.wav in Resources */ = {isa = PBXBuildFile; fileRef = FADA6FA324615E5200FFBCCF /* pop_hi.wav */; };
+		FADA6FA92461C9C100FFBCCF /* ContactRemoveConfirmation.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FADA6FA82461C9C100FFBCCF /* ContactRemoveConfirmation.storyboard */; };
 		FAE01A2F244B720C00C5EB96 /* AccountService.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAE01A2E244B720C00C5EB96 /* AccountService.swift */; };
 		FAE01A31244B72A700C5EB96 /* LocalStorageAccountService.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAE01A30244B72A700C5EB96 /* LocalStorageAccountService.swift */; };
 		FAE162D22402EE36007E9CAD /* UISegmentedControl+Font.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAE162D12402EE36007E9CAD /* UISegmentedControl+Font.swift */; };
@@ -335,6 +339,7 @@
 		2924B1B7D5AB1A435CC790BF /* TransactionsCoordinator.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = TransactionsCoordinator.swift; sourceTree = "<group>"; };
 		2B16A12CF440C4646DF7C60C /* Pods-BIPWallet.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BIPWallet.release.xcconfig"; path = "Target Support Files/Pods-BIPWallet/Pods-BIPWallet.release.xcconfig"; sourceTree = "<group>"; };
 		2BDF96D21A9400683E4FAC02 /* BalanceViewModel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = BalanceViewModel.swift; sourceTree = "<group>"; };
+		2F11C9676BD8403551407CEF /* ContactRemoveConfirmationViewModel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ContactRemoveConfirmationViewModel.swift; sourceTree = "<group>"; };
 		339B31B61DFB7844B0D1CCF6 /* SettingsViewModel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = SettingsViewModel.swift; sourceTree = "<group>"; };
 		45049572AB839F864BD02CB2 /* ContactPickerViewController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ContactPickerViewController.swift; sourceTree = "<group>"; };
 		4570EA4BE0758C13BD33FA76 /* ExchangeCoordinator.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ExchangeCoordinator.swift; sourceTree = "<group>"; };
@@ -365,6 +370,7 @@
 		871DF013F541398FC6004FAB /* AddWalletViewController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AddWalletViewController.swift; sourceTree = "<group>"; };
 		8938E33FA4387FC23FF84125 /* TransactionViewModel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = TransactionViewModel.swift; sourceTree = "<group>"; };
 		93E1EFA5D14C042DBEFB1B53 /* TransactionsViewController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = TransactionsViewController.swift; sourceTree = "<group>"; };
+		963FED72BE0E36BC241E2A73 /* ContactRemoveConfirmationViewController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ContactRemoveConfirmationViewController.swift; sourceTree = "<group>"; };
 		97C182505C2365294519F60B /* AllTransactionsViewModel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AllTransactionsViewModel.swift; sourceTree = "<group>"; };
 		9C17A7067B59E275634A1E96 /* CreateWalletViewModel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = CreateWalletViewModel.swift; sourceTree = "<group>"; };
 		9D1767764FF68A27E4AFB8F3 /* BalanceCoordinator.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = BalanceCoordinator.swift; sourceTree = "<group>"; };
@@ -605,6 +611,7 @@
 		FADA6FA124615E5200FFBCCF /* beep_digi_octave.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = beep_digi_octave.wav; sourceTree = "<group>"; };
 		FADA6FA224615E5200FFBCCF /* pop_zap.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = pop_zap.wav; sourceTree = "<group>"; };
 		FADA6FA324615E5200FFBCCF /* pop_hi.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = pop_hi.wav; sourceTree = "<group>"; };
+		FADA6FA82461C9C100FFBCCF /* ContactRemoveConfirmation.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = ContactRemoveConfirmation.storyboard; sourceTree = "<group>"; };
 		FAE01A2E244B720C00C5EB96 /* AccountService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountService.swift; sourceTree = "<group>"; };
 		FAE01A30244B72A700C5EB96 /* LocalStorageAccountService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalStorageAccountService.swift; sourceTree = "<group>"; };
 		FAE162D12402EE36007E9CAD /* UISegmentedControl+Font.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UISegmentedControl+Font.swift"; sourceTree = "<group>"; };
@@ -629,6 +636,7 @@
 		FAF04BDC24499353004CBC07 /* ExplorerValidatorService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExplorerValidatorService.swift; sourceTree = "<group>"; };
 		FAF317842421189500D1556C /* TransactionTwoColumnCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionTwoColumnCell.swift; sourceTree = "<group>"; };
 		FAF317852421189500D1556C /* TransactionTwoColumnCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TransactionTwoColumnCell.xib; sourceTree = "<group>"; };
+		FB20CE0C43E67DA0D7A37D89 /* ContactRemoveConfirmationCoordinator.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ContactRemoveConfirmationCoordinator.swift; sourceTree = "<group>"; };
 		FEFC1F945AA7165073C218AA /* EditWalletTitleViewController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = EditWalletTitleViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -843,6 +851,17 @@
 			path = GetCoins;
 			sourceTree = "<group>";
 		};
+		BBDB4A68919DBA5F03C005D7 /* ContactRemoveConfirmation */ = {
+			isa = PBXGroup;
+			children = (
+				963FED72BE0E36BC241E2A73 /* ContactRemoveConfirmationViewController.swift */,
+				2F11C9676BD8403551407CEF /* ContactRemoveConfirmationViewModel.swift */,
+				FB20CE0C43E67DA0D7A37D89 /* ContactRemoveConfirmationCoordinator.swift */,
+				FADA6FA82461C9C100FFBCCF /* ContactRemoveConfirmation.storyboard */,
+			);
+			path = ContactRemoveConfirmation;
+			sourceTree = "<group>";
+		};
 		C2AA6360CBCC52A293410A47 /* Modules */ = {
 			isa = PBXGroup;
 			children = (
@@ -900,6 +919,7 @@
 		E615D45E01EDC0030A9BB92B /* ContactPicker */ = {
 			isa = PBXGroup;
 			children = (
+				BBDB4A68919DBA5F03C005D7 /* ContactRemoveConfirmation */,
 				FA91D57C2430BEFD00F901AF /* View */,
 				45049572AB839F864BD02CB2 /* ContactPickerViewController.swift */,
 				63F517615863AB7370A24AAB /* ContactPickerViewModel.swift */,
@@ -1639,6 +1659,7 @@
 				FA3BDE70242BA6630076A7F4 /* TextFieldTableViewCell.xib in Resources */,
 				FAD143842459754A002C2F1C /* Share.storyboard in Resources */,
 				FA9E519A23ED9976007263B9 /* Assets.xcassets in Resources */,
+				FADA6FA92461C9C100FFBCCF /* ContactRemoveConfirmation.storyboard in Resources */,
 				FAE5A1BC23FD34D800808B21 /* Balance.storyboard in Resources */,
 				FA3BDE79242BA7540076A7F4 /* TwoTitleTableViewCell.xib in Resources */,
 				FA6223352455DAC5006089EC /* SettingsTableHeaderView.xib in Resources */,
@@ -1956,6 +1977,9 @@
 				8E7C3FE73E3E1DEC3C982D12 /* ShareViewController.swift in Sources */,
 				61E66212F4D185E28DD99CCE /* ShareViewModel.swift in Sources */,
 				1EEF27A2C33CC1815D49FDAF /* ShareCoordinator.swift in Sources */,
+				7F537B239CF76A1554900DDC /* ContactRemoveConfirmationViewController.swift in Sources */,
+				D979A8618F9751FFF246A404 /* ContactRemoveConfirmationViewModel.swift in Sources */,
+				27D1BCC4816245235DF376AC /* ContactRemoveConfirmationCoordinator.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
