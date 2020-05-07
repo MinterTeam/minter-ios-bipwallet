@@ -36,4 +36,5 @@ protocol BalanceService {
   func lastBlockAgo() -> Observable<TimeInterval?>
 
   func balances(address: String) -> Observable<BalancesResponse>
+  func balances(addresses: [String]) -> Observable<[String: BalancesResponse]>
 }

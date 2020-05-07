@@ -65,13 +65,12 @@ class BalanceCoordinator: BaseCoordinator<Void> {
       return self.showDelegated(inViewController: self.navigationController, balanceService: self.balanceService)
     }.subscribe().disposed(by: disposeBag)
 
-    viewModel.output.didScanQR
-      .flatMap { (val) -> Observable<Void> in
-        guard let url = URL(string: val ?? "") else {
-          return Observable.empty()
-        }
-        return self.showRawTransaction(rootViewController: controller, url: url)
-      }.subscribe().disposed(by: disposeBag)
+    viewModel.output.didScanQR.flatMap { (val) -> Observable<Void> in
+      guard let url = URL(string: val ?? "") else {
+        return Observable.empty()
+      }
+      return self.showRawTransaction(rootViewController: controller, url: url)
+    }.subscribe().disposed(by: disposeBag)
 
     viewModel.output.didScanQR.filter({ (str) -> Bool in
       return (str?.isValidAddress() ?? false) || (str?.isValidPublicKey() ?? false)
@@ -112,6 +111,8 @@ class BalanceCoordinator: BaseCoordinator<Void> {
       controller.containerViewHeightConstraint?.constant = 0
       coins.viewController?.tableView?.setContentOffset(CGPoint(x: 0, y: -headerInset), animated: false)
       (transactionsViewController as? TransactionsViewController)?.tableView?.setContentOffset(CGPoint(x: 0, y: -headerInset), animated: false)
+    }).distinctUntilChanged({ (acc1, acc2) -> Bool in
+      return (acc1?.address ?? "") == (acc2?.address ?? "")
     }).flatMap { [weak self] (item) -> Observable<Event<(AccountItem?, BalanceService.BalancesResponse)>> in
       guard let `self` = self, let address = item?.address else { return Observable.empty() }
       return Observable.zip(self.balanceService.account, self.balanceService.balances(address: address)).materialize()
@@ -128,6 +129,10 @@ class BalanceCoordinator: BaseCoordinator<Void> {
         return Observable.empty()
       }
     }).subscribe().disposed(by: disposeBag)
+//
+//    balanceService.balances(addresses: authService.accounts().map({ (account) -> String in
+//      return account.address
+//    })).subscribe().disposed(by: disposeBag)
 
     navigationController.setViewControllers([controller], animated: false)
     return Observable.never()
@@ -185,6 +190,23 @@ extension BalanceCoordinator {
         return
       }
     }).share()
+    
+    selectWalletObservable.filter {
+      switch $0 {
+      case .wallet(_):
+        return true
+      default:
+        return false
+      }
+    }.flatMap { (result) -> Observable<Event<Void>> in
+      switch result {
+      case .wallet(let address):
+        return self.authService.selectAccount(address: address).materialize()
+
+      default:
+        return Observable.empty()
+      }
+    }.subscribe().disposed(by: disposeBag)
 
     //Showing Add Wallet
     selectWalletObservable

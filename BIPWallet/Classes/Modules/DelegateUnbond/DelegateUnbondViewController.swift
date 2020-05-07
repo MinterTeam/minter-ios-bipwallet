@@ -169,6 +169,9 @@ class DelegateUnbondViewController: BaseViewController, Controller, StoryboardIn
     mainView.title = "Delegate".localized()
 
     showBlurOverview { [weak self] in
+      UIView.animate(withDuration: 0.5) {
+        self?.updateBlurView(percentage: 0.0)
+      }
       self?.dismiss(animated: true) {}
     }
   }

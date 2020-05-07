@@ -61,6 +61,8 @@ class GateManager: BaseManager {
 
 	static let shared = GateManager(httpClient: APIClient())
 
+  private(set) var lastGas = MinterCore.RawTransactionDefaultGasPrice
+
 	// MARK: -
 
 	func minGasPrice(completion: ((Int?, Error?) -> ())?) {
@@ -375,6 +377,8 @@ extension GateManager {
           observer.onError(error!)
           return
         }
+        self.lastGas = gas ?? MinterCore.RawTransactionDefaultGasPrice
+
         observer.onNext(gas!)
         observer.onCompleted()
       })

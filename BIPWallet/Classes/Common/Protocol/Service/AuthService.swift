@@ -30,6 +30,7 @@ protocol AuthService {
   func addAccount(mnemonic: String, title: String?) throws -> AccountItem?
   func addAccount(with mnemonic: String, title: String?) -> Observable<AccountItem>
   func updateAccount(account: AccountItem) -> Observable<Void>
+  func selectAccount(address: String) -> Observable<Void>
   func logout()
   func selectedAccount() -> AccountItem?
   func remove(account: AccountItem) throws

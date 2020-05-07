@@ -16,10 +16,13 @@ protocol WalletSelectableViewModel {
 }
 
 extension WalletSelectableViewModel {
+
   func walletObservable() -> Observable<String?> {
-    return self.balanceService.account.map { (item) -> String? in
-      let title = (item?.title ?? TransactionTitleHelper.title(from: item?.address ?? ""))
-      return (item?.emoji ?? "") + "  " + title
+    return Observable.of(self.balanceService.account.map {_ in}, self.balanceService.balances().map{_ in}).merge()
+      .withLatestFrom(self.balanceService.account)
+      .map { (item) -> String? in
+        let title = (item?.title ?? TransactionTitleHelper.title(from: item?.address ?? ""))
+        return (item?.emoji ?? "") + "  " + title
     }
   }
 }

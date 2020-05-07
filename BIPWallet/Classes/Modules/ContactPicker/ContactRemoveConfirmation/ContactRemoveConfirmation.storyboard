@@ -47,7 +47,7 @@
                                             <userDefinedRuntimeAttribute type="boolean" keyPath="animateButtonTouch" value="YES"/>
                                         </userDefinedRuntimeAttributes>
                                     </button>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Remove Wallet" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6xv-Bg-6k3" customClass="UHBCustomLabel" customModule="BIPWallet" customModuleProvider="target">
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Remove Contact" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6xv-Bg-6k3" customClass="UHBCustomLabel" customModule="BIPWallet" customModuleProvider="target">
                                         <rect key="frame" x="16" y="17" width="366" height="21"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="21" id="DQz-5n-o0h"/>

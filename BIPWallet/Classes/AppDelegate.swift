@@ -52,9 +52,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     let appCoordinator = AppCoordinator(window: window!,
                                         authService: authService,
                                         pinService: pinService)
-    appCoordinator.start()
-        .subscribe()
-        .disposed(by: disposeBag)
+
+    appCoordinator.start().subscribe().disposed(by: disposeBag)
 
     Observable.of(UIApplication.shared.rx.didOpenApp.skip(1).map { _ -> RouteMatchResult? in
       return nil

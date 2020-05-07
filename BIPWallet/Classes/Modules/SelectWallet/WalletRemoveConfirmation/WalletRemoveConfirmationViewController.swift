@@ -1,15 +1,15 @@
 //
-//  ContactRemoveConfirmationViewController.swift
+//  WalletRemoveConfirmationViewController.swift
 //  BIPWallet
 //
-//  Created by Alexey Sidorov on 05/05/2020.
+//  Created by Alexey Sidorov on 06/05/2020.
 //  Copyright 2020 Minter. All rights reserved.
 //
 
 import UIKit
 import RxSwift
 
-class ContactRemoveConfirmationViewController: BaseViewController, Controller, StoryboardInitializable {
+class WalletRemoveConfirmationViewController: BaseViewController, Controller, StoryboardInitializable {
 
   // MARK: -
 
@@ -20,11 +20,11 @@ class ContactRemoveConfirmationViewController: BaseViewController, Controller, S
 
   // MARK: - ControllerProtocol
 
-  typealias ViewModelType = ContactRemoveConfirmationViewModel
+  typealias ViewModelType = WalletRemoveConfirmationViewModel
 
   var viewModel: ViewModelType!
 
-  func configure(with viewModel: ContactRemoveConfirmationViewModel) {
+  func configure(with viewModel: WalletRemoveConfirmationViewModel) {
     //Input
     confirm.rx.tap.asDriver()
       .drive(viewModel.input.didTapConfirmButton)
@@ -57,7 +57,7 @@ class ContactRemoveConfirmationViewController: BaseViewController, Controller, S
 
 }
 
-extension ContactRemoveConfirmationViewController: DraggableViewDelegate {
+extension WalletRemoveConfirmationViewController: DraggableViewDelegate {
 
   func panGestureDidChange(_ panGesture: UIPanGestureRecognizer, originalCenter: CGPoint, translation: CGPoint, velocityInView: CGPoint) {
     guard let targetView = mainView else {

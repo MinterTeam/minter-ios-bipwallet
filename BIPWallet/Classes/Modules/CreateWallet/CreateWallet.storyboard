@@ -37,8 +37,8 @@
                                             <userDefinedRuntimeAttribute type="string" keyPath="pattern" value="purple"/>
                                         </userDefinedRuntimeAttributes>
                                     </button>
-                                    <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="medium" translatesAutoresizingMaskIntoConstraints="NO" id="x0a-XF-nPc">
-                                        <rect key="frame" x="189" y="235.5" width="20" height="20"/>
+                                    <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="large" translatesAutoresizingMaskIntoConstraints="NO" id="x0a-XF-nPc">
+                                        <rect key="frame" x="180.5" y="227" width="37" height="37"/>
                                     </activityIndicatorView>
                                     <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="6ea-42-xHk">
                                         <rect key="frame" x="316" y="167.5" width="51" height="31"/>

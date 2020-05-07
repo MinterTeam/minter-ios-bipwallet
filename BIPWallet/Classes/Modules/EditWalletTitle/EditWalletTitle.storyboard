@@ -7,6 +7,12 @@
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
+    <customFonts key="customFonts">
+        <array key="Inter.otf">
+            <string>Inter_Medium</string>
+            <string>Inter_Semi-Bold</string>
+        </array>
+    </customFonts>
     <scenes>
         <!--Edit Wallet Title View Controller-->
         <scene sceneID="xqq-gY-PYa">
@@ -76,6 +82,10 @@
                     </view>
                     <connections>
                         <outlet property="bottomConstraint" destination="31e-kI-KcK" id="BaO-HW-XjK"/>
+                        <outlet property="confirmCancelButton" destination="Yl6-fc-Pvq" id="2ov-Z9-lkV"/>
+                        <outlet property="confirmRemoveButton" destination="mbr-rw-LOz" id="pFV-Z9-4ht"/>
+                        <outlet property="confirmText" destination="sON-Ya-k6R" id="zPK-0I-5hQ"/>
+                        <outlet property="confirmationView" destination="vaM-LW-Yfi" id="MQY-S9-OQQ"/>
                         <outlet property="mainView" destination="QIT-cL-xmK" id="dCo-aZ-IgY"/>
                         <outlet property="removeButton" destination="p55-gU-P7t" id="Shr-8S-fCy"/>
                         <outlet property="removeButtonBottomConstraint" destination="4Pw-IK-uCR" id="8zM-WR-wrO"/>
@@ -84,6 +94,80 @@
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="BKu-Je-nRD" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+                <view contentMode="scaleToFill" id="vaM-LW-Yfi" customClass="HandlerVerticalSnapDraggableView" customModule="BIPWallet" customModuleProvider="target">
+                    <rect key="frame" x="0.0" y="0.0" width="398" height="500"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
+                    <subviews>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="252" text="" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sON-Ya-k6R" customClass="UHBCustomLabel" customModule="BIPWallet" customModuleProvider="target">
+                            <rect key="frame" x="16" y="97" width="366" height="255"/>
+                            <fontDescription key="fontDescription" name="Inter_Medium" family="Inter" pointSize="17"/>
+                            <nil key="textColor"/>
+                            <nil key="highlightedColor"/>
+                            <userDefinedRuntimeAttributes>
+                                <userDefinedRuntimeAttribute type="number" keyPath="characterSpacing">
+                                    <real key="value" value="0.40000000000000002"/>
+                                </userDefinedRuntimeAttribute>
+                            </userDefinedRuntimeAttributes>
+                        </label>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Yl6-fc-Pvq" customClass="DefaultButton" customModule="BIPWallet" customModuleProvider="target">
+                            <rect key="frame" x="16" y="434" width="366" height="50"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="50" id="myf-iJ-AWp"/>
+                            </constraints>
+                            <state key="normal" title="Cancel"/>
+                            <userDefinedRuntimeAttributes>
+                                <userDefinedRuntimeAttribute type="string" keyPath="pattern" value="blank_black"/>
+                                <userDefinedRuntimeAttribute type="boolean" keyPath="animateButtonTouch" value="YES"/>
+                            </userDefinedRuntimeAttributes>
+                        </button>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Remove Wallet" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="XTa-Bb-8ZR" customClass="UHBCustomLabel" customModule="BIPWallet" customModuleProvider="target">
+                            <rect key="frame" x="16" y="61" width="366" height="21"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="21" id="yqX-Mh-mWA"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" name="Inter_Semi-Bold" family="Inter" pointSize="18"/>
+                            <nil key="textColor"/>
+                            <nil key="highlightedColor"/>
+                            <userDefinedRuntimeAttributes>
+                                <userDefinedRuntimeAttribute type="number" keyPath="characterSpacing">
+                                    <real key="value" value="0.20000000000000001"/>
+                                </userDefinedRuntimeAttribute>
+                            </userDefinedRuntimeAttributes>
+                        </label>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="mbr-rw-LOz" customClass="DefaultButton" customModule="BIPWallet" customModuleProvider="target">
+                            <rect key="frame" x="16" y="368" width="366" height="50"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="50" id="Pqe-Ku-BHi"/>
+                            </constraints>
+                            <state key="normal" title="Confirm"/>
+                            <userDefinedRuntimeAttributes>
+                                <userDefinedRuntimeAttribute type="string" keyPath="pattern" value="filled"/>
+                                <userDefinedRuntimeAttribute type="boolean" keyPath="animateButtonTouch" value="YES"/>
+                                <userDefinedRuntimeAttribute type="string" keyPath="color" value="green"/>
+                            </userDefinedRuntimeAttributes>
+                        </button>
+                    </subviews>
+                    <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                    <constraints>
+                        <constraint firstItem="Yl6-fc-Pvq" firstAttribute="leading" secondItem="gbs-hg-Rim" secondAttribute="leading" constant="16" id="3s0-1T-xgP"/>
+                        <constraint firstItem="sON-Ya-k6R" firstAttribute="leading" secondItem="gbs-hg-Rim" secondAttribute="leading" constant="16" id="C4d-yz-Daa"/>
+                        <constraint firstItem="mbr-rw-LOz" firstAttribute="trailing" secondItem="Yl6-fc-Pvq" secondAttribute="trailing" id="J2j-uN-Uup"/>
+                        <constraint firstItem="gbs-hg-Rim" firstAttribute="trailing" secondItem="sON-Ya-k6R" secondAttribute="trailing" constant="16" id="KQA-zS-uZF"/>
+                        <constraint firstItem="XTa-Bb-8ZR" firstAttribute="leading" secondItem="gbs-hg-Rim" secondAttribute="leading" constant="16" id="MnV-zT-s6H"/>
+                        <constraint firstItem="Yl6-fc-Pvq" firstAttribute="top" secondItem="mbr-rw-LOz" secondAttribute="bottom" constant="16" id="W8O-Rw-xLB"/>
+                        <constraint firstItem="gbs-hg-Rim" firstAttribute="trailing" secondItem="XTa-Bb-8ZR" secondAttribute="trailing" constant="16" id="Xqg-U7-0Og"/>
+                        <constraint firstItem="mbr-rw-LOz" firstAttribute="leading" secondItem="Yl6-fc-Pvq" secondAttribute="leading" id="ZAw-XU-ufI"/>
+                        <constraint firstItem="gbs-hg-Rim" firstAttribute="bottom" secondItem="Yl6-fc-Pvq" secondAttribute="bottom" constant="16" id="ZVw-Ln-Vwc"/>
+                        <constraint firstItem="mbr-rw-LOz" firstAttribute="top" secondItem="sON-Ya-k6R" secondAttribute="bottom" constant="16" id="fZO-of-0yL"/>
+                        <constraint firstItem="sON-Ya-k6R" firstAttribute="top" secondItem="XTa-Bb-8ZR" secondAttribute="bottom" constant="15" id="oOf-X7-fyA"/>
+                        <constraint firstItem="gbs-hg-Rim" firstAttribute="trailing" secondItem="Yl6-fc-Pvq" secondAttribute="trailing" constant="16" id="xzw-Zl-Zyr"/>
+                        <constraint firstItem="XTa-Bb-8ZR" firstAttribute="top" secondItem="gbs-hg-Rim" secondAttribute="top" constant="17" id="ylC-EZ-Giz"/>
+                    </constraints>
+                    <viewLayoutGuide key="safeArea" id="gbs-hg-Rim"/>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="boolean" keyPath="shouldHideHandlerImage" value="YES"/>
+                    </userDefinedRuntimeAttributes>
+                </view>
             </objects>
             <point key="canvasLocation" x="240.57971014492756" y="129.91071428571428"/>
         </scene>

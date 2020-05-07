@@ -154,7 +154,7 @@ class SendViewModel: BaseViewModel, ViewModel, WalletSelectableViewModel {// swi
     } else {
       val = (payloadCom + RawTransactionType.sendCoin.commission()).PIPToDecimal()
     }
-    return Decimal(/*Session.shared.currentGasPrice.value*/1) * val
+    return Decimal(GateManager.shared.lastGas) * val
   }
 
   private func payloadComission() -> Decimal {

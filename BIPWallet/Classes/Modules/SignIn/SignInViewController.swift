@@ -90,10 +90,7 @@ class SignInViewController: BaseViewController, Controller, StoryboardInitializa
   override func viewDidLoad() {
     super.viewDidLoad()
 
-    NotificationCenter
-      .default
-      .rx
-      .notification(ViewController.keyboardWillShowNotification)
+    NotificationCenter.default.rx.notification(ViewController.keyboardWillShowNotification)
       .subscribe(onNext: { [weak self] (not) in
         guard let `self` = self else { return }
         guard let keyboardSize = not.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue else { return }
@@ -106,12 +103,22 @@ class SignInViewController: BaseViewController, Controller, StoryboardInitializa
       }).disposed(by: disposeBag)
 
     showBlurOverview { [weak self] in
+      self?.textView.endEditing(true)
+      UIView.animate(withDuration: 0.5) {
+        self?.updateBlurView(percentage: 0.0)
+      }
       self?.dismiss(animated: true) {}
     }
 
     configure(with: viewModel)
 
     self.textView.becomeFirstResponder()
+  }
+
+  override func viewWillDisappear(_ animated: Bool) {
+    super.viewWillDisappear(animated)
+
+    self.textView.endEditing(true)
   }
 
 }

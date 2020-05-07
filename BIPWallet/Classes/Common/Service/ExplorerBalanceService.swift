@@ -70,6 +70,7 @@ class ExplorerBalanceService: BalanceService {
     }).first else {
       throw BalanceServiceError.incorrectAddress
     }
+    account.lastSelected = Date()
     self.accountSubject.onNext(account)
   }
 
@@ -197,7 +198,8 @@ class ExplorerBalanceService: BalanceService {
         coins.forEach({ (dict) in
           if let key = dict["coin"] as? String {
             let amnt = Decimal(string: (dict["amount"] as? String) ?? "0.0") ?? 0.0
-            allBalances[key.uppercased()] = (amnt, 0.0)
+            let bipAmount = Decimal(string: (dict["bip_amount"] as? String) ?? "0.0") ?? 0.0
+            allBalances[key.uppercased()] = (amnt, bipAmount)
           }
         })
 

@@ -9,12 +9,18 @@
 import UIKit
 import RxSwift
 import RxBiBinding
+import SnapKit
 
 class EditWalletTitleViewController: BaseViewController, Controller, StoryboardInitializable {
 
   // MARK: -
 
   @IBOutlet weak var bottomConstraint: NSLayoutConstraint!
+  @IBOutlet weak var confirmationView: HandlerVerticalSnapDraggableView! {
+    didSet {
+      confirmationView.delegate = self
+    }
+  }
   @IBOutlet weak var mainView: HandlerVerticalSnapDraggableView! {
     didSet {
       mainView.delegate = self
@@ -24,6 +30,9 @@ class EditWalletTitleViewController: BaseViewController, Controller, StoryboardI
   @IBOutlet weak var saveButton: DefaultButton!
   @IBOutlet weak var removeButton: DefaultButton!
   @IBOutlet weak var removeButtonBottomConstraint: NSLayoutConstraint!
+  @IBOutlet weak var confirmRemoveButton: DefaultButton!
+  @IBOutlet weak var confirmCancelButton: DefaultButton!
+  @IBOutlet weak var confirmText: UILabel!
 
   // MARK: - ControllerProtocol
 
@@ -32,6 +41,8 @@ class EditWalletTitleViewController: BaseViewController, Controller, StoryboardI
   var viewModel: ViewModelType!
 
   func configure(with viewModel: EditWalletTitleViewModel) {
+    configureDefault()
+
     //Input
     (self.textField.rx.text <-> self.viewModel.input.title).disposed(by: disposeBag)
 
@@ -41,7 +52,7 @@ class EditWalletTitleViewController: BaseViewController, Controller, StoryboardI
       .disposed(by: disposeBag)
 
     self.saveButton.rx.tap.asDriver().drive(viewModel.input.didTapSave).disposed(by: disposeBag)
-    self.removeButton.rx.tap.asDriver().drive(viewModel.input.didTapRemove).disposed(by: disposeBag)
+    self.confirmRemoveButton.rx.tap.asDriver().drive(viewModel.input.didTapRemove).disposed(by: disposeBag)
 
     //Output
     self.viewModel.output
@@ -68,6 +79,9 @@ class EditWalletTitleViewController: BaseViewController, Controller, StoryboardI
       }
     }).disposed(by: disposeBag)
 
+    viewModel.output.text.asDriver(onErrorJustReturn: nil)
+      .drive(confirmText.rx.attributedText).disposed(by: disposeBag)
+
   }
 
   // MARK: - ViewController
@@ -78,6 +92,9 @@ class EditWalletTitleViewController: BaseViewController, Controller, StoryboardI
     mainView.title = "Edit Title".localized()
 
     showBlurOverview { [weak self] in
+      UIView.animate(withDuration: 0.5) {
+        self?.updateBlurView(percentage: 0.0)
+      }
       self?.dismiss(animated: true) {}
     }
 
@@ -90,15 +107,21 @@ class EditWalletTitleViewController: BaseViewController, Controller, StoryboardI
         guard let keyboardSize = not.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue else { return }
         let keyboardFrame = keyboardSize.cgRectValue
         let keyboardHeight = keyboardFrame.height
-        self.bottomConstraint.constant = self.view.bounds.height - (self.view.bounds.height - keyboardHeight) + 8.0
+        self.bottomConstraint?.constant = self.view.bounds.height - (self.view.bounds.height - keyboardHeight) + 8.0
         UIView.animate(withDuration: 0.5) {
           self.view.layoutIfNeeded()
         }
       }).disposed(by: disposeBag)
 
-    view.addBackgroundTapGesture { [weak self] in
-      self?.dismiss(animated: true, completion: nil)
-    }
+    removeButton.rx.tap.asDriver().drive(onNext: { (_) in
+      self.view.addSubview(self.confirmationView)
+      self.showConfirmation("Remove Wallet")
+    }).disposed(by: disposeBag)
+
+    confirmCancelButton.rx.tap.asDriver().drive(onNext: { [weak self] (_) in
+      self?.updateBlurView(percentage: 0.0)
+      self?.dismiss(animated: true) {}
+    }).disposed(by: disposeBag)
 
     configure(with: viewModel)
 
@@ -109,12 +132,57 @@ class EditWalletTitleViewController: BaseViewController, Controller, StoryboardI
     return true
   }
 
+  func showConfirmation(_ title: String?) {
+    self.confirmationView.alpha = 1.0
+    self.confirmationView.delegate = self
+
+    let frame = self.mainView.frame
+
+    self.confirmationView.frame = CGRect(x: self.view.bounds.width,
+                                         y: frame.minY,
+                                         width: self.mainView.bounds.width,
+                                         height: self.confirmationView.bounds.height)
+ 
+//    self.mainView.frame = CGRect(x: frame.minX,
+//                                 y: frame.minY,
+//                                 width: self.mainView.bounds.width,
+//                                 height: self.mainView.bounds.height)
+
+    self.confirmationView.snp.makeConstraints { (maker) in
+      maker.width.equalToSuperview().offset(-16)
+      maker.leading.equalToSuperview().offset(self.view.bounds.width)
+      maker.top.equalTo(frame.minY)
+    }
+
+    self.view.layoutIfNeeded()
+
+    UIView.animate(withDuration: 0.25, animations: { [weak self] in
+      guard let `self` = self else { return }
+      self.confirmationView.frame = CGRect(x: frame.minX,
+                                           y: frame.minY,
+                                           width: self.confirmationView.bounds.width,
+                                           height: self.confirmationView.bounds.height)
+
+      self.confirmationView.snp_updateConstraints { (maker) in
+        maker.leading.equalToSuperview().offset(8)
+      }
+
+      self.mainView.frame = CGRect(x: -self.mainView.bounds.width,
+                                   y: frame.minY,
+                                   width: self.mainView.bounds.width,
+                                   height: self.mainView.bounds.height)
+      self.mainView.alpha = 0.0
+    }) { [weak self] completed in
+      self?.mainView.removeFromSuperview()
+    }
+  }
+
 }
 
 extension EditWalletTitleViewController: DraggableViewDelegate {
 
   func panGestureDidChange(_ panGesture: UIPanGestureRecognizer, originalCenter: CGPoint, translation: CGPoint, velocityInView: CGPoint) {
-    guard let targetView = mainView else {
+    guard let targetView = mainView ?? confirmationView else {
       return
     }
 
@@ -128,7 +196,7 @@ extension EditWalletTitleViewController: DraggableViewDelegate {
   }
 
   func panGestureDidEnd(_ panGesture: UIPanGestureRecognizer, originalCenter: CGPoint, translation: CGPoint, velocityInView: CGPoint) {
-    guard let targetView = mainView else {
+    guard let targetView = mainView ?? confirmationView else {
       return
     }
 

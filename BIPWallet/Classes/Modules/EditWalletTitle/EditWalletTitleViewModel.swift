@@ -18,7 +18,7 @@ class EditWalletTitleViewModel: BaseViewModel, ViewModel {
 
   // MARK: -
 
-  private let title = BehaviorRelay<String?>(value: nil)
+  lazy var title = BehaviorRelay<String?>(value: self.accountItem.title)
   private let shakeError = PublishSubject<Void>()
   private let hardImpact = PublishSubject<Void>()
   private let errorMessage = PublishSubject<String>()
@@ -52,6 +52,8 @@ class EditWalletTitleViewModel: BaseViewModel, ViewModel {
     var didChange: Observable<Void>
     var didRemove: Observable<Void>
     var shouldHideRemoveButton: Observable<Bool>
+    var text: Observable<NSAttributedString?>
+    var walletTitle: Observable<String?>
   }
 
   struct Dependency {
@@ -75,7 +77,9 @@ class EditWalletTitleViewModel: BaseViewModel, ViewModel {
                          errorMessage: errorMessage.asObservable(),
                          didChange: didChange.asObservable(),
                          didRemove: didRemove.asObservable(),
-                         shouldHideRemoveButton: Observable.of(self.isLastAccount)
+                         shouldHideRemoveButton: Observable.of(self.isLastAccount),
+                         text: Observable.just(text()),
+                         walletTitle: Observable.just(account.title)
     )
 
     self.dependency = dependency
@@ -86,6 +90,7 @@ class EditWalletTitleViewModel: BaseViewModel, ViewModel {
   // MARK: -
 
   func bind() {
+
     didTapSave.withLatestFrom(title).filter({ (title) -> Bool in
       return true
     }).flatMap { [weak self] (title) -> Observable<Event<String>> in
@@ -105,10 +110,11 @@ class EditWalletTitleViewModel: BaseViewModel, ViewModel {
       }
     }).subscribe(didChange).disposed(by: disposeBag)
 
-    //
     didTapRemove.subscribe(onNext: { (_) in
       try? self.dependency.authService.remove(account: self.accountItem)
       self.didRemove.onNext(())
+      self.impact.onNext(.hard)
+      self.sound.onNext(.click)
     }).disposed(by: disposeBag)
 
   }
@@ -136,6 +142,27 @@ class EditWalletTitleViewModel: BaseViewModel, ViewModel {
     self.errorMessage.onNext(errorTitle)
     self.shakeError.onNext(())
     self.hardImpact.onNext(())
+  }
+
+  func text() -> NSAttributedString {
+    let string = NSMutableAttributedString()
+    string.append(NSAttributedString(string: "Are you sure, you want to remove wallet ".localized(),
+                                     attributes: [.foregroundColor: UIColor.mainBlackColor(),
+                                                  .font: UIFont.defaultFont(of: 14.0)]))
+    string.append(NSAttributedString(string: accountItem.address,
+                                     attributes: [.foregroundColor: UIColor.mainBlackColor(),
+                                                  .font: UIFont.boldFont(of: 14.0)]))
+    string.append(NSAttributedString(string: " from this application?\n\n".localized(),
+                                     attributes: [.foregroundColor: UIColor.mainBlackColor(),
+                                                  .font: UIFont.defaultFont(of: 14.0)]))
+    string.append(NSAttributedString(string: "Attention! ",
+                                     attributes: [.foregroundColor: UIColor.mainBlackColor(),
+                                                  .font: UIFont.boldFont(of: 14.0)]))
+    string.append(NSAttributedString(string: "The wallet will not be deleted from blockchain. You’ll be able to readd it later with the saved seed-phrase.".localized(),
+                                     attributes: [.foregroundColor: UIColor.mainBlackColor(),
+                                                  .font: UIFont.defaultFont(of: 14.0)]))
+
+    return string
   }
 
 }

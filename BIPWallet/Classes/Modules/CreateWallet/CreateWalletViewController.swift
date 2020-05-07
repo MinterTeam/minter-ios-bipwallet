@@ -14,7 +14,11 @@ class CreateWalletViewController: BaseViewController, Controller, StoryboardInit
 
   // MARK: - Outlets
 
-  @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
+  @IBOutlet weak var activityIndicator: UIActivityIndicatorView! {
+    didSet {
+      activityIndicator.isHidden = true
+    }
+  }
   @IBOutlet weak var copiedIndicator: UIView!
   @IBOutlet weak var savedSwitch: UISwitch!
   @IBOutlet weak var mnemonicLabel: UILabel!
@@ -118,6 +122,9 @@ class CreateWalletViewController: BaseViewController, Controller, StoryboardInit
     }).disposed(by: disposeBag)
 
     showBlurOverview { [weak self] in
+      UIView.animate(withDuration: 0.5) {
+        self?.updateBlurView(percentage: 0.0)
+      }
       self?.dismiss(animated: true) {}
     }
   }
@@ -149,7 +156,7 @@ extension CreateWalletViewController: DraggableViewDelegate {
 
     let percentage = translation.y/targetView.bounds.height
 
-    if percentage >= 0.75 {
+    if percentage >= 0.4 {
       updateBlurView(percentage: 0.0)
       self.dismiss(animated: true) {}
     } else {

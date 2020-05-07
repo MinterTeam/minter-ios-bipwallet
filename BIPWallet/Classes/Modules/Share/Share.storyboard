@@ -26,7 +26,7 @@
                                 <constraints>
                                     <constraint firstAttribute="height" constant="50" id="2iZ-VP-1kM"/>
                                 </constraints>
-                                <state key="normal" title="Share Wallet"/>
+                                <state key="normal" title="Share Address"/>
                                 <userDefinedRuntimeAttributes>
                                     <userDefinedRuntimeAttribute type="string" keyPath="pattern" value="filled"/>
                                     <userDefinedRuntimeAttribute type="string" keyPath="color" value="purple"/>

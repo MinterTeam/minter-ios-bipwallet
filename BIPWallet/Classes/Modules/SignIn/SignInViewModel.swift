@@ -12,6 +12,10 @@ import RxCocoa
 import GoldenKeystore
 import MinterMy
 
+enum SignInViewModelError: Error {
+  case incorrectMnemonics
+}
+
 class SignInViewModel: BaseViewModel, ViewModel {
 
   // MARK: -
@@ -80,11 +84,12 @@ class SignInViewModel: BaseViewModel, ViewModel {
   func bind() {
     didTapGo.withLatestFrom(mnemonics)
       .map { $0?.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines) ?? "" }
-      .filter({ (str) -> Bool in
-        return mnemonicIsValid(str)
-      })
-      .flatMap {
-        self.addMnemonics(mnemonics: $0)
+      .flatMap { (val) -> Observable<Event<AccountItem>> in
+        guard mnemonicIsValid(val) else {
+          return Observable.error(SignInViewModelError.incorrectMnemonics).materialize()
+        }
+
+        return self.addMnemonics(mnemonics: val)
           .do(onNext: { (_) in
           self.isLoading.onNext(false)
         }, onError: { (error) in

@@ -110,15 +110,22 @@ final class LocalStorageAuthService: AuthService {
 }
 
 extension LocalStorageAuthService {
-  
-//  func remove(account: AccountItem) -> Observable<Void> {
-//    return Observable<Void>.create { (observer) -> Disposable in
-//      let accounts = self.databaseStorage.objects(class: AccountDataBaseModel.self, query: "address='\(account.address.stripMinterHexPrefix())'") as? [AccountDataBaseModel]
-//
-//
-//
-//    }
-//  }
+
+  func selectAccount(address: String) -> Observable<Void> {
+    return Observable<Void>.create { (observer) -> Disposable in
+      let accounts = self.databaseStorage.objects(class: AccountDataBaseModel.self, query: "address='\(address.stripMinterHexPrefix())'") as? [AccountDataBaseModel]
+      if let dbAccount = accounts?.first {
+        self.databaseStorage.update {
+          dbAccount.lastSelected = Date().timeIntervalSince1970
+          observer.onNext(())
+          observer.onCompleted()
+        }
+      } else {
+        observer.onError(AuthServiceError.unknown)
+      }
+      return Disposables.create()
+    }
+  }
 
   func updateAccount(account: AccountItem) -> Observable<Void> {
     return Observable<Void>.create { (observer) -> Disposable in

@@ -37,7 +37,7 @@ extension String {
 	}
 
   func isValidWalletTitle() -> Bool {
-    let titleTest = NSPredicate(format: "SELF MATCHES %@", "^[a-zA-Z0-9_\\-\\s]{3,18}")
+    let titleTest = NSPredicate(format: "SELF MATCHES %@", "^[a-zA-Z0-9_\\-\\s]{1,18}")
     return titleTest.evaluate(with: self)
   }
 
