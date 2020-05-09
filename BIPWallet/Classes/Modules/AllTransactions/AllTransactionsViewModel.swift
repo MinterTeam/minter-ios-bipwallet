@@ -32,7 +32,7 @@ class AllTransactionsViewModel: BaseViewModel, ViewModel, TransactionViewableVie
 
   private var isLoading = true
   private var stopSearching = false
-  private var isLoadingObservable = PublishSubject<Bool>()
+  private var isLoadingObservable = ReplaySubject<Bool>.create(bufferSize: 1)
   private var page = 1
   private var existingSections = [BaseTableSectionItem]()
   private var filter: TransactionServiceFilter?
@@ -40,7 +40,7 @@ class AllTransactionsViewModel: BaseViewModel, ViewModel, TransactionViewableVie
   // MARK: -
 
   private let transactions = BehaviorSubject<[MinterExplorer.Transaction]>(value: [])
-  private let sections = PublishSubject<[BaseTableSectionItem]>()
+  private let sections = BehaviorSubject<[BaseTableSectionItem]>(value: [])
   private let viewWillAppear = PublishSubject<Void>()
   private let didSelectItem = PublishSubject<IndexPath>()
   private let modelSelected = PublishSubject<BaseCellItem?>()
@@ -107,6 +107,9 @@ class AllTransactionsViewModel: BaseViewModel, ViewModel, TransactionViewableVie
     sectionTitleDateFormatter.dateFormat = "EEEE, dd MMM"
     sectionTitleDateFullFormatter.dateFormat = "EEEE, dd MMM yyyy"
 
+    //Strting with loading
+    isLoadingObservable.onNext(true)
+
     bind()
   }
 
@@ -162,7 +165,7 @@ class AllTransactionsViewModel: BaseViewModel, ViewModel, TransactionViewableVie
       }).filter { $0 != nil }.map{ $0! }.subscribe(onNext: { [weak self] (address) in
         guard let `self` = self else { return }
         self.address = address
-        self.createSections(transactions: [])
+        self.createSections(isLoading: true, transactions: [])
         self.loadTransactions(address: address, filter: self.filter, page: self.page)
       }).disposed(by: disposeBag)
 
@@ -186,6 +189,9 @@ class AllTransactionsViewModel: BaseViewModel, ViewModel, TransactionViewableVie
   // MARK: -
 
   func createSections(isLoading: Bool? = false, transactions: [MinterExplorer.Transaction]) {
+    if isLoading ?? false {
+      
+    }
     var newSections = [BaseTableSectionItem]()
     var items = [String: [BaseCellItem]]()
 
