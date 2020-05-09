@@ -37,9 +37,7 @@ class ShareViewModel: BaseViewModel, ViewModel {
     var didTapShare: Observable<Void>
   }
 
-  struct Dependency {
-
-  }
+  struct Dependency {}
 
   init(account: AccountItem, dependency: Dependency) {
     self.account = account

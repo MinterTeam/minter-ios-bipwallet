@@ -113,12 +113,13 @@ class AddWalletViewModel: BaseViewModel, ViewModel {
 
   func bind() {
 
-    signInMnemonics.map { _ in
+    signInMnemonics.distinctUntilChanged().map { _ in
       return nil
     }
     .subscribe(mnemonicsError)
     .disposed(by: disposeBag)
-    signInTitle.map { _ in
+
+    signInTitle.distinctUntilChanged().map { _ in
       return nil
     }.subscribe(titleError).disposed(by: disposeBag)
 
@@ -138,7 +139,7 @@ class AddWalletViewModel: BaseViewModel, ViewModel {
 
     Observable.merge(generateWallet, signInWallet)
       .flatMap({ (val) -> Observable<Event<AccountItem>> in
-        return self.observer(observable: val)
+        return self.observer(observable: val).materialize()
       })
       .subscribe(onNext: { [weak self] (event) in
         switch event {
@@ -152,7 +153,7 @@ class AddWalletViewModel: BaseViewModel, ViewModel {
       }).disposed(by: disposeBag)
   }
 
-  func observer(observable: (String?, String?)) -> Observable<Event<AccountItem>> {
+  func observer(observable: (String?, String?)) -> Observable<AccountItem> {
     return Observable<(String?, String?)>.just(observable)
       .map({ (val) -> (String?, String?) in
         let mnemonics = val.0
@@ -162,21 +163,18 @@ class AddWalletViewModel: BaseViewModel, ViewModel {
         return (newMnemonics, newTitle)
       }).flatMap({ (val) -> Observable<(String, String?)> in
         return self.validateForm(mnemonics: val.0, title: val.1)
-      }).flatMap({ [weak self] (val) -> Observable<Event<AccountItem>> in
+      }).flatMap({ [weak self] (val) -> Observable<AccountItem> in
         guard let `self` = self else { return Observable.empty() }
-        return self.dependency.authService.addAccount(with: val.0, title: val.1).materialize()
-        .do(onNext: { [weak self] (event) in
-          switch event {
-          case .error(let error):
-            self?.handleError(error)
-          default:
-            break
-          }
+        return self.dependency.authService.addAccount(with: val.0, title: val.1)
+      .do(onNext: { [weak self] (event) in
           self?.isLoading.onNext(false)
-        }, onSubscribe: { [weak self] in
+      }, onError: { [weak self] error in
+          self?.handleError(error)
+          self?.isLoading.onNext(false)
+      }, onSubscribe: { [weak self] in
           self?.isLoading.onNext(true)
-        })
       })
+    })
   }
 
   func validateForm(mnemonics: String?, title: String?) -> Observable<(String, String?)> {
@@ -196,22 +194,27 @@ class AddWalletViewModel: BaseViewModel, ViewModel {
 
   func handleError(_ error: Error) {
     self.shakeError.onNext(())
-    guard let error = error as? AuthServiceError else {
+    if let error = error as? AuthServiceError {
+      switch error {
+      case .dublicateAddress:
+        self.mnemonicsError.onNext("You've already added this wallet".localized())
+      case .invalidMnemonic:
+        self.mnemonicsError.onNext("Invalid mnemonic phrase".localized())
+      case .titleTaken:
+        self.titleError.onNext("Wallet with such title already exists".localized())
+      default:
+        self.errorMessage.onNext("Unable to add wallet".localized())
+      }
+    } else if let error = error as? AddWalletViewModelError {
+      switch error {
+      case .invalidMnemonics:
+        self.errorMessage.onNext("Invalid mnemonics".localized())
+      case .invalidTitle:
+        self.titleError.onNext("Invalid title".localized())
+      }
+    } else {
       self.errorMessage.onNext("Unable to add wallet".localized())
       return
-    }
-    switch error {
-    case .dublicateAddress:
-//      self.errorMessage.onNext("Address or title already exists".localized())
-      self.mnemonicsError.onNext("You've already added this wallet".localized())
-    case .invalidMnemonic:
-//      self.errorMessage.onNext("Invalid mnemonic phrase".localized())
-      self.mnemonicsError.onNext("Invalid mnemonic phrase".localized())
-    case .titleTaken:
-//      self.errorMessage.onNext("Wallet with such title already exists".localized())
-      self.titleError.onNext("Wallet with such title already exists".localized())
-    default:
-      self.errorMessage.onNext("Unable to add wallet".localized())
     }
   }
 

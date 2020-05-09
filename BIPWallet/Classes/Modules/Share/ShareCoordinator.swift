@@ -45,11 +45,15 @@ class ShareCoordinator: BaseCoordinator<Void> {
 
     viewModel.output.didTapShare.subscribe(onNext: { [weak self] (_) in
       guard let `self` = self else { return }
-      let ac = UIActivityViewController(activityItems: [self.account.address], applicationActivities: nil)
+      var activities: [Any] = [self.account.address]
+      if let image = QRCode(self.account.address)?.image {
+        activities.append(image)
+      }
+      let ac = UIActivityViewController(activityItems: activities, applicationActivities: nil)
       controller.present(ac, animated: true)
     }).disposed(by: disposeBag)
 
-    return Observable.never()
+    return controller.rx.viewDidDisappear.map{_ in}.take(1)
   }
 
 }

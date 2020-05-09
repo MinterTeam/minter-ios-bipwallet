@@ -17,17 +17,20 @@ class AddWalletViewController: BaseViewController, Controller, StoryboardInitial
   // MARK: - Outlets
 
   @IBOutlet weak var bottomConstraint: NSLayoutConstraint!
-  var generateViewBottomConstraint: Constraint!
-  @IBOutlet weak var generateWalletButton: DefaultButton!
   @IBOutlet weak var mnemonicTextView: DefaultTextView!
-  @IBOutlet weak var titleTextField: DefaultTextField!
   @IBOutlet weak var titleError: UILabel!
+  @IBOutlet weak var titleTextField: DefaultTextField!
+  //Generate mnemonic
+  @IBOutlet weak var generateTitleError: UILabel!
   @IBOutlet weak var generateTitleTextField: DefaultTextField!
   @IBOutlet weak var generateView: HandlerVerticalSnapDraggableView! {
     didSet {
       generateView.title = "Generate New Wallet"
     }
   }
+  var generateViewBottomConstraint: Constraint!
+  @IBOutlet weak var generateWalletButton: DefaultButton!
+
   @IBOutlet weak var activateButtonActivityIndicator: UIActivityIndicatorView!
 
   @IBOutlet weak var mainViewLoaderView: UIView!
@@ -128,6 +131,10 @@ class AddWalletViewController: BaseViewController, Controller, StoryboardInitial
 
     viewModel.output.titleError.asDriver(onErrorJustReturn: nil)
       .drive(titleError.rx.text)
+      .disposed(by: disposeBag)
+
+    viewModel.output.titleError.asDriver(onErrorJustReturn: nil)
+      .drive(generateTitleError.rx.text)
       .disposed(by: disposeBag)
 
     viewModel.output.mnemonicsError.asDriver(onErrorJustReturn: nil)

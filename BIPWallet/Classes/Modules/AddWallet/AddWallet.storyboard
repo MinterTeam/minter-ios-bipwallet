@@ -173,6 +173,7 @@
                         <outlet property="activateButtonActivityIndicator" destination="3fh-dD-so6" id="aPW-cx-n87"/>
                         <outlet property="bottomConstraint" destination="zBR-dQ-jW8" id="mgT-NY-Er4"/>
                         <outlet property="copiedIndicator" destination="TYo-aW-NNe" id="y4Z-CG-JsZ"/>
+                        <outlet property="generateTitleError" destination="1Qf-6c-uGC" id="fmx-jA-cvn"/>
                         <outlet property="generateTitleTextField" destination="vUe-q0-t0e" id="Y0G-aa-y9G"/>
                         <outlet property="generateView" destination="hdS-Ak-1mY" id="HeH-GR-pM7"/>
                         <outlet property="generateWalletButton" destination="FPg-CY-I4L" id="mnC-M4-sjo"/>
@@ -184,7 +185,7 @@
                         <outlet property="mnemonicTextView" destination="XsT-yv-09l" id="0Bj-l8-NRh"/>
                         <outlet property="mnemonicWrapper" destination="Fts-h0-Ret" id="OPK-00-fyC"/>
                         <outlet property="savedSwitch" destination="4KF-g9-TTT" id="zR8-FF-381"/>
-                        <outlet property="titleError" destination="n8E-Qh-che" id="wjS-tw-HIg"/>
+                        <outlet property="titleError" destination="n8E-Qh-che" id="rFB-hf-6VY"/>
                         <outlet property="titleTextField" destination="AhH-H1-eVQ" id="IlQ-Gy-w4b"/>
                     </connections>
                 </viewController>
@@ -297,9 +298,20 @@
                             <textInputTraits key="textInputTraits"/>
                         </textField>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Add a title to your wallet (you can do it later)" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="weF-NH-bNv" customClass="UHBCustomLabel" customModule="BIPWallet" customModuleProvider="target">
-                            <rect key="frame" x="16" y="214.5" width="366" height="13"/>
+                            <rect key="frame" x="16" y="214.5" width="235.5" height="13"/>
                             <fontDescription key="fontDescription" name="Inter_Semi-Bold" family="Inter" pointSize="11"/>
                             <color key="textColor" red="0.5568627451" green="0.5568627451" blue="0.5568627451" alpha="1" colorSpace="deviceRGB"/>
+                            <nil key="highlightedColor"/>
+                            <userDefinedRuntimeAttributes>
+                                <userDefinedRuntimeAttribute type="number" keyPath="characterSpacing">
+                                    <real key="value" value="0.40000000000000002"/>
+                                </userDefinedRuntimeAttribute>
+                            </userDefinedRuntimeAttributes>
+                        </label>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" ambiguous="YES" text="" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1Qf-6c-uGC" customClass="UHBCustomLabel" customModule="BIPWallet" customModuleProvider="target">
+                            <rect key="frame" x="261.5" y="221" width="120.5" height="0.0"/>
+                            <fontDescription key="fontDescription" name="Inter_Semi-Bold" family="Inter" pointSize="11"/>
+                            <color key="textColor" red="0.86274509799999999" green="0.28235294119999998" blue="0.25098039220000001" alpha="1" colorSpace="deviceRGB"/>
                             <nil key="highlightedColor"/>
                             <userDefinedRuntimeAttributes>
                                 <userDefinedRuntimeAttribute type="number" keyPath="characterSpacing">
@@ -313,9 +325,11 @@
                     </subviews>
                     <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                     <constraints>
+                        <constraint firstItem="1Qf-6c-uGC" firstAttribute="leading" secondItem="weF-NH-bNv" secondAttribute="trailing" constant="10" id="0ir-fq-WvK"/>
                         <constraint firstItem="TYo-aW-NNe" firstAttribute="bottom" secondItem="Fts-h0-Ret" secondAttribute="bottom" id="1Mg-Sh-Xb0"/>
                         <constraint firstItem="BiT-G9-egX" firstAttribute="trailing" secondItem="vUe-q0-t0e" secondAttribute="trailing" constant="16" id="2l5-en-JaP"/>
                         <constraint firstItem="9aT-r6-gmI" firstAttribute="top" secondItem="hdS-Ak-1mY" secondAttribute="top" constant="62" id="5FL-Xg-FOJ"/>
+                        <constraint firstItem="1Qf-6c-uGC" firstAttribute="centerY" secondItem="weF-NH-bNv" secondAttribute="centerY" id="60y-hM-bGz"/>
                         <constraint firstItem="vUe-q0-t0e" firstAttribute="top" secondItem="weF-NH-bNv" secondAttribute="bottom" constant="10" id="825-QS-OIk"/>
                         <constraint firstItem="4KF-g9-TTT" firstAttribute="leading" secondItem="Rq4-SY-3fd" secondAttribute="trailing" constant="5" id="8Hz-DK-MrF"/>
                         <constraint firstAttribute="bottom" secondItem="M29-jO-c2R" secondAttribute="bottom" constant="16" id="8uW-Vh-Eou"/>
@@ -338,7 +352,7 @@
                         <constraint firstItem="TYo-aW-NNe" firstAttribute="leading" secondItem="Fts-h0-Ret" secondAttribute="leading" id="npj-IG-omg"/>
                         <constraint firstItem="Fts-h0-Ret" firstAttribute="top" secondItem="9aT-r6-gmI" secondAttribute="bottom" constant="14" id="oYo-bo-t6w"/>
                         <constraint firstAttribute="trailing" secondItem="9aT-r6-gmI" secondAttribute="trailing" constant="16" id="opk-sC-LOA"/>
-                        <constraint firstItem="BiT-G9-egX" firstAttribute="trailing" secondItem="weF-NH-bNv" secondAttribute="trailing" constant="16" id="rEO-ma-69J"/>
+                        <constraint firstItem="BiT-G9-egX" firstAttribute="trailing" secondItem="1Qf-6c-uGC" secondAttribute="trailing" constant="16" id="taB-fw-OQm"/>
                         <constraint firstItem="3fh-dD-so6" firstAttribute="centerY" secondItem="M29-jO-c2R" secondAttribute="centerY" id="u3i-TK-UX0"/>
                         <constraint firstItem="weF-NH-bNv" firstAttribute="top" secondItem="4KF-g9-TTT" secondAttribute="bottom" constant="21" id="zG8-01-RI0"/>
                     </constraints>
