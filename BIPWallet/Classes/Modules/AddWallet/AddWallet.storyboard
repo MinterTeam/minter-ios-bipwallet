@@ -47,9 +47,42 @@
                                         </userDefinedRuntimeAttributes>
                                     </button>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Or enter seed-phrase to your existing wallet" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="z8U-XI-dhY" customClass="UHBCustomLabel" customModule="BIPWallet" customModuleProvider="target">
-                                        <rect key="frame" x="16" y="128" width="366" height="13"/>
+                                        <rect key="frame" x="16" y="128" width="234.5" height="13"/>
                                         <fontDescription key="fontDescription" name="Inter_Semi-Bold" family="Inter" pointSize="11"/>
                                         <color key="textColor" red="0.5568627451" green="0.5568627451" blue="0.5568627451" alpha="1" colorSpace="deviceRGB"/>
+                                        <nil key="highlightedColor"/>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="characterSpacing">
+                                                <real key="value" value="0.40000000000000002"/>
+                                            </userDefinedRuntimeAttribute>
+                                        </userDefinedRuntimeAttributes>
+                                    </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" text="" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CGf-3K-GcJ" customClass="UHBCustomLabel" customModule="BIPWallet" customModuleProvider="target">
+                                        <rect key="frame" x="260.5" y="134.5" width="121.5" height="0.0"/>
+                                        <fontDescription key="fontDescription" name="Inter_Semi-Bold" family="Inter" pointSize="11"/>
+                                        <color key="textColor" red="0.86274509803921573" green="0.28235294117647058" blue="0.25098039215686274" alpha="1" colorSpace="deviceRGB"/>
+                                        <nil key="highlightedColor"/>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="characterSpacing">
+                                                <real key="value" value="0.40000000000000002"/>
+                                            </userDefinedRuntimeAttribute>
+                                        </userDefinedRuntimeAttributes>
+                                    </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Add a title to your wallet (you can do it later)" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dG3-ZJ-gxe" customClass="UHBCustomLabel" customModule="BIPWallet" customModuleProvider="target">
+                                        <rect key="frame" x="16" y="235" width="235.5" height="13"/>
+                                        <fontDescription key="fontDescription" name="Inter_Semi-Bold" family="Inter" pointSize="11"/>
+                                        <color key="textColor" red="0.5568627451" green="0.5568627451" blue="0.5568627451" alpha="1" colorSpace="deviceRGB"/>
+                                        <nil key="highlightedColor"/>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="characterSpacing">
+                                                <real key="value" value="0.40000000000000002"/>
+                                            </userDefinedRuntimeAttribute>
+                                        </userDefinedRuntimeAttributes>
+                                    </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" text="" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="n8E-Qh-che" customClass="UHBCustomLabel" customModule="BIPWallet" customModuleProvider="target">
+                                        <rect key="frame" x="261.5" y="241.5" width="120.5" height="0.0"/>
+                                        <fontDescription key="fontDescription" name="Inter_Semi-Bold" family="Inter" pointSize="11"/>
+                                        <color key="textColor" red="0.86274509799999999" green="0.28235294119999998" blue="0.25098039220000001" alpha="1" colorSpace="deviceRGB"/>
                                         <nil key="highlightedColor"/>
                                         <userDefinedRuntimeAttributes>
                                             <userDefinedRuntimeAttribute type="number" keyPath="characterSpacing">
@@ -65,17 +98,6 @@
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                         <textInputTraits key="textInputTraits" returnKeyType="done"/>
                                     </textField>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Add a title to your wallet (you can do it later)" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dG3-ZJ-gxe" customClass="UHBCustomLabel" customModule="BIPWallet" customModuleProvider="target">
-                                        <rect key="frame" x="16" y="235" width="366" height="13"/>
-                                        <fontDescription key="fontDescription" name="Inter_Semi-Bold" family="Inter" pointSize="11"/>
-                                        <color key="textColor" red="0.5568627451" green="0.5568627451" blue="0.5568627451" alpha="1" colorSpace="deviceRGB"/>
-                                        <nil key="highlightedColor"/>
-                                        <userDefinedRuntimeAttributes>
-                                            <userDefinedRuntimeAttribute type="number" keyPath="characterSpacing">
-                                                <real key="value" value="0.40000000000000002"/>
-                                            </userDefinedRuntimeAttribute>
-                                        </userDefinedRuntimeAttributes>
-                                    </label>
                                     <view alpha="0.0" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="5Tk-Nw-tyl">
                                         <rect key="frame" x="16" y="64" width="366" height="242"/>
                                         <subviews>
@@ -112,6 +134,7 @@
                                 <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                                 <constraints>
                                     <constraint firstItem="XsT-yv-09l" firstAttribute="top" secondItem="z8U-XI-dhY" secondAttribute="bottom" constant="10" id="2nG-S7-Fh3"/>
+                                    <constraint firstAttribute="trailing" secondItem="CGf-3K-GcJ" secondAttribute="trailing" constant="16" id="35h-gX-9ke"/>
                                     <constraint firstItem="AhH-H1-eVQ" firstAttribute="leading" secondItem="ue4-1O-4bG" secondAttribute="leading" constant="16" id="7Qs-P6-cED"/>
                                     <constraint firstAttribute="bottom" secondItem="AhH-H1-eVQ" secondAttribute="bottom" constant="16" id="8Ce-rd-Nh0"/>
                                     <constraint firstAttribute="trailing" secondItem="XsT-yv-09l" secondAttribute="trailing" constant="16" id="BEn-XK-T29"/>
@@ -122,13 +145,16 @@
                                     <constraint firstItem="FPg-CY-I4L" firstAttribute="top" secondItem="ue4-1O-4bG" secondAttribute="top" constant="64" id="KhA-gs-tmM"/>
                                     <constraint firstItem="dG3-ZJ-gxe" firstAttribute="top" secondItem="XsT-yv-09l" secondAttribute="bottom" constant="14" id="PTo-0J-TBG"/>
                                     <constraint firstItem="5Tk-Nw-tyl" firstAttribute="top" secondItem="FPg-CY-I4L" secondAttribute="top" id="Rc2-xc-sgS"/>
-                                    <constraint firstItem="dG3-ZJ-gxe" firstAttribute="trailing" secondItem="XsT-yv-09l" secondAttribute="trailing" id="T8J-mB-mF3"/>
+                                    <constraint firstItem="CGf-3K-GcJ" firstAttribute="leading" secondItem="z8U-XI-dhY" secondAttribute="trailing" constant="10" id="YIc-iX-Jaf"/>
+                                    <constraint firstAttribute="trailing" secondItem="n8E-Qh-che" secondAttribute="trailing" constant="16" id="Zmq-xO-grF"/>
                                     <constraint firstAttribute="bottom" secondItem="5Tk-Nw-tyl" secondAttribute="bottom" constant="16" id="bpt-aW-yIY"/>
-                                    <constraint firstItem="z8U-XI-dhY" firstAttribute="trailing" secondItem="FPg-CY-I4L" secondAttribute="trailing" id="cSb-UU-Z0O"/>
                                     <constraint firstItem="XsT-yv-09l" firstAttribute="leading" secondItem="ue4-1O-4bG" secondAttribute="leading" constant="16" id="cUn-Od-6Iz"/>
+                                    <constraint firstItem="n8E-Qh-che" firstAttribute="centerY" secondItem="dG3-ZJ-gxe" secondAttribute="centerY" id="dQd-oH-4uB"/>
                                     <constraint firstItem="5Tk-Nw-tyl" firstAttribute="leading" secondItem="ue4-1O-4bG" secondAttribute="leading" constant="16" id="fyU-96-P9w"/>
                                     <constraint firstItem="z8U-XI-dhY" firstAttribute="top" secondItem="FPg-CY-I4L" secondAttribute="bottom" constant="14" id="o5I-kb-sqN"/>
+                                    <constraint firstItem="n8E-Qh-che" firstAttribute="leading" secondItem="dG3-ZJ-gxe" secondAttribute="trailing" constant="10" id="u0I-t6-S3g"/>
                                     <constraint firstAttribute="trailing" secondItem="5Tk-Nw-tyl" secondAttribute="trailing" constant="16" id="uhU-pu-iFT"/>
+                                    <constraint firstItem="CGf-3K-GcJ" firstAttribute="centerY" secondItem="z8U-XI-dhY" secondAttribute="centerY" id="w93-A4-VIn"/>
                                     <constraint firstItem="AhH-H1-eVQ" firstAttribute="top" secondItem="dG3-ZJ-gxe" secondAttribute="bottom" constant="10" id="y1T-dQ-2Gj"/>
                                     <constraint firstItem="FPg-CY-I4L" firstAttribute="leading" secondItem="ue4-1O-4bG" secondAttribute="leading" constant="16" id="zUZ-Oh-Vp3"/>
                                 </constraints>
@@ -153,10 +179,12 @@
                         <outlet property="mainView" destination="ue4-1O-4bG" id="6WI-7a-nVm"/>
                         <outlet property="mainViewLoaderView" destination="5Tk-Nw-tyl" id="a4t-ye-7J9"/>
                         <outlet property="mnemonicButton" destination="ZUW-8B-Vxe" id="Jyl-k0-uiC"/>
+                        <outlet property="mnemonicError" destination="CGf-3K-GcJ" id="fzR-M9-3jv"/>
                         <outlet property="mnemonicLabel" destination="PNZ-7Q-FJK" id="POH-rX-qyF"/>
                         <outlet property="mnemonicTextView" destination="XsT-yv-09l" id="0Bj-l8-NRh"/>
                         <outlet property="mnemonicWrapper" destination="Fts-h0-Ret" id="OPK-00-fyC"/>
                         <outlet property="savedSwitch" destination="4KF-g9-TTT" id="zR8-FF-381"/>
+                        <outlet property="titleError" destination="n8E-Qh-che" id="wjS-tw-HIg"/>
                         <outlet property="titleTextField" destination="AhH-H1-eVQ" id="IlQ-Gy-w4b"/>
                     </connections>
                 </viewController>

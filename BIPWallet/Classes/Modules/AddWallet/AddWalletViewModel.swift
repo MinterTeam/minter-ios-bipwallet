@@ -35,6 +35,8 @@ class AddWalletViewModel: BaseViewModel, ViewModel {
   private var hardImpact = PublishSubject<Void>()
   private var titleDidEndEditing = PublishSubject<Void>()
   private var isLoading = PublishSubject<Bool>()
+  private var titleError = PublishSubject<String?>()
+  private var mnemonicsError = PublishSubject<String?>()
 
   // MARK: - ViewModel
 
@@ -66,6 +68,8 @@ class AddWalletViewModel: BaseViewModel, ViewModel {
     var hardImpact: Observable<Void>
     var isLoading: Observable<Bool>
     var buttonTitle: Observable<String?>
+    var titleError: Observable<String?>
+    var mnemonicsError: Observable<String?>
   }
 
   struct Dependency {
@@ -73,6 +77,8 @@ class AddWalletViewModel: BaseViewModel, ViewModel {
   }
 
   init(dependency: Dependency) {
+    super.init()
+
     self.input = Input(viewDidDisappear: viewDidDisappear.asObserver(),
                        isSwichOn: isSwichOn.asObserver(),
                        didTapActivate: didTapActivate.asObserver(),
@@ -93,12 +99,12 @@ class AddWalletViewModel: BaseViewModel, ViewModel {
                          errorMessage: errorMessage.asObservable(),
                          hardImpact: hardImpact.asObservable(),
                          isLoading: isLoading.asObservable(),
-                         buttonTitle: isLoading.startWith(false).map { $0 ? "" : "Activate Wallet".localized() }
+                         buttonTitle: isLoading.startWith(false).map { $0 ? "" : "Activate Wallet".localized() },
+                         titleError: titleError.asObservable(),
+                         mnemonicsError: mnemonicsError.asObservable()
     )
 
     self.dependency = dependency
-
-    super.init()
 
     bind()
   }
@@ -106,6 +112,15 @@ class AddWalletViewModel: BaseViewModel, ViewModel {
   // MARK: -
 
   func bind() {
+
+    signInMnemonics.map { _ in
+      return nil
+    }
+    .subscribe(mnemonicsError)
+    .disposed(by: disposeBag)
+    signInTitle.map { _ in
+      return nil
+    }.subscribe(titleError).disposed(by: disposeBag)
 
     didTapMnemonic.asObservable().withLatestFrom(mnemonics)
       .subscribe(onNext: { (mnemonic) in
@@ -187,11 +202,14 @@ class AddWalletViewModel: BaseViewModel, ViewModel {
     }
     switch error {
     case .dublicateAddress:
-      self.errorMessage.onNext("Address or title already exists".localized())
+//      self.errorMessage.onNext("Address or title already exists".localized())
+      self.mnemonicsError.onNext("You've already added this wallet".localized())
     case .invalidMnemonic:
-      self.errorMessage.onNext("Invalid mnemonic phrase".localized())
+//      self.errorMessage.onNext("Invalid mnemonic phrase".localized())
+      self.mnemonicsError.onNext("Invalid mnemonic phrase".localized())
     case .titleTaken:
-      self.errorMessage.onNext("Wallet with such title already exists".localized())
+//      self.errorMessage.onNext("Wallet with such title already exists".localized())
+      self.titleError.onNext("Wallet with such title already exists".localized())
     default:
       self.errorMessage.onNext("Unable to add wallet".localized())
     }

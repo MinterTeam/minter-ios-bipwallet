@@ -163,7 +163,11 @@ extension LocalStorageAuthService {
             if acc.address == address { return true }
             return (title != nil ? (acc.title == title) : false)
           }).isEmpty else {
-            observer.onError(AuthServiceError.dublicateAddress)
+            if (title ?? "") == accounts?.first?.title {
+              observer.onError(AuthServiceError.titleTaken)
+            } else {
+              observer.onError(AuthServiceError.dublicateAddress)
+            }
             return
           }
 

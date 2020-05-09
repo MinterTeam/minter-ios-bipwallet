@@ -21,6 +21,7 @@ class AddWalletViewController: BaseViewController, Controller, StoryboardInitial
   @IBOutlet weak var generateWalletButton: DefaultButton!
   @IBOutlet weak var mnemonicTextView: DefaultTextView!
   @IBOutlet weak var titleTextField: DefaultTextField!
+  @IBOutlet weak var titleError: UILabel!
   @IBOutlet weak var generateTitleTextField: DefaultTextField!
   @IBOutlet weak var generateView: HandlerVerticalSnapDraggableView! {
     didSet {
@@ -33,6 +34,7 @@ class AddWalletViewController: BaseViewController, Controller, StoryboardInitial
   @IBOutlet weak var copiedIndicator: UIView!
   @IBOutlet weak var savedSwitch: UISwitch!
   @IBOutlet weak var mnemonicLabel: UILabel!
+  @IBOutlet weak var mnemonicError: UILabel!
   @IBOutlet weak var mnemonicButton: UIButton!
   @IBOutlet weak var mnemonicWrapper: UIView! {
     didSet {
@@ -123,6 +125,15 @@ class AddWalletViewController: BaseViewController, Controller, StoryboardInitial
         self?.activateButtonActivityIndicator.alpha = val ? 1.0 : 0.0
       }
     }).disposed(by: disposeBag)
+
+    viewModel.output.titleError.asDriver(onErrorJustReturn: nil)
+      .drive(titleError.rx.text)
+      .disposed(by: disposeBag)
+
+    viewModel.output.mnemonicsError.asDriver(onErrorJustReturn: nil)
+      .drive(mnemonicError.rx.text)
+      .disposed(by: disposeBag)
+
   }
 
   // MARK: - ViewController
