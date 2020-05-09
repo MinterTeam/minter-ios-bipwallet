@@ -297,6 +297,7 @@ extension SendViewController {
 
     viewModel.output
       .wallet
+      .distinctUntilChanged()
       .subscribe(onNext: { [weak self] (val) in
         guard let `self` = self else { return }
         self.walletLabel.text = val

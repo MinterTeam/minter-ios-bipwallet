@@ -35,7 +35,7 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="sve-c5-7GY">
                                 <rect key="frame" x="0.0" y="75" width="414" height="69"/>
                                 <subviews>
-                                    <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="bordered" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="TXG-e3-Gph">
+                                    <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="bordered" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="TXG-e3-Gph" customClass="DefaultSegmentedControl" customModule="BIPWallet" customModuleProvider="target">
                                         <rect key="frame" x="16" y="16" width="382" height="31"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="30" id="K8M-of-kyF"/>

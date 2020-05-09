@@ -105,7 +105,6 @@ class BalanceCoordinator: BaseCoordinator<Void> {
 
     self.bindSelectWallet(with: controller, viewModel: viewModel)
 
-    //Updating emoji
     balanceService.account.do(onNext: { (_) in
       controller.containerView?.setContentOffset(CGPoint(x: 0, y: 0), animated: false)
       controller.containerViewHeightConstraint?.constant = 0
@@ -113,26 +112,33 @@ class BalanceCoordinator: BaseCoordinator<Void> {
       (transactionsViewController as? TransactionsViewController)?.tableView?.setContentOffset(CGPoint(x: 0, y: -headerInset), animated: false)
     }).distinctUntilChanged({ (acc1, acc2) -> Bool in
       return (acc1?.address ?? "") == (acc2?.address ?? "")
-    }).flatMap { [weak self] (item) -> Observable<Event<(AccountItem?, BalanceService.BalancesResponse)>> in
-      guard let `self` = self, let address = item?.address else { return Observable.empty() }
-      return Observable.zip(self.balanceService.account, self.balanceService.balances(address: address)).materialize()
-    }.flatMap({ (event) -> Observable<Void> in
-      switch event {
-      case .next(let val):
-        guard let account = val.0 else { return Observable.empty() }
-        account.emoji = AccountItem.emoji(for: val.1.totalMainCoinBalance)
-        //Updating account emoji on getting newest balance data
-        return self.authService.updateAccount(account: account)
-      case .completed:
-        return Observable.empty()
-      case .error(_):
-        return Observable.empty()
-      }
     }).subscribe().disposed(by: disposeBag)
-//
-//    balanceService.balances(addresses: authService.accounts().map({ (account) -> String in
-//      return account.address
-//    })).subscribe().disposed(by: disposeBag)
+//      .flatMap { [weak self] (item) -> Observable<Event<(AccountItem?, BalanceService.BalancesResponse)>> in
+//      guard let `self` = self, let address = item?.address else { return Observable.empty() }
+//      return Observable.zip(self.balanceService.account, self.balanceService.balances(address: address)).materialize()
+//    }.flatMap({ (event) -> Observable<Void> in
+//      switch event {
+//      case .next(let val):
+//        guard let account = val.0 else { return Observable.empty() }
+//        account.emoji = AccountItem.emoji(for: val.1.totalMainCoinBalance)
+//        //Updating account emoji on getting newest balance data
+//        return self.authService.updateAccount(account: account)
+//      case .completed:
+//        return Observable.empty()
+//      case .error(_):
+//        return Observable.empty()
+//      }
+//    }).subscribe().disposed(by: disposeBag)
+
+    //Updating emoji
+    self.balanceService.balances().withLatestFrom(self.balanceService.account) {
+      return ($0, $1)
+    }.flatMap({ (val) -> Observable<Void> in
+      guard let account = val.1 else { return Observable.empty() }
+      account.emoji = AccountItem.emoji(for: val.0.totalMainCoinBalance)
+      //Updating account emoji on getting newest balance data
+      return self.authService.updateAccount(account: account)
+    }).subscribe().disposed(by: disposeBag)
 
     navigationController.setViewControllers([controller], animated: false)
     return Observable.never()
