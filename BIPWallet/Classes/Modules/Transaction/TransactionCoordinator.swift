@@ -11,6 +11,7 @@ import RxSwift
 import MinterCore
 import MinterExplorer
 import CardPresentationController
+import SafariServices
 
 class TransactionCoordinator: BaseCoordinator<Void> {
 
@@ -52,14 +53,24 @@ class TransactionCoordinator: BaseCoordinator<Void> {
                                            animated: true)
     }
 
-    viewModel.output.didTapShare.debug().map({ (_) -> URL? in
-      return self.explorerURL(transaction: self.transaction)
-    }).filter{$0 != nil}.map{$0!}.subscribe(onNext: { (url) in
+    viewModel.output.didTapShare.debug().map({ [weak self] (_) -> URL? in
+      guard let transaction = self?.transaction else { return nil }
+      return self?.explorerURL(transaction: transaction)
+    }).filter{$0 != nil}.map{$0!}.subscribe(onNext: { [weak controller] (url) in
       let ac = UIActivityViewController(activityItems: [url], applicationActivities: nil)
-      controller.present(ac, animated: true)
+      controller?.present(ac, animated: true)
     }).disposed(by: disposeBag)
 
-    return viewModel.output.didDismiss.asObservable().take(1)
+    viewModel.output.showExplorer.map({ [weak self] (hash) -> URL? in
+      guard let transaction = self?.transaction else { return nil }
+      return self?.explorerURL(transaction: transaction)//URL(string: MinterExplorerBaseURL! + "/transactions/" + (hash ?? ""))
+    }).subscribe(onNext: { [weak controller] (url) in
+      guard let url = url else { return }
+      let safari = SFSafariViewController(url: url)
+      controller?.present(safari, animated: true) {}
+    }).disposed(by: disposeBag)
+
+    return controller.rx.deallocated
   }
 
   func explorerURL(transaction: MinterExplorer.Transaction) -> URL? {

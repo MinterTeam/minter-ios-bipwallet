@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import RxSwift
 
 class TransactionTwoColumnCellItem: BaseCellItem {
   var key1: String?
@@ -14,9 +15,11 @@ class TransactionTwoColumnCellItem: BaseCellItem {
 
   var value1: String?
   var value1Interactable: Bool = false
+  var value1DidTap = PublishSubject<Void>()
 
   var value2: String?
   var value2Interactable: Bool = false
+  var value2DidTap = PublishSubject<Void>()
 }
 
 class TransactionTwoColumnCell: BaseCell {
@@ -62,7 +65,17 @@ class TransactionTwoColumnCell: BaseCell {
     value2.setTitle(item.value2, for: .normal)
 
     value1.isEnabled = item.value1Interactable
+    if item.value1Interactable {
+      value1.setTitleColor(.mainPurpleColor(), for: .normal)
+    }
+
     value2.isEnabled = item.value2Interactable
+    if item.value2Interactable {
+      value2.setTitleColor(.mainPurpleColor(), for: .normal)
+    }
+
+    value1.rx.tap.asDriver().drive(item.value1DidTap).disposed(by: disposeBag)
+    value2.rx.tap.asDriver().drive(item.value2DidTap).disposed(by: disposeBag)
   }
 
 }

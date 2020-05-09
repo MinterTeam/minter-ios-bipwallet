@@ -44,7 +44,7 @@ class ExchangeCoordinator: BaseCoordinator<Void> {
     coordinate(to: spend).subscribe().disposed(by: disposeBag)
     coordinate(to: get).subscribe().disposed(by: disposeBag)
 
-    viewController.controllers = [getViewController!, spendViewController!]
+    viewController.controllers = [spendViewController!, getViewController!]
 
     var cardConfig = CardConfiguration()
     cardConfig.horizontalInset = 0.0

@@ -22,6 +22,7 @@ class TransactionViewModel: BaseViewModel, ViewModel {
   private let didDismiss = PublishSubject<Void>()
   private let didTapShare = PublishSubject<Void>()
   private let copied = PublishSubject<Void>()
+  private let showExplorer = PublishSubject<String?>()
 
   // MARK: - ViewModel
 
@@ -39,6 +40,7 @@ class TransactionViewModel: BaseViewModel, ViewModel {
     var sections: Observable<[BaseTableSectionItem]>
     var didTapShare: Observable<Void>
     var copied: Observable<Void>
+    var showExplorer: Observable<String?>
   }
 
   struct Dependency {
@@ -55,7 +57,8 @@ class TransactionViewModel: BaseViewModel, ViewModel {
     self.output = Output(didDismiss: didDismiss.asObservable(),
                          sections: sections.asObservable(),
                          didTapShare: didTapShare.asObservable(),
-                         copied: copied.asObservable()
+                         copied: copied.asObservable(),
+                         showExplorer: showExplorer.asObservable()
     )
 
     self.dependency = dependency
@@ -141,14 +144,7 @@ class TransactionViewModel: BaseViewModel, ViewModel {
     blank3.color = .white
     cellItems.append(blank3)
 
-    let feeBlock = TransactionTwoColumnCellItem(reuseIdentifier: "TransactionTwoColumnCell",
-                                                identifier: "TransactionTwoColumnCell_FeeBlock")
-    feeBlock.key1 = "Fee".localized()
-    feeBlock.value1 = CurrencyNumberFormatter.formattedDecimal(with: transaction.fee ?? 0.0,
-                                                               formatter: coinFormatter)
-    feeBlock.key2 = "Block".localized()
-    feeBlock.value2 = String(transaction.block ?? 0)
-    cellItems.append(feeBlock)
+    cellItems.append(feeBlock())
 
     let blank4 = BlankTableViewCellItem(reuseIdentifier: "BlankTableViewCell",
                                         identifier: "BlankTableViewCell_BeforeShare")
@@ -156,12 +152,7 @@ class TransactionViewModel: BaseViewModel, ViewModel {
     blank4.color = .white
     cellItems.append(blank4)
 
-    let shareButton = ButtonTableViewCellItem(reuseIdentifier: "ButtonTableViewCell",
-                                                identifier: "ButtonTableViewCell_ShareTransactions")
-    shareButton.buttonPattern = "blank"
-    shareButton.title = "Share Transaction".localized()
-    shareButton.didTapButtonSubject.subscribe(didTapShare).disposed(by: disposeBag)
-    cellItems.append(shareButton)
+    cellItems.append(shareTransaction())
 
     return cellItems
   }
@@ -261,14 +252,7 @@ class TransactionViewModel: BaseViewModel, ViewModel {
     blank3.color = .white
     cellItems.append(blank3)
 
-    let feeBlock = TransactionTwoColumnCellItem(reuseIdentifier: "TransactionTwoColumnCell",
-                                                identifier: "TransactionTwoColumnCell_FeeBlock")
-    feeBlock.key1 = "Fee".localized()
-    feeBlock.value1 = CurrencyNumberFormatter.formattedDecimal(with: transaction.fee ?? 0.0,
-                                                               formatter: coinFormatter)
-    feeBlock.key2 = "Block".localized()
-    feeBlock.value2 = String(transaction.block ?? 0)
-    cellItems.append(feeBlock)
+    cellItems.append(feeBlock())
 
     let blank4 = BlankTableViewCellItem(reuseIdentifier: "BlankTableViewCell",
                                         identifier: "BlankTableViewCell_BeforeShare")
@@ -276,12 +260,7 @@ class TransactionViewModel: BaseViewModel, ViewModel {
     blank4.color = .white
     cellItems.append(blank4)
 
-    let shareButton = ButtonTableViewCellItem(reuseIdentifier: "ButtonTableViewCell",
-                                                identifier: "ButtonTableViewCell_ShareTransactions")
-    shareButton.buttonPattern = "blank"
-    shareButton.title = "Share Transaction".localized()
-    shareButton.didTapButtonSubject.subscribe(didTapShare).disposed(by: disposeBag)
-    cellItems.append(shareButton)
+    cellItems.append(shareTransaction())
 
     return cellItems
   }
@@ -375,14 +354,7 @@ class TransactionViewModel: BaseViewModel, ViewModel {
     blank3.color = .white
     cellItems.append(blank3)
 
-    let feeBlock = TransactionTwoColumnCellItem(reuseIdentifier: "TransactionTwoColumnCell",
-                                                identifier: "TransactionTwoColumnCell_FeeBlock")
-    feeBlock.key1 = "Fee".localized()
-    feeBlock.value1 = CurrencyNumberFormatter.formattedDecimal(with: transaction.fee ?? 0.0,
-                                                               formatter: coinFormatter)
-    feeBlock.key2 = "Block".localized()
-    feeBlock.value2 = String(transaction.block ?? 0)
-    cellItems.append(feeBlock)
+    cellItems.append(feeBlock())
 
     let blank4 = BlankTableViewCellItem(reuseIdentifier: "BlankTableViewCell",
                                         identifier: "BlankTableViewCell_BeforeShare")
@@ -390,12 +362,7 @@ class TransactionViewModel: BaseViewModel, ViewModel {
     blank4.color = .white
     cellItems.append(blank4)
 
-    let shareButton = ButtonTableViewCellItem(reuseIdentifier: "ButtonTableViewCell",
-                                              identifier: "ButtonTableViewCell_ShareTransactions")
-    shareButton.buttonPattern = "blank"
-    shareButton.title = "Share Transaction".localized()
-    shareButton.didTapButtonSubject.subscribe(didTapShare).disposed(by: disposeBag)
-    cellItems.append(shareButton)
+    cellItems.append(shareTransaction())
 
     return cellItems
   }
@@ -495,14 +462,7 @@ class TransactionViewModel: BaseViewModel, ViewModel {
     blank3.color = .white
     cellItems.append(blank3)
 
-    let feeBlock = TransactionTwoColumnCellItem(reuseIdentifier: "TransactionTwoColumnCell",
-                                                identifier: "TransactionTwoColumnCell_FeeBlock")
-    feeBlock.key1 = "Fee".localized()
-    feeBlock.value1 = CurrencyNumberFormatter.formattedDecimal(with: transaction.fee ?? 0.0,
-                                                               formatter: coinFormatter)
-    feeBlock.key2 = "Block".localized()
-    feeBlock.value2 = String(transaction.block ?? 0)
-    cellItems.append(feeBlock)
+    cellItems.append(feeBlock())
 
     let blank4 = BlankTableViewCellItem(reuseIdentifier: "BlankTableViewCell",
                                         identifier: "BlankTableViewCell_BeforeShare")
@@ -510,12 +470,7 @@ class TransactionViewModel: BaseViewModel, ViewModel {
     blank4.color = .white
     cellItems.append(blank4)
 
-    let shareButton = ButtonTableViewCellItem(reuseIdentifier: "ButtonTableViewCell",
-                                              identifier: "ButtonTableViewCell_ShareTransactions")
-    shareButton.buttonPattern = "blank"
-    shareButton.title = "Share Transaction".localized()
-    shareButton.didTapButtonSubject.subscribe(didTapShare).disposed(by: disposeBag)
-    cellItems.append(shareButton)
+    cellItems.append(shareTransaction())
 
     return cellItems
   }
@@ -543,7 +498,6 @@ class TransactionViewModel: BaseViewModel, ViewModel {
     blank1.height = 6.0
     blank1.color = .white
     cellItems.append(blank1)
-
 
     let to = TransactionAddressCellItem(reuseIdentifier: "TransactionAddressCell",
                                         identifier: "TransactionAddressCell_To")
@@ -614,14 +568,7 @@ class TransactionViewModel: BaseViewModel, ViewModel {
     blank3.color = .white
     cellItems.append(blank3)
 
-    let feeBlock = TransactionTwoColumnCellItem(reuseIdentifier: "TransactionTwoColumnCell",
-                                                identifier: "TransactionTwoColumnCell_FeeBlock")
-    feeBlock.key1 = "Fee".localized()
-    feeBlock.value1 = CurrencyNumberFormatter.formattedDecimal(with: transaction.fee ?? 0.0,
-                                                               formatter: coinFormatter)
-    feeBlock.key2 = "Block".localized()
-    feeBlock.value2 = String(transaction.block ?? 0)
-    cellItems.append(feeBlock)
+    cellItems.append(feeBlock())
     
     let blank4 = BlankTableViewCellItem(reuseIdentifier: "BlankTableViewCell",
                                         identifier: "BlankTableViewCell_BeforeShare")
@@ -629,12 +576,7 @@ class TransactionViewModel: BaseViewModel, ViewModel {
     blank4.color = .white
     cellItems.append(blank4)
 
-    let shareButton = ButtonTableViewCellItem(reuseIdentifier: "ButtonTableViewCell",
-                                              identifier: "ButtonTableViewCell_ShareTransactions")
-    shareButton.buttonPattern = "blank"
-    shareButton.title = "Share Transaction".localized()
-    shareButton.didTapButtonSubject.subscribe(didTapShare).disposed(by: disposeBag)
-    cellItems.append(shareButton)
+    cellItems.append(shareTransaction())
 
     return cellItems
   }
@@ -740,14 +682,7 @@ class TransactionViewModel: BaseViewModel, ViewModel {
     blank3.color = .white
     cellItems.append(blank3)
 
-    let feeBlock = TransactionTwoColumnCellItem(reuseIdentifier: "TransactionTwoColumnCell",
-                                                identifier: "TransactionTwoColumnCell_FeeBlock")
-    feeBlock.key1 = "Fee".localized()
-    feeBlock.value1 = CurrencyNumberFormatter.formattedDecimal(with: transaction.fee ?? 0.0,
-                                                               formatter: coinFormatter)
-    feeBlock.key2 = "Block".localized()
-    feeBlock.value2 = String(transaction.block ?? 0)
-    cellItems.append(feeBlock)
+    cellItems.append(feeBlock())
 
     let blank4 = BlankTableViewCellItem(reuseIdentifier: "BlankTableViewCell",
                                         identifier: "BlankTableViewCell_BeforeShare")
@@ -755,14 +690,32 @@ class TransactionViewModel: BaseViewModel, ViewModel {
     blank4.color = .white
     cellItems.append(blank4)
 
+    cellItems.append(shareTransaction())
+
+    return cellItems
+  }
+
+  func shareTransaction() -> ButtonTableViewCellItem {
     let shareButton = ButtonTableViewCellItem(reuseIdentifier: "ButtonTableViewCell",
                                               identifier: "ButtonTableViewCell_ShareTransactions")
     shareButton.buttonPattern = "blank"
     shareButton.title = "Share Transaction".localized()
     shareButton.didTapButtonSubject.subscribe(didTapShare).disposed(by: disposeBag)
-    cellItems.append(shareButton)
+    return shareButton
+  }
 
-    return cellItems
+  func feeBlock() -> TransactionTwoColumnCellItem {
+    let feeBlock = TransactionTwoColumnCellItem(reuseIdentifier: "TransactionTwoColumnCell",
+                                                identifier: "TransactionTwoColumnCell_FeeBlock")
+    feeBlock.key1 = "Fee".localized()
+    feeBlock.value1 = CurrencyNumberFormatter.formattedDecimal(with: transaction.fee ?? 0.0,
+                                                               formatter: coinFormatter)
+    feeBlock.key2 = "Block".localized()
+    feeBlock.value2 = String(transaction.block ?? 0)
+    feeBlock.value2Interactable = true
+    feeBlock.value2DidTap.map {_ in return self.transaction.hash }.asDriver(onErrorJustReturn: nil).drive(showExplorer).disposed(by: disposeBag)
+
+    return feeBlock
   }
 
 }

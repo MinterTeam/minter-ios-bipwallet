@@ -36,10 +36,6 @@ class TransactionViewController: BaseViewController, Controller, StoryboardIniti
       .drive(viewModel.input.viewDidDisappear)
       .disposed(by: disposeBag)
 
-//    tableView.rx.itemSelected.asDriver()
-//      .drive(viewModel.input.didSelectItem)
-//      .disposed(by: disposeBag)
-
     //Output
     viewModel
       .output
@@ -49,7 +45,7 @@ class TransactionViewController: BaseViewController, Controller, StoryboardIniti
 
     viewModel.output.copied.subscribe(onNext: { (_) in
       BannerHelper.performCopiedNotification()
-      }).disposed(by: disposeBag)
+    }).disposed(by: disposeBag)
 
   }
 
