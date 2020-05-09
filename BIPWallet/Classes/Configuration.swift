@@ -37,6 +37,34 @@ enum Environment: String {
     }
   }
 
+  var telegramChannelURL: String {
+    switch self {
+    case .dev: return "tg://resolve?domain=MinterNetwork"
+    case .prod: return "tg://resolve?domain=MinterNetwork"
+    }
+  }
+
+  var telegramChannelWEBURL: String {
+    switch self {
+    case .dev: return "https://t.me/MinterNetwork"
+    case .prod: return "https://t.me/MinterNetwork"
+    }
+  }
+
+  var supportTelegramChannelURL: String {
+    switch self {
+    case .dev: return "tg://resolve?domain=MinterHelp"
+    case .prod: return "tg://resolve?domain=MinterHelp"
+    }
+  }
+
+  var supportTelegramChannelWEBURL: String {
+    switch self {
+    case .dev: return "https://t.me/MinterHelp"
+    case .prod: return "https://t.me/MinterHelp"
+    }
+  }
+
 	var nodeBaseURL: String {
 		switch self {
 		case .dev: return "https://minter-node-2.mainnet.minter.network"

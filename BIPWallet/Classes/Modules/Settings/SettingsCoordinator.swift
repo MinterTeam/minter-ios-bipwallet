@@ -65,6 +65,24 @@ class SettingsCoordinator: BaseCoordinator<SettingsCoordinatorResult> {
 
     navigationController.setViewControllers([controller], animated: false)
 
+    viewModel.output.didTapOurChannel.subscribe(onNext: { _ in
+      let conf = Configuration()
+      if let url = URL(string: conf.environment.telegramChannelURL), UIApplication.shared.canOpenURL(url) {
+        UIApplication.shared.open(url, options: [:], completionHandler: nil)
+      } else if let url = URL(string: conf.environment.telegramChannelWEBURL) {
+        UIApplication.shared.open(url, options: [:], completionHandler: nil)
+      }
+    }).disposed(by: disposeBag)
+
+    viewModel.output.didTapSupport.subscribe(onNext: { _ in
+      let conf = Configuration()
+      if let url = URL(string: conf.environment.supportTelegramChannelURL) {
+        UIApplication.shared.open(url, options: [:], completionHandler: nil)
+      } else if let url = URL(string: conf.environment.supportTelegramChannelWEBURL), UIApplication.shared.canOpenURL(url) {
+        UIApplication.shared.open(url, options: [:], completionHandler: nil)
+      }
+    }).disposed(by: disposeBag)
+
     return logoutSubject.map {_ in .logout }.take(1)
   }
 

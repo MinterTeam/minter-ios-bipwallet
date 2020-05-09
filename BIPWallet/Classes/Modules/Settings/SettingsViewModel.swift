@@ -24,6 +24,8 @@ class SettingsViewModel: BaseViewModel, ViewModel {
   private let didSelectModel = PublishSubject<BaseCellItem?>()
   private let viewWillAppear = PublishSubject<Void>()
   private let didTapLogout = PublishSubject<Void>()
+  private let didTapOurChannel = PublishSubject<Void>()
+  private let didTapSupport = PublishSubject<Void>()
 
   // MARK: - ViewModel
 
@@ -36,6 +38,8 @@ class SettingsViewModel: BaseViewModel, ViewModel {
     var didSelectModel: AnyObserver<BaseCellItem?>
     var viewWillAppear: AnyObserver<Void>
     var didTapLogout: AnyObserver<Void>
+    var didTapOurChannel: AnyObserver<Void>
+    var didTapSupport: AnyObserver<Void>
   }
 
   struct Output {
@@ -43,6 +47,8 @@ class SettingsViewModel: BaseViewModel, ViewModel {
     var showPIN: Observable<Void>
     var changePIN: Observable<Void>
     var didTapLogout: Observable<Void>
+    var didTapOurChannel: Observable<Void>
+    var didTapSupport: Observable<Void>
   }
 
   struct Dependency {
@@ -55,13 +61,17 @@ class SettingsViewModel: BaseViewModel, ViewModel {
     self.input = Input(pin: pinSubject.asObserver(),
                        didSelectModel: didSelectModel.asObserver(),
                        viewWillAppear: viewWillAppear.asObserver(),
-                       didTapLogout: didTapLogout.asObserver()
+                       didTapLogout: didTapLogout.asObserver(),
+                       didTapOurChannel: didTapOurChannel.asObserver(),
+                       didTapSupport: didTapSupport.asObserver()
     )
 
     self.output = Output(sections: sections.asObservable(),
                          showPIN: showPIN.asObservable(),
                          changePIN: didSelectModel.filter { $0?.identifier == CellIdentifier.changePIN.rawValue }.map {_ in },
-                         didTapLogout: didTapLogout.asObservable()
+                         didTapLogout: didTapLogout.asObservable(),
+                         didTapOurChannel: didTapOurChannel.asObservable(),
+                         didTapSupport: didTapSupport.asObservable()
     )
 
     self.dependency = dependency

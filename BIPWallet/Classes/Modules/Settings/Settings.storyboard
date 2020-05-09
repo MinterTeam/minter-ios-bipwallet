@@ -51,6 +51,8 @@
                     <connections>
                         <outlet property="footer" destination="k6F-D8-7VA" id="clc-PW-lEX"/>
                         <outlet property="logoutItem" destination="k52-Zb-tw0" id="2zp-lO-qwF"/>
+                        <outlet property="ourChannel" destination="VS3-Aq-NsL" id="Hcg-NT-Une"/>
+                        <outlet property="supportChat" destination="xMb-nT-TzM" id="PWp-az-YIr"/>
                         <outlet property="tableView" destination="QIn-IF-gZi" id="aGn-La-vgq"/>
                     </connections>
                 </viewController>

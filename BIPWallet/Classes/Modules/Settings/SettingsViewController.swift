@@ -18,6 +18,8 @@ class SettingsViewController: BaseViewController, Controller, StoryboardInitiali
   @IBOutlet weak var tableView: UITableView!
   @IBOutlet weak var logoutItem: UIBarButtonItem!
   @IBOutlet weak var footer: UIView!
+  @IBOutlet weak var ourChannel: UIButton!
+  @IBOutlet weak var supportChat: UIButton!
 
   // MARK: - ControllerProtocol
 
@@ -46,6 +48,15 @@ class SettingsViewController: BaseViewController, Controller, StoryboardInitiali
     logoutItem.rx.tap.asDriver()
       .drive(viewModel.input.didTapLogout)
       .disposed(by: disposeBag)
+
+    ourChannel.rx.tap.asDriver()
+      .drive(viewModel.input.didTapOurChannel)
+      .disposed(by: disposeBag)
+
+    supportChat.rx.tap.asDriver()
+      .drive(viewModel.input.didTapSupport)
+      .disposed(by: disposeBag)
+
   }
 
   // MARK: - ViewController
