@@ -36,7 +36,8 @@ class BalanceCoordinator: BaseCoordinator<Void> {
 
   override func start() -> Observable<Void> {
     let controller = BalanceViewController.initFromStoryboard(name: "Balance")
-    let dependency = BalanceViewModel.Dependency(balanceService: balanceService)
+    let dependency = BalanceViewModel.Dependency(balanceService: balanceService,
+                                                 appSettingsSerivce: LocalStorageAppSettings())
     let viewModel = BalanceViewModel(dependency: dependency)
     controller.viewModel = viewModel
 

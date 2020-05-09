@@ -13,4 +13,6 @@ class LocalStorageAppSettings: AppSettings {
   @LocalStorage("userId", defaultValue: true)
   var isSoundEnabled: Bool
 
+  @LocalStorage("balanceType", defaultValue: "balanceBIP")
+  var balanceType: String
 }

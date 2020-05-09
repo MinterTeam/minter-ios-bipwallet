@@ -20,7 +20,7 @@ class BalanceViewModel: BaseViewModel, ViewModel, WalletSelectableViewModel {
     case totalBalanceUSD
   }
 
-  var changedBalanceTypeSubject = BehaviorSubject<BalanceType>(value: BalanceType.balanceBIP)
+  lazy var changedBalanceTypeSubject = BehaviorSubject<BalanceType>(value: BalanceType(rawValue: self.dependency.appSettingsSerivce.balanceType) ?? .balanceBIP)
 
   // MARK: -
 
@@ -63,6 +63,7 @@ class BalanceViewModel: BaseViewModel, ViewModel, WalletSelectableViewModel {
 
   struct Dependency {
     var balanceService: BalanceService
+    var appSettingsSerivce: AppSettings
   }
 
   init(dependency: Dependency) {
@@ -97,10 +98,11 @@ class BalanceViewModel: BaseViewModel, ViewModel, WalletSelectableViewModel {
   // MARK: -
 
   func bind() {
-    dependency.balanceService.balances().subscribe(onNext: { [weak self] (val) in
-      let headerItem = self?.headerViewTitleText(with: val.baseCoinBalance) ?? NSAttributedString()
-      self?.availableBalance.onNext(headerItem)
-    }).disposed(by: disposeBag)
+
+    dependency.balanceService.balances().withLatestFrom(changedBalanceTypeSubject) { [weak self] balances, balanceType in
+      let text = self?.balanceHeaderText(balanceType: balanceType, balances: balances)
+      return text?.1 ?? NSAttributedString()
+      }.subscribe(availableBalance).disposed(by: disposeBag)
 
     dependency.balanceService.delegatedBalance().subscribe(onNext: { (val) in
       var str = CurrencyNumberFormatter.formattedDecimal(with: val.1 ?? 0.0, formatter: CurrencyNumberFormatter.coinFormatter)
@@ -111,42 +113,44 @@ class BalanceViewModel: BaseViewModel, ViewModel, WalletSelectableViewModel {
 
     dependency.balanceService.updateDelegated()
 
-    let balanceHeaderText = Observable.combineLatest(self.dependency.balanceService.balances(), self.changedBalanceTypeSubject.asObservable())
-      .map({ (val) -> (BalanceType, NSAttributedString?) in
-        let balance = val.0.baseCoinBalance
-        let usdBalance = val.0.totalUSDBalance
-        let totalBalance = val.0.totalMainCoinBalance
-        let balanceType = val.1
+    didTapBalance.withLatestFrom(Observable.combineLatest(self.dependency.balanceService.balances(), self.changedBalanceTypeSubject.asObservable()))
+      .do(onNext: { [weak self] (val) in
+      var newBalance: BalanceType
+      switch val.1 {
+      case .totalBalanceUSD:
+        newBalance = .balanceBIP
+      case .balanceBIP:
+        newBalance = .totalBalanceBIP
+      case .totalBalanceBIP:
+        newBalance = .totalBalanceUSD
+      }
+      self?.dependency.appSettingsSerivce.balanceType = newBalance.rawValue
+      self?.changedBalanceTypeSubject.onNext(newBalance)
+      let text = self?.balanceHeaderText(balanceType: newBalance, balances: val.0)
+      self?.availableBalance.onNext(text?.1 ?? NSAttributedString())
+    }).subscribe().disposed(by: disposeBag)
+  }
 
-        var newBalanceType: BalanceType
-        var resultBalance: Decimal
+  func balanceHeaderText(balanceType: BalanceType, balances: BalanceService.BalancesResponse) -> (BalanceType, NSAttributedString?) {
+    let balance = balances.baseCoinBalance
+    let usdBalance = balances.totalUSDBalance
+    let totalBalance = balances.totalMainCoinBalance
 
-        switch balanceType {
-        case .totalBalanceUSD:
-          newBalanceType = .balanceBIP
-          resultBalance = balance
-        case .balanceBIP:
-          newBalanceType = .totalBalanceBIP
-          resultBalance = totalBalance
-        case .totalBalanceBIP:
-          newBalanceType = .totalBalanceUSD
-          resultBalance = usdBalance
-        }
+    var resultBalance: Decimal
 
-//        self?.changedBalanceTypeSubject.onNext(newBalanceType)
-//        AppSettingsManager.shared.balanceType = newBalanceType.rawValue
-//        AppSettingsManager.shared.save()
-        let headerItem = self.balanceHeaderItem(balanceType: newBalanceType,
-                                           balance: resultBalance,
-                                           isUSD: newBalanceType == .totalBalanceUSD)
-        return (newBalanceType, headerItem.text)
-      })
+    switch balanceType {
+    case .totalBalanceUSD:
+      resultBalance = usdBalance
+    case .balanceBIP:
+      resultBalance = balance
+    case .totalBalanceBIP:
+      resultBalance = totalBalance
+    }
 
-    didTapBalance.skip(1)
-      .withLatestFrom(balanceHeaderText).subscribe(onNext: { [weak self] val in
-        self?.changedBalanceTypeSubject.onNext(val.0)
-        self?.availableBalance.onNext(val.1 ?? NSAttributedString())
-      }).disposed(by: disposeBag)
+    let headerItem = self.balanceHeaderItem(balanceType: balanceType,
+                                       balance: resultBalance,
+                                       isUSD: balanceType == .totalBalanceUSD)
+    return (balanceType, headerItem.text)
   }
 
   // MARK: -
