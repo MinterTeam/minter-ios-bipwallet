@@ -39,10 +39,22 @@
                                             </userDefinedRuntimeAttribute>
                                         </userDefinedRuntimeAttributes>
                                     </label>
-                                    <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0.0000 BIP" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1jl-Ro-hiQ">
+                                    <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1jl-Ro-hiQ">
                                         <rect key="frame" x="48" y="38" width="350" height="36.5"/>
-                                        <fontDescription key="fontDescription" name="Inter_Semi-Bold" family="Inter" pointSize="30"/>
-                                        <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <attributedString key="attributedText">
+                                            <fragment content="0.">
+                                                <attributes>
+                                                    <color key="NSColor" red="1" green="1" blue="1" alpha="1" colorSpace="deviceRGB"/>
+                                                    <font key="NSFont" size="30" name="Inter_Semi-Bold"/>
+                                                </attributes>
+                                            </fragment>
+                                            <fragment content="0000 BIP">
+                                                <attributes>
+                                                    <color key="NSColor" red="1" green="1" blue="1" alpha="1" colorSpace="deviceRGB"/>
+                                                    <font key="NSFont" size="16" name="Inter_Semi-Bold"/>
+                                                </attributes>
+                                            </fragment>
+                                        </attributedString>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hRj-4M-g3L" customClass="UHBCustomLabel" customModule="BIPWallet" customModuleProvider="target">
@@ -126,7 +138,7 @@
                             <view multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ZBL-0Z-dM2">
                                 <rect key="frame" x="0.0" y="164" width="414" height="69"/>
                                 <subviews>
-                                    <segmentedControl opaque="NO" multipleTouchEnabled="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="bordered" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="8vz-1R-ytc">
+                                    <segmentedControl opaque="NO" multipleTouchEnabled="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="bordered" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="8vz-1R-ytc" customClass="DefaultSegmentedControl" customModule="BIPWallet" customModuleProvider="target">
                                         <rect key="frame" x="16" y="16" width="382" height="31"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="30" id="hUg-Hu-OVX"/>

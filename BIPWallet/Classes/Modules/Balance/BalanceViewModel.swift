@@ -33,6 +33,7 @@ class BalanceViewModel: BaseViewModel, ViewModel, WalletSelectableViewModel {
   private let didTapBalance = PublishSubject<Void>()
   private let didTapShare = PublishSubject<Void>()
   private let didScanQR = PublishSubject<String?>()
+  private let balanceTitle = PublishSubject<String?>()
   lazy var balanceTitleObservable = Observable.of(Observable<Int>.timer(0, period: 0.5, scheduler: MainScheduler.instance).map {_ in}, self.changedBalanceTypeSubject.map {_ in}).merge()
 
   // MARK: - ViewModel
@@ -84,10 +85,7 @@ class BalanceViewModel: BaseViewModel, ViewModel, WalletSelectableViewModel {
                          didTapSelectWallet: didTapSelectWallet.map { $0 },
                          wallet: walletObservable(),
                          showDelegated: didTapDelegatedBalance.asObservable(),
-                         balanceTitle: balanceTitleObservable.withLatestFrom(Observable.combineLatest(balanceService.lastBlockAgo(), changedBalanceTypeSubject)).map { lastBlockAgo, balanceType -> String in
-                          let ago = Date().timeIntervalSince1970 - (lastBlockAgo ?? 0)
-                          return self.headerViewLastUpdatedTitleText(balanceType: balanceType, seconds: ago)
-                         },
+                         balanceTitle: balanceTitle.asObservable(),
                          didTapShare: didTapShare.asObservable(),
                          didScanQR: didScanQR.asObservable()
     )
@@ -99,11 +97,22 @@ class BalanceViewModel: BaseViewModel, ViewModel, WalletSelectableViewModel {
 
   func bind() {
 
-    dependency.balanceService.balances().withLatestFrom(changedBalanceTypeSubject) { [weak self] balances, balanceType in
-      let text = self?.balanceHeaderText(balanceType: balanceType, balances: balances)
-      return text?.1 ?? NSAttributedString()
-      }.subscribe(availableBalance).disposed(by: disposeBag)
+    //Change balance type when lastBlockAgo info appears or on type change
+    balanceTitleObservable.withLatestFrom(Observable.combineLatest(balanceService.lastBlockAgo(), changedBalanceTypeSubject)).map { lastBlockAgo, balanceType -> String in
+     let ago = Date().timeIntervalSince1970 - (lastBlockAgo ?? 0)
+     return self.headerViewLastUpdatedTitleText(balanceType: balanceType, seconds: ago)
+    }.subscribe(balanceTitle).disposed(by: disposeBag)
 
+    //Setting balance for the first time after load
+    dependency.balanceService.balances().withLatestFrom(changedBalanceTypeSubject) { [weak self] balances, balanceType in
+      return self?.balanceHeaderText(balanceType: balanceType, balances: balances)
+//      return text?.1 ?? NSAttributedString()
+    }.subscribe(onNext: { val in
+      self.balanceTitle.onNext(val?.title)
+      self.availableBalance.onNext(val?.text ?? NSAttributedString())
+    }).disposed(by: disposeBag)
+
+    //Showing delegated balance
     dependency.balanceService.delegatedBalance().subscribe(onNext: { (val) in
       var str = CurrencyNumberFormatter.formattedDecimal(with: val.1 ?? 0.0, formatter: CurrencyNumberFormatter.coinFormatter)
       str += ""
@@ -113,6 +122,7 @@ class BalanceViewModel: BaseViewModel, ViewModel, WalletSelectableViewModel {
 
     dependency.balanceService.updateDelegated()
 
+    //When tap on balance - change balance type
     didTapBalance.withLatestFrom(Observable.combineLatest(self.dependency.balanceService.balances(), self.changedBalanceTypeSubject.asObservable()))
       .do(onNext: { [weak self] (val) in
       var newBalance: BalanceType
@@ -131,7 +141,7 @@ class BalanceViewModel: BaseViewModel, ViewModel, WalletSelectableViewModel {
     }).subscribe().disposed(by: disposeBag)
   }
 
-  func balanceHeaderText(balanceType: BalanceType, balances: BalanceService.BalancesResponse) -> (BalanceType, NSAttributedString?) {
+  func balanceHeaderText(balanceType: BalanceType, balances: BalanceService.BalancesResponse) -> BalanceHeaderItem {
     let balance = balances.baseCoinBalance
     let usdBalance = balances.totalUSDBalance
     let totalBalance = balances.totalMainCoinBalance
@@ -147,10 +157,9 @@ class BalanceViewModel: BaseViewModel, ViewModel, WalletSelectableViewModel {
       resultBalance = totalBalance
     }
 
-    let headerItem = self.balanceHeaderItem(balanceType: balanceType,
+    return self.balanceHeaderItem(balanceType: balanceType,
                                        balance: resultBalance,
                                        isUSD: balanceType == .totalBalanceUSD)
-    return (balanceType, headerItem.text)
   }
 
   // MARK: -
@@ -184,8 +193,9 @@ class BalanceViewModel: BaseViewModel, ViewModel, WalletSelectableViewModel {
     return BalanceHeaderItem(title: title, text: text, animated: false)
   }
 
-  func headerViewLastUpdatedTitleText(balanceType: BalanceType, seconds: TimeInterval) -> String {
+  func headerViewLastUpdatedTitleText(balanceType: BalanceType, seconds: TimeInterval?) -> String {
     let balanceTypeStr = balanceType == .balanceBIP ? "Available Balance" : "Total Balance"
+    guard let seconds = seconds else { return balanceTypeStr }
     var string = "\(balanceTypeStr) (Updated ".localized()
     var dateText = "\(Int(seconds)) sec"
     if seconds < 5 {

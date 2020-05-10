@@ -89,10 +89,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 extension AppDelegate {
 
   func appearance() {
-      UINavigationBar.appearance().shadowImage = UIImage()
-//    UINavigationBar.appearance().shadowImage = UIImage(named: "NavigationBarShadowImage")
-//    UINavigationBar.appearance().tintColor = .white
-//    UINavigationBar.appearance().barTintColor = UIColor.mainColor()
+    UINavigationBar.appearance().shadowImage = UIImage()
     UINavigationBar.appearance().titleTextAttributes = [
       NSAttributedString.Key.foregroundColor: UIColor.mainBlackColor(),
       NSAttributedString.Key.font: UIFont.semiBoldFont(of: 18.0)
@@ -113,8 +110,6 @@ extension AppDelegate {
       NSAttributedString.Key.baselineOffset: 1
     ], for: .highlighted)
 
-//    UITabBarItem.appearance().titlePositionAdjustment = UIOffset(horizontal: 0, vertical: -2)
-
     let img = UIImage(named: "BackButtonIcon")?
       .resizableImage(withCapInsets: UIEdgeInsets(top: 0, left: 12, bottom: 0, right: 0))
       .withAlignmentRectInsets(UIEdgeInsets(top: 0, left: -10, bottom: 0, right: 0))
@@ -124,7 +119,7 @@ extension AppDelegate {
     UINavigationBar.appearance().isTranslucent = false
 
     UITabBarItem.appearance().setTitleTextAttributes([
-      NSAttributedString.Key.foregroundColor: UIColor.mainPurpleColor(),
+      NSAttributedString.Key.foregroundColor: UIColor.mainGreyColor(),
       NSAttributedString.Key.font : UIFont.mediumFont(of: 11.0)
     ], for: .normal)
     UITabBarItem.appearance().setTitleTextAttributes([
