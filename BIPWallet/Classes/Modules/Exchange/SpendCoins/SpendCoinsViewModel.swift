@@ -8,6 +8,7 @@
 
 import Foundation
 import RxSwift
+import RxCocoa
 import BigInt
 import MinterCore
 
@@ -27,7 +28,7 @@ class SpendCoinsViewModel: ConvertCoinsViewModel, ViewModel {
   var dependency: SpendCoinsViewModel.Dependency!
 
   struct Input {
-    var spendAmount: AnyObserver<String?>
+    var spendAmount: BehaviorRelay<String?>
     var getCoin: AnyObserver<String?>
     var spendCoin: AnyObserver<String?>
     var useMaxDidTap: AnyObserver<Void>
@@ -72,7 +73,8 @@ class SpendCoinsViewModel: ConvertCoinsViewModel, ViewModel {
                          shouldClearForm: shouldClearForm.asObservable(),
                          amountError: amountError.asObservable(),
                          getCoinError: getCoinError.asObservable())
-    self.input = Input(spendAmount: spendAmount.asObserver(),
+
+    self.input = Input(spendAmount: spendAmount,
                        getCoin: getCoin.asObserver(),
                        spendCoin: spendCoinField.asObserver(),
                        useMaxDidTap: useMaxDidTap.asObserver(),
@@ -84,6 +86,12 @@ class SpendCoinsViewModel: ConvertCoinsViewModel, ViewModel {
   }
 
   private func bind() {
+    
+    spendAmount.distinctUntilChanged().debounce(.seconds(1), scheduler: MainScheduler.instance).map { (val) -> String? in
+      return AmountHelper.transformValue(value: val)
+    }.subscribe(onNext: { val in
+      self.spendAmount.accept(val)
+    }).disposed(by: disposeBag)
 
     spendCoinField
       .throttle(1.0, scheduler: MainScheduler.instance)
@@ -140,7 +148,7 @@ class SpendCoinsViewModel: ConvertCoinsViewModel, ViewModel {
     }).disposed(by: disposeBag)
 
     shouldClearForm.asObservable().subscribe(onNext: { [weak self] (_) in
-      self?.spendAmount.onNext(nil)
+      self?.spendAmount.accept(nil)
       self?.getCoin.onNext("")
       self?.validateErrors()
     }).disposed(by: disposeBag)
@@ -153,7 +161,7 @@ class SpendCoinsViewModel: ConvertCoinsViewModel, ViewModel {
         guard let _self = self else { return } //swiftlint:disable:this identifier_name
         let selectedAmount = CurrencyNumberFormatter.formattedDecimal(with: selectedBalance,
                                                                       formatter: _self.decimalFormatter)
-        self?.spendAmount.onNext(selectedAmount)
+        self?.spendAmount.accept(selectedAmount)
     }).disposed(by: disposeBag)
   }
 
@@ -162,7 +170,7 @@ class SpendCoinsViewModel: ConvertCoinsViewModel, ViewModel {
   let useMaxDidTap = PublishSubject<Void>()
   let didTapExchangeButton = PublishSubject<Void>()
   var spendCoin = BehaviorSubject<String?>(value: nil)
-  var spendAmount = BehaviorSubject<String?>(value: nil)
+  var spendAmount = BehaviorRelay<String?>(value: nil)
 
   private var approximately = PublishSubject<String?>()
   var approximatelyReady = Variable<Bool>(false)
@@ -263,8 +271,7 @@ class SpendCoinsViewModel: ConvertCoinsViewModel, ViewModel {
 
   override func validateErrors() {
     if
-      let amountString = try? self.spendAmount.value() ?? "",
-      amountString != "",
+      let amountString = self.spendAmount.value,
       let amount = Decimal(string: amountString) {
         if amount > selectedBalance {
           amountError.value = "INSUFFICIENT FUNDS".localized()
@@ -272,7 +279,7 @@ class SpendCoinsViewModel: ConvertCoinsViewModel, ViewModel {
           amountError.value = nil
         }
     } else {
-      let amountString = try? self.spendAmount.value() ?? ""
+      let amountString = self.spendAmount.value
       if nil == amountString || amountString == "" {
         amountError.value = nil
       } else {
@@ -285,7 +292,7 @@ class SpendCoinsViewModel: ConvertCoinsViewModel, ViewModel {
 
     guard let coinFrom = self.selectedCoin?.transformToCoinName(),
       let coinTo = try? self.getCoin.value()?.transformToCoinName() ?? "",
-      let amount = try? self.spendAmount.value() ?? "",
+      let amount = self.spendAmount.value,
       let minimumBuyValue = self.minimumValueToBuy.value
     else {
       return

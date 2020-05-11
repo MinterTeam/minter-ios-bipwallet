@@ -8,6 +8,7 @@
 
 import Foundation
 import RxSwift
+import RxCocoa
 import MinterCore
 import BigInt
 
@@ -26,7 +27,7 @@ class GetCoinsViewModel: ConvertCoinsViewModel, ViewModel {
   struct Input {
     var spendCoin: AnyObserver<String?>
     var getCoin: AnyObserver<String?>
-    var getAmount: AnyObserver<String?>
+    var getAmount: BehaviorRelay<String?>
     var didTapExchangeButton: AnyObserver<Void>
   }
 
@@ -50,7 +51,7 @@ class GetCoinsViewModel: ConvertCoinsViewModel, ViewModel {
 
     self.input = Input(spendCoin: spendCoin.asObserver(),
                        getCoin: getCoin.asObserver(),
-                       getAmount: getAmount.asObserver(),
+                       getAmount: getAmount,
                        didTapExchangeButton: didTapExchangeButton.asObserver())
 
     self.output = Output(spendCoin: spendCoinField.asObservable(),
@@ -66,9 +67,13 @@ class GetCoinsViewModel: ConvertCoinsViewModel, ViewModel {
   // MARK: -
 
   private func bind() {
-    dependency
-      .balanceService
-      .balances()
+    getAmount.distinctUntilChanged().debounce(.seconds(1), scheduler: MainScheduler.instance).map { (val) -> String? in
+      return AmountHelper.transformValue(value: val)
+    }.subscribe(onNext: { val in
+      self.getAmount.accept(val)
+    }).disposed(by: disposeBag)
+
+    dependency.balanceService.balances()
       .subscribe(onNext: { [weak self] (val) in
         let balances = val.balances
 
@@ -82,7 +87,7 @@ class GetCoinsViewModel: ConvertCoinsViewModel, ViewModel {
         if self?.selectedCoin != nil {
           self?.spendCoinField.onNext(self?.spendCoinText)
         }
-    }).disposed(by: disposeBag)
+      }).disposed(by: disposeBag)
 
     Observable.combineLatest(getCoin.asObservable(),
                              getAmount.asObservable(),
@@ -95,7 +100,7 @@ class GetCoinsViewModel: ConvertCoinsViewModel, ViewModel {
     }).disposed(by: disposeBag)
 
     shouldClearForm.asObservable().subscribe(onNext: { [weak self] (_) in
-      self?.getAmount.onNext(nil)
+      self?.getAmount.accept(nil)
       self?.getCoin.onNext("")
       self?.validateErrors()
     }).disposed(by: disposeBag)
@@ -108,7 +113,7 @@ class GetCoinsViewModel: ConvertCoinsViewModel, ViewModel {
       }).disposed(by: disposeBag)
 
     spendCoin
-      .throttle(1.0, scheduler: MainScheduler.instance)
+      .throttle(.seconds(1), scheduler: MainScheduler.instance)
       .distinctUntilChanged().map({ (val) -> SpendCoinPickerItem? in
         let item = SpendCoinPickerItem.items(with: self.spendCoinPickerSource).filter({ (item) -> Bool in
           return item.title == val
@@ -123,7 +128,8 @@ class GetCoinsViewModel: ConvertCoinsViewModel, ViewModel {
   }
 
   private var spendCoin = BehaviorSubject<String?>(value: nil)
-  private var getAmount = BehaviorSubject<String?>(value: nil)
+  //TODO: Move to parent as amount
+  private var getAmount = BehaviorRelay<String?>(value: nil)
   var isApproximatelyLoading = PublishSubject<Bool>()
   var approximately = PublishSubject<String?>()
   var approximatelySum = BehaviorSubject<Decimal?>(value: nil)
@@ -149,29 +155,9 @@ class GetCoinsViewModel: ConvertCoinsViewModel, ViewModel {
 
   // MARK: -
 
-//  override func validateErrors() {
-//    if let getCn = try? getCoin.value(), getCn != "" && !hasCoin.value {
-//      self.getCoinError.value = "COIN NOT FOUND".localized()
-//    } else {
-//      self.getCoinError.value = ""
-//    }
-//
-//    if let amountString = self.getAmount.value,
-//      let amnt = Decimal(string: amountString), amnt > 0 {
-//
-//      if (approximatelySum.value ?? 0.0) > (selectedBalance ?? 0.0) {
-//        self.amountError.value = "INSUFFICIENT FUNDS".localized()
-//      } else {
-//        self.amountError.value = ""
-//      }
-//    } else {
-//      self.amountError.value = ""
-//    }
-//  }
-
   private func checkAmountValue() {
-    if let amountString = try? self.getAmount.value(),
-      let amnt = Decimal(string: amountString), amnt > 0 {
+    if let amountString = self.getAmount.value,
+      let amnt = Decimal(str: amountString), amnt > 0 {
       if !AmountValidator.isValid(amount: amnt) {
         self.amountError.value = "TOO SMALL VALUE".localized()
       } else {
@@ -188,8 +174,8 @@ class GetCoinsViewModel: ConvertCoinsViewModel, ViewModel {
 
     guard let from = selectedCoin?.uppercased(),
       let to = try? self.getCoin.value()?.uppercased() ?? "",
-      let amountString = try? self.getAmount.value(),
-      let amnt = Decimal(string: amountString), amnt > 0
+      let amountString = self.getAmount.value,
+      let amnt = Decimal(str: amountString), amnt > 0
         && (amnt > 1.0/TransactionCoinFactorDecimal) && CoinValidator.isValid(coin: to) else {
       return
     }
@@ -239,7 +225,7 @@ class GetCoinsViewModel: ConvertCoinsViewModel, ViewModel {
 
     guard let coinFrom = self.selectedCoin?.transformToCoinName(),
       let coinTo = try? self.getCoin.value()?.transformToCoinName() ?? "",
-      let amntString = try? self.getAmount.value(), let amount = Decimal(string: amntString),
+      let amntString = self.getAmount.value, let amount = Decimal(str: amntString),
       let maximumValueToSell = BigUInt(decimal: approximatelySumRoundedVal)
       else {
         self.errorNotification.onNext("Incorrect amount".localized())

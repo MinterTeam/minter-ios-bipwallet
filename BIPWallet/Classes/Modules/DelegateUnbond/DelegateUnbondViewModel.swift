@@ -28,6 +28,7 @@ class DelegateUnbondViewModel: BaseViewModel, ViewModel {
 
   private let coinFormatter = CurrencyNumberFormatter.coinFormatter
 
+  private(set) var maxUnbondAmount: Decimal?
   private(set) var isUnbond = false
   private(set) var validator: ValidatorItem?
 
@@ -119,8 +120,10 @@ class DelegateUnbondViewModel: BaseViewModel, ViewModel {
     var accountService: AccountService
   }
 
-  init(validator: ValidatorItem? = nil, coinName: String? = nil, isUnbond: Bool = false, dependency: Dependency) {
+  init(validator: ValidatorItem? = nil, coinName: String? = nil, isUnbond: Bool = false, maxUnbondAmount: Decimal? = nil, dependency: Dependency) {
     super.init()
+
+    self.maxUnbondAmount = maxUnbondAmount
 
     self.dependency = dependency
 
@@ -187,13 +190,25 @@ class DelegateUnbondViewModel: BaseViewModel, ViewModel {
 
   func bind() {
 
+    amount.distinctUntilChanged().debounce(.seconds(1), scheduler: MainScheduler.instance).map { (val) -> String? in
+      return AmountHelper.transformValue(value: val)
+    }.subscribe(onNext: { val in
+      self.amount.accept(val)
+    }).disposed(by: disposeBag)
+
     didTapUseMax.do(onNext: { [weak self] (_) in
       self?.impact.onNext(.light)
       self?.sound.onNext(.click)
     }).withLatestFrom(coin).subscribe(onNext: { (coin) in
-      guard let coin = coin, let balance = self.coinsPickerSource[coin]?.balance else { return }
-      let balanceStr = CurrencyNumberFormatter.formattedDecimal(with: balance, formatter: self.coinFormatter)
-      self.amount.accept(balanceStr)
+      var amount: String?
+      if self.isUnbond {
+        guard let coin = coin, let balance = self.maxUnbondAmount else { return }
+        amount = CurrencyNumberFormatter.formattedDecimal(with: balance, formatter: self.coinFormatter)
+      } else {
+        guard let coin = coin, let balance = self.coinsPickerSource[coin]?.balance else { return }
+        amount = CurrencyNumberFormatter.formattedDecimal(with: balance, formatter: self.coinFormatter)
+      }
+      self.amount.accept(amount)
     }).disposed(by: disposeBag)
 
     self.dependency.validatorService.validators().subscribe(onNext: { (items) in

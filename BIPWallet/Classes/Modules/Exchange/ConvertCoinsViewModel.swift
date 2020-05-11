@@ -136,7 +136,9 @@ class ConvertCoinsViewModel: BaseViewModel {
 
   var balances = [String: Decimal]()
 
-  var baseCoinBalance: Decimal = 0.0
+  var baseCoinBalance: Decimal {
+    return balances[Coin.baseCoin().symbol!] ?? 0.0
+  }
 
 	var hasMultipleCoins: Bool = false
 

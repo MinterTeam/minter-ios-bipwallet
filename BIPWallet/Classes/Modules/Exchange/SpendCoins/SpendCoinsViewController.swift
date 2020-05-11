@@ -9,6 +9,7 @@
 import UIKit
 import RxSwift
 import XLPagerTabStrip
+import RxBiBinding
 
 class SpendCoinsViewController: ConvertCoinsViewController, StoryboardInitializable {
 
@@ -33,9 +34,11 @@ class SpendCoinsViewController: ConvertCoinsViewController, StoryboardInitializa
 
   func configure(with viewModel: SpendCoinsViewModel) {
     //Input
-    spendAmountTextField.rx.text.asObservable()
-      .subscribe(viewModel.input.spendAmount)
-      .disposed(by: disposeBag)
+//    spendAmountTextField.rx.text.asObservable()
+//      .subscribe(viewModel.input.spendAmount)
+//      .disposed(by: disposeBag)
+
+    (spendAmountTextField.rx.text <-> viewModel.input.spendAmount).disposed(by: disposeBag)
 
     getCoinTextField.rx.text.asObservable()
       .subscribe(viewModel.input.getCoin)

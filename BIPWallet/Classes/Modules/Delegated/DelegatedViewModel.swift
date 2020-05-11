@@ -37,7 +37,7 @@ class DelegatedViewModel: BaseViewModel, ViewModel {
   struct Output {
     var sections: Observable<[BaseTableSectionItem]>
     var showDelegate: Observable<ValidatorItem?>
-    var showUnbond: Observable<(ValidatorItem?, String?)>
+    var showUnbond: Observable<(ValidatorItem?, String?, Decimal?)>
   }
 
   struct Dependency {
@@ -55,7 +55,7 @@ class DelegatedViewModel: BaseViewModel, ViewModel {
   private var willDisplayCell = PublishSubject<WillDisplayCellEvent>()
   private var didTapUnbond = PublishSubject<IndexPath?>()
   private let showDelegate = PublishSubject<ValidatorItem?>()
-  private let showUnbond = PublishSubject<(ValidatorItem?, String?)>()
+  private let showUnbond = PublishSubject<(ValidatorItem?, String?, Decimal?)>()
   private let didTapAdd = PublishSubject<Void>()
 
   init(dependency: Dependency) {
@@ -90,8 +90,9 @@ class DelegatedViewModel: BaseViewModel, ViewModel {
       self?.sound.onNext(.click)
     }).subscribe(showDelegate).disposed(by: disposeBag)
 
-    didTapUnbond.map { (indexPath) -> (ValidatorItem?, String?) in
-      guard let indexPath = indexPath else { return (nil, nil) }
+    //TODO: look if can migrate to 'model selected'
+    didTapUnbond.map { (indexPath) -> (ValidatorItem?, String?, Decimal?) in
+      guard let indexPath = indexPath else { return (nil, nil, nil) }
 
       let section = indexPath.section
       let row = indexPath.row/2 - 1
@@ -104,10 +105,10 @@ class DelegatedViewModel: BaseViewModel, ViewModel {
           : (key1 < key2)
       })[safe: row]
 
-      if let item = coin?.value, let publicKey = item.publicKey {
-        return (ValidatorItem(publicKey: publicKey, name: item.validatorName), coin?.key)
+      if let item = coin?.value, let publicKey = item.publicKey, let amount = item.value {
+        return (ValidatorItem(publicKey: publicKey, name: item.validatorName), coin?.key, amount)
       }
-      return (nil, nil)
+      return (nil, nil, nil)
     }.do(onNext: { [weak self] (_) in
       self?.impact.onNext(.light)
       self?.sound.onNext(.click)

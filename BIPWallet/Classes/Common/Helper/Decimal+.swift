@@ -43,4 +43,10 @@ public extension Decimal {
 		let str = String(bigInt)
 		self.init(string: str)
 	}
+
+  init?(str: String?) {
+    let string = str?.replacingOccurrences(of: ",", with: ".").trimmingCharacters(in: CharacterSet.whitespacesAndNewlines) ?? ""
+    self.init(string: string)
+  }
+
 }

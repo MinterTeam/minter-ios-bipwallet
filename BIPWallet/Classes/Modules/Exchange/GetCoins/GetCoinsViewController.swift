@@ -8,6 +8,7 @@
 
 import UIKit
 import RxSwift
+import RxBiBinding
 import XLPagerTabStrip
 
 class GetCoinsViewController: ConvertCoinsViewController/*, Controller*/, StoryboardInitializable {
@@ -35,36 +36,26 @@ class GetCoinsViewController: ConvertCoinsViewController/*, Controller*/, Storyb
 
   func configure(with viewModel: GetCoinsViewModel) {
     //Input
-    spendCoinTextField
-      .rx
-      .text
+    spendCoinTextField.rx.text
       .subscribe(viewModel.input.spendCoin)
       .disposed(by: disposeBag)
-    
-    getAmountTextField
-      .rx
-      .text
-      .subscribe(viewModel.input.getAmount)
-      .disposed(by: disposeBag)
 
-    getCoinTextField
-      .rx
-      .text
-      .asDriver()
+//    getAmountTextField.rx.text
+//      .subscribe(viewModel.input.getAmount)
+//      .disposed(by: disposeBag)
+
+    (getAmountTextField.rx.text <-> viewModel.input.getAmount).disposed(by: disposeBag)
+
+    getCoinTextField.rx.text.asDriver()
       .drive(viewModel.input.getCoin)
       .disposed(by: disposeBag)
 
-    exchangeButton
-      .rx
-      .tap
-      .asDriver()
+    exchangeButton.rx.tap.asDriver()
       .drive(viewModel.input.didTapExchangeButton)
       .disposed(by: disposeBag)
 
     //Output
-    viewModel
-      .output
-      .spendCoin
+    viewModel.output.spendCoin
       .filter({ (val) -> Bool in
         return val != nil && val != ""
       })
@@ -72,17 +63,13 @@ class GetCoinsViewController: ConvertCoinsViewController/*, Controller*/, Storyb
       .drive(spendCoinTextField.rx.text)
       .disposed(by: disposeBag)
     
-    viewModel
-      .output
-      .approximately
+    viewModel.output.approximately
       .distinctUntilChanged()
       .asDriver(onErrorJustReturn: nil)
       .drive(self.approximately.rx.text)
       .disposed(by: disposeBag)
     
-    viewModel
-      .output
-      .isApproximatelyLoading
+    viewModel.output.isApproximatelyLoading
       .distinctUntilChanged()
       .asDriver(onErrorJustReturn: false)
       .drive(onNext: { [weak self] (val) in
@@ -95,9 +82,7 @@ class GetCoinsViewController: ConvertCoinsViewController/*, Controller*/, Storyb
         }
       }).disposed(by: disposeBag)
 
-    viewModel
-      .output
-      .isButtonEnabled
+    viewModel.output.isButtonEnabled
       .asDriver(onErrorJustReturn: false)
       .drive(exchangeButton.rx.isEnabled)
       .disposed(by: disposeBag)

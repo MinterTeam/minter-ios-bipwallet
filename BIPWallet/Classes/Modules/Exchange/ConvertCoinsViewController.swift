@@ -96,6 +96,7 @@ extension ConvertCoinsViewController: UITextFieldDelegate {
   func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
     if textField == spendCoinTextField {
       self.showPicker()
+      self.view.endEditing(true)
       return false
     }
     return true

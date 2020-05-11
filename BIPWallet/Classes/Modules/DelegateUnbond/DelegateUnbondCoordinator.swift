@@ -15,6 +15,7 @@ class DelegateUnbondCoordinator: BaseCoordinator<Void> {
   let balanceService: BalanceService
   var validatorItem: ValidatorItem?
   var isUnbond = false
+  var maxUnbondAmount: Decimal?
   var coin: String?
 
   init(rootViewController: UIViewController, balanceService: BalanceService) {
@@ -32,7 +33,11 @@ class DelegateUnbondCoordinator: BaseCoordinator<Void> {
                                                         gateService: ExplorerGateService(),
                                                         accountService: accountService)
 
-    let viewModel = DelegateUnbondViewModel(validator: validatorItem, coinName: coin, isUnbond: isUnbond, dependency: dependency)
+    let viewModel = DelegateUnbondViewModel(validator: validatorItem,
+                                            coinName: coin,
+                                            isUnbond: isUnbond,
+                                            maxUnbondAmount: maxUnbondAmount,
+                                            dependency: dependency)
 
     let controller = DelegateUnbondViewController.initFromStoryboard(name: "DelegateUnbond")
     controller.viewModel = viewModel

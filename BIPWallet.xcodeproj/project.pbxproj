@@ -282,6 +282,7 @@
 		FAD1438F245C1B83002C2F1C /* UILabel+Letterspacing.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAD1438E245C1B83002C2F1C /* UILabel+Letterspacing.swift */; };
 		FAD3E02D2462C2DD00446261 /* WalletRemoveConfirmation.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FAD3E02C2462C2DD00446261 /* WalletRemoveConfirmation.storyboard */; };
 		FAD3E02F24655AA900446261 /* DefaultSegmentedControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAD3E02E24655AA900446261 /* DefaultSegmentedControl.swift */; };
+		FAD3E032246953AA00446261 /* AmountRelay.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAD3E031246953AA00446261 /* AmountRelay.swift */; };
 		FADA6F9E24615E2D00FFBCCF /* SoundHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = FADA6F9D24615E2D00FFBCCF /* SoundHelper.swift */; };
 		FADA6FA424615E5200FFBCCF /* pop_down.wav in Resources */ = {isa = PBXBuildFile; fileRef = FADA6FA024615E5200FFBCCF /* pop_down.wav */; };
 		FADA6FA524615E5200FFBCCF /* beep_digi_octave.wav in Resources */ = {isa = PBXBuildFile; fileRef = FADA6FA124615E5200FFBCCF /* beep_digi_octave.wav */; };
@@ -616,6 +617,7 @@
 		FAD1438E245C1B83002C2F1C /* UILabel+Letterspacing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UILabel+Letterspacing.swift"; sourceTree = "<group>"; };
 		FAD3E02C2462C2DD00446261 /* WalletRemoveConfirmation.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = WalletRemoveConfirmation.storyboard; sourceTree = "<group>"; };
 		FAD3E02E24655AA900446261 /* DefaultSegmentedControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultSegmentedControl.swift; sourceTree = "<group>"; };
+		FAD3E031246953AA00446261 /* AmountRelay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AmountRelay.swift; sourceTree = "<group>"; };
 		FADA6F9D24615E2D00FFBCCF /* SoundHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SoundHelper.swift; sourceTree = "<group>"; };
 		FADA6FA024615E5200FFBCCF /* pop_down.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = pop_down.wav; sourceTree = "<group>"; };
 		FADA6FA124615E5200FFBCCF /* beep_digi_octave.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = beep_digi_octave.wav; sourceTree = "<group>"; };
@@ -1285,6 +1287,7 @@
 		FACA652A23F2AAA100399359 /* Common */ = {
 			isa = PBXGroup;
 			children = (
+				FAD3E0302469539700446261 /* Rx */,
 				FA91D5852433971900F901AF /* ViewController */,
 				FA663D3A23FEEB510029D5D0 /* View */,
 				FACA655F23F6B85C00399359 /* Helper */,
@@ -1455,6 +1458,14 @@
 				FAD143892459761F002C2F1C /* QRCode.swift */,
 			);
 			path = QRCode;
+			sourceTree = "<group>";
+		};
+		FAD3E0302469539700446261 /* Rx */ = {
+			isa = PBXGroup;
+			children = (
+				FAD3E031246953AA00446261 /* AmountRelay.swift */,
+			);
+			path = Rx;
 			sourceTree = "<group>";
 		};
 		FADA6F9F24615E5200FFBCCF /* Sounds */ = {
@@ -1957,6 +1968,7 @@
 				FA3BDE59242B83C80076A7F4 /* QRCodeReaderViewController.swift in Sources */,
 				FADA6F9E24615E2D00FFBCCF /* SoundHelper.swift in Sources */,
 				FB1474DD9AFFB75F0EA9A397 /* SpendCoinsViewController.swift in Sources */,
+				FAD3E032246953AA00446261 /* AmountRelay.swift in Sources */,
 				247204D1E318C906847A4B65 /* SpendCoinsViewModel.swift in Sources */,
 				FA62232624517C93006089EC /* RawTransactionRouter.swift in Sources */,
 				FA62231F24517C93006089EC /* RawTransactionViewModel.swift in Sources */,
@@ -2182,7 +2194,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 213;
+				CURRENT_PROJECT_VERSION = 215;
 				DEVELOPMENT_TEAM = A26H28FPZU;
 				INFOPLIST_FILE = BIPWallet/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
@@ -2205,7 +2217,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 213;
+				CURRENT_PROJECT_VERSION = 215;
 				DEVELOPMENT_TEAM = A26H28FPZU;
 				INFOPLIST_FILE = BIPWallet/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
