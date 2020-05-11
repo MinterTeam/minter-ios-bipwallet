@@ -206,6 +206,7 @@
 		FA787471242109EC0039E2BB /* TransactionKeyValueCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA78746F242109EC0039E2BB /* TransactionKeyValueCell.swift */; };
 		FA787472242109EC0039E2BB /* TransactionKeyValueCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FA787470242109EC0039E2BB /* TransactionKeyValueCell.xib */; };
 		FA7DB988242CA05700B1E01A /* SpendCoinPickerItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA7DB987242CA05700B1E01A /* SpendCoinPickerItem.swift */; };
+		FA800BE62469E80800AFB1D1 /* CurrencyNumberFormatterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA800BE52469E80800AFB1D1 /* CurrencyNumberFormatterTests.swift */; };
 		FA91D56C242E0F0100F901AF /* SendHeader.xib in Resources */ = {isa = PBXBuildFile; fileRef = FA91D56A242E0F0100F901AF /* SendHeader.xib */; };
 		FA91D56D242E0F9900F901AF /* SendHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA91D569242E0F0100F901AF /* SendHeader.swift */; };
 		FA91D570242E0FD200F901AF /* DefaultHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA91D56E242E0FD100F901AF /* DefaultHeader.swift */; };
@@ -282,7 +283,7 @@
 		FAD1438F245C1B83002C2F1C /* UILabel+Letterspacing.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAD1438E245C1B83002C2F1C /* UILabel+Letterspacing.swift */; };
 		FAD3E02D2462C2DD00446261 /* WalletRemoveConfirmation.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FAD3E02C2462C2DD00446261 /* WalletRemoveConfirmation.storyboard */; };
 		FAD3E02F24655AA900446261 /* DefaultSegmentedControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAD3E02E24655AA900446261 /* DefaultSegmentedControl.swift */; };
-		FAD3E032246953AA00446261 /* AmountRelay.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAD3E031246953AA00446261 /* AmountRelay.swift */; };
+		FAD3E032246953AA00446261 /* AmountHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAD3E031246953AA00446261 /* AmountHelper.swift */; };
 		FADA6F9E24615E2D00FFBCCF /* SoundHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = FADA6F9D24615E2D00FFBCCF /* SoundHelper.swift */; };
 		FADA6FA424615E5200FFBCCF /* pop_down.wav in Resources */ = {isa = PBXBuildFile; fileRef = FADA6FA024615E5200FFBCCF /* pop_down.wav */; };
 		FADA6FA524615E5200FFBCCF /* beep_digi_octave.wav in Resources */ = {isa = PBXBuildFile; fileRef = FADA6FA124615E5200FFBCCF /* beep_digi_octave.wav */; };
@@ -533,6 +534,7 @@
 		FA78746F242109EC0039E2BB /* TransactionKeyValueCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionKeyValueCell.swift; sourceTree = "<group>"; };
 		FA787470242109EC0039E2BB /* TransactionKeyValueCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TransactionKeyValueCell.xib; sourceTree = "<group>"; };
 		FA7DB987242CA05700B1E01A /* SpendCoinPickerItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpendCoinPickerItem.swift; sourceTree = "<group>"; };
+		FA800BE52469E80800AFB1D1 /* CurrencyNumberFormatterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrencyNumberFormatterTests.swift; sourceTree = "<group>"; };
 		FA91D569242E0F0100F901AF /* SendHeader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SendHeader.swift; path = BIPWallet/Classes/Common/View/SendHeader.swift; sourceTree = SOURCE_ROOT; };
 		FA91D56A242E0F0100F901AF /* SendHeader.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = SendHeader.xib; path = BIPWallet/Classes/Common/View/SendHeader.xib; sourceTree = SOURCE_ROOT; };
 		FA91D56E242E0FD100F901AF /* DefaultHeader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DefaultHeader.swift; sourceTree = "<group>"; };
@@ -617,7 +619,7 @@
 		FAD1438E245C1B83002C2F1C /* UILabel+Letterspacing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UILabel+Letterspacing.swift"; sourceTree = "<group>"; };
 		FAD3E02C2462C2DD00446261 /* WalletRemoveConfirmation.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = WalletRemoveConfirmation.storyboard; sourceTree = "<group>"; };
 		FAD3E02E24655AA900446261 /* DefaultSegmentedControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultSegmentedControl.swift; sourceTree = "<group>"; };
-		FAD3E031246953AA00446261 /* AmountRelay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AmountRelay.swift; sourceTree = "<group>"; };
+		FAD3E031246953AA00446261 /* AmountHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AmountHelper.swift; sourceTree = "<group>"; };
 		FADA6F9D24615E2D00FFBCCF /* SoundHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SoundHelper.swift; sourceTree = "<group>"; };
 		FADA6FA024615E5200FFBCCF /* pop_down.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = pop_down.wav; sourceTree = "<group>"; };
 		FADA6FA124615E5200FFBCCF /* beep_digi_octave.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = beep_digi_octave.wav; sourceTree = "<group>"; };
@@ -1263,6 +1265,7 @@
 			children = (
 				FA9E51A723ED9976007263B9 /* BIPWalletTests.swift */,
 				FA9E51A923ED9976007263B9 /* Info.plist */,
+				FA800BE52469E80800AFB1D1 /* CurrencyNumberFormatterTests.swift */,
 			);
 			path = BIPWalletTests;
 			sourceTree = "<group>";
@@ -1287,7 +1290,6 @@
 		FACA652A23F2AAA100399359 /* Common */ = {
 			isa = PBXGroup;
 			children = (
-				FAD3E0302469539700446261 /* Rx */,
 				FA91D5852433971900F901AF /* ViewController */,
 				FA663D3A23FEEB510029D5D0 /* View */,
 				FACA655F23F6B85C00399359 /* Helper */,
@@ -1382,6 +1384,7 @@
 		FACA655F23F6B85C00399359 /* Helper */ = {
 			isa = PBXGroup;
 			children = (
+				FAD3E031246953AA00446261 /* AmountHelper.swift */,
 				FADA6F9D24615E2D00FFBCCF /* SoundHelper.swift */,
 				FA62232B24517D9E006089EC /* URL+Params.swift */,
 				FA62232924517D17006089EC /* RawTransactionType+Helper.swift */,
@@ -1458,14 +1461,6 @@
 				FAD143892459761F002C2F1C /* QRCode.swift */,
 			);
 			path = QRCode;
-			sourceTree = "<group>";
-		};
-		FAD3E0302469539700446261 /* Rx */ = {
-			isa = PBXGroup;
-			children = (
-				FAD3E031246953AA00446261 /* AmountRelay.swift */,
-			);
-			path = Rx;
 			sourceTree = "<group>";
 		};
 		FADA6F9F24615E5200FFBCCF /* Sounds */ = {
@@ -1968,7 +1963,7 @@
 				FA3BDE59242B83C80076A7F4 /* QRCodeReaderViewController.swift in Sources */,
 				FADA6F9E24615E2D00FFBCCF /* SoundHelper.swift in Sources */,
 				FB1474DD9AFFB75F0EA9A397 /* SpendCoinsViewController.swift in Sources */,
-				FAD3E032246953AA00446261 /* AmountRelay.swift in Sources */,
+				FAD3E032246953AA00446261 /* AmountHelper.swift in Sources */,
 				247204D1E318C906847A4B65 /* SpendCoinsViewModel.swift in Sources */,
 				FA62232624517C93006089EC /* RawTransactionRouter.swift in Sources */,
 				FA62231F24517C93006089EC /* RawTransactionViewModel.swift in Sources */,
@@ -2027,6 +2022,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FA800BE62469E80800AFB1D1 /* CurrencyNumberFormatterTests.swift in Sources */,
 				FA9E51A823ED9976007263B9 /* BIPWalletTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -2194,7 +2190,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 215;
+				CURRENT_PROJECT_VERSION = 216;
 				DEVELOPMENT_TEAM = A26H28FPZU;
 				INFOPLIST_FILE = BIPWallet/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
@@ -2217,7 +2213,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 215;
+				CURRENT_PROJECT_VERSION = 216;
 				DEVELOPMENT_TEAM = A26H28FPZU;
 				INFOPLIST_FILE = BIPWallet/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;

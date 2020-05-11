@@ -38,7 +38,7 @@ class ConvertCoinsViewModel: BaseViewModel {
 	lazy var successMessage = PublishSubject<String?>()
 	let formatter = CurrencyNumberFormatter.coinFormatter
 	var currentGas = RawTransactionDefaultGasPrice
-	lazy var feeObservable = PublishSubject<String>()
+  lazy var feeObservable = ReplaySubject<String>.create(bufferSize: 1)
 	var baseCoinCommission: Decimal {
     return (Decimal(currentGas) * RawTransactionType.buyCoin.commission()) / TransactionCoinFactorDecimal
 	}
@@ -85,8 +85,7 @@ class ConvertCoinsViewModel: BaseViewModel {
       }).disposed(by: disposeBag)
 
     gateService.updateGas()
-		gateService.currentGas()
-      .subscribe(onNext: { [weak self] (val) in
+    gateService.currentGas().startWith(RawTransactionDefaultGasPrice).subscribe(onNext: { [weak self] (val) in
         self?.currentGas = val
         let fee = CurrencyNumberFormatter.formattedDecimal(with: self?.baseCoinCommission ?? 0.0,
                                                            formatter: CurrencyNumberFormatter.decimalFormatter) + " " + (Coin.baseCoin().symbol ?? "")

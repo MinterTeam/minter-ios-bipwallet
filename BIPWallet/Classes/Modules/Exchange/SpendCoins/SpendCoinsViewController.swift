@@ -17,7 +17,7 @@ class SpendCoinsViewController: ConvertCoinsViewController, StoryboardInitializa
 
   @IBOutlet weak var useMaxButton: UIButton!
   @IBOutlet weak var scrollView: UIScrollView!
-  @IBOutlet weak var spendAmountTextField: UITextField!
+  @IBOutlet weak var spendAmountTextField: ValidatableTextField!
   @IBOutlet weak var getCoinActivityIndicator: UIActivityIndicatorView!
   @IBAction func didTapExchange(_ sender: Any) {
     
@@ -57,17 +57,13 @@ class SpendCoinsViewController: ConvertCoinsViewController, StoryboardInitializa
       .disposed(by: disposeBag)
 
     //Output
-    viewModel
-      .output
-      .approximately
+    viewModel.output.approximately
       .distinctUntilChanged()
       .asDriver(onErrorJustReturn: nil)
       .drive(approximately.rx.text)
       .disposed(by: disposeBag)
 
-    viewModel
-      .output
-      .spendCoin
+    viewModel.output.spendCoin
       .filter({ (val) -> Bool in
         return val != nil && val != ""
       })
@@ -75,17 +71,13 @@ class SpendCoinsViewController: ConvertCoinsViewController, StoryboardInitializa
       .drive(self.spendCoinTextField.rx.text)
       .disposed(by: self.disposeBag)
 
-    viewModel
-      .output
-      .hasMultipleCoinsObserver
+    viewModel.output.hasMultipleCoinsObserver
       .asDriver(onErrorJustReturn: false)
       .drive(onNext: { [weak self] (has) in
         self?.spendCoinTextField?.rightViewMode = has ? .always : .never
       }).disposed(by: self.disposeBag)
 
-    viewModel
-      .output
-      .isButtonEnabled
+    viewModel.output.isButtonEnabled
       .asDriver(onErrorJustReturn: true)
       .drive(self.exchangeButton.rx.isEnabled).disposed(by: self.disposeBag)
 
@@ -108,18 +100,14 @@ class SpendCoinsViewController: ConvertCoinsViewController, StoryboardInitializa
                                               subtitle: nil)
       }).disposed(by: self.disposeBag)
 
-    viewModel
-      .output
-      .shouldClearForm
+    viewModel.output.shouldClearForm
       .filter({ (val) -> Bool in
         return val
       }).subscribe(onNext: { [weak self] (val) in
         self?.clearForm()
       }).disposed(by: disposeBag)
 
-    viewModel
-      .output
-      .isCoinLoading
+    viewModel.output.isCoinLoading
       .distinctUntilChanged()
       .asDriver(onErrorJustReturn: false)
       .drive(onNext: { [weak self] (val) in
@@ -131,16 +119,12 @@ class SpendCoinsViewController: ConvertCoinsViewController, StoryboardInitializa
         }
       }).disposed(by: disposeBag)
 
-    viewModel
-      .output
-      .amountError
+    viewModel.output.amountError
       .asDriver(onErrorJustReturn: nil)
       .drive(amountErrorLabel.rx.text)
       .disposed(by: disposeBag)
 
-    viewModel
-      .output
-      .getCoinError
+    viewModel.output.getCoinError
       .asDriver(onErrorJustReturn: nil)
       .drive(getCoinErrorLabel.rx.text)
       .disposed(by: disposeBag)
@@ -152,13 +136,8 @@ class SpendCoinsViewController: ConvertCoinsViewController, StoryboardInitializa
                                               subtitle: nil)
     }).disposed(by: disposeBag)
 
-    viewModel
-      .output
-      .spendAmount
+    viewModel.output.spendAmount
       .asDriver(onErrorJustReturn: nil)
-      .map({ (str) -> String? in
-        str?.replacingOccurrences(of: ",", with: ".")
-      })
       .drive(spendAmountTextField.rx.text)
       .disposed(by: disposeBag)
 
@@ -169,6 +148,8 @@ class SpendCoinsViewController: ConvertCoinsViewController, StoryboardInitializa
 
   override func viewDidLoad() {
     super.viewDidLoad()
+    
+    spendAmountTextField.rightPadding = CGFloat(self.useMaxButton.bounds.width)
 
     configure(with: viewModel as! SpendCoinsViewModel)
   }

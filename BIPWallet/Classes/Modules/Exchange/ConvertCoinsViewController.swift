@@ -47,8 +47,7 @@ class ConvertCoinsViewController: BaseViewController {
 	override func viewDidLoad() {
 		super.viewDidLoad()
 
-		viewModel
-			.feeObservable
+		viewModel.feeObservable
 			.asDriver(onErrorJustReturn: "")
 			.drive(feeLabel.rx.text)
 			.disposed(by: self.disposeBag)

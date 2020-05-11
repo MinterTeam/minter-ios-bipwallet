@@ -27,11 +27,12 @@ class DelegateUnbondViewController: BaseViewController, Controller, StoryboardIn
       coinTextField.delegate = self
     }
   }
-  @IBOutlet weak var amountTextField: DefaultTextField!
+  @IBOutlet weak var amountTextField: ValidatableTextField!
   @IBOutlet weak var sendButton: UIButton!
   @IBOutlet weak var useMaxButton: UIButton!
   @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
   @IBOutlet weak var descriptionLabel: UILabel!
+  @IBOutlet weak var feeLabel: UILabel!
 
   // MARK: - ControllerProtocol
 
@@ -43,6 +44,8 @@ class DelegateUnbondViewController: BaseViewController, Controller, StoryboardIn
     configureDefault()
 
     //Output
+    viewModel.output.fee.asDriver(onErrorJustReturn: "").drive(feeLabel.rx.text).disposed(by: disposeBag)
+
     viewModel.output.showValidators.subscribe(onNext: { [weak self] data in
       self?.showPicker(data: data) { selected in
         self?.viewModel.input.didSelectValidator.onNext(selected)
@@ -132,6 +135,8 @@ class DelegateUnbondViewController: BaseViewController, Controller, StoryboardIn
     super.viewDidLoad()
 
     mainView?.delegate = self
+
+    amountTextField.rightPadding = CGFloat(self.useMaxButton.bounds.width)
 
     Observable<Notification>.merge(NotificationCenter.default.rx.notification(ViewController.keyboardWillShowNotification),
                                    NotificationCenter.default.rx.notification(ViewController.keyboardWillHideNotification))

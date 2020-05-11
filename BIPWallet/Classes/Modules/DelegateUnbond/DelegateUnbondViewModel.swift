@@ -111,6 +111,7 @@ class DelegateUnbondViewModel: BaseViewModel, ViewModel {
     var description: Observable<String?>
     var successMessage: Observable<String>
     var errorMessage: Observable<String>
+    var fee: Observable<String>
   }
 
   struct Dependency {
@@ -154,7 +155,15 @@ class DelegateUnbondViewModel: BaseViewModel, ViewModel {
                           return Observable.just("Delegate your coins to validators and receive related regular payments.")
     }(),
                          successMessage: successMessage.asObservable(),
-                         errorMessage: errorMessage.asObservable()
+                         errorMessage: errorMessage.asObservable(),
+                         fee: self.dependency.gateService.currentGas().map({ (gas) -> String in
+                          let comType = self.isUnbond ? RawTransactionType.unbond.commission() : RawTransactionType.delegate.commission()
+                          let com = (Decimal(gas) * comType).PIPToDecimal()
+                          let fee = CurrencyNumberFormatter.formattedDecimal(with: com,
+                                                                             formatter: CurrencyNumberFormatter.decimalFormatter) + " " + (Coin.baseCoin().symbol ?? "")
+                          
+                          return fee
+                         })
     )
 
     self.isUnbond = isUnbond

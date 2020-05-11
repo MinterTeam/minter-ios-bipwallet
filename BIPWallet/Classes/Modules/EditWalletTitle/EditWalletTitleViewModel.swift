@@ -136,7 +136,7 @@ class EditWalletTitleViewModel: BaseViewModel, ViewModel {
     if let error = error as? EditWalletTitleViewModelError {
       switch error {
       case .invalidTitle:
-        errorTitle = "Invalid title. It must be from 3 to 18 latin characters and numbers".localized()
+        errorTitle = "Invalid title. It must be up to 18 latin characters and numbers".localized()
       }
     }
     self.errorMessage.onNext(errorTitle)

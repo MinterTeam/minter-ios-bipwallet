@@ -31,6 +31,11 @@
                                         <fontDescription key="fontDescription" name="Inter" family="Inter" pointSize="14"/>
                                         <color key="textColor" red="0.098039215690000001" green="0.098039215690000001" blue="0.098039215690000001" alpha="1" colorSpace="deviceRGB"/>
                                         <nil key="highlightedColor"/>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="characterSpacing">
+                                                <real key="value" value="0.0"/>
+                                            </userDefinedRuntimeAttribute>
+                                        </userDefinedRuntimeAttributes>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Amount" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="iJX-v3-sA3">
                                         <rect key="frame" x="24" y="277" width="42.5" height="14"/>
@@ -41,7 +46,7 @@
                                         <color key="textColor" red="0.5568627451" green="0.5568627451" blue="0.5568627451" alpha="1" colorSpace="deviceRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="t5q-bF-R2f" customClass="DefaultTextField" customModule="BIPWallet" customModuleProvider="target">
+                                    <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="t5q-bF-R2f" customClass="ValidatableTextField" customModule="BIPWallet" customModuleProvider="target">
                                         <rect key="frame" x="16" y="300" width="366" height="48"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="48" id="1Xc-iL-2aT"/>
@@ -194,6 +199,7 @@
                         <outlet property="bottomConstraint" destination="wBo-dr-rWE" id="dAP-dA-HUH"/>
                         <outlet property="coinTextField" destination="Bly-Pw-ta8" id="ntl-D2-MMQ"/>
                         <outlet property="descriptionLabel" destination="nvN-wm-Yxd" id="ilz-73-i3D"/>
+                        <outlet property="feeLabel" destination="UIz-nk-BVf" id="W1I-ji-w5A"/>
                         <outlet property="mainView" destination="u3A-uR-QSb" id="7d5-Gq-D31"/>
                         <outlet property="sendButton" destination="uzZ-U0-vS2" id="7xo-eX-gci"/>
                         <outlet property="useMaxButton" destination="MwV-yK-DDB" id="Lxy-Xm-2K1"/>

@@ -177,6 +177,9 @@ class RawTransactionViewModel: BaseViewModel, ViewModel {// swiftlint:disable:th
       popup.viewModel = viewModel
 			self.popupSubject.onNext(popup)
 		}).disposed(by: disposeBag)
+
+    self.dependency.gate.minGas().subscribe(currentGas).disposed(by: disposeBag)
+
 		self.sectionsSubject.onNext(self.createSections())
 	}
 
@@ -226,7 +229,6 @@ class RawTransactionViewModel: BaseViewModel, ViewModel {// swiftlint:disable:th
           sentViewController.viewModel = sentViewModel
 					self?.popupSubject.onNext(sentViewController)
 				}
-
 //				Session.shared.loadTransactions()
 //				Session.shared.loadBalances()
 //				Session.shared.loadDelegatedBalance()

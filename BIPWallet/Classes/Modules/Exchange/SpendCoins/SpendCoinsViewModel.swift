@@ -86,7 +86,7 @@ class SpendCoinsViewModel: ConvertCoinsViewModel, ViewModel {
   }
 
   private func bind() {
-    
+
     spendAmount.distinctUntilChanged().debounce(.seconds(1), scheduler: MainScheduler.instance).map { (val) -> String? in
       return AmountHelper.transformValue(value: val)
     }.subscribe(onNext: { val in
@@ -280,7 +280,7 @@ class SpendCoinsViewModel: ConvertCoinsViewModel, ViewModel {
         }
     } else {
       let amountString = self.spendAmount.value
-      if nil == amountString || amountString == "" {
+      if nil == amountString || amountString == "" || amountString == "," || amountString == "." {
         amountError.value = nil
       } else {
         amountError.value = "INCORRECT AMOUNT".localized()

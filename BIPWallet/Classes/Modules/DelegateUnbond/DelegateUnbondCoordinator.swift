@@ -28,9 +28,13 @@ class DelegateUnbondCoordinator: BaseCoordinator<Void> {
     validatorService.updateValidators()
     let accountService = LocalStorageAccountService()
 
+    let gateService = ExplorerGateService()
+    
+    gateService.updateGas()
+
     let dependency = DelegateUnbondViewModel.Dependency(validatorService: validatorService,
                                                         balanceService: balanceService,
-                                                        gateService: ExplorerGateService(),
+                                                        gateService: gateService,
                                                         accountService: accountService)
 
     let viewModel = DelegateUnbondViewModel(validator: validatorItem,

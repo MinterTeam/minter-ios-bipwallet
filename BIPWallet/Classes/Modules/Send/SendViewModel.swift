@@ -45,6 +45,7 @@ class SendViewModel: BaseViewModel, ViewModel, WalletSelectableViewModel {// swi
     var didScanQR: AnyObserver<String?>
     var contact: AnyObserver<ContactItem>
     var didTapSelectWallet: AnyObserver<Void>
+    var viewDidAppear: AnyObserver<Void>
   }
 
   struct Output {
@@ -172,6 +173,7 @@ class SendViewModel: BaseViewModel, ViewModel, WalletSelectableViewModel {// swi
   private let txErrorNotificationSubject = PublishSubject<NotifiableError?>()
   private let txScanButtonDidTap = PublishSubject<Void>()
   private let popupSubject = PublishSubject<PopupViewController?>()
+  private let viewDidAppear = PublishSubject<Void>()
   private var currentGas = BehaviorSubject<Int>(value: RawTransactionDefaultGasPrice)
   var gasObservable: Observable<String> {
     return Observable.combineLatest(currentGas.asObservable(),
@@ -197,7 +199,9 @@ class SendViewModel: BaseViewModel, ViewModel, WalletSelectableViewModel {// swi
                        txScanButtonDidTap: txScanButtonDidTap.asObserver(),
                        didScanQR: didScanQRSubject.asObserver(),
                        contact: contact.asObserver(),
-                       didTapSelectWallet: didTapSelectWallet.asObserver())
+                       didTapSelectWallet: didTapSelectWallet.asObserver(),
+                       viewDidAppear: viewDidAppear.asObserver()
+    )
 
     self.output = Output(errorNotification: errorNotificationSubject.asObservable(),
                          txErrorNotification: txErrorNotificationSubject.asObservable(),
@@ -398,6 +402,15 @@ YOU ARE ABOUT TO SEND SEED PHRASE IN THE MESSAGE ATTACHED TO THIS TRANSACTION.\n
 
     contact.subscribe(onNext: { (item) in
       self.recipientSubject.accept(item.name?.capitalized)
+    }).disposed(by: disposeBag)
+    
+    viewDidAppear.subscribe(onNext: { (_) in
+      GateManager
+        .shared
+        .minGas()
+        .subscribe(onNext: { [weak self] (gas) in
+          self?.currentGas.onNext(gas)
+        }).disposed(by: self.disposeBag)
     }).disposed(by: disposeBag)
   }
 
@@ -740,15 +753,6 @@ YOU ARE ABOUT TO SEND SEED PHRASE IN THE MESSAGE ATTACHED TO THIS TRANSACTION.\n
   }
 
   func sendCancelButtonTapped() {}
-
-  func viewDidAppear() {
-    GateManager
-      .shared
-      .minGas()
-      .subscribe(onNext: { [weak self] (gas) in
-        self?.currentGas.onNext(gas)
-    }).disposed(by: disposeBag)
-  }
 
   // MARK: -
 

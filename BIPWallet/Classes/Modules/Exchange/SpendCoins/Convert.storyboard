@@ -62,7 +62,7 @@
                                             </userDefinedRuntimeAttribute>
                                         </userDefinedRuntimeAttributes>
                                     </label>
-                                    <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="DTd-9N-LWO" customClass="DefaultTextField" customModule="BIPWallet" customModuleProvider="target">
+                                    <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="DTd-9N-LWO" customClass="ValidatableTextField" customModule="BIPWallet" customModuleProvider="target">
                                         <rect key="frame" x="24" y="128" width="327" height="46"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                         <textInputTraits key="textInputTraits" keyboardType="decimalPad"/>
@@ -595,7 +595,7 @@
                         <outlet property="autocompleteViewWrapper" destination="V8P-l1-8Qq" id="e3Y-JV-aqY"/>
                         <outlet property="buttonActivityIndicator" destination="VqN-EM-pSz" id="L0t-35-E8u"/>
                         <outlet property="exchangeButton" destination="6TH-rv-FC6" id="fZR-oE-cZF"/>
-                        <outlet property="feeLabel" destination="j5j-qm-gS2" id="Ocr-tm-VpM"/>
+                        <outlet property="feeLabel" destination="j5j-qm-gS2" id="x3A-xI-I9D"/>
                         <outlet property="getActivityIndicator" destination="GQx-XK-4eX" id="5IM-k5-Ord"/>
                         <outlet property="getAmountTextField" destination="SV9-8c-Anc" id="P9j-dQ-Q59"/>
                         <outlet property="getCoinActivityIndicator" destination="2E5-uS-hI6" id="2UE-sc-BaI"/>

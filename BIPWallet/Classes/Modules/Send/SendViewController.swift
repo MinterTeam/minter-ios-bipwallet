@@ -311,6 +311,8 @@ extension SendViewController {
       .drive(viewModel.input.didTapSelectWallet)
       .disposed(by: disposeBag)
 
+    self.rx.viewWillAppear.map{_ in}.asDriver(onErrorJustReturn: ()).drive(viewModel.input.viewDidAppear).disposed(by: disposeBag)
+
     readerVC.completionBlock = { [weak self] (result: QRCodeReaderResult?) in
       self?.readerVC.stopScanning()
       self?.readerVC.dismiss(animated: true) {
