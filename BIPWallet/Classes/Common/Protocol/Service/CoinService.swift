@@ -11,6 +11,7 @@ import RxSwift
 import MinterCore
 
 protocol CoinService: class {
+  func updateCoins()
   func coins(by term: String) -> Observable<[Coin]>
   func coinExists(name: String) -> Observable<Bool>
 }

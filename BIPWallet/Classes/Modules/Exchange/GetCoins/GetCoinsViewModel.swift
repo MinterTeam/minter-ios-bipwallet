@@ -25,7 +25,7 @@ class GetCoinsViewModel: ConvertCoinsViewModel, ViewModel {
   var dependency: GetCoinsViewModel.Dependency!
 
   struct Input {
-    var spendCoin: AnyObserver<String?>
+    var spendCoin: BehaviorRelay<String?>
     var getCoin: AnyObserver<String?>
     var getAmount: BehaviorRelay<String?>
     var didTapExchangeButton: AnyObserver<Void>
@@ -49,7 +49,7 @@ class GetCoinsViewModel: ConvertCoinsViewModel, ViewModel {
                coinService: dependency.coinService,
                gateService: dependency.gateService)
 
-    self.input = Input(spendCoin: spendCoin.asObserver(),
+    self.input = Input(spendCoin: spendCoin,
                        getCoin: getCoin.asObserver(),
                        getAmount: getAmount,
                        didTapExchangeButton: didTapExchangeButton.asObserver())
@@ -92,7 +92,12 @@ class GetCoinsViewModel: ConvertCoinsViewModel, ViewModel {
     Observable.combineLatest(getCoin.asObservable(),
                              getAmount.asObservable(),
                              spendCoin.asObservable())
-    .subscribe(onNext: { [weak self] (_) in
+    .debounce(.seconds(1), scheduler: MainScheduler.instance)
+    .filter({ (val) -> Bool in
+      return CoinValidator.isValid(coin: val.2)
+    })
+    .subscribe(onNext: { [weak self] (val) in
+      print(val)
       self?.approximatelySum.onNext(nil)
       self?.approximately.onNext("")
       self?.calculateApproximately()
@@ -112,9 +117,9 @@ class GetCoinsViewModel: ConvertCoinsViewModel, ViewModel {
         self?.exchange(selectedAddress: address)
       }).disposed(by: disposeBag)
 
-    spendCoin
-      .throttle(.seconds(1), scheduler: MainScheduler.instance)
-      .distinctUntilChanged().map({ (val) -> SpendCoinPickerItem? in
+    spendCoin.distinctUntilChanged()
+//      .debounce(.seconds(1), scheduler: MainScheduler.instance)
+      .map({ (val) -> SpendCoinPickerItem? in
         let item = SpendCoinPickerItem.items(with: self.spendCoinPickerSource).filter({ (item) -> Bool in
           return item.title == val
         }).first
@@ -123,11 +128,11 @@ class GetCoinsViewModel: ConvertCoinsViewModel, ViewModel {
         return item != nil
       }).subscribe(onNext: { [weak self] (item) in
         self?.selectedCoin = item?.coin
-        self?.spendCoin.onNext(item?.coin)
+        self?.spendCoin.accept(item?.coin)
       }).disposed(by: disposeBag)
   }
 
-  private var spendCoin = BehaviorSubject<String?>(value: nil)
+  private var spendCoin = BehaviorRelay<String?>(value: nil)
   //TODO: Move to parent as amount
   private var getAmount = BehaviorRelay<String?>(value: nil)
   var isApproximatelyLoading = PublishSubject<Bool>()
@@ -176,10 +181,11 @@ class GetCoinsViewModel: ConvertCoinsViewModel, ViewModel {
       let to = try? self.getCoin.value()?.uppercased() ?? "",
       let amountString = self.getAmount.value,
       let amnt = Decimal(str: amountString), amnt > 0
-        && (amnt > 1.0/TransactionCoinFactorDecimal) && CoinValidator.isValid(coin: to) else {
+        && (amnt > 1.0/TransactionCoinFactorDecimal) && CoinValidator.isValid(coin: to) && CoinValidator.isValid(coin: from) else {
       return
     }
 
+    print(from)
     isApproximatelyLoading.onNext(true)
 
     GateManager.shared.estimateCoinBuy(coinFrom: from,

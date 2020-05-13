@@ -47,15 +47,17 @@ class ConvertCoinsViewController: BaseViewController {
 	override func viewDidLoad() {
 		super.viewDidLoad()
 
+    viewModel.endEditing.asDriver(onErrorJustReturn: ()).drive(onNext: { [weak self] in
+      self?.view.endEditing(true)
+      }).disposed(by: disposeBag)
+
 		viewModel.feeObservable
 			.asDriver(onErrorJustReturn: "")
 			.drive(feeLabel.rx.text)
 			.disposed(by: self.disposeBag)
 
 		autocompleteView.textField = getCoinTextField
-    getCoinTextField
-      .rx
-      .text
+    getCoinTextField.rx.text
       .map { $0?.uppercased() }
       .subscribe(getCoinTextField.rx.text)
       .disposed(by: disposeBag)

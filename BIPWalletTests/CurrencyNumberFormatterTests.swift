@@ -59,4 +59,20 @@ class CurrencyNumberFormatterTests: XCTestCase {
     XCTAssert(val == correctValue)
   }
 
+  func testNumbers6() throws {
+    let decimal = Decimal(0.999996)
+    let correctValue = "0.99999600"
+    let formatter = CurrencyNumberFormatter.coinFormatter
+    let val = CurrencyNumberFormatter.formattedDecimal(with: decimal, formatter: formatter)
+    XCTAssert(val == correctValue)
+  }
+
+  func testNumbers7() throws {
+    let decimal = Decimal(0.999999999999999957)
+    let correctValue = "1.0000"
+    let formatter = CurrencyNumberFormatter.coinFormatter
+    let val = CurrencyNumberFormatter.formattedDecimal(with: decimal, formatter: formatter)
+    XCTAssert(val == correctValue)
+  }
+
 }

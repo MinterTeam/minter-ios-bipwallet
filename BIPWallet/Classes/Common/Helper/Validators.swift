@@ -21,21 +21,7 @@ class AmountValidator : BaseValidator {
 class CoinValidator : BaseValidator {
 
 	class func isValid(coin: String?) -> Bool {
-		return (coin?.count ?? 0) >= 3
+    let test = NSPredicate(format: "SELF MATCHES %@", "[a-zA-Z0-9]{3,10}$")
+    return test.evaluate(with: coin ?? "")
 	}
-}
-
-class UsernameValidator : BaseValidator {
-
-	class func isValid(username: String?) -> Bool {
-		return (username?.count ?? 0) >= 5
-	}
-}
-
-class PasswordValidator : BaseValidator {
-
-	class func isValid(password: String?) -> Bool {
-		return (password?.count ?? 0) >= 6
-	}
-	
 }

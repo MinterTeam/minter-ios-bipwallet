@@ -12,6 +12,7 @@ import RxCocoa
 
 enum EditWalletTitleViewModelError: Error {
   case invalidTitle
+  case dublicateTitle
 }
 
 class EditWalletTitleViewModel: BaseViewModel, ViewModel {
@@ -123,6 +124,14 @@ class EditWalletTitleViewModel: BaseViewModel, ViewModel {
     return Observable<String>.create { (observer) -> Disposable in
       if let newTitle = title?.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines),
         newTitle.isValidWalletTitle() {
+        if let title = title {
+          guard self.dependency.authService.accounts().filter { (item) -> Bool in
+            return item.title == title && item.address != self.accountItem.address
+          }.isEmpty else {
+            observer.onError(EditWalletTitleViewModelError.dublicateTitle)
+            return Disposables.create()
+          }
+        }
         observer.onNext(newTitle)
       } else {
         observer.onError(EditWalletTitleViewModelError.invalidTitle)
@@ -137,6 +146,8 @@ class EditWalletTitleViewModel: BaseViewModel, ViewModel {
       switch error {
       case .invalidTitle:
         errorTitle = "Invalid title. It must be up to 18 latin characters and numbers".localized()
+      case .dublicateTitle:
+        errorTitle = "You've already added a wallet with this title".localized()
       }
     }
     self.errorMessage.onNext(errorTitle)

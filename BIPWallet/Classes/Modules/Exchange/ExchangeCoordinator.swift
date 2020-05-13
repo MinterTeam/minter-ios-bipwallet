@@ -61,8 +61,7 @@ class ExchangeCoordinator: BaseCoordinator<Void> {
                                        configuration: cardConfig,
                                        animated: true)
     }
-
-    return viewModel.output.viewDidDisappear
+    return viewController.rx.deallocated
   }
 
 }

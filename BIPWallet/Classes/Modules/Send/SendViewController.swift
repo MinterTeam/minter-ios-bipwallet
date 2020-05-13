@@ -295,9 +295,7 @@ extension SendViewController {
         })
     }).disposed(by: disposeBag)
 
-    viewModel.output
-      .wallet
-      .distinctUntilChanged()
+    viewModel.output.wallet.distinctUntilChanged()
       .subscribe(onNext: { [weak self] (val) in
         guard let `self` = self else { return }
         self.walletLabel.text = val
@@ -306,12 +304,13 @@ extension SendViewController {
     }).disposed(by: disposeBag)
 
     //Input
-    walletSelectorButton.rx.tap
-      .asDriver()
+    walletSelectorButton.rx.tap.asDriver()
       .drive(viewModel.input.didTapSelectWallet)
       .disposed(by: disposeBag)
 
-    self.rx.viewWillAppear.map{_ in}.asDriver(onErrorJustReturn: ()).drive(viewModel.input.viewDidAppear).disposed(by: disposeBag)
+    self.rx.viewWillAppear.map{_ in}.asDriver(onErrorJustReturn: ())
+      .drive(viewModel.input.viewDidAppear)
+      .disposed(by: disposeBag)
 
     readerVC.completionBlock = { [weak self] (result: QRCodeReaderResult?) in
       self?.readerVC.stopScanning()

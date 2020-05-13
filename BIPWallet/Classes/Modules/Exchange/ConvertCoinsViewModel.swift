@@ -47,6 +47,7 @@ class ConvertCoinsViewModel: BaseViewModel {
       value.balances.keys.count > 1
     }
   }
+  var endEditing = PublishSubject<Void>()
 
 	// MARK: -
 
@@ -59,11 +60,10 @@ class ConvertCoinsViewModel: BaseViewModel {
 
     self.selectedCoin = Coin.baseCoin().symbol!
 
-    balanceService
-      .balances()
+    balanceService.balances()
       .subscribe(onNext: { [weak self] (val) in
         let balances = val.balances
-        
+
         self?.balances = balances.mapValues({ (val) -> Decimal in
           return val.0
         })
@@ -86,14 +86,13 @@ class ConvertCoinsViewModel: BaseViewModel {
 
     gateService.updateGas()
     gateService.currentGas().startWith(RawTransactionDefaultGasPrice).subscribe(onNext: { [weak self] (val) in
-        self?.currentGas = val
-        let fee = CurrencyNumberFormatter.formattedDecimal(with: self?.baseCoinCommission ?? 0.0,
-                                                           formatter: CurrencyNumberFormatter.decimalFormatter) + " " + (Coin.baseCoin().symbol ?? "")
-				self?.feeObservable.onNext(fee)
-			}).disposed(by: disposeBag)
+      self?.currentGas = val
+      let fee = CurrencyNumberFormatter.formattedDecimal(with: self?.baseCoinCommission ?? 0.0,
+                                                         formatter: CurrencyNumberFormatter.decimalFormatter) + " " + (Coin.baseCoin().symbol ?? "")
+      self?.feeObservable.onNext(fee)
+    }).disposed(by: disposeBag)
 
-    getCoin
-      .distinctUntilChanged()
+    getCoin.distinctUntilChanged()
       .do(onNext: { [weak self] (term) in
         if nil != term && term != "" {
           self?.hasCoin.value = false
@@ -211,6 +210,7 @@ extension ConvertCoinsViewModel: LUAutocompleteViewDelegate, LUAutocompleteViewD
 
   func autocompleteView(_ autocompleteView: LUAutocompleteView, didSelect text: String) {
     getCoin.onNext(text)
+    endEditing.onNext(())
   }
 
   func autocompleteView(_ autocompleteView: LUAutocompleteView,

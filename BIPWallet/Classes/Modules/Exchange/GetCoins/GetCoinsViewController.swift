@@ -36,14 +36,7 @@ class GetCoinsViewController: ConvertCoinsViewController/*, Controller*/, Storyb
 
   func configure(with viewModel: GetCoinsViewModel) {
     //Input
-    spendCoinTextField.rx.text
-      .subscribe(viewModel.input.spendCoin)
-      .disposed(by: disposeBag)
-
-//    getAmountTextField.rx.text
-//      .subscribe(viewModel.input.getAmount)
-//      .disposed(by: disposeBag)
-
+    (spendCoinTextField.rx.text <-> viewModel.input.spendCoin).disposed(by: disposeBag)
     (getAmountTextField.rx.text <-> viewModel.input.getAmount).disposed(by: disposeBag)
 
     getCoinTextField.rx.text.asDriver()
@@ -105,11 +98,9 @@ class GetCoinsViewController: ConvertCoinsViewController/*, Controller*/, Storyb
 
     viewModel.isLoading.asObservable().subscribe(onNext: { [weak self] (val) in
       if val {
-//        self?.exchangeButton.isEnabled = false
         self?.buttonActivityIndicator.startAnimating()
         self?.buttonActivityIndicator.isHidden = false
       } else {
-//        self?.exchangeButton.isEnabled = true
         self?.buttonActivityIndicator.stopAnimating()
         self?.buttonActivityIndicator.isHidden = true
       }
@@ -132,15 +123,6 @@ class GetCoinsViewController: ConvertCoinsViewController/*, Controller*/, Storyb
     }).subscribe(onNext: { [weak self] (_) in
       self?.clearForm()
     }).disposed(by: disposeBag)
-
-//    Session.shared.allBalances.asObservable().subscribe(onNext: { [weak self] (_) in
-//      self?.spendCoinTextField.text = self?.vm.spendCoinText
-//      if self?.vm.hasMultipleCoins ?? false {
-//        self?.spendCoinTextField?.rightViewMode = .always
-//      } else {
-//        self?.spendCoinTextField?.rightViewMode = .never
-//      }
-//    }).disposed(by: disposeBag)
 
     viewModel.amountError.asObservable().subscribe(self.amountErrorLabel.rx.text).disposed(by: disposeBag)
 
@@ -193,42 +175,6 @@ class GetCoinsViewController: ConvertCoinsViewController/*, Controller*/, Storyb
     self.getAmountTextField.text = ""
     self.getCoinTextField.text = ""
   }
-
-//  override func showPicker() {
-//    let items = viewModel.spendCoinPickerItems
-//
-//    guard items.count > 0 else {
-//      return
-//    }
-//
-//    let data: [[String]] = [items.map({ (item) -> String in
-//      let balanceString = CurrencyNumberFormatter
-//        .formattedDecimal(with: (item.balance ?? 0),
-//                          formatter: coinFormatter)
-//      return (item.coin ?? "") + " (" + balanceString + ")"
-//    })]
-//
-//    let picker = McPicker(data: data)
-//    picker.toolbarButtonsColor = .white
-//    picker.toolbarDoneButtonColor = .white
-//    picker.toolbarBarTintColor = UIColor(hex: 0x4225A4)
-//    picker.toolbarItemsFont = UIFont.mediumFont(of: 16.0)
-//    picker.show { [weak self] (selected) in
-//      guard let coin = selected[0] else {
-//        return
-//      }
-//      if let item = items.filter({ (item) -> Bool in
-//        let balanceString = CurrencyNumberFormatter.formattedDecimal(with: (item.balance ?? 0),
-//                                                                     formatter: self!.coinFormatter)
-//        return (item.coin ?? "") + " (" + balanceString + ")" == coin
-//      }).first {
-////        self?.viewModel.selectedAddress = item.address
-//        self?.viewModel.selectedCoin = item.coin
-//      }
-////      self?.viewModel.spendCoin.value = coin
-//    }
-//  }
-
 }
 
 extension GetCoinsViewController: IndicatorInfoProvider {
