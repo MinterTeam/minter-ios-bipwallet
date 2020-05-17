@@ -14,10 +14,12 @@ class ExchangeCoordinator: BaseCoordinator<Void> {
 
   let rootController: UIViewController
   let balanceService: BalanceService
+  let transactionService: TransactionService
 
-  init(rootController: UIViewController, balanceService: BalanceService) {
+  init(rootController: UIViewController, balanceService: BalanceService, transactionService: TransactionService) {
     self.rootController = rootController
     self.balanceService = balanceService
+    self.transactionService = transactionService
   }
 
   override func start() -> Observable<Void> {
@@ -33,12 +35,14 @@ class ExchangeCoordinator: BaseCoordinator<Void> {
 
     let spend = SpendCoinsCoordinator(viewController: &spendViewController,
                                       balanceService: balanceService,
-                                      gateService: gateService
+                                      gateService: gateService,
+                                      transactionService: transactionService
                                       )
 
     let get = GetCoinsCoordinator(viewController: &getViewController,
                                   balanceService: balanceService,
-                                  gateService: gateService
+                                  gateService: gateService,
+                                  transactionService: transactionService
                                   )
 
     coordinate(to: spend).subscribe().disposed(by: disposeBag)

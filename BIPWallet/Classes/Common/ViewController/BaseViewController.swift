@@ -33,7 +33,7 @@ extension UIViewController {
       currentViewController.didMove(toParent: viewController)
       currentViewController.view.addSubview(viewController.view)
       viewController.view.alpha = 0.0
-      viewController.blurView.effect = nil
+      viewController.blurView?.effect = nil
 
       guard let popupView = viewController.popupView else {
         return

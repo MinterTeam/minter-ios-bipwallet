@@ -16,11 +16,13 @@ class WalletCoordinator: BaseCoordinator<Void> {
   let authService: AuthService
   let balanceService: BalanceService
   let pinService: PINService
+  let transactionService: TransactionService
 
-  init(window: UIWindow, authService: AuthService, pinService: PINService) {
+  init(window: UIWindow, authService: AuthService, pinService: PINService, transactionService: TransactionService) {
     self.window = window
     self.authService = authService
     self.pinService = pinService
+    self.transactionService = transactionService
 
     let address = (self.authService.selectedAccount()?.address ?? "")
 
@@ -59,7 +61,8 @@ class WalletCoordinator: BaseCoordinator<Void> {
     let balanceCoordiantor = BalanceCoordinator(navigationController: balance,
                                                 balanceService: balanceService,
                                                 authService: authService,
-                                                recipientInfoService: recipientInfoService)
+                                                recipientInfoService: recipientInfoService,
+                                                transactionService: transactionService)
     coordinate(to: balanceCoordiantor).subscribe().disposed(by: disposeBag)
 
     let sendTabbarItem = UITabBarItem(title: "Send".localized(),

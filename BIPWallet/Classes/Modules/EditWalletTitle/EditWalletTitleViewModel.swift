@@ -125,9 +125,9 @@ class EditWalletTitleViewModel: BaseViewModel, ViewModel {
       if let newTitle = title?.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines),
         newTitle.isValidWalletTitle() {
         if let title = title {
-          guard self.dependency.authService.accounts().filter { (item) -> Bool in
+          guard self.dependency.authService.accounts().filter({ (item) -> Bool in
             return item.title == title && item.address != self.accountItem.address
-          }.isEmpty else {
+          }).isEmpty else {
             observer.onError(EditWalletTitleViewModelError.dublicateTitle)
             return Disposables.create()
           }

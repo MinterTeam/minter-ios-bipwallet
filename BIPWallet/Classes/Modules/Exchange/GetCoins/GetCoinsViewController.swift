@@ -96,15 +96,15 @@ class GetCoinsViewController: ConvertCoinsViewController/*, Controller*/, Storyb
     spendCoinTextField?.rightView = rightView
     spendCoinTextField?.rightViewMode = .always
 
-    viewModel.isLoading.asObservable().subscribe(onNext: { [weak self] (val) in
-      if val {
-        self?.buttonActivityIndicator.startAnimating()
-        self?.buttonActivityIndicator.isHidden = false
-      } else {
-        self?.buttonActivityIndicator.stopAnimating()
-        self?.buttonActivityIndicator.isHidden = true
-      }
-    }).disposed(by: disposeBag)
+//    viewModel.isLoading.asObservable().subscribe(onNext: { [weak self] (val) in
+//      if val {
+//        self?.buttonActivityIndicator.startAnimating()
+//        self?.buttonActivityIndicator.isHidden = false
+//      } else {
+//        self?.buttonActivityIndicator.stopAnimating()
+//        self?.buttonActivityIndicator.isHidden = true
+//      }
+//    }).disposed(by: disposeBag)
 
     viewModel.errorNotification.asObservable().filter({ (notification) -> Bool in
       return nil != notification

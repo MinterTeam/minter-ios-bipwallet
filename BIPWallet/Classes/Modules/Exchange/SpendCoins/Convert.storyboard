@@ -196,7 +196,7 @@
                                         <constraints>
                                             <constraint firstAttribute="height" constant="50" id="iuv-KQ-Wkm"/>
                                         </constraints>
-                                        <state key="normal" title="EXCHANGE"/>
+                                        <state key="normal" title="Continue"/>
                                         <userDefinedRuntimeAttributes>
                                             <userDefinedRuntimeAttribute type="boolean" keyPath="animateButtonTouch" value="YES"/>
                                             <userDefinedRuntimeAttribute type="string" keyPath="pattern" value="purple"/>
@@ -205,9 +205,6 @@
                                             <action selector="didTapExchange:" destination="0hc-Mb-6Yb" eventType="touchUpInside" id="OxA-ba-G7t"/>
                                         </connections>
                                     </button>
-                                    <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="KDg-1q-0rV">
-                                        <rect key="frame" x="177.5" y="513" width="20" height="20"/>
-                                    </activityIndicatorView>
                                     <view contentMode="scaleToFill" verticalHuggingPriority="251" verticalCompressionResistancePriority="749" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Zvp-UN-eHT">
                                         <rect key="frame" x="22" y="293" width="331" height="36"/>
                                         <subviews>
@@ -262,7 +259,6 @@
                                     <constraint firstAttribute="trailing" secondItem="u5K-fP-YVh" secondAttribute="trailing" constant="40" id="b3Y-GE-VQ5"/>
                                     <constraint firstItem="Jlg-Lp-yKH" firstAttribute="centerY" secondItem="u5K-fP-YVh" secondAttribute="centerY" id="cfj-Is-bza"/>
                                     <constraint firstItem="DTd-9N-LWO" firstAttribute="top" secondItem="Q3i-Ht-noE" secondAttribute="bottom" constant="10" id="geR-qa-e3s"/>
-                                    <constraint firstItem="KDg-1q-0rV" firstAttribute="centerX" secondItem="pFm-Om-pVV" secondAttribute="centerX" id="hXT-zb-qFX"/>
                                     <constraint firstAttribute="trailing" secondItem="KlA-XB-YRc" secondAttribute="trailing" constant="24" id="iTf-Nc-y6W"/>
                                     <constraint firstAttribute="trailing" secondItem="yT3-xb-Wev" secondAttribute="trailing" id="jWU-Rm-S4C"/>
                                     <constraint firstItem="yT3-xb-Wev" firstAttribute="leading" secondItem="fWF-q3-jXc" secondAttribute="leading" id="jsK-sC-MAz"/>
@@ -271,7 +267,6 @@
                                     <constraint firstItem="1HE-nT-beU" firstAttribute="top" secondItem="fWF-q3-jXc" secondAttribute="top" constant="19" id="loz-05-Llj"/>
                                     <constraint firstItem="Ucv-gD-Usa" firstAttribute="trailing" secondItem="Xng-dO-2VT" secondAttribute="trailing" id="mqO-Cn-fvg"/>
                                     <constraint firstItem="KlA-XB-YRc" firstAttribute="trailing" secondItem="LYq-Jk-u2q" secondAttribute="trailing" constant="16" id="nNq-95-fmE"/>
-                                    <constraint firstItem="KDg-1q-0rV" firstAttribute="centerY" secondItem="pFm-Om-pVV" secondAttribute="centerY" id="q6r-ZS-E8d"/>
                                     <constraint firstItem="Xng-dO-2VT" firstAttribute="width" secondItem="DTd-9N-LWO" secondAttribute="width" id="tcn-tp-wNS"/>
                                     <constraint firstItem="7D6-9F-0iS" firstAttribute="top" secondItem="DTd-9N-LWO" secondAttribute="bottom" constant="50" id="vhc-xu-xBt"/>
                                     <constraint firstItem="bLU-27-sln" firstAttribute="centerY" secondItem="Xng-dO-2VT" secondAttribute="centerY" id="wjY-6L-SU6"/>
@@ -299,7 +294,6 @@
                         <outlet property="approximately" destination="9oO-ro-9QR" id="rbL-sA-auV"/>
                         <outlet property="autocompleteView" destination="Ucv-gD-Usa" id="Hjc-rm-PL0"/>
                         <outlet property="autocompleteViewWrapper" destination="Zvp-UN-eHT" id="oem-96-7Wd"/>
-                        <outlet property="buttonActivityIndicator" destination="KDg-1q-0rV" id="LwD-tf-qhy"/>
                         <outlet property="exchangeButton" destination="pFm-Om-pVV" id="SRa-GQ-gNN"/>
                         <outlet property="feeLabel" destination="u5K-fP-YVh" id="oKP-7M-pcA"/>
                         <outlet property="getActivityIndicator" destination="xsH-Cd-1fF" id="FB7-U4-i7D"/>
@@ -477,15 +471,12 @@
                                         <constraints>
                                             <constraint firstAttribute="height" constant="50" id="KQA-tV-wdA"/>
                                         </constraints>
-                                        <state key="normal" title="EXCHANGE"/>
+                                        <state key="normal" title="Continue"/>
                                         <userDefinedRuntimeAttributes>
                                             <userDefinedRuntimeAttribute type="boolean" keyPath="animateButtonTouch" value="YES"/>
                                             <userDefinedRuntimeAttribute type="string" keyPath="pattern" value="purple"/>
                                         </userDefinedRuntimeAttributes>
                                     </button>
-                                    <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="VqN-EM-pSz">
-                                        <rect key="frame" x="177.5" y="511.5" width="20" height="20"/>
-                                    </activityIndicatorView>
                                     <view contentMode="scaleToFill" verticalHuggingPriority="251" verticalCompressionResistancePriority="749" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="V8P-l1-8Qq">
                                         <rect key="frame" x="22" y="161" width="331" height="193"/>
                                         <subviews>
@@ -539,7 +530,6 @@
                                     <constraint firstItem="eIT-dB-z8X" firstAttribute="centerY" secondItem="SV9-8c-Anc" secondAttribute="centerY" id="BFY-A7-A0L"/>
                                     <constraint firstItem="95H-k2-5WM" firstAttribute="top" secondItem="o41-2C-brs" secondAttribute="bottom" constant="31" id="BpM-4B-IgG"/>
                                     <constraint firstItem="SV9-8c-Anc" firstAttribute="height" secondItem="1c8-xC-IUA" secondAttribute="height" id="Hrn-oy-IAb"/>
-                                    <constraint firstItem="VqN-EM-pSz" firstAttribute="centerY" secondItem="6TH-rv-FC6" secondAttribute="centerY" id="I2c-6Q-47u"/>
                                     <constraint firstItem="fWc-5V-dH9" firstAttribute="trailing" secondItem="1c8-xC-IUA" secondAttribute="trailing" id="IQg-qa-oMc"/>
                                     <constraint firstItem="SV9-8c-Anc" firstAttribute="leading" secondItem="1c8-xC-IUA" secondAttribute="leading" id="J4k-dC-fyK"/>
                                     <constraint firstItem="6TH-rv-FC6" firstAttribute="leading" secondItem="bxz-oz-EKz" secondAttribute="leading" id="JEY-ab-zNV"/>
@@ -550,7 +540,6 @@
                                     <constraint firstItem="bxz-oz-EKz" firstAttribute="leading" secondItem="1c8-xC-IUA" secondAttribute="leading" id="Mxh-YP-Xs2"/>
                                     <constraint firstItem="4wZ-hD-tU1" firstAttribute="top" secondItem="SV9-8c-Anc" secondAttribute="bottom" constant="50" id="OIg-ez-ZiP"/>
                                     <constraint firstItem="bxz-oz-EKz" firstAttribute="top" secondItem="ybN-up-uXn" secondAttribute="bottom" constant="19" id="PZe-qf-swB"/>
-                                    <constraint firstItem="VqN-EM-pSz" firstAttribute="centerX" secondItem="6TH-rv-FC6" secondAttribute="centerX" id="TV0-vj-m4X"/>
                                     <constraint firstItem="6TH-rv-FC6" firstAttribute="trailing" secondItem="bxz-oz-EKz" secondAttribute="trailing" id="Xax-Pn-oHH"/>
                                     <constraint firstItem="1c8-xC-IUA" firstAttribute="trailing" secondItem="eIT-dB-z8X" secondAttribute="trailing" constant="16" id="YKJ-7Q-g2p"/>
                                     <constraint firstItem="HsT-Oy-UFW" firstAttribute="trailing" secondItem="SV9-8c-Anc" secondAttribute="trailing" id="YdG-qk-Pi9"/>
@@ -593,7 +582,6 @@
                         <outlet property="approximately" destination="Wgo-jy-crs" id="hzD-ff-ou4"/>
                         <outlet property="autocompleteView" destination="fWc-5V-dH9" id="JlP-lP-O1q"/>
                         <outlet property="autocompleteViewWrapper" destination="V8P-l1-8Qq" id="e3Y-JV-aqY"/>
-                        <outlet property="buttonActivityIndicator" destination="VqN-EM-pSz" id="L0t-35-E8u"/>
                         <outlet property="exchangeButton" destination="6TH-rv-FC6" id="fZR-oE-cZF"/>
                         <outlet property="feeLabel" destination="j5j-qm-gS2" id="x3A-xI-I9D"/>
                         <outlet property="getActivityIndicator" destination="GQx-XK-4eX" id="5IM-k5-Ord"/>

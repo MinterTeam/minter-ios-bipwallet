@@ -49,9 +49,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                                               pinService: pinService
     )
 
+    let transactionService = ExplorerTransactionService()
+
     let appCoordinator = AppCoordinator(window: window!,
                                         authService: authService,
-                                        pinService: pinService)
+                                        pinService: pinService,
+                                        transactionService: transactionService)
 
     appCoordinator.start().subscribe().disposed(by: disposeBag)
 

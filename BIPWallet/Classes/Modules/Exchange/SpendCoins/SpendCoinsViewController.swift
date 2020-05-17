@@ -34,9 +34,6 @@ class SpendCoinsViewController: ConvertCoinsViewController, StoryboardInitializa
 
   func configure(with viewModel: SpendCoinsViewModel) {
     //Input
-//    spendAmountTextField.rx.text.asObservable()
-//      .subscribe(viewModel.input.spendAmount)
-//      .disposed(by: disposeBag)
 
     (spendAmountTextField.rx.text <-> viewModel.input.spendAmount).disposed(by: disposeBag)
 
@@ -81,16 +78,16 @@ class SpendCoinsViewController: ConvertCoinsViewController, StoryboardInitializa
       .asDriver(onErrorJustReturn: true)
       .drive(self.exchangeButton.rx.isEnabled).disposed(by: self.disposeBag)
 
-    viewModel.output.isLoading.asDriver(onErrorJustReturn: false)
-      .drive(onNext: { [weak self] (val) in
-        if val {
-          self?.buttonActivityIndicator.startAnimating()
-          self?.buttonActivityIndicator.isHidden = false
-        } else {
-          self?.buttonActivityIndicator.stopAnimating()
-          self?.buttonActivityIndicator.isHidden = true
-        }
-      }).disposed(by: disposeBag)
+//    viewModel.output.isLoading.asDriver(onErrorJustReturn: false)
+//      .drive(onNext: { [weak self] (val) in
+//        if val {
+//          self?.buttonActivityIndicator.startAnimating()
+//          self?.buttonActivityIndicator.isHidden = false
+//        } else {
+//          self?.buttonActivityIndicator.stopAnimating()
+//          self?.buttonActivityIndicator.isHidden = true
+//        }
+//      }).disposed(by: disposeBag)
 
     viewModel.output.errorNotification.asDriver(onErrorJustReturn: nil)
       .filter({ (notification) -> Bool in

@@ -10,6 +10,7 @@ import Foundation
 import RxSwift
 import RxCocoa
 import MinterCore
+import MinterExplorer
 import BigInt
 
 class GetCoinsViewModel: ConvertCoinsViewModel, ViewModel {
@@ -36,12 +37,14 @@ class GetCoinsViewModel: ConvertCoinsViewModel, ViewModel {
     var approximately: Observable<String?>
     var isApproximatelyLoading: Observable<Bool>
     var isButtonEnabled: Observable<Bool>
+    var showConfirmation: Observable<(String?, String?)>
   }
 
   struct Dependency {
     var balanceService: BalanceService
     var coinService: CoinService
     var gateService: GateService
+    var transactionService: TransactionService
   }
 
   init(dependency: Dependency) {
@@ -52,12 +55,15 @@ class GetCoinsViewModel: ConvertCoinsViewModel, ViewModel {
     self.input = Input(spendCoin: spendCoin,
                        getCoin: getCoin.asObserver(),
                        getAmount: getAmount,
-                       didTapExchangeButton: didTapExchangeButton.asObserver())
+                       didTapExchangeButton: didTapExchangeButton.asObserver()
+    )
 
     self.output = Output(spendCoin: spendCoinField.asObservable(),
                          approximately: approximately.asObservable(),
                          isApproximatelyLoading: isApproximatelyLoading.asObservable(),
-                         isButtonEnabled: isButtonEnabled)
+                         isButtonEnabled: isButtonEnabled,
+                         showConfirmation: showConfirmation.asObservable()
+    )
 
     self.dependency = dependency
 
@@ -86,6 +92,7 @@ class GetCoinsViewModel: ConvertCoinsViewModel, ViewModel {
 
         if self?.selectedCoin != nil {
           self?.spendCoinField.onNext(self?.spendCoinText)
+          self?.spendCoin.accept(self?.spendCoinText)
         }
       }).disposed(by: disposeBag)
 
@@ -97,7 +104,6 @@ class GetCoinsViewModel: ConvertCoinsViewModel, ViewModel {
       return CoinValidator.isValid(coin: val.2)
     })
     .subscribe(onNext: { [weak self] (val) in
-      print(val)
       self?.approximatelySum.onNext(nil)
       self?.approximately.onNext("")
       self?.calculateApproximately()
@@ -110,15 +116,21 @@ class GetCoinsViewModel: ConvertCoinsViewModel, ViewModel {
       self?.validateErrors()
     }).disposed(by: disposeBag)
 
-    didTapExchangeButton
-      .withLatestFrom(self.dependency.balanceService.account)
-      .subscribe(onNext: { [weak self] (account) in
-        guard let address = account?.address else { return }
-        self?.exchange(selectedAddress: address)
+    didTapExchangeButton.withLatestFrom(self.approximately)
+      .subscribe(onNext: { [weak self] (val) in
+        let approx = val
+        guard
+          let `self` = self,
+          let coinTo = try? self.getCoin.value()?.transformToCoinName() ?? "",
+          let amount = self.getAmount.value else { return }
+
+        let toString = CurrencyNumberFormatter.formattedDecimal(with: Decimal(string: amount) ?? 0.0, formatter: self.formatter) + " " + coinTo
+        let fromString = approx
+
+        self.showConfirmation.onNext((fromString, toString))
       }).disposed(by: disposeBag)
 
     spendCoin.distinctUntilChanged()
-//      .debounce(.seconds(1), scheduler: MainScheduler.instance)
       .map({ (val) -> SpendCoinPickerItem? in
         let item = SpendCoinPickerItem.items(with: self.spendCoinPickerSource).filter({ (item) -> Bool in
           return item.title == val
@@ -185,7 +197,6 @@ class GetCoinsViewModel: ConvertCoinsViewModel, ViewModel {
       return
     }
 
-    print(from)
     isApproximatelyLoading.onNext(true)
 
     GateManager.shared.estimateCoinBuy(coinFrom: from,
@@ -289,7 +300,7 @@ class GetCoinsViewModel: ConvertCoinsViewModel, ViewModel {
                                             maximumValueToSell: maxValueToSell)
           let signedTx = RawTransactionSigner.sign(rawTx: rawTx, privateKey: privateKey)
 
-          GateManager.shared.sendRawTransaction(rawTransaction: signedTx!, completion: { (_, err) in
+          GateManager.shared.sendRawTransaction(rawTransaction: signedTx!, completion: { (hash, err) in
 
             self?.isLoading.onNext(false)
 
@@ -297,14 +308,36 @@ class GetCoinsViewModel: ConvertCoinsViewModel, ViewModel {
               self?.dependency.balanceService.updateBalance()
             }
 
+            guard let `self` = self else { return }
+
             guard nil == err else {
-              self?.handleError(err)
+              self.handleError(err)
               return
             }
 
-            self?.shouldClearForm.value = true
-            self?.successMessage
-              .onNext("Coins have been successfully bought".localized())
+            self.shouldClearForm.value = true
+
+            if let hash = hash {
+              self.dependency.transactionService.transaction(hash: hash)
+                .delay(.seconds(3), scheduler: MainScheduler.instance)
+                .subscribe(onNext: { [weak self] (transaction) in
+                  guard let `self` = self else { return }
+                  if let transactionData = transaction?.data as? MinterExplorer.ConvertTransactionData,
+                    let coin = transactionData.toCoin,
+                    let amount = transactionData.valueToBuy {
+                    let string = CurrencyNumberFormatter.formattedDecimal(with: amount, formatter: self.formatter) + " " + coin
+                      self.exchangeSucceeded.onNext((message: string, transactionHash: transaction?.hash))
+                  } else {
+                    let string = "Coins have been exchanged".localized()
+                    self.exchangeSucceeded.onNext((message: string, transactionHash: transaction?.hash))
+                  }
+                }, onError: { error in
+                  //If error in getting transaction - show convert succeeed without estimates
+                  self.exchangeSucceeded.onNext((message: "Coins have been exchanged".localized(), transactionHash: hash))
+              }).disposed(by: self.disposeBag)
+            } else {
+              self.errorNotification.onNext("An error occured".localized())
+            }
           })
         })
       })
@@ -324,8 +357,7 @@ class GetCoinsViewModel: ConvertCoinsViewModel, ViewModel {
         if let msg = apiError.userData?["log"] as? String {
           self.errorNotification.onNext(msg)
         } else {
-          self.errorNotification
-            .onNext("An error occured".localized())
+          self.errorNotification.onNext("An error occured".localized())
         }
       }
       return
@@ -334,9 +366,7 @@ class GetCoinsViewModel: ConvertCoinsViewModel, ViewModel {
   }
 
   override func coins(by term: String, completion: (([Coin]) -> ())?) {
-    dependency
-      .coinService
-      .coins(by: term)
+    dependency.coinService.coins(by: term)
       .subscribe(onNext: { (coins) in
         completion?(coins)
       }).disposed(by: disposeBag)

@@ -19,7 +19,7 @@ class CurrencyNumberFormatter: NumberFormatter {
 	class func formattedDecimal(with number: Decimal, formatter: NumberFormatter) -> String {
 		let newNF = formatter.copy() as! NumberFormatter // swiftlint:disable:this force_cast
     var amount = number * pow(10.0, Self.maxPlaces)
-    amount.round(.up)
+    amount.round(.down)
     amount = amount / pow(10.0, Self.maxPlaces)
 		for _ in 0...18 {
 

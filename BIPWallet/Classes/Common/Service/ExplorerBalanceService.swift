@@ -293,6 +293,22 @@ class ExplorerBalanceService: BalanceService {
 
 class ExplorerTransactionService: TransactionService {
 
+  func transaction(hash: String) -> Observable<MinterExplorer.Transaction?> {
+    return Observable.create { (observable) -> Disposable in
+      self.explorerManager.transaction(hash: hash) { transaction, error in
+
+        guard error == nil else {
+          observable.onError(TransactionServiceError.custom(error: error!))
+          return
+        }
+
+        observable.onNext(transaction)
+        observable.onCompleted()
+      }
+      return Disposables.create()
+    }
+  }
+
   let explorerManager = ExplorerTransactionManager(httpClient: APIClient())
 
   func transactions(address: String, filter: TransactionServiceFilter?, page: Int) -> Observable<[MinterExplorer.Transaction]> {

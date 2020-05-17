@@ -14,11 +14,13 @@ final class AppCoordinator: BaseCoordinator<Void> {
 
   var authService: AuthService
   private let pinService: PINService
+  private let transactionService: TransactionService
 
-  init(window: UIWindow, authService: AuthService, pinService: PINService) {
+  init(window: UIWindow, authService: AuthService, pinService: PINService, transactionService: TransactionService) {
     self.window = window
     self.authService = authService
     self.pinService = pinService
+    self.transactionService = transactionService
   }
 
   override func start() -> Observable<Void> {
@@ -75,7 +77,7 @@ final class AppCoordinator: BaseCoordinator<Void> {
   }
 
   private func startWallet() -> Observable<Void> {
-    return coordinate(to: WalletCoordinator(window: window, authService: authService, pinService: self.pinService))
+    return coordinate(to: WalletCoordinator(window: window, authService: authService, pinService: self.pinService, transactionService: transactionService))
   }
 
   private func startPin() -> Observable<PINCoordinatorResult> {

@@ -13,6 +13,8 @@ import MinterExplorer
 
 class ConvertCoinsViewModel: BaseViewModel {
 
+  typealias ExchangeSuccessResult = (message: String?, transactionHash: String?)
+
   var balanceService: BalanceService
   var coinService: CoinService
   var gateService: GateService
@@ -36,6 +38,7 @@ class ConvertCoinsViewModel: BaseViewModel {
 	lazy var isLoading = BehaviorSubject<Bool>(value: false)
 	lazy var errorNotification = PublishSubject<String?>()
 	lazy var successMessage = PublishSubject<String?>()
+  lazy var exchangeSucceeded = PublishSubject<ExchangeSuccessResult>()
 	let formatter = CurrencyNumberFormatter.coinFormatter
 	var currentGas = RawTransactionDefaultGasPrice
   lazy var feeObservable = ReplaySubject<String>.create(bufferSize: 1)
@@ -48,6 +51,8 @@ class ConvertCoinsViewModel: BaseViewModel {
     }
   }
   var endEditing = PublishSubject<Void>()
+  var showConfirmation = PublishSubject<(String?, String?)>()
+  var showReceived = PublishSubject<String?>()
 
 	// MARK: -
 
@@ -60,29 +65,28 @@ class ConvertCoinsViewModel: BaseViewModel {
 
     self.selectedCoin = Coin.baseCoin().symbol!
 
-    balanceService.balances()
-      .subscribe(onNext: { [weak self] (val) in
-        let balances = val.balances
+    balanceService.balances().subscribe(onNext: { [weak self] (val) in
+      let balances = val.balances
 
-        self?.balances = balances.mapValues({ (val) -> Decimal in
-          return val.0
-        })
+      self?.balances = balances.mapValues({ (val) -> Decimal in
+        return val.0
+      })
 
-        if self?.selectedCoin == nil {
-          self?.selectedCoin = Coin.baseCoin().symbol!
-        }
+      if self?.selectedCoin == nil {
+        self?.selectedCoin = Coin.baseCoin().symbol!
+      }
 
-        var spendCoinSource = [String: Decimal]()
-        balances.keys.forEach({ (coin) in
-          spendCoinSource[coin] = balances[coin]?.0 ?? 0.0
-        })
+      var spendCoinSource = [String: Decimal]()
+      balances.keys.forEach({ (coin) in
+        spendCoinSource[coin] = balances[coin]?.0 ?? 0.0
+      })
 
-        self?.spendCoinPickerSource = spendCoinSource
+      self?.spendCoinPickerSource = spendCoinSource
 
-        if self?.selectedCoin != nil {
-          self?.spendCoinField.onNext(self?.spendCoinText)
-        }
-      }).disposed(by: disposeBag)
+      if self?.selectedCoin != nil {
+        self?.spendCoinField.onNext(self?.spendCoinText)
+      }
+    }).disposed(by: disposeBag)
 
     gateService.updateGas()
     gateService.currentGas().startWith(RawTransactionDefaultGasPrice).subscribe(onNext: { [weak self] (val) in
@@ -217,11 +221,14 @@ extension ConvertCoinsViewModel: LUAutocompleteViewDelegate, LUAutocompleteViewD
                         elementsFor text: String,
                         completion: @escaping ([String]) -> Void) {
     self.coins(by: text) { (coins) in
-      completion(coins.map({ (coin) -> String in
+
+      let coinsArray = coins.map({ (coin) -> String in
         return coin.symbol ?? ""
       }).filter({ (coin) -> Bool in
         return coin != ""
-      }))
+      })
+
+      completion(Array(coinsArray[safe: 0..<3] ?? []))
     }
   }
 

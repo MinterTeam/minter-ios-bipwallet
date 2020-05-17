@@ -20,16 +20,19 @@ class BalanceCoordinator: BaseCoordinator<Void> {
   let authService: AuthService
   let balanceService: BalanceService
   let recipientInfoService: RecipientInfoService
+  let transactionService: TransactionService
 
   init(navigationController: UINavigationController,
        balanceService: BalanceService,
        authService: AuthService,
-       recipientInfoService: RecipientInfoService) {
+       recipientInfoService: RecipientInfoService,
+       transactionService: TransactionService) {
 
     self.navigationController = navigationController
     self.balanceService = balanceService
     self.authService = authService
     self.recipientInfoService = recipientInfoService
+    self.transactionService = transactionService
 
     super.init()
   }
@@ -91,7 +94,8 @@ class BalanceCoordinator: BaseCoordinator<Void> {
     coins.didTapExchangeButton.flatMap({ [weak self] (_) -> Observable<Void> in
       guard let `self` = self else { return Observable.empty() }
       let excangeCoordinator = ExchangeCoordinator(rootController: controller,
-                                                   balanceService: self.balanceService)
+                                                   balanceService: self.balanceService,
+                                                   transactionService: self.transactionService)
       return self.coordinate(to: excangeCoordinator)
     }).subscribe().disposed(by: self.disposeBag)
 
