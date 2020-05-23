@@ -10,6 +10,7 @@
     <customFonts key="customFonts">
         <array key="Inter.otf">
             <string>Inter_Medium</string>
+            <string>Inter_Semi-Bold</string>
         </array>
     </customFonts>
     <scenes>
@@ -64,6 +65,32 @@
                                     </userDefinedRuntimeAttribute>
                                 </userDefinedRuntimeAttributes>
                             </view>
+                            <view alpha="0.0" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="l6i-3V-qaw">
+                                <rect key="frame" x="24" y="497" width="366" height="51"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Copied!" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="a2v-CE-756" customClass="UHBCustomLabel" customModule="BIPWallet" customModuleProvider="target">
+                                        <rect key="frame" x="151" y="15" width="64.5" height="21"/>
+                                        <fontDescription key="fontDescription" name="Inter_Semi-Bold" family="Inter" pointSize="17"/>
+                                        <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <nil key="highlightedColor"/>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="characterSpacing">
+                                                <real key="value" value="0.40000000000000002"/>
+                                            </userDefinedRuntimeAttribute>
+                                        </userDefinedRuntimeAttributes>
+                                    </label>
+                                </subviews>
+                                <color key="backgroundColor" red="0.20392156859999999" green="0.78039215689999997" blue="0.34901960780000002" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstItem="a2v-CE-756" firstAttribute="centerX" secondItem="l6i-3V-qaw" secondAttribute="centerX" id="MZC-de-YMQ"/>
+                                    <constraint firstItem="a2v-CE-756" firstAttribute="centerY" secondItem="l6i-3V-qaw" secondAttribute="centerY" id="anb-BJ-b05"/>
+                                </constraints>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                        <integer key="value" value="8"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                            </view>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="MQ2-Yq-zac">
                                 <rect key="frame" x="24" y="107" width="366" height="366"/>
                                 <constraints>
@@ -74,19 +101,25 @@
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <constraints>
                             <constraint firstItem="ydz-47-Rvh" firstAttribute="top" secondItem="MQ2-Yq-zac" secondAttribute="bottom" constant="24" id="0tT-5z-qs7"/>
+                            <constraint firstItem="l6i-3V-qaw" firstAttribute="top" secondItem="ydz-47-Rvh" secondAttribute="top" id="6Mo-Fs-fVg"/>
                             <constraint firstItem="Fu2-Ab-9Qk" firstAttribute="trailing" secondItem="MQ2-Yq-zac" secondAttribute="trailing" constant="24" id="AtA-nW-7xz"/>
                             <constraint firstItem="Aeb-tI-2Bt" firstAttribute="leading" secondItem="Fu2-Ab-9Qk" secondAttribute="leading" constant="24" id="FwP-D9-WiO"/>
                             <constraint firstItem="Aeb-tI-2Bt" firstAttribute="top" secondItem="ydz-47-Rvh" secondAttribute="bottom" constant="24" id="JvA-s3-UB5"/>
+                            <constraint firstItem="l6i-3V-qaw" firstAttribute="bottom" secondItem="ydz-47-Rvh" secondAttribute="bottom" id="TAk-fd-F7S"/>
                             <constraint firstItem="Fu2-Ab-9Qk" firstAttribute="trailing" secondItem="Aeb-tI-2Bt" secondAttribute="trailing" constant="24" id="exx-y0-g38"/>
                             <constraint firstItem="Fu2-Ab-9Qk" firstAttribute="trailing" secondItem="ydz-47-Rvh" secondAttribute="trailing" constant="24" id="fDu-yp-8Sv"/>
+                            <constraint firstItem="l6i-3V-qaw" firstAttribute="leading" secondItem="ydz-47-Rvh" secondAttribute="leading" id="god-Rw-mqd"/>
                             <constraint firstItem="ydz-47-Rvh" firstAttribute="leading" secondItem="Fu2-Ab-9Qk" secondAttribute="leading" constant="24" id="pTl-Zx-BX2"/>
                             <constraint firstItem="MQ2-Yq-zac" firstAttribute="top" secondItem="Fu2-Ab-9Qk" secondAttribute="top" constant="63" id="shG-8A-aUV"/>
                             <constraint firstItem="MQ2-Yq-zac" firstAttribute="leading" secondItem="Fu2-Ab-9Qk" secondAttribute="leading" constant="24" id="wEZ-Y2-rb7"/>
+                            <constraint firstItem="l6i-3V-qaw" firstAttribute="trailing" secondItem="ydz-47-Rvh" secondAttribute="trailing" id="yI0-lQ-MDA"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="Fu2-Ab-9Qk"/>
                     </view>
                     <connections>
                         <outlet property="address" destination="Jso-Aq-D0K" id="51y-Df-KVY"/>
+                        <outlet property="addressView" destination="ydz-47-Rvh" id="5gO-cN-eJz"/>
+                        <outlet property="copiedView" destination="l6i-3V-qaw" id="6Ha-NZ-TsX"/>
                         <outlet property="copyButton" destination="iEU-85-m4F" id="Fge-0P-p3N"/>
                         <outlet property="qrCode" destination="MQ2-Yq-zac" id="E3p-FF-O0I"/>
                         <outlet property="shareButton" destination="Aeb-tI-2Bt" id="6wb-b1-RZK"/>

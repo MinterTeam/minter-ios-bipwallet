@@ -71,9 +71,11 @@ class LocalStorageContactsService: ContactsService {
 
   func contact(by name: String) -> Observable<ContactItem?> {
     return Observable.create { (observer) -> Disposable in
-      let res = self.storage.objects(class: ContactEntryDataBaseModel.self,
-                                     query: "name contains[c] '\(name.lowercased())'") ?? []
-
+      let res = (self.storage.objects(class: ContactEntryDataBaseModel.self,
+                                     query: nil) ?? [])
+      .filter { (model) -> Bool in
+        return (model as? ContactEntryDataBaseModel)?.name.lowercased() == name.lowercased()
+      }
       if let model = res.first as? ContactEntryDataBaseModel {
         let contact = ContactItem(name: model.name, address: model.address)
         observer.onNext(contact)
@@ -89,7 +91,7 @@ class LocalStorageContactsService: ContactsService {
     return Observable.create { (observer) -> Disposable in
       let name = item.name ?? ""
       let address = item.address ?? ""
-      if let res = (self.storage.objects(class: ContactEntryDataBaseModel.self, query: "name contains[c] '\(name.lowercased())' AND address='\(address)'") ?? []).first {
+      if let res = (self.storage.objects(class: ContactEntryDataBaseModel.self, query: "address='\(address)'") ?? []).first {
         do {
           try self.storage.delete(object: res)
           observer.onNext(())
@@ -112,45 +114,36 @@ class LocalStorageContactsService: ContactsService {
         return Disposables.create()
       }
 
-      let addOld = {
-        let contactObject = ContactEntryDataBaseModel()
-        contactObject.address = oldAddress
-        contactObject.name = oldName
-        do {
-          try self.storage.add(object: contactObject)
-        } catch {
-          observer.onError(LocalStorageContactsServiceError.cantDeleteItem)
-        }
-      }
+      let res = self.storage.objects(class: ContactEntryDataBaseModel.self, query: "address != '\(oldAddress)'") ?? []
+      guard res.filter({ (model) -> Bool in
+        guard let contactModel = (model as? ContactEntryDataBaseModel) else { return false }
+        let addressBool = (contactModel.address == address)
+        let nameBool = contactModel.name.lowercased() == name.lowercased()
 
-      //Removing the old one
-      if let res = (self.storage.objects(class: ContactEntryDataBaseModel.self, query: "name contains[c] '\(oldName.lowercased())' AND address='\(oldAddress)'") ?? []).first {
-        do {
-          try self.storage.delete(object: res)
-        } catch {
-          observer.onError(LocalStorageContactsServiceError.cantDeleteItem)
-          return Disposables.create()
-        }
-      }
-
-      let res = self.storage.objects(class: ContactEntryDataBaseModel.self, query: "name contains[c] '\(name.lowercased())' or address='\(address)'") ?? []
-      if res.count > 0 {
+        return addressBool || nameBool
+      }).count == 0 else {
         observer.onError(ContactsServiceError.dublicateContact)
-        addOld()
-      } else {
-        let contactObject = ContactEntryDataBaseModel()
-        contactObject.address = address
-        contactObject.name = name
-        do {
-          try self.storage.add(object: contactObject)
-          observer.onNext(Void())
-        } catch {
-          observer.onError(ContactsServiceError.cantSaveContact)
-          addOld()
+        return Disposables.create()
+      }
+
+      if let res = (self.storage.objects(class: ContactEntryDataBaseModel.self,
+                                         query: "address='\(oldAddress)'") ?? []).first as? ContactEntryDataBaseModel {
+        if let address = newItem.address, let name = newItem.name {
+          do {
+            try self.storage.update(updates: {
+              res.address = address
+              res.name = name
+            })
+          } catch {
+            observer.onError(LocalStorageContactsServiceError.cantDeleteItem)
+            return Disposables.create()
+          }
+          observer.onNext(())
+          observer.onCompleted()
+          self.contactsChangedSubject.onNext(())
         }
       }
-      observer.onCompleted()
-      self.contactsChangedSubject.onNext(())
+      observer.onError(ContactsServiceError.cantSaveContact)
       return Disposables.create()
     }
   }

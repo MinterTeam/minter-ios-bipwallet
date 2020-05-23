@@ -61,6 +61,7 @@ class SendViewModel: BaseViewModel, ViewModel, WalletSelectableViewModel {// swi
     var didProvideAutocomplete: Observable<Void>
     var wallet: Observable<String?>
     var timerText: Observable<NSAttributedString?>
+    var usernameDidEndEditing: Observable<Void>
   }
 
   struct Dependency {
@@ -109,6 +110,7 @@ class SendViewModel: BaseViewModel, ViewModel, WalletSelectableViewModel {// swi
   }
   private let openAppSettingsSubject = PublishSubject<Void>()
   lazy var balanceTitleObservable = Observable.of(Observable<Int>.timer(0, period: 1, scheduler: MainScheduler.instance).map {_ in}).merge()
+  private let usernameDidEndEditing = PublishSubject<Void>()
 
   let fakePK = Data(hex: "678b3252ce9b013cef922687152fb71d45361b32f8f9a57b0d11cc340881c999").toHexString()
 
@@ -216,13 +218,11 @@ class SendViewModel: BaseViewModel, ViewModel, WalletSelectableViewModel {// swi
                          wallet: walletObservable(),
                          timerText: balanceTitleObservable.withLatestFrom(balanceService.lastBlockAgo()).map {
                           let ago = Date().timeIntervalSince1970 - ($0 ?? 0)
-                          return self.headerViewLastUpdatedTitleText(seconds: ago)
-                         }
+                          return self.headerViewLastUpdatedTitleText(seconds: ago) },
+                         usernameDidEndEditing: usernameDidEndEditing.asObservable()
     )
 
-    amountSubject
-      .asObservable()
-      .distinctUntilChanged()
+    amountSubject.asObservable().distinctUntilChanged()
       .throttle(.seconds(1), scheduler: MainScheduler.instance)
       .subscribe(onNext: { [weak self] (val) in
         if (val ?? "").starts(with: ",") || (val ?? "").starts(with: ".") {
@@ -231,7 +231,7 @@ class SendViewModel: BaseViewModel, ViewModel, WalletSelectableViewModel {// swi
         } else {
           self?.amountSubject.accept(val)
         }
-    }).disposed(by: disposeBag)
+      }).disposed(by: disposeBag)
 
     payloadSubject.asObservable().subscribe(onNext: { (payld) in
       if GoldenKeystore.mnemonicIsValid(payld ?? "") {
@@ -258,9 +258,7 @@ YOU ARE ABOUT TO SEND SEED PHRASE IN THE MESSAGE ATTACHED TO THIS TRANSACTION.\n
       self?.clearPayloadSubject.onNext(val)
     }).disposed(by: disposeBag)
 
-    dependency
-      .balanceService
-      .balances()
+    dependency.balanceService.balances()
       .subscribe(onNext: { [weak self] (val) in
         self?.lastBalances = val.balances.mapValues({ (val) -> Decimal in
           return val.0
@@ -273,29 +271,25 @@ YOU ARE ABOUT TO SEND SEED PHRASE IN THE MESSAGE ATTACHED TO THIS TRANSACTION.\n
         self?.sections.value = self?.createSections() ?? []
       }).disposed(by: disposeBag)
 
-    sections
-      .asObservable()
+    sections.asObservable()
       .subscribe(onNext: { [weak self] (items) in
         self?._sections.value = items
       }).disposed(by: disposeBag)
 
-    dependency
-      .balanceService
-      .account
+    dependency.balanceService.account
       .subscribe(onNext: { [weak self] (_) in
-        self?.clear()
+//        self?.clear()
+        self?.amountSubject.accept(nil)
         self?.sections.value = self?.createSections() ?? []
       }).disposed(by: disposeBag)
 
-    didScanQRSubject
-      .asObservable()
+    didScanQRSubject.asObservable()
       .subscribe(onNext: { [weak self] (val) in
         let url = URL(string: val ?? "")
         if true == val?.isValidPublicKey() || true == val?.isValidAddress() {
           self?.recipientSubject.accept(val)
           return
-        } else if
-          let url = url,
+        } else if let url = url,
           let rawViewController = RawTransactionRouter.rawTransactionViewController(with: url) {
             self?.showViewControllerSubject.onNext(rawViewController)
             return
@@ -322,8 +316,7 @@ YOU ARE ABOUT TO SEND SEED PHRASE IN THE MESSAGE ATTACHED TO THIS TRANSACTION.\n
       }
     }).disposed(by: disposeBag)
 
-    recipientSubject
-      .distinctUntilChanged()
+    recipientSubject.distinctUntilChanged()
       .do(onNext: { [weak self] (rec) in
         if self?.isValidMinterRecipient(recipient: rec ?? "") ?? false {
           self?.addressSubject.accept(rec)
@@ -335,7 +328,7 @@ YOU ARE ABOUT TO SEND SEED PHRASE IN THE MESSAGE ATTACHED TO THIS TRANSACTION.\n
       .filter { [weak self] in
         return !(self?.isValidMinterRecipient(recipient: $0 ?? "") ?? false)
       }
-      .throttle(2.0, scheduler: MainScheduler.instance)
+      .throttle(.seconds(2), scheduler: MainScheduler.instance)
       .do(onNext: { [weak self] (rec) in
         if !(self?.isToValid(to: rec ?? "") ?? false) && (rec ?? "").count >= 5 {
           if (rec?.count ?? 0) > 66 {
@@ -354,7 +347,7 @@ YOU ARE ABOUT TO SEND SEED PHRASE IN THE MESSAGE ATTACHED TO THIS TRANSACTION.\n
         return self?.isToValid(to: rec ?? "") ?? false
       })
       .flatMap { (rec) -> Observable<Event<ContactItem?>> in
-        var term = (rec ?? "").lowercased()
+        let term = (rec ?? "").lowercased()
         return self.dependency.contactsService.contact(by: term).materialize()
       }.do(onNext: { [weak self] (_) in
         self?.isLoadingAddressSubject.onNext(false)
@@ -377,7 +370,7 @@ YOU ARE ABOUT TO SEND SEED PHRASE IN THE MESSAGE ATTACHED TO THIS TRANSACTION.\n
         case .error(_):
           self?.addressStateSubject.onNext(.invalid(error: "USERNAME CAN NOT BE FOUND".localized()))
         }
-    }).disposed(by: disposeBag)
+      }).disposed(by: disposeBag)
 
     txScanButtonDidTap.asObservable().subscribe(onNext: { [weak self] (_) in
       switch AVCaptureDevice.authorizationStatus(for: .video) {
@@ -400,18 +393,19 @@ YOU ARE ABOUT TO SEND SEED PHRASE IN THE MESSAGE ATTACHED TO THIS TRANSACTION.\n
       }
     }).disposed(by: disposeBag)
 
-    contact.subscribe(onNext: { (item) in
-      self.recipientSubject.accept(item.name?.capitalized)
+    contact.subscribe(onNext: { [weak self] (item) in
+      self?.recipientSubject.accept(item.name?.capitalized)
     }).disposed(by: disposeBag)
-    
-    viewDidAppear.subscribe(onNext: { (_) in
-      GateManager
-        .shared
-        .minGas()
-        .subscribe(onNext: { [weak self] (gas) in
-          self?.currentGas.onNext(gas)
-        }).disposed(by: self.disposeBag)
-    }).disposed(by: disposeBag)
+
+    viewDidAppear.withLatestFrom(GateManager.shared.minGas())
+      .subscribe(onNext: { [weak self] (gas) in
+        self?.currentGas.onNext(gas)
+      }).disposed(by: disposeBag)
+
+//    self.dependency.contactsService.contactsChanged()
+//      .subscribe(onNext: { (_) in
+//        self.dependency.contactsService.
+//      }).disposed(by: disposeBag)
   }
 
   // MARK: - Sections
@@ -429,6 +423,7 @@ YOU ARE ABOUT TO SEND SEED PHRASE IN THE MESSAGE ATTACHED TO THIS TRANSACTION.\n
       self?.impact.onNext(.light)
       self?.sound.onNext(.click)
     }).disposed(by: disposeBag)
+    username.didEndEditing.subscribe(usernameDidEndEditing).disposed(by: disposeBag)
 
     let coin = PickerTableViewCellItem(reuseIdentifier: "PickerTableViewCell",
                                        identifier: CellIdentifierPrefix.coin.rawValue)
@@ -477,9 +472,7 @@ YOU ARE ABOUT TO SEND SEED PHRASE IN THE MESSAGE ATTACHED TO THIS TRANSACTION.\n
     amount.stateObservable = amountStateSubject.asObservable()
     amount.keyboardType = .decimalPad
     (amount.text <-> amountSubject).disposed(by: disposeBag)
-    amount
-      .output?
-      .didTapUseMax
+    amount.output?.didTapUseMax
       .withLatestFrom(Observable
         .combineLatest(formChangedObservable, dependency.balanceService.balances())
       ).map({ [weak self] (val) -> String? in
@@ -490,9 +483,8 @@ YOU ARE ABOUT TO SEND SEED PHRASE IN THE MESSAGE ATTACHED TO THIS TRANSACTION.\n
         guard let coin = form.0 else { return nil }
 
         let balance = balances.balances[coin]?.0 ?? 0.0
-        return _self.formatter.formattedDecimal(with: balance)
-      })
-      .subscribe(onNext: { [weak self] (val) in
+        return _self.formatter.formattedDecimal(with: balance, maxPlaces: 18)
+      }).subscribe(onNext: { [weak self] (val) in
         self?.impact.onNext(.light)
         self?.sound.onNext(.click)
         self?.amountSubject.accept(val)
@@ -530,10 +522,7 @@ YOU ARE ABOUT TO SEND SEED PHRASE IN THE MESSAGE ATTACHED TO THIS TRANSACTION.\n
       return !(recipient ?? "").isEmpty && !(amount ?? "").isEmpty && !(coin ?? "").isEmpty
     })
 
-    button
-      .output?
-      .didTapButton
-      .asDriver(onErrorJustReturn: ())
+    button.output?.didTapButton.asDriver(onErrorJustReturn: ())
       .drive(onNext: { [weak self] (_) in
         self?.sendButtonTaped()
         self?.impact.onNext(.hard)
@@ -682,7 +671,7 @@ YOU ARE ABOUT TO SEND SEED PHRASE IN THE MESSAGE ATTACHED TO THIS TRANSACTION.\n
           Observable.just(val),
           self.formChangedObservable.asObservable(),
           self.dependency.balanceService.balances()
-          )
+        )
       }).flatMapLatest({ (val) -> Observable<String?> in
         let nonce = BigUInt(val.0.0)
         let amount = (Decimal(string: val.1.2 ?? "") ?? Decimal(0))
@@ -696,14 +685,14 @@ YOU ARE ABOUT TO SEND SEED PHRASE IN THE MESSAGE ATTACHED TO THIS TRANSACTION.\n
         guard selectedAddress.isValidAddress() else { return Observable.error(SendViewModelError.noPrivateKey) }
 
         return self.prepareTx(nonce: nonce,
-                         amount: amount,
-                         selectedCoinBalance: selectedAddressBalance,
-                         recipient: recipient,
-                         coin: coin,
-                         payload: payload,
-                         selectedAddress: selectedAddress,
-                         canPayCommissionWithBaseCoin: self.canPayCommissionWithBaseCoin(baseCoinBalance: baseCoinBalance,
-                                                                                         isDelegate: recipient.isValidPublicKey()))
+                              amount: amount,
+                              selectedCoinBalance: selectedAddressBalance,
+                              recipient: recipient,
+                              coin: coin,
+                              payload: payload,
+                              selectedAddress: selectedAddress,
+                              canPayCommissionWithBaseCoin: self.canPayCommissionWithBaseCoin(baseCoinBalance: baseCoinBalance,
+                                                                                              isDelegate: recipient.isValidPublicKey()))
       }).flatMapLatest({ (signedTx) -> Observable<String?> in
         return GateManager.shared.send(rawTx: signedTx)
       }).subscribe(onNext: { [weak self] (val) in
@@ -804,7 +793,6 @@ YOU ARE ABOUT TO SEND SEED PHRASE IN THE MESSAGE ATTACHED TO THIS TRANSACTION.\n
           let seed = self.accountManager.seed(mnemonic: mnemonic),
           let newPk = try? self.accountManager.privateKey(from: seed) {
 
-          let isPublicKey = recipient.isValidPublicKey()
           var gasCoin: String = Coin.baseCoin().symbol!
           var value: BigUInt = BigUInt(0)
 
@@ -976,17 +964,15 @@ extension SendViewModel: LUAutocompleteViewDataSource, LUAutocompleteViewDelegat
 
   func autocompleteView(_ autocompleteView: LUAutocompleteView, elementsFor text: String, completion: @escaping ([String]) -> Void) {
     let term = text.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines).lowercased()
-    self.dependency
-      .contactsService
-      .contacts()
-      .subscribe(onNext: { (contacts) in
+    self.dependency.contactsService.contacts()
+      .subscribe(onNext: { [weak self] (contacts) in
         let data = ((contacts.filter { (item) -> Bool in
-          return (item.name ?? "").contains(term) && (item.name ?? "") != term
+          return (item.name ?? "").lowercased().starts(with: term) && (item.name ?? "").lowercased() != term.lowercased()
         })[safe: 0..<4])?.map { (item) -> String in
-          return (item.name ?? "").capitalized
+          return (item.name ?? "")
         } ?? []
         completion(data)
-        self.didProvideAutocomplete.onNext(())
+        self?.didProvideAutocomplete.onNext(())
     }).disposed(by: disposeBag)
   }
 

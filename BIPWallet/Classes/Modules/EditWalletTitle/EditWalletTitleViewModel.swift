@@ -101,7 +101,7 @@ class EditWalletTitleViewModel: BaseViewModel, ViewModel {
       guard let `self` = self else { return Observable.empty() }
       switch event {
       case .next(let title):
-        self.accountItem.title = title
+        self.accountItem.title = title == "" ? nil : title
         return self.dependency.authService.updateAccount(account: self.accountItem)
       case .error(let error):
         self.handleError(error)
@@ -145,7 +145,7 @@ class EditWalletTitleViewModel: BaseViewModel, ViewModel {
     if let error = error as? EditWalletTitleViewModelError {
       switch error {
       case .invalidTitle:
-        errorTitle = "Invalid title. It must be up to 18 latin characters and numbers".localized()
+        errorTitle = "Invalid title. It must be up to 18 symbols".localized()
       case .dublicateTitle:
         errorTitle = "You've already added a wallet with this title".localized()
       }

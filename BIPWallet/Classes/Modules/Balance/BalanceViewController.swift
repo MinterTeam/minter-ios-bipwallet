@@ -87,6 +87,8 @@ class BalanceViewController: SegmentedPagerTabStripViewController, Controller, S
   var viewModel: ViewModelType!
 
   func configure(with viewModel: BalanceViewModel) {
+    configureDefault()
+
     //Input
     walletSelectorButton.rx.tap
       .asDriver()
@@ -168,6 +170,17 @@ class BalanceViewController: SegmentedPagerTabStripViewController, Controller, S
       SoundHelper.playSoundIfAllowed(type: type)
     }).disposed(by: disposeBag)
 
+    viewModel.showErrorMessage.asDriver(onErrorJustReturn: "").drive(onNext: { (message) in
+      BannerHelper.performErrorNotification(title: message)
+    }).disposed(by: disposeBag)
+
+    viewModel.showSuccessMessage.asDriver(onErrorJustReturn: "").drive(onNext: { (message) in
+      BannerHelper.performSuccessNotification(title: message)
+    }).disposed(by: disposeBag)
+
+    viewModel.showNotifyMessage.asDriver(onErrorJustReturn: "").drive(onNext: { (message) in
+      BannerHelper.performNotifyNotification(title: message)
+    }).disposed(by: disposeBag)
   }
 
   // MARK: - ViewController

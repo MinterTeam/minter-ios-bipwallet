@@ -19,8 +19,8 @@
             <rect key="frame" x="0.0" y="0.0" width="375" height="24"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="SEND COIN" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VBJ-OA-h4b">
-                    <rect key="frame" x="24" y="5" width="61" height="14"/>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="SEND COINS" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VBJ-OA-h4b">
+                    <rect key="frame" x="24" y="5" width="68" height="14"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="14" id="5d6-Pp-QRi"/>
                     </constraints>
@@ -29,7 +29,7 @@
                     <nil key="highlightedColor"/>
                 </label>
                 <button opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" contentHorizontalAlignment="right" contentVerticalAlignment="center" lineBreakMode="middleTruncation" hasAttributedTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Sy9-xb-e4f">
-                    <rect key="frame" x="100" y="4" width="251" height="16"/>
+                    <rect key="frame" x="107" y="4" width="244" height="16"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="16" id="fZa-hx-N9d"/>
                     </constraints>

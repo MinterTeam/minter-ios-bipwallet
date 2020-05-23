@@ -19,29 +19,9 @@ class WalletViewController: UITabBarController, Controller, StoryboardInitializa
 
   var viewModel: ViewModelType!
 
-  func configure(with viewModel: WalletViewModel) {
+  func configure(with viewModel: WalletViewModel) {}
 
-  }
-
-  func configureDefault() {
-
-//    viewModel.impact.asDriver(onErrorJustReturn: .light).drive(onNext: { (type) in
-//      switch type {
-//      case .light:
-////        self.lightImpactFeedbackGenerator.prepare()
-//        self.lightImpactFeedbackGenerator.impactOccurred()
-//
-//      case .hard:
-//        self.hardImpactFeedbackGenerator.prepare()
-//        self.hardImpactFeedbackGenerator.impactOccurred()
-//      }
-//    }).disposed(by: disposeBag)
-//
-//    viewModel.sound.asDriver(onErrorJustReturn: .cancel).drive(onNext: { (type) in
-//      SoundHelper.playSoundIfAllowed(type: type)
-//    }).disposed(by: disposeBag)
-
-  }
+  func configureDefault() {}
 
   // MARK: - ViewController
 

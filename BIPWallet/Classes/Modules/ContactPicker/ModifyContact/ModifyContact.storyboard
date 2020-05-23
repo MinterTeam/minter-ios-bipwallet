@@ -44,19 +44,19 @@
                                             <outlet property="delegate" destination="dgm-ge-6ds" id="l0M-ll-2c3"/>
                                         </connections>
                                     </textView>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qV6-1y-zAR">
-                                        <rect key="frame" x="16" y="170" width="24" height="13"/>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Add a title to the address" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qV6-1y-zAR">
+                                        <rect key="frame" x="16" y="170" width="134" height="13"/>
                                         <fontDescription key="fontDescription" name="Inter_Semi-Bold" family="Inter" pointSize="11"/>
                                         <color key="textColor" red="0.5568627451" green="0.5568627451" blue="0.5568627451" alpha="1" colorSpace="deviceRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="FkZ-ew-cJ8" customClass="DefaultTextField" customModule="BIPWallet" customModuleProvider="target">
+                                    <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Up to 18 symbols.." textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="FkZ-ew-cJ8" customClass="DefaultTextField" customModule="BIPWallet" customModuleProvider="target">
                                         <rect key="frame" x="16" y="193" width="366" height="48"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="48" id="ShY-rW-iCg"/>
                                         </constraints>
                                         <fontDescription key="fontDescription" name="Inter_Medium" family="Inter" pointSize="17"/>
-                                        <textInputTraits key="textInputTraits" autocapitalizationType="words" returnKeyType="go"/>
+                                        <textInputTraits key="textInputTraits" autocapitalizationType="words" returnKeyType="done"/>
                                     </textField>
                                 </subviews>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>

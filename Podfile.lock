@@ -52,6 +52,10 @@ PODS:
   - RxGesture (3.0.1):
     - RxCocoa (~> 5.0)
     - RxSwift (~> 5.0)
+  - RxReachability (1.0.0):
+    - ReachabilitySwift (~> 4.3.1)
+    - RxCocoa (~> 5)
+    - RxSwift (~> 5)
   - RxRelay (5.0.1):
     - RxSwift (~> 5)
   - RxRouting (1.1.1):
@@ -78,7 +82,6 @@ PODS:
   - Swinject (2.7.1)
   - TPKeyboardAvoiding (1.3.3)
   - TrezorCrypto (0.0.9)
-  - UIFontComplete (4.0.0)
   - XLPagerTabStrip (8.1.1)
   - YandexMobileMetrica/Dynamic (3.2.0)
 
@@ -104,6 +107,7 @@ DEPENDENCIES:
   - RxBiBinding
   - RxDataSources
   - RxGesture
+  - RxReachability
   - RxRouting (from `https://github.com/e-sites/RxRouting.git`)
   - RxSwift
   - RxSwiftExt
@@ -113,7 +117,6 @@ DEPENDENCIES:
   - SwiftValidator (from `https://github.com/jpotts18/SwiftValidator.git`, tag `4.2.0`)
   - Swinject
   - TPKeyboardAvoiding
-  - UIFontComplete
   - XLPagerTabStrip (~> 8.0)
   - YandexMobileMetrica/Dynamic (= 3.2.0)
 
@@ -140,6 +143,7 @@ SPEC REPOS:
     - RxCocoa
     - RxDataSources
     - RxGesture
+    - RxReachability
     - RxRelay
     - RxSwift
     - RxSwiftExt
@@ -153,7 +157,6 @@ SPEC REPOS:
     - Swinject
     - TPKeyboardAvoiding
     - TrezorCrypto
-    - UIFontComplete
     - XLPagerTabStrip
     - YandexMobileMetrica
 
@@ -221,6 +224,7 @@ SPEC CHECKSUMS:
   RxCocoa: e741b9749968e8a143e2b787f1dfbff2b63d0a5c
   RxDataSources: efee07fa4de48477eca0a4611e6d11e2da9c1114
   RxGesture: a3f8dd6adf078110ed5e1c9c30d09d705a09852e
+  RxReachability: 21d3e96f39bc166a21c357e923f47dec148ca97b
   RxRelay: 89d54507f4fd4d969e6ec1d4bd7f3673640b4640
   RxRouting: 11805c8eed2eb601c106423ca8ed21b731c07b12
   RxSwift: e2dc62b366a3adf6a0be44ba9f405efd4c94e0c4
@@ -236,10 +240,9 @@ SPEC CHECKSUMS:
   Swinject: ddf78b8486dd9b71a667b852cad919ab4484478e
   TPKeyboardAvoiding: 6dd3fe3268b8f2627beb7ff3d82a3cacbdf66a36
   TrezorCrypto: bfeea47a052dca2c77d4a39e1e183865e52de14d
-  UIFontComplete: 9542d390ee6114412a585d979b09fe820896695d
   XLPagerTabStrip: 63166e21c9844fa30f2d95d30f335e73be5caf22
   YandexMobileMetrica: f18374ee6977a4cd1d0a86298a0df4ad7baf4135
 
-PODFILE CHECKSUM: e40ab5d09bf50851c91afbb766b6ff14dd1d356c
+PODFILE CHECKSUM: f36584ea53431da69cb076bed345d6e1d020625f
 
 COCOAPODS: 1.8.4

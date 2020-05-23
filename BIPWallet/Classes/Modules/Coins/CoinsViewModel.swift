@@ -10,6 +10,8 @@ import Foundation
 import RxSwift
 import MinterCore
 import MinterMy
+import Reachability
+import RxReachability
 
 class CoinsViewModel: BaseViewModel, ViewModel {
 
@@ -17,6 +19,7 @@ class CoinsViewModel: BaseViewModel, ViewModel {
 
   // MARK: -
 
+  private var reachability = Reachability()
   private var coins = BehaviorSubject<BalanceModel>(value: [:])
   private var sections = PublishSubject<[BaseTableSectionItem]>()
   private var viewDidLoad = PublishSubject<Void>()
@@ -61,11 +64,12 @@ class CoinsViewModel: BaseViewModel, ViewModel {
     )
 
     bind()
+
+    try? reachability?.startNotifier()
   }
 
   func bind() {
-    dependency.balanceService
-      .balances()
+    dependency.balanceService.balances()
       .do(onError: { [weak self] (error) in
         self?.isLoading = false
         let coins = (try? self?.coins.value()) ?? [:]
@@ -97,6 +101,13 @@ class CoinsViewModel: BaseViewModel, ViewModel {
     didTapExchangeButton.subscribe(onNext: { [weak self] (_) in
       self?.impact.onNext(.light)
       self?.sound.onNext(.click)
+    }).disposed(by: disposeBag)
+
+    reachability?.rx.isConnected.subscribe(onNext: { _ in
+      if ((try? self.coins.value())?.keys.count ?? 0) == 0 {
+        self.dependency.balanceService.updateBalance()
+        self.dependency.balanceService.updateDelegated()
+      }
     }).disposed(by: disposeBag)
 
   }

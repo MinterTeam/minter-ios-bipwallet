@@ -59,26 +59,26 @@ class ExplorerRecipientInfoService: RecipientInfoService {
       .flatMap({ (_) -> Observable<Event<[ContactItem]>> in
         return contactsService.contacts().materialize()
       })
-    .do(onNext: { (event) in
-      switch event {
-      case .next(let items):
-        items.forEach { (item) in
-          if let address = item.address {
-            self.infoTitleItems[address.stripMinterHexPrefix()] = item.name ?? address
+      .do(onNext: { (event) in
+        switch event {
+        case .next(let items):
+          items.forEach { (item) in
+            if let address = item.address {
+              self.infoTitleItems[address.stripMinterHexPrefix()] = item.name ?? address
+            }
           }
+        default:
+          return
         }
-      default:
-        return
-      }
-    })
-    .map { _ in}
-    .subscribe(didChangeInfoSubject).disposed(by: disposeBag)
+      })
+      .map { _ in}
+      .subscribe(didChangeInfoSubject).disposed(by: disposeBag)
 
     Observable.combineLatest(loadValidators(), contactsService.contacts()).do(onNext: { (items) in
       items.0.forEach { (item) in
         if let publicKey = item.publicKey?.stringValue {
           if let name = item.name {
-            self.infoTitleItems[publicKey.stripMinterHexPrefix()] = item.name
+            self.infoTitleItems[publicKey.stripMinterHexPrefix()] = name
           }
           if let iconURL = item.iconURL {
             self.infoAvatarItems[publicKey.stripMinterHexPrefix()] = iconURL

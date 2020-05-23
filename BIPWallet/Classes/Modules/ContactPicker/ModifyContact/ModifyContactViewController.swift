@@ -61,6 +61,10 @@ class ModifyContactViewController: BaseViewController, Controller, StoryboardIni
     self.viewModel.output.switchKeybordToTitle.subscribe(onNext: { [weak self] (title) in
       self?.name.becomeFirstResponder()
     }).disposed(by: disposeBag)
+
+    self.viewModel.output.title.asDriver(onErrorJustReturn: "").drive(onNext: { [weak self] val in
+      self?.mainView.title = val
+    }).disposed(by: disposeBag)
   }
 
   // MARK: - ViewController
@@ -81,9 +85,7 @@ class ModifyContactViewController: BaseViewController, Controller, StoryboardIni
   override func viewDidLoad() {
     super.viewDidLoad()
 
-    NotificationCenter
-      .default
-      .rx
+    NotificationCenter.default.rx
       .notification(ViewController.keyboardWillShowNotification)
       .subscribe(onNext: { [weak self] (not) in
         guard let `self` = self else { return }
@@ -91,8 +93,10 @@ class ModifyContactViewController: BaseViewController, Controller, StoryboardIni
         let keyboardFrame = keyboardSize.cgRectValue
         let keyboardHeight = keyboardFrame.height
         `self`.bottomConstraint?.constant = `self`.view.bounds.height - (`self`.view.bounds.height - keyboardHeight) + 8.0
-        UIView.animate(withDuration: 0.5) {
-          `self`.view.layoutIfNeeded()
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) { [weak self] in
+          UIView.animate(withDuration: 0.5, delay: 0.0, options: [.allowUserInteraction], animations: {
+            self?.view.layoutIfNeeded()
+          })
         }
       }).disposed(by: disposeBag)
 

@@ -92,11 +92,13 @@ class SpendCoinsViewModel: ConvertCoinsViewModel, ViewModel {
 
   private func bind() {
 
-    spendAmount.distinctUntilChanged().debounce(.seconds(1), scheduler: MainScheduler.instance).map { (val) -> String? in
-      return AmountHelper.transformValue(value: val)
-    }.subscribe(onNext: { val in
-      self.spendAmount.accept(val)
-    }).disposed(by: disposeBag)
+    spendAmount.distinctUntilChanged()
+      .debounce(.seconds(1), scheduler: MainScheduler.instance)
+      .map { (val) -> String? in
+        return AmountHelper.transformValue(value: val)
+      }.subscribe(onNext: { [weak self] val in
+        self?.spendAmount.accept(val)
+      }).disposed(by: disposeBag)
 
     spendCoinField.throttle(.seconds(1), scheduler: MainScheduler.instance)
       .distinctUntilChanged().map({ (val) -> SpendCoinPickerItem? in
@@ -169,10 +171,9 @@ class SpendCoinsViewModel: ConvertCoinsViewModel, ViewModel {
         guard let spendCoin = val.0, let selectedBalance = val.1.balances[spendCoin]?.0 else { return }
 
         guard let _self = self else { return } //swiftlint:disable:this identifier_name
-        let selectedAmount = CurrencyNumberFormatter.formattedDecimal(with: selectedBalance,
-                                                                      formatter: _self.decimalFormatter)
+        let selectedAmount = CurrencyNumberFormatter.decimalFormatter.formattedDecimal(with: selectedBalance, maxPlaces: 18)
         self?.spendAmount.accept(selectedAmount)
-    }).disposed(by: disposeBag)
+      }).disposed(by: disposeBag)
   }
 
   // MARK: -
@@ -256,25 +257,25 @@ class SpendCoinsViewModel: ConvertCoinsViewModel, ViewModel {
         if self?.hasCoin.value == true {
           self?.approximately.onNext("Estimate can't be calculated at the moment".localized())
         }
-    }).subscribe(onNext: { [weak self] (res) in
-      guard let _self = self else { return } //swiftlint:disable:this identifier_name
+      }).subscribe(onNext: { [weak self] (res) in
+        guard let _self = self else { return } //swiftlint:disable:this identifier_name
 
-      let ammnt = res.0
-      let val = ammnt.PIPToDecimal()
+        let ammnt = res.0
+        let val = ammnt.PIPToDecimal()
 
-      let appr = (CurrencyNumberFormatter.formattedDecimal(with: val > 0 ? val : 0,
-                                                           formatter: _self.formatter)) + " " + getCoin
-      self?.approximately.onNext(appr)
+        let appr = (CurrencyNumberFormatter.formattedDecimal(with: val > 0 ? val : 0,
+                                                             formatter: _self.formatter)) + " " + getCoin
+        self?.approximately.onNext(appr)
 
-      var approximatelyRoundedVal = (ammnt * 0.9)
-      approximatelyRoundedVal.round(.up)
-      self?.minimumValueToBuy.value = approximatelyRoundedVal
+        var approximatelyRoundedVal = (ammnt * 0.9)
+        approximatelyRoundedVal.round(.up)
+        self?.minimumValueToBuy.value = approximatelyRoundedVal
 
-      let gtCoin = try? self?.getCoin.value() ?? ""
-      if getCoin.transformToCoinName() == gtCoin?.transformToCoinName() {
-        self?.approximatelyReady.value = true
-      }
-    }).disposed(by: disposeBag)
+        let gtCoin = try? self?.getCoin.value() ?? ""
+        if getCoin.transformToCoinName() == gtCoin?.transformToCoinName() {
+          self?.approximatelyReady.value = true
+        }
+      }).disposed(by: disposeBag)
   }
 
   override func validateErrors() {
@@ -316,14 +317,17 @@ class SpendCoinsViewModel: ConvertCoinsViewModel, ViewModel {
                                   amount: amount,
                                   selectedAddress: selectedAddress,
                                   minimumBuyValue: minimumBuyValue)
-    }.delay(.seconds(3), scheduler: MainScheduler.instance).flatMap({ [weak self] (hash) -> Observable<MinterExplorer.Transaction?> in
+    }
+    .delay(.seconds(3), scheduler: MainScheduler.instance)
+    .flatMap({ [weak self] (hash) -> Observable<MinterExplorer.Transaction?> in
       guard let `self` = self, let hash = hash else { return Observable.error(SpendCoindsViewModelError.incorrectParams) }
-      return self.dependency.transactionService.transaction(hash: hash).do(onError: { [weak self] (error) in
-        //If error in getting transaction - show convert succeeed without estimates
-        self?.exchangeSucceeded.onNext((message: "Coins have been exchanged".localized(), transactionHash: hash))
-        self?.shouldClearForm.value = true
-        self?.dependency.balanceService.updateBalance()
-      })
+      return self.dependency.transactionService.transaction(hash: hash)
+        .do(onError: { [weak self] (error) in
+          //If error in getting transaction - show convert succeeed without estimates
+          self?.exchangeSucceeded.onNext((message: "Coins have been exchanged".localized(), transactionHash: hash))
+          self?.shouldClearForm.value = true
+          self?.dependency.balanceService.updateBalance()
+        })
     })
     .subscribe(onNext: { [weak self] (transaction) in
       guard let `self` = self else { return }
@@ -401,9 +405,15 @@ class SpendCoinsViewModel: ConvertCoinsViewModel, ViewModel {
       //Getting comparable value, since we are comparing not exact numbers, but it's shortened representations
 //      let maxComparableBalanceString = _self.decimalsNoMantissaFormatter.string(from: maxComparableSelectedBalance as NSNumber) ?? ""
 //      let isMax = (convertVal > 0 && convertVal == (BigUInt(maxComparableBalanceString) ?? BigUInt(0)))
-      
+
       let isMax = CurrencyNumberFormatter.formattedDecimal(with: _self.selectedBalance,
-                                                                    formatter: _self.decimalFormatter) == amount
+                                                           formatter: _self.decimalFormatter, maxPlaces: 18) == amount
+
+      var realAmount = convertVal
+      //If is max value - get real value
+      if isMax {
+         realAmount = BigUInt(decimal: _self.selectedBalance, fromPIP: true) ?? convertVal
+      }
 
       DispatchQueue.global(qos: .userInitiated).async {
         guard let pk = _self.accountManager.privateKey(for: selectedAddress.stripMinterHexPrefix()) else {
@@ -436,7 +446,7 @@ class SpendCoinsViewModel: ConvertCoinsViewModel, ViewModel {
                                         gasCoin: coin,
                                         coinFrom: coinFrom,
                                         coinTo: coinTo,
-                                        value: convertVal,
+                                        value: realAmount,
                                         minimumValueToBuy: minValBuy)
           }
           let signedTx = RawTransactionSigner.sign(rawTx: tx, privateKey: pk.raw.toHexString())

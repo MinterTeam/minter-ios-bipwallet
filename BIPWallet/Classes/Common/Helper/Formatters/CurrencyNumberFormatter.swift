@@ -9,18 +9,16 @@
 import Foundation
 
 class CurrencyNumberFormatter: NumberFormatter {
-  
-  static let maxPlaces = 8
 
-	func formattedDecimal(with number: Decimal) -> String {
-		return CurrencyNumberFormatter.formattedDecimal(with: number, formatter: self)
+  func formattedDecimal(with number: Decimal, maxPlaces: Int = 8) -> String {
+		return CurrencyNumberFormatter.formattedDecimal(with: number, formatter: self, maxPlaces: maxPlaces)
 	}
 
-	class func formattedDecimal(with number: Decimal, formatter: NumberFormatter) -> String {
+  class func formattedDecimal(with number: Decimal, formatter: NumberFormatter, maxPlaces: Int = 8) -> String {
 		let newNF = formatter.copy() as! NumberFormatter // swiftlint:disable:this force_cast
-    var amount = number * pow(10.0, Self.maxPlaces)
+    var amount = number * pow(10.0, maxPlaces)
     amount.round(.down)
-    amount = amount / pow(10.0, Self.maxPlaces)
+    amount = amount / pow(10.0, maxPlaces)
 		for _ in 0...18 {
 
 			defer {
@@ -34,7 +32,7 @@ class CurrencyNumberFormatter: NumberFormatter {
 			let lh = CurrencyNumberFormatter.decimal(from: str) ?? 0
 			if abs(lh) < 1 {
 				let count = number.significantFractionalDecimalDigits
-        newNF.minimumFractionDigits = max(4, min(self.maxPlaces, count))
+        newNF.minimumFractionDigits = max(4, min(maxPlaces, count))
 				newNF.roundingMode = .up
 				let l0Str = newNF.string(from: number as NSNumber) ?? ""
 

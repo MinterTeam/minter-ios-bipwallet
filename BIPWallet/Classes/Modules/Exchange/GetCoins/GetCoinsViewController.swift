@@ -18,14 +18,7 @@ class GetCoinsViewController: ConvertCoinsViewController/*, Controller*/, Storyb
   @IBOutlet weak var scrollView: UIScrollView!
   @IBOutlet weak var getAmountTextField: UITextField!
   @IBAction func useMaxButtonDidTap(_ sender: Any) {}
-  @IBAction func didTapExchangeButton(_ sender: Any) {
-//    SoundHelper.playSoundIfAllowed(type: .bip)
-//    hardImpactFeedbackGenerator.prepare()
-//    hardImpactFeedbackGenerator.impactOccurred()
-//    AnalyticsHelper.defaultAnalytics.track(event: .convertGetExchangeButton, params: nil)
-//    //TODO: Move to input
-//    vm.exchange()
-  }
+  @IBAction func didTapExchangeButton(_ sender: Any) {}
   @IBOutlet weak var getCoinActivityIndicator: UIActivityIndicatorView!
   @IBOutlet weak var getCoinErrorLabel: UILabel!
   @IBOutlet weak var amountErrorLabel: UILabel!
@@ -95,16 +88,6 @@ class GetCoinsViewController: ConvertCoinsViewController/*, Controller*/, Storyb
     rightView.addSubview(imageView)
     spendCoinTextField?.rightView = rightView
     spendCoinTextField?.rightViewMode = .always
-
-//    viewModel.isLoading.asObservable().subscribe(onNext: { [weak self] (val) in
-//      if val {
-//        self?.buttonActivityIndicator.startAnimating()
-//        self?.buttonActivityIndicator.isHidden = false
-//      } else {
-//        self?.buttonActivityIndicator.stopAnimating()
-//        self?.buttonActivityIndicator.isHidden = true
-//      }
-//    }).disposed(by: disposeBag)
 
     viewModel.errorNotification.asObservable().filter({ (notification) -> Bool in
       return nil != notification

@@ -168,24 +168,6 @@ class ConvertCoinsViewModel: BaseViewModel {
 
   var spendCoinPickerSource = [String: Decimal]()
 
-//	func coinNames(by term: String, completion: (([String]) -> Void)?) {
-////		let term = term.lowercased()
-////		let coins = Session.shared.allCoins.value.filter { (con) -> Bool in
-////			return (con.symbol ?? "").lowercased().starts(with: term)
-////		}.sorted(by: { (coin1, coin2) -> Bool in
-////			if term == (coin1.symbol ?? "").lowercased() {
-////				return true
-////			} else if (coin2.symbol ?? "").lowercased() == term {
-////				return false
-////			}
-////			return (coin1.reserveBalance ?? 0) > (coin2.reserveBalance ?? 0)
-////		}).map { (coin) -> String in
-////			return coin.symbol ?? ""
-////		}
-////		let resCoins = Array(coins[safe: 0..<3] ?? [])
-////		completion?(resCoins)
-//	}
-
 	// MARK: -
 
 	func validateErrors() {}

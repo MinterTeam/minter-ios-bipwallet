@@ -32,14 +32,16 @@ class ConvertSucceedPopupCoordinator: BaseCoordinator<Void> {
     controller.viewModel = viewModel
 
     rootViewController?.showPopup(viewController: controller, inPopupViewController: popupViewController, inTabbar: false)
-    
+
     viewModel.output.didTapAction.map({ [weak self] (_) -> URL? in
       guard let transactionHash = self?.transactionHash else { return nil }
       return self?.explorerURL(hash: transactionHash)//URL(string: MinterExplorerBaseURL! + "/transactions/" + (hash ?? ""))
-    }).subscribe(onNext: { [weak controller] (url) in
+    }).subscribe(onNext: { [weak controller, weak self] (url) in
       guard let url = url else { return }
       let safari = SFSafariViewController(url: url)
-      controller?.present(safari, animated: true) {}
+      controller?.dismiss(animated: true, completion: {
+        self?.rootViewController?.present(safari, animated: true) {}
+      })
     }).disposed(by: disposeBag)
 
     return controller.rx.deallocated.map {_ in}

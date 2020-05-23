@@ -25,6 +25,9 @@ protocol ViewModel {
 
   var impact: PublishSubject<ImpactType> { get set }
   var sound: PublishSubject<SoundType> { get set }
+  var showErrorMessage: PublishSubject<String> { get set }
+  var showSuccessMessage: PublishSubject<String> { get set }
+  var showNotifyMessage: PublishSubject<String> { get set }
 }
 
 class BaseViewModel {
@@ -33,5 +36,8 @@ class BaseViewModel {
 
   var impact = PublishSubject<ImpactType>()
   var sound = PublishSubject<SoundType>()
+  var showErrorMessage = PublishSubject<String>()
+  var showSuccessMessage = PublishSubject<String>()
+  var showNotifyMessage = PublishSubject<String>()
 
 }

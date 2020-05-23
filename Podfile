@@ -20,6 +20,7 @@ def shared_pods
 	pod 'RxAppState'
   pod 'RxSwiftExt'
   pod 'RxRouting', :git => 'https://github.com/e-sites/RxRouting.git'
+  pod 'RxReachability'
   #DB/Storage
   pod 'RealmSwift', git: 'https://github.com/realm/realm-cocoa.git', branch: 'master', submodules: true
   pod 'GoldenKeystore', :git => 'https://github.com/sidorov-panda/GoldenKeystore'

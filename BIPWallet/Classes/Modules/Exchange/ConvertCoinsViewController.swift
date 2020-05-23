@@ -39,6 +39,7 @@ class ConvertCoinsViewController: BaseViewController {
 	}
 	@IBOutlet weak var getCoinTextField: UITextField!
   @IBOutlet weak var spendCoinTextField: UITextField!
+  @IBOutlet weak var multipleWalletsImage: UIImageView!
 
 	// MARK: -
 
@@ -46,6 +47,8 @@ class ConvertCoinsViewController: BaseViewController {
 
 	override func viewDidLoad() {
 		super.viewDidLoad()
+
+    viewModel.hasMultipleCoinsObserver.asDriver(onErrorJustReturn: false).map {!$0}.drive(multipleWalletsImage.rx.isHidden).disposed(by: disposeBag)
 
     viewModel.endEditing.asDriver(onErrorJustReturn: ()).drive(onNext: { [weak self] in
       self?.view.endEditing(true)

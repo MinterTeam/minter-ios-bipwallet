@@ -15,6 +15,7 @@ import RxBiBinding
 protocol TextViewTableViewCellDelegate: class {
 	func heightDidChange(cell: TextViewTableViewCell)
 	func heightWillChange(cell: TextViewTableViewCell)
+  func editingWillEnd(cell: TextViewTableViewCell)
 }
 
 class TextViewTableViewCellItem: BaseCellItem {
@@ -26,6 +27,7 @@ class TextViewTableViewCellItem: BaseCellItem {
 	var titleObservable: Observable<String?>?
 
 	var text = BehaviorRelay<String?>(value: nil)
+  var didEndEditing = PublishSubject<Void>()
 }
 
 class TextViewTableViewCell: BaseCell, AutoGrowingTextViewDelegate {
@@ -83,8 +85,7 @@ class TextViewTableViewCell: BaseCell, AutoGrowingTextViewDelegate {
 				self.textView?.keyboardType = keyboard
 			}
 
-			item
-				.isLoadingObservable?
+			item.isLoadingObservable?
 				.subscribe(onNext: { [weak self] (val) in
 					if val {
 						self?.activityIndicator?.startAnimating()
@@ -93,8 +94,7 @@ class TextViewTableViewCell: BaseCell, AutoGrowingTextViewDelegate {
 					}
 				}).disposed(by: disposeBag)
 
-			item
-				.stateObservable?
+			item.stateObservable?
 				.subscribe(onNext: { [weak self] (stt) in
 					switch stt {
 					case .default:
@@ -121,6 +121,8 @@ class TextViewTableViewCell: BaseCell, AutoGrowingTextViewDelegate {
 //				}).disposed(by: disposeBag)
 
 			if let textView = textView {
+//        textView.rx.didEndEditing.asDriver().drive(item.didEndEditing).disposed(by: disposeBag)
+
 				item.titleObservable?.asDriver(onErrorJustReturn: "")
 					.drive(textView.rx.text).disposed(by: disposeBag)
 			}
@@ -130,6 +132,11 @@ class TextViewTableViewCell: BaseCell, AutoGrowingTextViewDelegate {
 	func textViewDidChangeHeight(_ textView: AutoGrowingTextView, height: CGFloat) {
 		delegate?.heightDidChange(cell: self)
 	}
+  
+  func textViewShouldEndEditing(_ textView: UITextView) -> Bool {
+    delegate?.editingWillEnd(cell: self)
+    return true
+  }
 
 	// MARK: - Validate
 

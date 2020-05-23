@@ -31,4 +31,10 @@ class BannerHelper {
     banner.show()
   }
 
+  class func performNotifyNotification(title: String, subtitle: String? = nil) {
+    let banner = NotificationBanner(title: title, subtitle: subtitle, style: .info)
+    banner.duration = 0.3
+    banner.show()
+  }
+
 }

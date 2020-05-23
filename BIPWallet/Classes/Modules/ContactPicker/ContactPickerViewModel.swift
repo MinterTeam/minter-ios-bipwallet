@@ -182,27 +182,29 @@ class ContactPickerViewModel: BaseViewModel, ViewModel {
       self?.sound.onNext(.click)
     }).subscribe(editContact).disposed(by: disposeBag)
 
-    Observable.zip(sections, didAddContact).map({ [weak self] (val) -> IndexPath? in
-      let sections = val.0
-      guard let `self` = self, let contact = val.1 else { return nil }
+    Observable.zip(sections.skip(1), didAddContact)
+      .delay(.milliseconds(10), scheduler: MainScheduler.instance)
+      .map({ [weak self] (val) -> IndexPath? in
+        let sections = val.0
+        guard let `self` = self, let contact = val.1 else { return nil }
 
-      var section: Int?
-      var row: Int?
-      for i in 0..<sections.count {
-       row = sections[safe: i]?.items.firstIndex(where: { (item) -> Bool in
-         return item.identifier == self.cellIdentifierFor(item: contact)
-       })
-       if row != nil {
-         section = i
-         break
+        var section: Int?
+        var row: Int?
+        for i in 0..<sections.count {
+          row = sections[safe: i]?.items.firstIndex(where: { (item) -> Bool in
+            return (item.identifier.components(separatedBy: "|").first ?? "")
+              == self.cellIdentifierFor(item: contact).components(separatedBy: "|").first ?? ""
+         })
+         if row != nil {
+           section = i
+           break
+          }
         }
-      }
-      if let section = section, let row = row {
-       return IndexPath(row: row, section: section)
-      }
-      return nil
-    }).delay(.milliseconds(10), scheduler: MainScheduler.instance)
-    .subscribe(scrollToCell).disposed(by: disposeBag)
+        if let section = section, let row = row {
+         return IndexPath(row: row, section: section)
+        }
+        return nil
+      }).subscribe(scrollToCell).disposed(by: disposeBag)
   }
 
   func createSections() {
@@ -242,17 +244,16 @@ class ContactPickerViewModel: BaseViewModel, ViewModel {
   }
 
   func loadData() {
-    self.dependency
-      .contactsService
-      .contacts()
+    dependency.contactsService.contacts()
       .subscribe(onNext: { [weak self] (items) in
         self?.contacts = items
         self?.prepreDatasource(with: items)
-    }).disposed(by: disposeBag)
+      }).disposed(by: disposeBag)
   }
 
   private func cellIdentifierFor(item: ContactItem) -> String {
-    return "ContactEntryTableViewCell_\(item.address ?? String.random())"
+    //we need a unique identifier so cell will be reloaded
+    return "ContactEntryTableViewCell_\(item.address ?? String.random())" + "|" + (item.name ?? String.random())
   }
 
 }

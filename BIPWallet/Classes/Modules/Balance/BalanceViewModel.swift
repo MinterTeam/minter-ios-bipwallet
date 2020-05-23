@@ -9,6 +9,8 @@
 import Foundation
 import RxSwift
 import MinterCore
+import RxReachability
+import Reachability
 
 class BalanceViewModel: BaseViewModel, ViewModel, WalletSelectableViewModel {
 
@@ -24,6 +26,7 @@ class BalanceViewModel: BaseViewModel, ViewModel, WalletSelectableViewModel {
 
   // MARK: -
 
+  private var reachability = Reachability()
   private let needsToUpdateBalance = PublishSubject<Void>()
   private let availableBalance = PublishSubject<NSAttributedString>()
   private let delegatedBalance = PublishSubject<String>()
@@ -91,6 +94,8 @@ class BalanceViewModel: BaseViewModel, ViewModel, WalletSelectableViewModel {
     )
 
     bind()
+
+    try? reachability?.startNotifier()
   }
 
   // MARK: -
@@ -139,6 +144,12 @@ class BalanceViewModel: BaseViewModel, ViewModel, WalletSelectableViewModel {
       let text = self?.balanceHeaderText(balanceType: newBalance, balances: val.0)
       self?.availableBalance.onNext(text?.1 ?? NSAttributedString())
     }).subscribe().disposed(by: disposeBag)
+
+    reachability?.rx.isDisconnected.map({ _ -> String in
+      return "Network is not reachable".localized()
+    })
+    .subscribe(self.showErrorMessage)
+    .disposed(by: disposeBag)
   }
 
   func balanceHeaderText(balanceType: BalanceType, balances: BalanceService.BalancesResponse) -> BalanceHeaderItem {

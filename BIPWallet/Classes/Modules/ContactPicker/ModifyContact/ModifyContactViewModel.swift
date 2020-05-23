@@ -48,6 +48,7 @@ class ModifyContactViewModel: BaseViewModel, ViewModel {
     var showSuccess: Observable<String?>
     var switchKeybordToTitle: Observable<Void>
     var didAddContactWithAddress: Observable<ContactItem?>
+    var title: Observable<String>
   }
 
   struct Dependency {
@@ -57,7 +58,9 @@ class ModifyContactViewModel: BaseViewModel, ViewModel {
   init(contactItem: ContactItem? = nil, dependency: Dependency) {
 
     self.contactItem = contactItem
-    self.input = Input(didTapGoButton: didTapGoButton.asObserver())
+
+    self.input = Input(didTapGoButton: didTapGoButton.asObserver()
+    )
 
     self.output = Output(address: address,
                          name: name,
@@ -65,7 +68,8 @@ class ModifyContactViewModel: BaseViewModel, ViewModel {
                          shakeError: shakeError.asObservable(),
                          showSuccess: showSuccess.asObservable(),
                          switchKeybordToTitle: switchKeybordToTitle.asObservable(),
-                         didAddContactWithAddress: didAddContactWithAddress.asObservable()
+                         didAddContactWithAddress: didAddContactWithAddress.asObservable(),
+                         title: Observable.just(contactItem != nil ? "Edit Address".localized() : "Add Address".localized())
     )
 
     self.dependency = dependency
@@ -86,13 +90,13 @@ class ModifyContactViewModel: BaseViewModel, ViewModel {
       self?.saveForm()
     }).disposed(by: disposeBag)
 
-    address
-      .observeOn(MainScheduler.asyncInstance)
+    address.observeOn(MainScheduler.asyncInstance)
       .filter({ (value) -> Bool in
         return value?.hasSuffix("\n") ?? false
-      }).do(onNext: { (value) in
-        self.address.accept((value ?? "").replacingOccurrences(of: "\n", with: ""))
-      }).map { _ in Void() }.subscribe(switchKeybordToTitle)
+      }).do(onNext: { [weak self] (value) in
+        self?.address.accept((value ?? "").replacingOccurrences(of: "\n", with: ""))
+      }).map { _ in Void() }
+      .subscribe(switchKeybordToTitle)
       .disposed(by: disposeBag)
 
     if let contactItem = self.contactItem {
@@ -103,10 +107,20 @@ class ModifyContactViewModel: BaseViewModel, ViewModel {
 
   func saveForm() {
     Observable<Void>.of(Void()).withLatestFrom(form())
+      .do(onNext: { [weak self] (val) in
+        guard !((val.0 ?? "") == (self?.contactItem?.name ?? "") && val.1 == self?.contactItem?.address) else {
+          self?.showSuccess.onNext(self?.contactItem?.name)
+          self?.didAddContactWithAddress.onNext(self?.contactItem)
+          return
+        }
+      })
+      //Won't go next if the same contact
+      .filter({ [weak self] (val) -> Bool in
+        return !((val.0 ?? "") == (self?.contactItem?.name ?? "") && val.1 == self?.contactItem?.address)
+      })
     .flatMap {
       return self.validForm(name: self.normalizeName(name: $0.0 ?? ""), address: $0.1 ?? "")
-    }
-    .do(onError: { [weak self] (error) in
+    }.do(onError: { [weak self] (error) in
       self?.shakeError.onNext(())
       self?.impact.onNext(.hard)
       var errorTitle = "An Error occured".localized()

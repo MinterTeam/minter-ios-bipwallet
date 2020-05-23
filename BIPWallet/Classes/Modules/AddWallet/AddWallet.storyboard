@@ -90,7 +90,7 @@
                                             </userDefinedRuntimeAttribute>
                                         </userDefinedRuntimeAttributes>
                                     </label>
-                                    <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Up to 18 latin letters and numbers..." textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="AhH-H1-eVQ" customClass="DefaultTextField" customModule="BIPWallet" customModuleProvider="target">
+                                    <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Up to 18 symbols..." textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="AhH-H1-eVQ" customClass="DefaultTextField" customModule="BIPWallet" customModuleProvider="target">
                                         <rect key="frame" x="16" y="258" width="366" height="48"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="48" id="ESj-kK-jbs"/>
@@ -289,7 +289,7 @@
                                 </userDefinedRuntimeAttribute>
                             </userDefinedRuntimeAttributes>
                         </view>
-                        <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Up to 18 latin letters and numbers..." textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="vUe-q0-t0e" customClass="DefaultTextField" customModule="BIPWallet" customModuleProvider="target">
+                        <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Up to 18 symbols..." textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="vUe-q0-t0e" customClass="DefaultTextField" customModule="BIPWallet" customModuleProvider="target">
                             <rect key="frame" x="16" y="237.5" width="366" height="48"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="48" id="C1U-0g-vFZ"/>

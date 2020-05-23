@@ -49,6 +49,9 @@ class ContactRemoveConfirmationViewController: BaseViewController, Controller, S
     }
 
     cancel.rx.tap.asDriver().drive(onNext: { [weak self] (_) in
+      UIView.animate(withDuration: 0.5) {
+        self?.updateBlurView(percentage: 0.0)
+      }
       self?.dismiss(animated: true)
     }).disposed(by: disposeBag)
 

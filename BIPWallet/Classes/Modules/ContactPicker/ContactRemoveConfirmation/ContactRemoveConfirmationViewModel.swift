@@ -12,6 +12,7 @@ import RxSwift
 class ContactRemoveConfirmationViewModel: BaseViewModel, ViewModel {
 
   // MARK: -
+
   let contact: ContactItem
 
   private let didConfirm = PublishSubject<Void>()
@@ -31,9 +32,7 @@ class ContactRemoveConfirmationViewModel: BaseViewModel, ViewModel {
     var text: Observable<NSAttributedString?>
   }
 
-  struct Dependency {
-
-  }
+  struct Dependency {}
 
   init(contact: ContactItem, dependency: Dependency) {
     self.contact = contact
@@ -54,22 +53,21 @@ class ContactRemoveConfirmationViewModel: BaseViewModel, ViewModel {
 
   // MARK: -
 
-  func bind() {
-    
-  }
+  func bind() {}
 
   func text() -> NSAttributedString {
     let string = NSMutableAttributedString()
-    string.append(NSAttributedString(string: "Are you sure, you want to remove ".localized(),
-                                     attributes: [.foregroundColor: UIColor.mainBlackColor(),
-                                                  .font: UIFont.defaultFont(of: 14.0)]))
-    string.append(NSAttributedString(string: contact.address ?? "",
-                                     attributes: [.foregroundColor: UIColor.mainBlackColor(),
-                                                  .font: UIFont.boldFont(of: 14.0)]))
-    string.append(NSAttributedString(string: " from this application?".localized(),
+    string.append(NSAttributedString(string: "Are you sure, you want to remove address ".localized(),
                                      attributes: [.foregroundColor: UIColor.mainBlackColor(),
                                                   .font: UIFont.defaultFont(of: 14.0)]))
 
+    string.append(NSAttributedString(string: TransactionTitleHelper.title(from: contact.address ?? ""),
+                                     attributes: [.foregroundColor: UIColor.mainBlackColor(),
+                                                  .font: UIFont.boldFont(of: 14.0)]))
+
+    string.append(NSAttributedString(string: "?".localized(),
+                                     attributes: [.foregroundColor: UIColor.mainBlackColor(),
+                                                  .font: UIFont.defaultFont(of: 14.0)]))
     return string
   }
 

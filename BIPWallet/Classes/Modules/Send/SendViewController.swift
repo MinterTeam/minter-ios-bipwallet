@@ -191,6 +191,13 @@ extension SendViewController {
         }
       }).disposed(by: disposeBag)
 
+    Observable.of(
+      NotificationCenter.default.rx.notification(ViewController.keyboardWillHideNotification).map{_ in},
+      viewModel.output.usernameDidEndEditing).merge()
+      .subscribe(onNext: { [weak self] (not) in
+        self?.fakeTextField.sendActions(for: .editingDidEnd)
+      }).disposed(by: disposeBag)
+
     viewModel.output.errorNotification
       .asDriver(onErrorJustReturn: nil)
       .filter({ (notification) -> Bool in
@@ -413,6 +420,12 @@ extension SendViewController {
 
   // MARK: -
 
+  func editingWillEnd(cell: TextViewTableViewCell) {
+    if let cell = cell as? UsernameTableViewCell {
+      self.fakeTextField.sendActions(for: .editingDidEnd)
+    }
+  }
+
   func heightDidChange(cell: TextViewTableViewCell) {
     // Disabling animations gives us our desired behaviour
     UIView.setAnimationsEnabled(false)
@@ -447,7 +460,7 @@ extension SendViewController {
     cell?.textView.becomeFirstResponder()
     readerVC.completionBlock = { (result: QRCodeReaderResult?) in
       if let indexPath = self.tableView.indexPath(for: cell!),
-        let item = self.viewModel.cellItem(section: indexPath.section, row: indexPath.row) {
+        nil != self.viewModel.cellItem(section: indexPath.section, row: indexPath.row) {
         cell?.textView.text = result?.value
       }
     }

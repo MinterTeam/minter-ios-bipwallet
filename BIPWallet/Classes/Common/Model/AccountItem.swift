@@ -36,7 +36,7 @@ class AccountItem {
   
   static func emoji(for balance: Decimal) -> String {
     if balance < 1000 {
-      return "🎐"
+      return "🦐"
     } else if balance < 10000 {
       return "🐚"
     } else if balance < 100000 {

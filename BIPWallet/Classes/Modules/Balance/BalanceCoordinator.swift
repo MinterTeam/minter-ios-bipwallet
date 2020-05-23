@@ -261,8 +261,9 @@ extension BalanceCoordinator {
         return self.showEditTitle(inViewController: controller, account: account)
       }).subscribe(onNext: { [weak self] (result) in
         switch result {
-        case .changedTitle(let account):
-          try? self?.balanceService.changeAddress(account.address)
+        case .changedTitle(_):
+          return
+//          try? self?.balanceService.changeAddress(account.address)
         case .cancel:
           return
         case .removed:
