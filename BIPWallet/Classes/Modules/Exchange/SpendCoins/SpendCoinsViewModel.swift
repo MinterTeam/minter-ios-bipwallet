@@ -241,7 +241,10 @@ class SpendCoinsViewModel: ConvertCoinsViewModel, ViewModel {
                                         coinTo: getCoin.transformToCoinName(),
                                         value: value,
                                         isAll: isMax)
-      .do(onError: { [weak self] (error) in
+      .do(onNext: { [weak self] (_) in
+        self?.isApproximatelyLoading.onNext(false)
+      }, onError: { [weak self] (error) in
+        self?.isApproximatelyLoading.onNext(false)
         if
           let err = error as? HTTPClientError,
           let log = err.userData?["message"] as? String {
@@ -257,6 +260,8 @@ class SpendCoinsViewModel: ConvertCoinsViewModel, ViewModel {
         if self?.hasCoin.value == true {
           self?.approximately.onNext("Estimate can't be calculated at the moment".localized())
         }
+      }, onSubscribe: { [weak self] in
+        self?.isApproximatelyLoading.onNext(true)
       }).subscribe(onNext: { [weak self] (res) in
         guard let _self = self else { return } //swiftlint:disable:this identifier_name
 

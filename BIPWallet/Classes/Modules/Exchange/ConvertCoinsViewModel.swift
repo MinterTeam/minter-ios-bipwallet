@@ -35,6 +35,7 @@ class ConvertCoinsViewModel: BaseViewModel {
 	var shouldClearForm = Variable(false)
 	var amountError = Variable<String?>(nil)
 	var getCoinError = PublishSubject<String?>()
+  lazy var isApproximatelyLoading = PublishSubject<Bool>()
 	lazy var isLoading = BehaviorSubject<Bool>(value: false)
 	lazy var errorNotification = PublishSubject<String?>()
 	lazy var successMessage = PublishSubject<String?>()

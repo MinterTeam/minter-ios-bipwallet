@@ -28,7 +28,6 @@ class ConvertCoinsViewController: BaseViewController {
       approximately.font = UIFont.semiBoldFont(of: 18.0)
     }
   }
-	@IBOutlet weak var buttonActivityIndicator: UIActivityIndicatorView!
 	@IBOutlet weak var getActivityIndicator: UIActivityIndicatorView!
 	@IBOutlet weak var exchangeButton: DefaultButton!
 	@IBOutlet weak var autocompleteViewWrapper: UIView!
@@ -40,6 +39,7 @@ class ConvertCoinsViewController: BaseViewController {
 	@IBOutlet weak var getCoinTextField: UITextField!
   @IBOutlet weak var spendCoinTextField: UITextField!
   @IBOutlet weak var multipleWalletsImage: UIImageView!
+  @IBOutlet weak var loadingView: PopupLoadingView!
 
 	// MARK: -
 
@@ -64,6 +64,22 @@ class ConvertCoinsViewController: BaseViewController {
       .map { $0?.uppercased() }
       .subscribe(getCoinTextField.rx.text)
       .disposed(by: disposeBag)
+
+    viewModel.isApproximatelyLoading
+      .distinctUntilChanged()
+      .debounce(.milliseconds(10), scheduler: MainScheduler.instance)
+      .subscribe(onNext: { val in
+        var delay = 0.0
+        if val {
+          self.loadingView.startAnimating()
+        } else {
+          delay = 1.0
+        }
+        UIView.animate(withDuration: 0.5, delay: delay, options: [.allowUserInteraction], animations: {
+          self.loadingView.alpha = val ? 1.0 : 0.0
+        }) { (comop) in
+        }
+      }).disposed(by: disposeBag)
 
 		autocompleteView.dataSource = viewModel
 		autocompleteView.delegate = viewModel

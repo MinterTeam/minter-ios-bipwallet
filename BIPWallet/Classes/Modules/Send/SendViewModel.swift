@@ -222,15 +222,23 @@ class SendViewModel: BaseViewModel, ViewModel, WalletSelectableViewModel {// swi
                          usernameDidEndEditing: usernameDidEndEditing.asObservable()
     )
 
-    amountSubject.asObservable().distinctUntilChanged()
-      .throttle(.seconds(1), scheduler: MainScheduler.instance)
-      .subscribe(onNext: { [weak self] (val) in
-        if (val ?? "").starts(with: ",") || (val ?? "").starts(with: ".") {
-          let newVal = (val ?? "").trimmingCharacters(in: CharacterSet(charactersIn: ".,"))
-          self?.amountSubject.accept("0." + newVal)
-        } else {
-          self?.amountSubject.accept(val)
-        }
+//    amountSubject.asObservable().distinctUntilChanged()
+//      .throttle(.seconds(1), scheduler: MainScheduler.instance)
+//      .subscribe(onNext: { [weak self] (val) in
+//        if (val ?? "").starts(with: ",") || (val ?? "").starts(with: ".") {
+//          let newVal = (val ?? "").trimmingCharacters(in: CharacterSet(charactersIn: ".,"))
+//          self?.amountSubject.accept("0." + newVal)
+//        } else {
+//          self?.amountSubject.accept(val)
+//        }
+//      }).disposed(by: disposeBag)
+
+    amountSubject.distinctUntilChanged()
+      .debounce(.seconds(1), scheduler: MainScheduler.instance)
+      .map { (val) -> String? in
+        return AmountHelper.transformValue(value: val)
+      }.subscribe(onNext: { val in
+        self.amountSubject.accept(val)
       }).disposed(by: disposeBag)
 
     payloadSubject.asObservable().subscribe(onNext: { (payld) in

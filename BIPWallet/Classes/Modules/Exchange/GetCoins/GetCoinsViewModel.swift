@@ -73,13 +73,11 @@ class GetCoinsViewModel: ConvertCoinsViewModel, ViewModel {
   // MARK: -
 
   private func bind() {
-    getAmount.distinctUntilChanged()
-      .debounce(.seconds(1), scheduler: MainScheduler.instance)
-      .map { (val) -> String? in
-        return AmountHelper.transformValue(value: val)
-      }.subscribe(onNext: { val in
-        self.getAmount.accept(val)
-      }).disposed(by: disposeBag)
+    getAmount.distinctUntilChanged().debounce(.seconds(1), scheduler: MainScheduler.instance).map { (val) -> String? in
+      return AmountHelper.transformValue(value: val)
+    }.subscribe(onNext: { val in
+      self.getAmount.accept(val)
+    }).disposed(by: disposeBag)
 
     dependency.balanceService.balances()
       .subscribe(onNext: { [weak self] (val) in
@@ -101,9 +99,12 @@ class GetCoinsViewModel: ConvertCoinsViewModel, ViewModel {
     Observable.combineLatest(getCoin.asObservable(),
                              getAmount.asObservable(),
                              spendCoin.asObservable())
-    .debounce(.seconds(1), scheduler: MainScheduler.instance)
+    .debounce(.milliseconds(500), scheduler: MainScheduler.instance)
     .filter({ (val) -> Bool in
       return CoinValidator.isValid(coin: val.2)
+    })
+    .distinctUntilChanged({ (val1, val2) -> Bool in
+      return (val1.0 ?? "") == (val2.0 ?? "") && (val1.1 ?? "") == (val2.1 ?? "") && (val1.2 ?? "") == (val2.2 ?? "")
     })
     .subscribe(onNext: { [weak self] (val) in
       self?.approximatelySum.onNext(nil)
@@ -149,7 +150,6 @@ class GetCoinsViewModel: ConvertCoinsViewModel, ViewModel {
   private var spendCoin = BehaviorRelay<String?>(value: nil)
   //TODO: Move to parent as amount
   private var getAmount = BehaviorRelay<String?>(value: nil)
-  var isApproximatelyLoading = PublishSubject<Bool>()
   var approximately = PublishSubject<String?>()
   var approximatelySum = BehaviorSubject<Decimal?>(value: nil)
   var approximatelyReady = PublishSubject<Bool>()

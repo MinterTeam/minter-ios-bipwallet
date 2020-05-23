@@ -54,6 +54,11 @@ extension UIColor {
     return UIColor(hex: 0xF7F5FF, alpha: alpha)!
   }
 
+  static func secondaryGrayColor(alpha: CGFloat = 1) -> UIColor {
+    return UIColor(hex: 0xF7F5FF, alpha: alpha)!
+  }
+  
+
   static func textFieldPlaceholderTextColor(alpha: CGFloat = 1) -> UIColor {
     return UIColor(hex: 0x8E8E8E, alpha: alpha)!
   }

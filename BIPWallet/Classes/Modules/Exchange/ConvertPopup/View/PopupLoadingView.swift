@@ -27,6 +27,9 @@ class PopupLoadingView: UIView {
     self.addSubview(activityIndicator)
     self.addSubview(label)
 
+    self.backgroundColor = .secondaryGrayColor()
+    self.layer.cornerRadius = 8.0
+
     label.text = "Please wait a few seconds…".localized()
     label.font = .mediumFont(of: 17.0)
     label.numberOfLines = 0
