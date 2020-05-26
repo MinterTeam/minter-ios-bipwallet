@@ -27,3 +27,13 @@ class UsernameGrowingTextView: GrowingTextView {
   }
 
 }
+
+class PayloadGrowingTextView: GrowingTextView {
+
+  required init?(coder aDecoder: NSCoder) {
+    super.init(coder: aDecoder)
+
+    self.textContainerInset = UIEdgeInsets(top: 14.0, left: 16.0, bottom: 14.0, right: 34.0)
+  }
+
+}

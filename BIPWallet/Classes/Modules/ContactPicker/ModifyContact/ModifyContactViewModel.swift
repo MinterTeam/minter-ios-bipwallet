@@ -172,9 +172,8 @@ class ModifyContactViewModel: BaseViewModel, ViewModel {
     return Observable<Void>.create { (observer) -> Disposable in
       let isValidName = self.isValidName(name: name)
       let isValidAddress = address.isValidAddress()
-      let isValidPublicKey = address.isValidPublicKey()
 
-      if isValidName && (isValidAddress || isValidPublicKey) {
+      if isValidName && isValidAddress {
         observer.onNext(())
       } else {
         if !isValidName {

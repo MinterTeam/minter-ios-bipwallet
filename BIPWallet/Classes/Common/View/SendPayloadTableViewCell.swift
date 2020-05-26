@@ -24,7 +24,8 @@ class SendPayloadTableViewCell: TextViewTableViewCell {
   @IBOutlet weak var addMessageButton: UIButton!
   @IBOutlet weak var payloadView: UIView!
   @IBOutlet weak var textViewHeightConstraint: NSLayoutConstraint!
-
+  @IBOutlet weak var cancelButton: UIButton!
+  
 	// MARK: -
 
 	var maxLength = 110
@@ -41,6 +42,19 @@ class SendPayloadTableViewCell: TextViewTableViewCell {
     payloadView.alpha = 0.0
     textView?.superview?.layer.cornerRadius = 8.0
 		setDefault()
+
+    cancelButton.rx.tap.subscribe(onNext: { [weak self] (_) in
+      self?.textView.resignFirstResponder()
+      self?.textViewHeightConstraint?.isActive = true
+      self?.textView.text = ""
+      UIView.animate(withDuration: 0.5) {
+        self?.addMessageButton.alpha = 1.0
+        self?.payloadView.alpha = 0.0
+
+        self?.setNeedsLayout()
+        self?.layoutIfNeeded()
+      }
+    }).disposed(by: disposeBag)
 	}
 
 	override func setSelected(_ selected: Bool, animated: Bool) {
@@ -76,6 +90,7 @@ class SendPayloadTableViewCell: TextViewTableViewCell {
 
     if let item = item as? SendPayloadTableViewCellItem {
       addMessageButton.rx.tap.subscribe(onNext: { [weak self] (_) in
+        self?.textView.becomeFirstResponder()
         self?.addMessageButton.alpha = 0.0
         self?.payloadView.alpha = 1.0
         self?.textViewHeightConstraint?.isActive = false
@@ -83,7 +98,8 @@ class SendPayloadTableViewCell: TextViewTableViewCell {
         self?.layoutIfNeeded()
       }).disposed(by: disposeBag)
 
-      addMessageButton.rx.tap.asDriver().drive(item.didTapAddMessage).disposed(by: disposeBag)
+      addMessageButton.rx.tap.asDriver()
+        .drive(item.didTapAddMessage).disposed(by: disposeBag)
     }
   }
 
