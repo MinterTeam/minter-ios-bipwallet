@@ -49,7 +49,11 @@ class LocalStorageContactsService: ContactsService {
     }
 
     return Observable<Void>.create { (observer) -> Disposable in
-      let res = self.storage.objects(class: ContactEntryDataBaseModel.self, query: "name contains[c] '\(name.lowercased())' or address='\(address)'") ?? []
+      let res = (self.storage.objects(class: ContactEntryDataBaseModel.self, query: nil) ?? [])
+      .filter { (model) -> Bool in
+        return (model as? ContactEntryDataBaseModel)?.name.lowercased() == name.lowercased() ||
+        (model as? ContactEntryDataBaseModel)?.address.lowercased() == address.lowercased()
+      }
       if !res.isEmpty {
         observer.onError(ContactsServiceError.dublicateContact)
       } else {

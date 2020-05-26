@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="16097" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16087"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <array key="Inter.otf">
+            <string>Inter_Medium</string>
+            <string>Inter_Semi-Bold</string>
+        </array>
+    </customFonts>
+    <scenes>
+        <!--Send Succeed Popup View Controller-->
+        <scene sceneID="njz-gL-7xX">
+            <objects>
+                <viewController storyboardIdentifier="SendSucceedPopupViewController" extendedLayoutIncludesOpaqueBars="YES" useStoryboardIdentifierAsRestorationIdentifier="YES" id="WZK-bn-hhW" customClass="SendSucceedPopupViewController" customModule="BIPWallet" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="Ryg-hF-K0A">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <visualEffectView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ayJ-bL-23K">
+                                <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                                <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="woM-FF-Y5t">
+                                    <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                    <subviews>
+                                        <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="X9B-Zw-sgQ" customClass="DroppableView" customModule="BIPWallet" customModuleProvider="target">
+                                            <rect key="frame" x="8" y="263.5" width="398" height="369"/>
+                                            <subviews>
+                                                <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="4PJ-F2-rGp">
+                                                    <rect key="frame" x="0.0" y="0.0" width="398" height="369"/>
+                                                    <subviews>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Coins are received by" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ebs-dK-QqQ">
+                                                            <rect key="frame" x="111" y="96" width="176" height="21"/>
+                                                            <fontDescription key="fontDescription" name="Inter_Medium" family="Inter" pointSize="17"/>
+                                                            <nil key="textColor"/>
+                                                            <nil key="highlightedColor"/>
+                                                        </label>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QdE-eX-wrO" customClass="SlashedZeroesLabel" customModule="BIPWallet" customModuleProvider="target">
+                                                            <rect key="frame" x="25" y="127" width="348" height="22"/>
+                                                            <fontDescription key="fontDescription" name="Inter_Semi-Bold" family="Inter" pointSize="18"/>
+                                                            <nil key="textColor"/>
+                                                            <nil key="highlightedColor"/>
+                                                        </label>
+                                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rfT-GQ-oif" customClass="DefaultButton" customModule="BIPWallet" customModuleProvider="target">
+                                                            <rect key="frame" x="16" y="171" width="366" height="50"/>
+                                                            <constraints>
+                                                                <constraint firstAttribute="height" constant="50" id="PyJ-cX-NPs"/>
+                                                            </constraints>
+                                                            <state key="normal" title="Save This Address"/>
+                                                            <userDefinedRuntimeAttributes>
+                                                                <userDefinedRuntimeAttribute type="string" keyPath="pattern" value="filled"/>
+                                                                <userDefinedRuntimeAttribute type="string" keyPath="color" value="green"/>
+                                                            </userDefinedRuntimeAttributes>
+                                                        </button>
+                                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="YC2-p1-Coe" customClass="DefaultButton" customModule="BIPWallet" customModuleProvider="target">
+                                                            <rect key="frame" x="16" y="303" width="366" height="50"/>
+                                                            <constraints>
+                                                                <constraint firstAttribute="height" constant="50" id="whs-li-qln"/>
+                                                            </constraints>
+                                                            <state key="normal" title="Close"/>
+                                                            <userDefinedRuntimeAttributes>
+                                                                <userDefinedRuntimeAttribute type="string" keyPath="pattern" value="blank_black"/>
+                                                            </userDefinedRuntimeAttributes>
+                                                        </button>
+                                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="GZX-g3-hAd" customClass="DefaultButton" customModule="BIPWallet" customModuleProvider="target">
+                                                            <rect key="frame" x="16" y="237" width="366" height="50"/>
+                                                            <constraints>
+                                                                <constraint firstAttribute="height" constant="50" id="8My-Xt-Gd9"/>
+                                                            </constraints>
+                                                            <state key="normal" title="View Transaction"/>
+                                                            <userDefinedRuntimeAttributes>
+                                                                <userDefinedRuntimeAttribute type="string" keyPath="pattern" value="purple"/>
+                                                            </userDefinedRuntimeAttributes>
+                                                        </button>
+                                                    </subviews>
+                                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                    <constraints>
+                                                        <constraint firstItem="YC2-p1-Coe" firstAttribute="leading" secondItem="rfT-GQ-oif" secondAttribute="leading" id="4tT-cI-faQ"/>
+                                                        <constraint firstItem="QdE-eX-wrO" firstAttribute="top" secondItem="Ebs-dK-QqQ" secondAttribute="bottom" constant="10" id="9Jz-8R-U8n"/>
+                                                        <constraint firstItem="YC2-p1-Coe" firstAttribute="trailing" secondItem="rfT-GQ-oif" secondAttribute="trailing" id="A0h-FX-chn"/>
+                                                        <constraint firstItem="GZX-g3-hAd" firstAttribute="top" secondItem="rfT-GQ-oif" secondAttribute="bottom" constant="16" id="SMP-Gg-O5m"/>
+                                                        <constraint firstItem="rfT-GQ-oif" firstAttribute="top" secondItem="QdE-eX-wrO" secondAttribute="bottom" constant="22" id="YFH-tW-kbL"/>
+                                                        <constraint firstAttribute="trailing" secondItem="QdE-eX-wrO" secondAttribute="trailing" constant="25" id="cDd-dV-RrU"/>
+                                                        <constraint firstAttribute="trailing" secondItem="rfT-GQ-oif" secondAttribute="trailing" constant="16" id="eAt-Vo-Smt"/>
+                                                        <constraint firstItem="rfT-GQ-oif" firstAttribute="leading" secondItem="4PJ-F2-rGp" secondAttribute="leading" constant="16" id="hfW-d7-UfD"/>
+                                                        <constraint firstItem="Ebs-dK-QqQ" firstAttribute="centerX" secondItem="4PJ-F2-rGp" secondAttribute="centerX" id="mod-tW-o1f"/>
+                                                        <constraint firstItem="GZX-g3-hAd" firstAttribute="trailing" secondItem="rfT-GQ-oif" secondAttribute="trailing" id="nNQ-d4-4XH"/>
+                                                        <constraint firstItem="QdE-eX-wrO" firstAttribute="leading" secondItem="4PJ-F2-rGp" secondAttribute="leading" constant="25" id="o6S-eM-q3O"/>
+                                                        <constraint firstItem="GZX-g3-hAd" firstAttribute="leading" secondItem="rfT-GQ-oif" secondAttribute="leading" id="sEI-6a-z0P"/>
+                                                        <constraint firstAttribute="bottom" secondItem="YC2-p1-Coe" secondAttribute="bottom" constant="16" id="tG9-Ac-EwM"/>
+                                                        <constraint firstItem="YC2-p1-Coe" firstAttribute="top" secondItem="GZX-g3-hAd" secondAttribute="bottom" constant="16" id="yeQ-N5-Cr4"/>
+                                                    </constraints>
+                                                    <userDefinedRuntimeAttributes>
+                                                        <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                                            <integer key="value" value="16"/>
+                                                        </userDefinedRuntimeAttribute>
+                                                    </userDefinedRuntimeAttributes>
+                                                </view>
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="popupHeaderImage" translatesAutoresizingMaskIntoConstraints="NO" id="dUN-c8-bAF">
+                                                    <rect key="frame" x="0.0" y="0.0" width="398" height="72"/>
+                                                </imageView>
+                                            </subviews>
+                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                            <constraints>
+                                                <constraint firstItem="dUN-c8-bAF" firstAttribute="top" secondItem="X9B-Zw-sgQ" secondAttribute="top" id="3mk-mp-CrX"/>
+                                                <constraint firstAttribute="trailing" secondItem="dUN-c8-bAF" secondAttribute="trailing" id="7Mg-aY-jUd"/>
+                                                <constraint firstItem="4PJ-F2-rGp" firstAttribute="top" secondItem="X9B-Zw-sgQ" secondAttribute="top" id="CRH-Fg-ifo"/>
+                                                <constraint firstAttribute="trailing" secondItem="4PJ-F2-rGp" secondAttribute="trailing" id="II2-1Z-OBq"/>
+                                                <constraint firstItem="Ebs-dK-QqQ" firstAttribute="top" secondItem="dUN-c8-bAF" secondAttribute="bottom" constant="24" id="NBu-H8-5zU"/>
+                                                <constraint firstItem="dUN-c8-bAF" firstAttribute="leading" secondItem="X9B-Zw-sgQ" secondAttribute="leading" id="NoQ-1j-zCB"/>
+                                                <constraint firstItem="4PJ-F2-rGp" firstAttribute="leading" secondItem="X9B-Zw-sgQ" secondAttribute="leading" id="Ofe-zf-lqz"/>
+                                                <constraint firstAttribute="bottom" secondItem="4PJ-F2-rGp" secondAttribute="bottom" id="ble-uM-eYk"/>
+                                            </constraints>
+                                            <userDefinedRuntimeAttributes>
+                                                <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                                    <integer key="value" value="13"/>
+                                                </userDefinedRuntimeAttribute>
+                                            </userDefinedRuntimeAttributes>
+                                        </view>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstItem="X9B-Zw-sgQ" firstAttribute="leading" secondItem="woM-FF-Y5t" secondAttribute="leading" constant="8" id="2GY-wV-Xsg"/>
+                                        <constraint firstItem="X9B-Zw-sgQ" firstAttribute="centerY" secondItem="woM-FF-Y5t" secondAttribute="centerY" id="8If-KB-IB1"/>
+                                        <constraint firstAttribute="trailing" secondItem="X9B-Zw-sgQ" secondAttribute="trailing" constant="8" id="Lul-B3-4em"/>
+                                        <constraint firstItem="X9B-Zw-sgQ" firstAttribute="centerX" secondItem="woM-FF-Y5t" secondAttribute="centerX" id="ui1-ui-qPA"/>
+                                    </constraints>
+                                </view>
+                                <blurEffect style="dark"/>
+                            </visualEffectView>
+                        </subviews>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstAttribute="bottom" secondItem="ayJ-bL-23K" secondAttribute="bottom" id="Ado-32-bZ6"/>
+                            <constraint firstItem="ayJ-bL-23K" firstAttribute="leading" secondItem="gp1-FL-yzb" secondAttribute="leading" id="FYI-my-8wX"/>
+                            <constraint firstItem="gp1-FL-yzb" firstAttribute="trailing" secondItem="ayJ-bL-23K" secondAttribute="trailing" id="iDw-1x-ZQP"/>
+                            <constraint firstItem="ayJ-bL-23K" firstAttribute="top" secondItem="Ryg-hF-K0A" secondAttribute="top" id="jUZ-fa-pgc"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="gp1-FL-yzb"/>
+                    </view>
+                    <connections>
+                        <outlet property="actionButton" destination="rfT-GQ-oif" id="zci-b1-lQ1"/>
+                        <outlet property="actionButtonTopLayoutConstraint" destination="YFH-tW-kbL" id="Xai-nh-iIN"/>
+                        <outlet property="blurView" destination="ayJ-bL-23K" id="Ta0-ws-c6f"/>
+                        <outlet property="descTitle" destination="Ebs-dK-QqQ" id="tNC-3J-bQ2"/>
+                        <outlet property="popupView" destination="X9B-Zw-sgQ" id="JOO-T0-kZv"/>
+                        <outlet property="receiverLabel" destination="QdE-eX-wrO" id="cgc-kC-RsH"/>
+                        <outlet property="secondActionButton" destination="GZX-g3-hAd" id="g3G-US-GSM"/>
+                        <outlet property="secondButton" destination="YC2-p1-Coe" id="3di-TG-5ky"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="3M0-FC-pr1" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1831" y="18"/>
+        </scene>
+    </scenes>
+    <resources>
+        <image name="popupHeaderImage" width="359" height="72"/>
+    </resources>
+</document>

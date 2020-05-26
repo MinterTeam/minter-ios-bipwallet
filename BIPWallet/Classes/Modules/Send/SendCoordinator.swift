@@ -8,6 +8,7 @@
 
 import UIKit
 import RxSwift
+import SafariServices
 
 class SendCoordinator: BaseCoordinator<Void> {
 
@@ -56,6 +57,33 @@ class SendCoordinator: BaseCoordinator<Void> {
         return item!
       }).subscribe(viewModel.input.contact).disposed(by: disposeBag)
 
+    viewModel.output.showSendSucceed.flatMap { [weak self, weak controller] (val) -> Observable<SendSucceedPopupCoordinatorResult> in
+      guard let `self` = self, let controller = controller else { return Observable.empty() }
+      let shouldHideActionButton = val.1 != nil ? (self.recipientInfoService.title(for: val.1!) != nil) : false
+      return self.showSendSucceed(rootViewController: controller,
+                                  inPopupViewController: controller.popupViewController,
+                                  recipient: val.0,
+                                  address: val.1,
+                                  shouldHideActionButton: shouldHideActionButton)
+
+    }.flatMap({ [weak self] (val) -> Observable<Any> in
+      guard let `self` = self, let tabbarViewController = controller.tabBarController else { return Observable.empty() }
+
+      switch val {
+      case .showAddAddress(let address):
+        guard let address = address, address.isValidAddress() else { return Observable.empty() }
+        return self.showAddContact(rootViewController: tabbarViewController, address: address).map {_ in}
+
+      case .viewTransaction:
+        guard let url = viewModel.lastTransactionExplorerURL() else { return Observable.empty() }
+        let safari = SFSafariViewController(url: url)
+        tabbarViewController.present(safari, animated: true) {}
+        return safari.rx.deallocated.map {_ in ""}
+      case .cancel:
+        return Observable.empty()
+      }
+    }).subscribe().disposed(by: disposeBag)
+
     recipient.subscribe(viewModel.input.didScanQR).disposed(by: disposeBag)
 
     self.bindSelectWallet(with: controller, viewModel: viewModel)
@@ -67,6 +95,11 @@ class SendCoordinator: BaseCoordinator<Void> {
 }
 
 extension SendCoordinator {
+  
+  func showAddContact(rootViewController: UIViewController, address: String) -> Observable<ContactItem?> {
+    let coordinator = ModifyContactCoordinator(address: address, rootViewController: rootViewController, contactsService: contactsService)
+    return coordinate(to: coordinator)
+  }
 
   func showContacts(rootViewController: UIViewController) -> Observable<ContactItem?> {
     let contactsCoordinator = ContactPickerCoordinator(rootViewController: rootViewController, contactsService: contactsService)
@@ -78,6 +111,20 @@ extension SendCoordinator {
         return nil
       }
     }
+  }
+
+  func showSendSucceed(rootViewController: UIViewController,
+                       inPopupViewController: PopupViewController?,
+                       recipient: String?,
+                       address: String?,
+                       shouldHideActionButton: Bool) -> Observable<SendSucceedPopupCoordinatorResult> {
+
+    let coordinator = SendSucceedPopupCoordinator(rootViewController: rootViewController,
+                                                  inPopupViewController: inPopupViewController,
+                                                  recipient: recipient,
+                                                  address: address,
+                                                  shouldHideActionButton: shouldHideActionButton)
+    return coordinate(to: coordinator)
   }
 
   //Showing Select Wallet

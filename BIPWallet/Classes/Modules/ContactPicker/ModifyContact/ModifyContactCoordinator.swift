@@ -14,6 +14,8 @@ class ModifyContactCoordinator: BaseCoordinator<ContactItem?> {
 
   private var rootViewController: UIViewController
   private var contactItem: ContactItem?
+  /// Used if needs to add by address
+  private var address: String?
   let contactsService: ContactsService
 
   init(contactItem: ContactItem? = nil, rootViewController: UIViewController, contactsService: ContactsService) {
@@ -22,9 +24,15 @@ class ModifyContactCoordinator: BaseCoordinator<ContactItem?> {
     self.contactsService = contactsService
   }
 
+  init(address: String, rootViewController: UIViewController, contactsService: ContactsService) {
+    self.rootViewController = rootViewController
+    self.address = address
+    self.contactsService = contactsService
+  }
+
   override func start() -> Observable<ContactItem?> {
     let dependency = ModifyContactViewModel.Dependency(contactsService: contactsService)
-    let viewModel = ModifyContactViewModel(contactItem: contactItem, dependency: dependency)
+    let viewModel = ModifyContactViewModel(contactItem: contactItem, address: address, dependency: dependency)
     let viewController = ModifyContactViewController.initFromStoryboard(name: "ModifyContact")
     viewController.viewModel = viewModel
 

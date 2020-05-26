@@ -713,7 +713,9 @@ class TransactionViewModel: BaseViewModel, ViewModel {
     feeBlock.key2 = "Block".localized()
     feeBlock.value2 = String(transaction.block ?? 0)
     feeBlock.value2Interactable = true
-    feeBlock.value2DidTap.map {_ in return self.transaction.hash }.asDriver(onErrorJustReturn: nil).drive(showExplorer).disposed(by: disposeBag)
+    feeBlock.value2DidTap.map {_ in return self.transaction.hash }
+      .asDriver(onErrorJustReturn: nil)
+      .drive(showExplorer).disposed(by: disposeBag)
 
     return feeBlock
   }

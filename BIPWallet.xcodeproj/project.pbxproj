@@ -26,6 +26,7 @@
 		3118C42D1BC1D9A988E95E75 /* BalanceViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BDF96D21A9400683E4FAC02 /* BalanceViewModel.swift */; };
 		337B40B7306272957F8CA5A7 /* CreateWalletViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57F3B86220F91ADA4775AC9C /* CreateWalletViewController.swift */; };
 		348E055C141F2BA7089A95A1 /* TransactionsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6758512864C31E1DE18DF763 /* TransactionsViewModel.swift */; };
+		3DCF6FDD11A1CC37BAD23868 /* SendSucceedPopupViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00264616EDF15CF40091422D /* SendSucceedPopupViewModel.swift */; };
 		3DDB6E9C696EB7BC737B4C6F /* ExchangeCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4570EA4BE0758C13BD33FA76 /* ExchangeCoordinator.swift */; };
 		3EB8005BBA6C7AA850DDE4C9 /* DelegateUnbondViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BCE01A82F430E43E3946E2A /* DelegateUnbondViewModel.swift */; };
 		4A728D31AAAD95AC148B798A /* SelectWalletViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A84D3BA4C8E80F0BCF605A3 /* SelectWalletViewController.swift */; };
@@ -59,6 +60,7 @@
 		9DC2B10E2D3D2B7244EDE917 /* EditWalletTitleCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0681430E39454CABD9423F2 /* EditWalletTitleCoordinator.swift */; };
 		A2EE23092E6206B2481C2BD9 /* SignInViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03E2E64646BE29D97668011B /* SignInViewController.swift */; };
 		A6925EC3F1CD0E7498C392A2 /* GetCoinsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26F39547CFE662C862C9B8DE /* GetCoinsViewModel.swift */; };
+		A79ADBBECC299C7227B8A81A /* SendSucceedPopupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CEE965A03D1A7A9BDFF0F70 /* SendSucceedPopupViewController.swift */; };
 		A884B44782A4AE54FAD27172 /* ModifyContactViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4D921C81650F2AB2D938E43 /* ModifyContactViewModel.swift */; };
 		AAC1D572A4342ADB21159B6F /* PINViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8E0096D71E19EA82181D8C4 /* PINViewModel.swift */; };
 		AAECC4888291B535131A228A /* SignInViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AA8A805991ADD2764035238 /* SignInViewModel.swift */; };
@@ -70,6 +72,7 @@
 		BB2A2F3E60C15DC182DCB917 /* GetCoinsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 606717FCC0D0DDC3AF12D532 /* GetCoinsViewController.swift */; };
 		BC6949BD9E4BCF2366DDE665 /* DelegatedViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04860EC914DB21EE8AFDB21E /* DelegatedViewModel.swift */; };
 		BC7C1BBCBCEA7421F237750A /* PINViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0846D433F1AEAEBB9042D6F0 /* PINViewController.swift */; };
+		C0FE649AEC36600B2783FCF2 /* SendSucceedPopupCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7ED873BC7793657464C0B44 /* SendSucceedPopupCoordinator.swift */; };
 		C2F939095E8D1FCC2D001B80 /* ConvertPopupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB75BAB365E3D44A2910AC02 /* ConvertPopupViewController.swift */; };
 		C3C143892AD9505632448C7D /* ModifyContactCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7A650AD46FECDEC8ABE46EF /* ModifyContactCoordinator.swift */; };
 		C555964A565D5D0E47D20A33 /* BalanceCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D1767764FF68A27E4AFB8F3 /* BalanceCoordinator.swift */; };
@@ -243,6 +246,7 @@
 		FAAE57D124473E690035CE99 /* Delegated.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FAAE57D024473E680035CE99 /* Delegated.storyboard */; };
 		FAAE57D424473EE10035CE99 /* DelegatedTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAAE57D324473EE10035CE99 /* DelegatedTableViewCell.swift */; };
 		FAB69142246ECBE900CFC37D /* ConvertSucceedPopup.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FAB69141246ECBE900CFC37D /* ConvertSucceedPopup.storyboard */; };
+		FAC14A41247D4A52008D1A45 /* SendSucceedPopup.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FAC14A40247D4A52008D1A45 /* SendSucceedPopup.storyboard */; };
 		FACA652C23F2AAAF00399359 /* BaseCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = FACA652B23F2AAAF00399359 /* BaseCoordinator.swift */; };
 		FACA652F23F2AAF000399359 /* Coordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = FACA652E23F2AAF000399359 /* Coordinator.swift */; };
 		FACA653123F2AB2A00399359 /* Routable.swift in Sources */ = {isa = PBXBuildFile; fileRef = FACA653023F2AB2A00399359 /* Routable.swift */; };
@@ -344,6 +348,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		00264616EDF15CF40091422D /* SendSucceedPopupViewModel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = SendSucceedPopupViewModel.swift; sourceTree = "<group>"; };
 		03E2E64646BE29D97668011B /* SignInViewController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = SignInViewController.swift; sourceTree = "<group>"; };
 		04860EC914DB21EE8AFDB21E /* DelegatedViewModel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = DelegatedViewModel.swift; sourceTree = "<group>"; };
 		05BB38F36102223079854D7E /* ExchangeViewModel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ExchangeViewModel.swift; sourceTree = "<group>"; };
@@ -358,6 +363,7 @@
 		2924B1B7D5AB1A435CC790BF /* TransactionsCoordinator.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = TransactionsCoordinator.swift; sourceTree = "<group>"; };
 		2B16A12CF440C4646DF7C60C /* Pods-BIPWallet.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BIPWallet.release.xcconfig"; path = "Target Support Files/Pods-BIPWallet/Pods-BIPWallet.release.xcconfig"; sourceTree = "<group>"; };
 		2BDF96D21A9400683E4FAC02 /* BalanceViewModel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = BalanceViewModel.swift; sourceTree = "<group>"; };
+		2CEE965A03D1A7A9BDFF0F70 /* SendSucceedPopupViewController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = SendSucceedPopupViewController.swift; sourceTree = "<group>"; };
 		2F11C9676BD8403551407CEF /* ContactRemoveConfirmationViewModel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ContactRemoveConfirmationViewModel.swift; sourceTree = "<group>"; };
 		339B31B61DFB7844B0D1CCF6 /* SettingsViewModel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = SettingsViewModel.swift; sourceTree = "<group>"; };
 		45049572AB839F864BD02CB2 /* ContactPickerViewController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ContactPickerViewController.swift; sourceTree = "<group>"; };
@@ -414,6 +420,7 @@
 		D082D6F1BD8A4E016C5D8A85 /* AddWalletCoordinator.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AddWalletCoordinator.swift; sourceTree = "<group>"; };
 		D259A66E4193B27C54578FCC /* CoinsViewModel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = CoinsViewModel.swift; sourceTree = "<group>"; };
 		D28CE533FD063DE987995C57 /* WalletRemoveConfirmationViewModel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = WalletRemoveConfirmationViewModel.swift; sourceTree = "<group>"; };
+		D7ED873BC7793657464C0B44 /* SendSucceedPopupCoordinator.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = SendSucceedPopupCoordinator.swift; sourceTree = "<group>"; };
 		D8ED7BC3989BDCCDEDFA0902 /* DelegateUnbondViewController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = DelegateUnbondViewController.swift; sourceTree = "<group>"; };
 		D9BFA3D9F6D13F7F3A16E945 /* ConvertPopupCoordinator.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ConvertPopupCoordinator.swift; sourceTree = "<group>"; };
 		DAB0AF580C1D4E3406631DFA /* ExchangeViewController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ExchangeViewController.swift; sourceTree = "<group>"; };
@@ -588,6 +595,7 @@
 		FAAE57D024473E680035CE99 /* Delegated.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Delegated.storyboard; sourceTree = "<group>"; };
 		FAAE57D324473EE10035CE99 /* DelegatedTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DelegatedTableViewCell.swift; sourceTree = "<group>"; };
 		FAB69141246ECBE900CFC37D /* ConvertSucceedPopup.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = ConvertSucceedPopup.storyboard; sourceTree = "<group>"; };
+		FAC14A40247D4A52008D1A45 /* SendSucceedPopup.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = SendSucceedPopup.storyboard; sourceTree = "<group>"; };
 		FACA652B23F2AAAF00399359 /* BaseCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseCoordinator.swift; sourceTree = "<group>"; };
 		FACA652E23F2AAF000399359 /* Coordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Coordinator.swift; sourceTree = "<group>"; };
 		FACA653023F2AB2A00399359 /* Routable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Routable.swift; sourceTree = "<group>"; };
@@ -815,6 +823,17 @@
 			path = Transaction;
 			sourceTree = "<group>";
 		};
+		8D72D7B97043226C48256103 /* SendSucceedPopup */ = {
+			isa = PBXGroup;
+			children = (
+				2CEE965A03D1A7A9BDFF0F70 /* SendSucceedPopupViewController.swift */,
+				00264616EDF15CF40091422D /* SendSucceedPopupViewModel.swift */,
+				D7ED873BC7793657464C0B44 /* SendSucceedPopupCoordinator.swift */,
+				FAC14A40247D4A52008D1A45 /* SendSucceedPopup.storyboard */,
+			);
+			path = SendSucceedPopup;
+			sourceTree = "<group>";
+		};
 		9061F8DE69B97980D66515C6 /* AddWallet */ = {
 			isa = PBXGroup;
 			children = (
@@ -948,6 +967,7 @@
 				FB17FB479621549C34C8485A /* DelegateUnbond */,
 				F0D4500DCF0F9ACCBB3C27B2 /* PIN */,
 				5472DAD040254B884E36C0E2 /* Share */,
+				8D72D7B97043226C48256103 /* SendSucceedPopup */,
 			);
 			path = Modules;
 			sourceTree = "<group>";
@@ -1763,6 +1783,7 @@
 				FA91D571242E0FD200F901AF /* DefaultHeader.xib in Resources */,
 				FACA65B923F6FF7F00399359 /* SignIn.storyboard in Resources */,
 				FA663D4623FFDF1A0029D5D0 /* Transactions.storyboard in Resources */,
+				FAC14A41247D4A52008D1A45 /* SendSucceedPopup.storyboard in Resources */,
 				FA91D584243209A000F901AF /* ModifyContact.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -2079,6 +2100,9 @@
 				D3F1230E1977330C038054F5 /* ConvertSucceedPopupViewController.swift in Sources */,
 				788B9CFE6D6E368DE77A2900 /* ConvertSucceedPopupViewModel.swift in Sources */,
 				2EDFF7137A5287A534A5575D /* ConvertSucceedPopupCoordinator.swift in Sources */,
+				A79ADBBECC299C7227B8A81A /* SendSucceedPopupViewController.swift in Sources */,
+				3DCF6FDD11A1CC37BAD23868 /* SendSucceedPopupViewModel.swift in Sources */,
+				C0FE649AEC36600B2783FCF2 /* SendSucceedPopupCoordinator.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2254,7 +2278,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 222;
+				CURRENT_PROJECT_VERSION = 223;
 				DEVELOPMENT_TEAM = A26H28FPZU;
 				INFOPLIST_FILE = BIPWallet/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
@@ -2277,7 +2301,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 222;
+				CURRENT_PROJECT_VERSION = 223;
 				DEVELOPMENT_TEAM = A26H28FPZU;
 				INFOPLIST_FILE = BIPWallet/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;

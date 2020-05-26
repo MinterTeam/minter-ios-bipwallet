@@ -62,6 +62,7 @@ class SendViewModel: BaseViewModel, ViewModel, WalletSelectableViewModel {// swi
     var wallet: Observable<String?>
     var timerText: Observable<NSAttributedString?>
     var usernameDidEndEditing: Observable<Void>
+    var showSendSucceed: Observable<(String?, String?)>
   }
 
   struct Dependency {
@@ -112,6 +113,7 @@ class SendViewModel: BaseViewModel, ViewModel, WalletSelectableViewModel {// swi
   private let openAppSettingsSubject = PublishSubject<Void>()
   lazy var balanceTitleObservable = Observable.of(Observable<Int>.timer(0, period: 1, scheduler: MainScheduler.instance).map {_ in}).merge()
   private let usernameDidEndEditing = PublishSubject<Void>()
+  private let showSendSucceed = PublishSubject<(String?, String?)>()
 
   let fakePK = Data(hex: "678b3252ce9b013cef922687152fb71d45361b32f8f9a57b0d11cc340881c999").toHexString()
 
@@ -220,7 +222,8 @@ class SendViewModel: BaseViewModel, ViewModel, WalletSelectableViewModel {// swi
                          timerText: balanceTitleObservable.withLatestFrom(balanceService.lastBlockAgo()).map {
                           let ago = Date().timeIntervalSince1970 - ($0 ?? 0)
                           return self.headerViewLastUpdatedTitleText(seconds: ago) },
-                         usernameDidEndEditing: usernameDidEndEditing.asObservable()
+                         usernameDidEndEditing: usernameDidEndEditing.asObservable(),
+                         showSendSucceed: showSendSucceed.asObservable()
     )
 
     amountSubject.distinctUntilChanged()//.observeOn(MainScheduler.asyncInstance)
@@ -416,7 +419,7 @@ YOU ARE ABOUT TO SEND SEED PHRASE IN THE MESSAGE ATTACHED TO THIS TRANSACTION.\n
   func createSections() -> [BaseTableSectionItem] {
     let username = UsernameTableViewCellItem(reuseIdentifier: "UsernameTableViewCell",
                                              identifier: CellIdentifierPrefix.address.rawValue)
-    username.title = "To (Mx Address or Public Key or Name)".localized()
+    username.title = "To (Mx Address or Name)".localized()
     username.isLoadingObservable = isLoadingAddressSubject.asObservable()
     username.stateObservable = addressStateSubject.asObservable()
     username.keybordType = .emailAddress
@@ -718,11 +721,14 @@ YOU ARE ABOUT TO SEND SEED PHRASE IN THE MESSAGE ATTACHED TO THIS TRANSACTION.\n
         let address = self?.addressSubject.value ?? ""
 
         let recipient = self?.dependency.recipientInfoService.title(for: rec) ?? rec
-        if let sentViewModel = self?.sentViewModel(to: recipient, address: address) {
-          let popup = SentPopupViewController.initFromStoryboard(name: "Popup")
-          popup.viewModel = sentViewModel
-          self?.popupSubject.onNext(popup)
-        }
+
+        self?.showSendSucceed.onNext((recipient, address))
+
+//        if let sentViewModel = self?.sentViewModel(to: recipient, address: address) {
+//          let popup = SentPopupViewController.initFromStoryboard(name: "Popup")
+//          popup.viewModel = sentViewModel
+//          self?.popupSubject.onNext(popup)
+//        }
         self?.clear()
       }, onError: { [weak self] (error) in
         self?.handle(error: error)
@@ -927,8 +933,8 @@ extension SendViewModel {
     } else {
       viewModel.avatarImageURL = MinterMyAPIURL.avatarAddress(address: address).url()
     }
-    viewModel.popupTitle = "You're Sending".localized()
-    viewModel.buttonTitle = "Send".localized()
+    viewModel.popupTitle = "Confirm Transaction".localized()
+    viewModel.buttonTitle = "Confirm".localized()
     viewModel.cancelTitle = "Cancel".localized()
     return viewModel
   }

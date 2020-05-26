@@ -20,6 +20,7 @@ class ModifyContactViewModel: BaseViewModel, ViewModel {
   // MARK: -
 
   private(set) var contactItem: ContactItem?
+  private(set) var addressToAdd: String?
 
   private let address = BehaviorRelay<String?>(value: nil)
   private let name = BehaviorRelay<String?>(value: nil)
@@ -55,9 +56,12 @@ class ModifyContactViewModel: BaseViewModel, ViewModel {
     var contactsService: ContactsService
   }
 
-  init(contactItem: ContactItem? = nil, dependency: Dependency) {
+  /// address is used to add contact by address
+  /// contactItem - is used to modify existing contactItem
+  init(contactItem: ContactItem? = nil, address addressToAdd: String? = nil, dependency: Dependency) {
 
     self.contactItem = contactItem
+    self.addressToAdd = addressToAdd
 
     self.input = Input(didTapGoButton: didTapGoButton.asObserver()
     )
@@ -77,6 +81,8 @@ class ModifyContactViewModel: BaseViewModel, ViewModel {
     super.init()
 
     bind()
+
+    address.accept(addressToAdd)
   }
 
   // MARK: -
