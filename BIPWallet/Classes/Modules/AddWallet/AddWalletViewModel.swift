@@ -37,6 +37,7 @@ class AddWalletViewModel: BaseViewModel, ViewModel {
   private var isLoading = PublishSubject<Bool>()
   private var titleError = PublishSubject<String?>()
   private var mnemonicsError = PublishSubject<String?>()
+  private let didTapGenerateWallet = PublishSubject<Void>()
 
   // MARK: - ViewModel
 
@@ -56,6 +57,7 @@ class AddWalletViewModel: BaseViewModel, ViewModel {
     var signInMnemonics: BehaviorRelay<String?>
     var signInTitle: BehaviorRelay<String?>
     var titleDidEndEditing: PublishSubject<Void>
+    var didTapGenerateWallet: PublishSubject<Void>
   }
 
   struct Output {
@@ -87,7 +89,8 @@ class AddWalletViewModel: BaseViewModel, ViewModel {
                        mnemonics: mnemonics,
                        signInMnemonics: signInMnemonics,
                        signInTitle: signInTitle,
-                       titleDidEndEditing: titleDidEndEditing.asObserver()
+                       titleDidEndEditing: titleDidEndEditing.asObserver(),
+                       didTapGenerateWallet: didTapGenerateWallet.asObserver()
     )
 
     self.output = Output(viewDidDisappear: viewDidDisappear.asObservable(),
@@ -112,6 +115,8 @@ class AddWalletViewModel: BaseViewModel, ViewModel {
   // MARK: -
 
   func bind() {
+
+    didTapGenerateWallet.map{ _ in nil }.subscribe(titleError).disposed(by: disposeBag)
 
     signInMnemonics.distinctUntilChanged().map { _ in
       return nil

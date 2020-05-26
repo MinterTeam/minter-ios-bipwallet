@@ -75,7 +75,8 @@ class WalletCoordinator: BaseCoordinator<Void> {
     let sendCoordinator = SendCoordinator(navigationController: send,
                                           balanceService: balanceService,
                                           authService: authService,
-                                          contactsService: contactsService
+                                          contactsService: contactsService,
+                                          recipientInfoService: recipientInfoService
                                           )
     coordinate(to: sendCoordinator).subscribe().disposed(by: disposeBag)
 

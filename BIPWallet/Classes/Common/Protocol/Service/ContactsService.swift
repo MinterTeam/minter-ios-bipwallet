@@ -19,7 +19,10 @@ protocol ContactsService {
   func contacts() -> Observable<[ContactItem]>
   func add(item: ContactItem) throws -> Observable<Void>
   func edit(_ old: ContactItem, newItem: ContactItem) throws -> Observable<Void>
-  func contact(by name: String) -> Observable<ContactItem?>
+  /// Contact by name
+  func contactBy(name: String) -> Observable<ContactItem?>
+  /// Contact by address
+  func contactBy(address: String) -> Observable<ContactItem?>
   func delete(_ item: ContactItem) -> Observable<Void>
   func contactsChanged() -> Observable<Void>
 }

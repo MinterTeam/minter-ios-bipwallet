@@ -85,7 +85,7 @@ final class LocalStorageAuthService: AuthService {
     }
     return AccountItem(title: newTitle, address: address)
   }
-  
+
   func remove(account: AccountItem) throws {
     let address = account.address.stripMinterHexPrefix()
 
@@ -98,7 +98,8 @@ final class LocalStorageAuthService: AuthService {
 
   func logout() {
     storage.removeAll()
-    databaseStorage.removeAll()
+    databaseStorage.removeAllObjectsOf(type: AccountDataBaseModel.self)
+//    databaseStorage.removeAll()
     accountManager.setRandomEncryptionKeyIfNotExists()
   }
 

@@ -67,6 +67,7 @@ class SendViewModel: BaseViewModel, ViewModel, WalletSelectableViewModel {// swi
   struct Dependency {
     var balanceService: BalanceService
     var contactsService: ContactsService
+    var recipientInfoService: RecipientInfoService
   }
 
   var balanceService: BalanceService! {
@@ -90,7 +91,7 @@ class SendViewModel: BaseViewModel, ViewModel, WalletSelectableViewModel {// swi
   private let coinSubject = BehaviorRelay<String?>(value: "")
   private let recipientSubject = BehaviorRelay<String?>(value: "")
   private let addressSubject = BehaviorRelay<String?>(value: "")
-  private var recipientAddress = BehaviorRelay<String?>(value: nil)
+//  private var recipientAddress = BehaviorRelay<String?>(value: nil)
   private let amountSubject = BehaviorRelay<String?>(value: "")
   private let shouldShowAlertSubject = PublishSubject<String>()
   //used to update input amount value
@@ -222,19 +223,8 @@ class SendViewModel: BaseViewModel, ViewModel, WalletSelectableViewModel {// swi
                          usernameDidEndEditing: usernameDidEndEditing.asObservable()
     )
 
-//    amountSubject.asObservable().distinctUntilChanged()
-//      .throttle(.seconds(1), scheduler: MainScheduler.instance)
-//      .subscribe(onNext: { [weak self] (val) in
-//        if (val ?? "").starts(with: ",") || (val ?? "").starts(with: ".") {
-//          let newVal = (val ?? "").trimmingCharacters(in: CharacterSet(charactersIn: ".,"))
-//          self?.amountSubject.accept("0." + newVal)
-//        } else {
-//          self?.amountSubject.accept(val)
-//        }
-//      }).disposed(by: disposeBag)
-
-    amountSubject.distinctUntilChanged()
-      .debounce(.seconds(1), scheduler: MainScheduler.instance)
+    amountSubject.distinctUntilChanged()//.observeOn(MainScheduler.asyncInstance)
+      .debounce(.milliseconds(100), scheduler: MainScheduler.asyncInstance)
       .map { (val) -> String? in
         return AmountHelper.transformValue(value: val)
       }.subscribe(onNext: { val in
@@ -356,7 +346,7 @@ YOU ARE ABOUT TO SEND SEED PHRASE IN THE MESSAGE ATTACHED TO THIS TRANSACTION.\n
       })
       .flatMap { (rec) -> Observable<Event<ContactItem?>> in
         let term = (rec ?? "").lowercased()
-        return self.dependency.contactsService.contact(by: term).materialize()
+        return self.dependency.contactsService.contactBy(name: term).materialize()
       }.do(onNext: { [weak self] (_) in
         self?.isLoadingAddressSubject.onNext(false)
       }, onError: { [weak self] (_) in
@@ -410,10 +400,15 @@ YOU ARE ABOUT TO SEND SEED PHRASE IN THE MESSAGE ATTACHED TO THIS TRANSACTION.\n
         self?.currentGas.onNext(gas)
       }).disposed(by: disposeBag)
 
-//    self.dependency.contactsService.contactsChanged()
-//      .subscribe(onNext: { (_) in
-//        self.dependency.contactsService.
-//      }).disposed(by: disposeBag)
+    self.dependency.contactsService.contactsChanged().filter({ (_) -> Bool in
+      return self.addressSubject.value != nil
+    }).withLatestFrom(self.recipientSubject).flatMap {
+      return self.dependency.contactsService.contactBy(name: $0 ?? "")
+    }.subscribe(onNext: { [weak self] (val) in
+      if let address = self?.addressSubject.value {
+        self?.recipientSubject.accept(address)
+      }
+    }).disposed(by: disposeBag)
   }
 
   // MARK: - Sections
@@ -530,9 +525,18 @@ YOU ARE ABOUT TO SEND SEED PHRASE IN THE MESSAGE ATTACHED TO THIS TRANSACTION.\n
       return !(recipient ?? "").isEmpty && !(amount ?? "").isEmpty && !(coin ?? "").isEmpty
     })
 
-    button.output?.didTapButton.asDriver(onErrorJustReturn: ())
-      .drive(onNext: { [weak self] (_) in
-        self?.sendButtonTaped()
+    button.output?.didTapButton
+      .subscribe(onNext: { [weak self] () in
+        let defaultTitle = self?.recipientSubject.value ?? ""
+        let recipient = self?.dependency.recipientInfoService.title(for: defaultTitle) ?? defaultTitle
+        let amount = Decimal(string: self?.amountSubject.value ?? "") ?? 0
+        let address = self?.addressSubject.value ?? ""
+        let sendVM = self?.sendPopupViewModel(to: recipient,
+                                             address: address,
+                                             amount: amount)
+        let sendPopup = SendPopupViewController.initFromStoryboard(name: "Popup")
+        sendPopup.viewModel = sendVM
+        self?.popupSubject.onNext(sendPopup)
         self?.impact.onNext(.hard)
         self?.sound.onNext(.bip)
       }).disposed(by: self.disposeBag)
@@ -713,7 +717,8 @@ YOU ARE ABOUT TO SEND SEED PHRASE IN THE MESSAGE ATTACHED TO THIS TRANSACTION.\n
         let rec = self?.recipientSubject.value ?? ""
         let address = self?.addressSubject.value ?? ""
 
-        if let sentViewModel = self?.sentViewModel(to: rec, address: address) {
+        let recipient = self?.dependency.recipientInfoService.title(for: rec) ?? rec
+        if let sentViewModel = self?.sentViewModel(to: recipient, address: address) {
           let popup = SentPopupViewController.initFromStoryboard(name: "Popup")
           popup.viewModel = sentViewModel
           self?.popupSubject.onNext(popup)
@@ -731,18 +736,6 @@ YOU ARE ABOUT TO SEND SEED PHRASE IN THE MESSAGE ATTACHED TO THIS TRANSACTION.\n
     self.recipientSubject.accept(nil)
     self.amountSubject.accept(nil)
     self.payloadSubject.onNext(nil)
-  }
-
-  func sendButtonTaped() {
-    let recipient = recipientSubject.value ?? ""
-    let amount = Decimal(string: amountSubject.value?.replacingOccurrences(of: ",", with: ".") ?? "") ?? 0
-    let address = addressSubject.value ?? ""
-    let sendVM = self.sendPopupViewModel(to: recipient,
-                                         address: address,
-                                         amount: amount)
-    let sendPopup = SendPopupViewController.initFromStoryboard(name: "Popup")
-    sendPopup.viewModel = sendVM
-    self.popupSubject.onNext(sendPopup)
   }
 
   func submitSendButtonTaped() {
@@ -941,7 +934,7 @@ extension SendViewModel {
   }
 
   func sentViewModel(to: String, address: String) -> SentPopupViewModel {
-    let viewModel = SentPopupViewModel()
+    let viewModel = SentPopupViewModel(dependency: SentPopupViewModel.Dependency(recipientInfoService: self.dependency.recipientInfoService))
     viewModel.actionButtonTitle = "View Transaction".localized()
     if to.isValidPublicKey() {
       viewModel.avatarImage = UIImage(named: "delegateImage")
@@ -976,10 +969,10 @@ extension SendViewModel: LUAutocompleteViewDataSource, LUAutocompleteViewDelegat
       .subscribe(onNext: { [weak self] (contacts) in
         let data = ((contacts.filter { (item) -> Bool in
           return (item.name ?? "").lowercased().starts(with: term) && (item.name ?? "").lowercased() != term.lowercased()
-        })[safe: 0..<4])?.map { (item) -> String in
+        })[safe: 0..<3])?.map { (item) -> String in
           return (item.name ?? "")
         } ?? []
-        completion(data)
+        completion(data.sorted())
         self?.didProvideAutocomplete.onNext(())
     }).disposed(by: disposeBag)
   }

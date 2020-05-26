@@ -90,4 +90,14 @@ class RealmDatabaseStorage: DatabaseStorage {
 			realm.deleteAll()
 		}
 	}
+
+  func removeAllObjectsOf(type: DatabaseStorageModel.Type) {
+    let objectsToDelete = self.objects(class: type) ?? []
+    guard objectsToDelete.count > 0 else { return }
+
+    try! realm.write {// swiftlint:disable:this force_try
+      realm.delete(objectsToDelete)
+    }
+  }
+
 }

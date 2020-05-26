@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="16096" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="16097" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
@@ -61,8 +61,8 @@
                                             <color key="titleColor" red="0.31372549020000001" green="0.18039215689999999" blue="0.76078431369999999" alpha="1" colorSpace="deviceRGB"/>
                                         </state>
                                     </button>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Coin" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DKf-zN-QsX">
-                                        <rect key="frame" x="24" y="192" width="24" height="14"/>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Coin" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DKf-zN-QsX">
+                                        <rect key="frame" x="24" y="192" width="43" height="14"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="14" id="GYe-md-NCb"/>
                                         </constraints>
@@ -87,6 +87,13 @@
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                         <textInputTraits key="textInputTraits" keyboardType="decimalPad"/>
                                     </textField>
+                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="WalletsExpandImage" translatesAutoresizingMaskIntoConstraints="NO" id="EpX-xl-z7D">
+                                        <rect key="frame" x="357" y="236.5" width="10" height="5"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="10" id="HzH-xT-1AJ"/>
+                                            <constraint firstAttribute="height" constant="5" id="Xyd-yn-Y6I"/>
+                                        </constraints>
+                                    </imageView>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Y9e-Ob-O5k">
                                         <rect key="frame" x="16" y="130" width="366" height="48"/>
                                         <subviews>
@@ -153,6 +160,7 @@
                                 <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                                 <constraints>
                                     <constraint firstItem="DKf-zN-QsX" firstAttribute="top" secondItem="Y9e-Ob-O5k" secondAttribute="bottom" constant="14" id="382-8I-HLw"/>
+                                    <constraint firstItem="EpX-xl-z7D" firstAttribute="trailing" secondItem="Bly-Pw-ta8" secondAttribute="trailing" constant="-15" id="3da-lg-O1u"/>
                                     <constraint firstItem="UIz-nk-BVf" firstAttribute="centerY" secondItem="Ldp-Av-QEu" secondAttribute="centerY" id="3oL-ev-3yU"/>
                                     <constraint firstItem="Ldp-Av-QEu" firstAttribute="top" secondItem="t5q-bF-R2f" secondAttribute="bottom" constant="31" id="6X1-2U-JBG"/>
                                     <constraint firstItem="n7N-Jg-XqG" firstAttribute="top" secondItem="nvN-wm-Yxd" secondAttribute="bottom" constant="14" id="8V7-1c-nrP"/>
@@ -180,6 +188,7 @@
                                     <constraint firstItem="iJX-v3-sA3" firstAttribute="leading" secondItem="t5q-bF-R2f" secondAttribute="leading" constant="8" id="jhh-0M-6Kx"/>
                                     <constraint firstAttribute="trailing" secondItem="UIz-nk-BVf" secondAttribute="trailing" constant="32" id="lkx-49-ZpB"/>
                                     <constraint firstAttribute="trailing" secondItem="uzZ-U0-vS2" secondAttribute="trailing" constant="16" id="lou-g8-ZJJ"/>
+                                    <constraint firstItem="EpX-xl-z7D" firstAttribute="centerY" secondItem="Bly-Pw-ta8" secondAttribute="centerY" id="maN-cr-7HT"/>
                                     <constraint firstItem="n7N-Jg-XqG" firstAttribute="leading" secondItem="Y9e-Ob-O5k" secondAttribute="leading" constant="8" id="rTh-Pj-Zdt"/>
                                     <constraint firstItem="uzZ-U0-vS2" firstAttribute="top" secondItem="Ldp-Av-QEu" secondAttribute="bottom" constant="40" id="uzf-J3-MZv"/>
                                 </constraints>
@@ -201,6 +210,7 @@
                         <outlet property="descriptionLabel" destination="nvN-wm-Yxd" id="ilz-73-i3D"/>
                         <outlet property="feeLabel" destination="UIz-nk-BVf" id="W1I-ji-w5A"/>
                         <outlet property="mainView" destination="u3A-uR-QSb" id="7d5-Gq-D31"/>
+                        <outlet property="multipleWalletsImage" destination="EpX-xl-z7D" id="jBG-xL-DVM"/>
                         <outlet property="sendButton" destination="uzZ-U0-vS2" id="7xo-eX-gci"/>
                         <outlet property="useMaxButton" destination="MwV-yK-DDB" id="Lxy-Xm-2K1"/>
                         <outlet property="validatorPublicKey" destination="0DX-q4-JOw" id="kWa-CG-Zc8"/>
@@ -213,4 +223,7 @@
             <point key="canvasLocation" x="240.57971014492756" y="129.91071428571428"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="WalletsExpandImage" width="10" height="6"/>
+    </resources>
 </document>

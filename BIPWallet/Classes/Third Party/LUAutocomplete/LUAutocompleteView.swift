@@ -47,7 +47,7 @@ open class LUAutocompleteView: UIView {
     /** A `LUAutocompleteTableViewCell` subclass that will be used to show a text suggestion.
     Set your own in order to customise the appearance.
     Default value is `nil`, which means the default one will be used.
-     
+
     - Note: `textAttributes` will be ignored if this property is not `nil`
     */
     public var autocompleteCell: LUAutocompleteTableViewCell.Type? {
@@ -60,20 +60,20 @@ open class LUAutocompleteView: UIView {
             tableView.reloadData()
         }
     }
-	
+
 		public var autocompleteCellNibName: String? {
 			didSet {
 				guard let autocompleteCellNibName = autocompleteCellNibName else {
 					return
 				}
-				
+
 				tableView.register(UINib(nibName: autocompleteCellNibName, bundle: nil), forCellReuseIdentifier: LUAutocompleteView.cellIdentifier)
 				tableView.reloadData()
 			}
 		}
-	
+
     /// The height of each row (that is, table cell) in the autocomplete table view. Default value is `40.0`.
-    public var rowHeight: CGFloat = 43.0 {
+    public var rowHeight: CGFloat = 46.0 {
         didSet {
             tableView.rowHeight = rowHeight
         }
@@ -86,8 +86,9 @@ open class LUAutocompleteView: UIView {
     private static let cellIdentifier = "AutocompleteCellIdentifier"
     private var elements = [String]() {
         didSet {
-            tableView.reloadData()
-            height = max(0, tableView.contentSize.height - 2)
+          tableView.reloadData()
+          let calculatedHeight = CGFloat(elements.count) * rowHeight// + CGFloat(elements.count)
+          height = max(calculatedHeight, tableView.contentSize.height)
         }
     }
     private var height: CGFloat = 0 {

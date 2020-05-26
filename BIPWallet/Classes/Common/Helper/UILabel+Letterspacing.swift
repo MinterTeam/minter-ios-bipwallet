@@ -17,7 +17,7 @@ class SlashedZeroesLabel: UHBCustomLabel {
 }
 
 open class UHBCustomLabel: UILabel {
-    @IBInspectable open var characterSpacing:CGFloat = 1 {
+    @IBInspectable open var characterSpacing: CGFloat = 1 {
         didSet {
             updateWithSpacing()
         }

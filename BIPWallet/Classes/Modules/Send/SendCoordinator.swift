@@ -18,12 +18,19 @@ class SendCoordinator: BaseCoordinator<Void> {
   let authService: AuthService
   let balanceService: BalanceService
   let contactsService: ContactsService
+  let recipientInfoService: RecipientInfoService
 
-  init(navigationController: UINavigationController, balanceService: BalanceService, authService: AuthService, contactsService: ContactsService) {
+  init(navigationController: UINavigationController,
+       balanceService: BalanceService,
+       authService: AuthService,
+       contactsService: ContactsService,
+       recipientInfoService: RecipientInfoService) {
+
     self.navigationController = navigationController
     self.authService = authService
     self.balanceService = balanceService
     self.contactsService = contactsService
+    self.recipientInfoService = recipientInfoService
 
     super.init()
 
@@ -33,7 +40,9 @@ class SendCoordinator: BaseCoordinator<Void> {
   override func start() -> Observable<Void> {
     let controller = SendViewController.initFromStoryboard(name: "Send")
     let dependency = SendViewModel.Dependency(balanceService: balanceService,
-                                              contactsService: contactsService)
+                                              contactsService: contactsService,
+                                              recipientInfoService: recipientInfoService
+    )
     let viewModel = SendViewModel(dependency: dependency)
     controller.viewModel = viewModel
 
@@ -143,12 +152,14 @@ extension SendCoordinator {
           return nil
         }
       }).map{ $0! }
-      .flatMap({ (account) -> Observable<EditWalletTitleCoordinatorResult> in
+      .flatMap({ [weak self] (account) -> Observable<EditWalletTitleCoordinatorResult> in
+        guard let `self` = self else { return Observable.empty() }
         return self.showEditTitle(inViewController: controller, account: account)
       }).subscribe(onNext: { [weak self] (result) in
-        switch result{
-        case .changedTitle(let account):
-          try? self?.balanceService.changeAddress(account.address)
+        switch result {
+        case .changedTitle(_):
+//          try? self?.balanceService.changeAddress(account.address)
+          return;
         case .cancel:
           return
         case .removed:

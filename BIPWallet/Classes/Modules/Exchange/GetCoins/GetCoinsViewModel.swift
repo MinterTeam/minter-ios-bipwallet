@@ -73,7 +73,7 @@ class GetCoinsViewModel: ConvertCoinsViewModel, ViewModel {
   // MARK: -
 
   private func bind() {
-    getAmount.distinctUntilChanged().debounce(.seconds(1), scheduler: MainScheduler.instance).map { (val) -> String? in
+    getAmount.distinctUntilChanged().debounce(.milliseconds(100), scheduler: MainScheduler.asyncInstance).map { (val) -> String? in
       return AmountHelper.transformValue(value: val)
     }.subscribe(onNext: { val in
       self.getAmount.accept(val)

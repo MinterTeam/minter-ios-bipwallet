@@ -40,7 +40,7 @@ class PickerTableViewCell: BaseCell, UITextFieldDelegate {
 	@IBOutlet weak var label: UILabel!
 	@IBOutlet weak var selectField: ValidatableTextField! {
 		didSet {
-			let imageView = UIImageView(image: UIImage(named: "textFieldSelectIcon"))
+			let imageView = UIImageView(image: UIImage(named: "WalletsExpandImage"))
 			let rightView = UIView(frame: CGRect(x: 0.0, y: 0.0, width: 10.0, height: 5.0))
 			imageView.frame = CGRect(x: 0.0, y: 22.0, width: 10.0, height: 5.0)
 			rightView.addSubview(imageView)
@@ -136,5 +136,11 @@ class PickerTableViewCell: BaseCell, UITextFieldDelegate {
 	private func shouldShowPicker() -> Bool {
 		return (dataSource?.pickerItems(for: self).count ?? 0) > 1
 	}
+  
+  override func layoutSubviews() {
+    super.layoutSubviews()
+
+    updateRightViewMode()
+  }
 
 }

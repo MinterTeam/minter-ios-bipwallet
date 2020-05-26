@@ -93,7 +93,7 @@ class SpendCoinsViewModel: ConvertCoinsViewModel, ViewModel {
   private func bind() {
 
     spendAmount.distinctUntilChanged()
-      .debounce(.seconds(1), scheduler: MainScheduler.instance)
+      .debounce(.milliseconds(100), scheduler: MainScheduler.asyncInstance)
       .map { (val) -> String? in
         return AmountHelper.transformValue(value: val)
       }.subscribe(onNext: { [weak self] val in

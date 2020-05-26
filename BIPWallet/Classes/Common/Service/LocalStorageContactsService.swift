@@ -69,12 +69,30 @@ class LocalStorageContactsService: ContactsService {
     }
   }
 
-  func contact(by name: String) -> Observable<ContactItem?> {
+  func contactBy(name: String) -> Observable<ContactItem?> {
     return Observable.create { (observer) -> Disposable in
       let res = (self.storage.objects(class: ContactEntryDataBaseModel.self,
                                      query: nil) ?? [])
       .filter { (model) -> Bool in
         return (model as? ContactEntryDataBaseModel)?.name.lowercased() == name.lowercased()
+      }
+      if let model = res.first as? ContactEntryDataBaseModel {
+        let contact = ContactItem(name: model.name, address: model.address)
+        observer.onNext(contact)
+      } else {
+        observer.onNext(nil)
+      }
+      observer.onCompleted()
+      return Disposables.create()
+    }
+  }
+
+  func contactBy(address: String) -> Observable<ContactItem?> {
+    return Observable.create { (observer) -> Disposable in
+      let res = (self.storage.objects(class: ContactEntryDataBaseModel.self,
+                                     query: nil) ?? [])
+      .filter { (model) -> Bool in
+        return (model as? ContactEntryDataBaseModel)?.address.stripMinterHexPrefix().lowercased() == address.lowercased().stripMinterHexPrefix()
       }
       if let model = res.first as? ContactEntryDataBaseModel {
         let contact = ContactItem(name: model.name, address: model.address)

@@ -33,6 +33,7 @@ class DelegateUnbondViewController: BaseViewController, Controller, StoryboardIn
   @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
   @IBOutlet weak var descriptionLabel: UILabel!
   @IBOutlet weak var feeLabel: UILabel!
+  @IBOutlet weak var multipleWalletsImage: UIImageView!
 
   // MARK: - ControllerProtocol
 
@@ -44,7 +45,12 @@ class DelegateUnbondViewController: BaseViewController, Controller, StoryboardIn
     configureDefault()
 
     //Output
-    viewModel.output.fee.asDriver(onErrorJustReturn: "").drive(feeLabel.rx.text).disposed(by: disposeBag)
+    viewModel.output.hasMultipleCoins.asDriver(onErrorJustReturn: false)
+      .map {!$0}.drive(multipleWalletsImage.rx.isHidden)
+      .disposed(by: disposeBag)
+
+    viewModel.output.fee.asDriver(onErrorJustReturn: "")
+      .drive(feeLabel.rx.text).disposed(by: disposeBag)
 
     viewModel.output.showValidators.subscribe(onNext: { [weak self] data in
       self?.showPicker(data: data) { selected in

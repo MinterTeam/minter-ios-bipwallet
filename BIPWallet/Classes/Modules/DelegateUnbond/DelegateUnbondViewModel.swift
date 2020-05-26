@@ -112,6 +112,7 @@ class DelegateUnbondViewModel: BaseViewModel, ViewModel {
     var successMessage: Observable<String>
     var errorMessage: Observable<String>
     var fee: Observable<String>
+    var hasMultipleCoins: Observable<Bool>
   }
 
   struct Dependency {
@@ -161,9 +162,13 @@ class DelegateUnbondViewModel: BaseViewModel, ViewModel {
                           let com = (Decimal(gas) * comType).PIPToDecimal()
                           let fee = CurrencyNumberFormatter.formattedDecimal(with: com,
                                                                              formatter: CurrencyNumberFormatter.decimalFormatter) + " " + (Coin.baseCoin().symbol ?? "")
-                          
                           return fee
-                         })
+                         }),
+                         hasMultipleCoins: {
+                          return self.dependency.balanceService.balances().map { (value) -> Bool in
+                           value.balances.keys.count > 1
+                          }
+                         }()
     )
 
     self.isUnbond = isUnbond
@@ -199,7 +204,7 @@ class DelegateUnbondViewModel: BaseViewModel, ViewModel {
 
   func bind() {
 
-    amount.distinctUntilChanged().debounce(.seconds(1), scheduler: MainScheduler.instance).map { (val) -> String? in
+    amount.distinctUntilChanged().debounce(.milliseconds(100), scheduler: MainScheduler.asyncInstance).map { (val) -> String? in
       return AmountHelper.transformValue(value: val)
     }.subscribe(onNext: { val in
       self.amount.accept(val)

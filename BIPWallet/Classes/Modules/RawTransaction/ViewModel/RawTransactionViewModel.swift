@@ -296,7 +296,9 @@ class RawTransactionViewModel: BaseViewModel, ViewModel {// swiftlint:disable:th
 	}
 
 	func sentViewModel() -> SentPopupViewModel {
-		let vm = SentPopupViewModel()
+    let contacts = LocalStorageContactsService()
+    let recipientInfo = ExplorerRecipientInfoService(contactsService: contacts)
+    let vm = SentPopupViewModel(dependency: SentPopupViewModel.Dependency(recipientInfoService: recipientInfo))
 		vm.actionButtonTitle = "VIEW TRANSACTION".localized()
 		vm.secondButtonTitle = "CLOSE".localized()
 		vm.title = "Success!".localized()

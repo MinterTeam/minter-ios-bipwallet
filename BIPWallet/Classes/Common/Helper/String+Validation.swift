@@ -21,12 +21,12 @@ extension String {
   }
 
 	func isValidContactName() -> Bool {
-		let usernameTest = NSPredicate(format: "SELF MATCHES %@", "^[^\\s](.{0,18})$")
+		let usernameTest = NSPredicate(format: "SELF MATCHES %@", "^[^\\s](.{0,17})$")
 		return usernameTest.evaluate(with: self)
 	}
 
   func isValidWalletTitle() -> Bool {
-    let usernameTest = NSPredicate(format: "SELF MATCHES %@", "^[^\\s](.{0,18})$")
+    let usernameTest = NSPredicate(format: "SELF MATCHES %@", "^[^\\s](.{0,17})$")
     return self.isEmpty || usernameTest.evaluate(with: self)
   }
 

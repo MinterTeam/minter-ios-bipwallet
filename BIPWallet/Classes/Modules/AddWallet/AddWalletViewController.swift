@@ -80,6 +80,8 @@ class AddWalletViewController: BaseViewController, Controller, StoryboardInitial
     mnemonicButton.rx.tap.asDriver()
       .drive(viewModel.input.didTapMnemonic)
       .disposed(by: disposeBag)
+    
+    generateWalletButton.rx.tap.asDriver().drive(viewModel.input.didTapGenerateWallet).disposed(by: disposeBag)
 
     (mnemonicTextView.rx.text <-> viewModel.input.signInMnemonics).disposed(by: disposeBag)
     (titleTextField.rx.text <-> viewModel.input.signInTitle).disposed(by: disposeBag)
