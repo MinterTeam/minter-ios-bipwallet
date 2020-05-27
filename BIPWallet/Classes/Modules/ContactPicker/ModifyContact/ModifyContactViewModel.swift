@@ -82,7 +82,14 @@ class ModifyContactViewModel: BaseViewModel, ViewModel {
 
     bind()
 
-    address.accept(addressToAdd)
+    if addressToAdd != nil {
+      address.accept(addressToAdd)
+    }
+
+    if let contactItem = self.contactItem {
+      self.address.accept(contactItem.address)
+      self.name.accept(contactItem.name)
+    }
   }
 
   // MARK: -
@@ -104,11 +111,6 @@ class ModifyContactViewModel: BaseViewModel, ViewModel {
       }).map { _ in Void() }
       .subscribe(switchKeybordToTitle)
       .disposed(by: disposeBag)
-
-    if let contactItem = self.contactItem {
-      self.address.accept(contactItem.address)
-      self.name.accept(contactItem.name)
-    }
   }
 
   func saveForm() {

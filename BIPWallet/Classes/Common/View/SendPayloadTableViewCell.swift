@@ -42,19 +42,6 @@ class SendPayloadTableViewCell: TextViewTableViewCell {
     payloadView.alpha = 0.0
     textView?.superview?.layer.cornerRadius = 8.0
 		setDefault()
-
-    cancelButton.rx.tap.subscribe(onNext: { [weak self] (_) in
-      self?.textView.resignFirstResponder()
-      self?.textViewHeightConstraint?.isActive = true
-      self?.textView.text = ""
-      UIView.animate(withDuration: 0.5) {
-        self?.addMessageButton.alpha = 1.0
-        self?.payloadView.alpha = 0.0
-
-        self?.setNeedsLayout()
-        self?.layoutIfNeeded()
-      }
-    }).disposed(by: disposeBag)
 	}
 
 	override func setSelected(_ selected: Bool, animated: Bool) {
@@ -96,6 +83,19 @@ class SendPayloadTableViewCell: TextViewTableViewCell {
         self?.textViewHeightConstraint?.isActive = false
         self?.setNeedsLayout()
         self?.layoutIfNeeded()
+      }).disposed(by: disposeBag)
+
+      cancelButton.rx.tap.subscribe(onNext: { [weak self] (_) in
+        self?.textView.resignFirstResponder()
+        self?.textViewHeightConstraint?.isActive = true
+        self?.textView.text = ""
+        UIView.animate(withDuration: 0.5) {
+          self?.addMessageButton.alpha = 1.0
+          self?.payloadView.alpha = 0.0
+
+          self?.setNeedsLayout()
+          self?.layoutIfNeeded()
+        }
       }).disposed(by: disposeBag)
 
       addMessageButton.rx.tap.asDriver()

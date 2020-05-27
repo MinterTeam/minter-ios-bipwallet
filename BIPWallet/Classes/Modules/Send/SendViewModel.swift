@@ -102,7 +102,7 @@ class SendViewModel: BaseViewModel, ViewModel, WalletSelectableViewModel {// swi
                                     addressSubject.asObservable(),
                                     amountSubject.map({ (str) -> String? in
                                       return str?.replacingOccurrences(of: ",", with: ".")
-                                    }).asObservable(),
+                                    }).distinctUntilChanged(),
                                     payloadSubject.asObservable(),
                                     dependency.balanceService.account.filter({ (item) -> Bool in
                                       return (item?.address ?? "").isValidAddress()
@@ -137,6 +137,8 @@ class SendViewModel: BaseViewModel, ViewModel, WalletSelectableViewModel {// swi
   private var addressStateSubject = PublishSubject<TextViewTableViewCell.State>()
   private var amountStateSubject = PublishSubject<TextFieldTableViewCell.State>()
   private var payloadStateObservable = PublishSubject<TextViewTableViewCell.State>()
+
+  private var isMaxAmount = BehaviorRelay<Bool>(value: false)
 
   var isBaseCoin: Bool? {
     guard selectedCoin.value != nil else {
@@ -300,6 +302,8 @@ YOU ARE ABOUT TO SEND SEED PHRASE IN THE MESSAGE ATTACHED TO THIS TRANSACTION.\n
 
     formChangedObservable.subscribe(onNext: { [weak self] (val) in
       let amount = val.2
+      let lastIsMaxAmountValue = self?.isMaxAmount.value ?? false
+      self?.isMaxAmount.accept(false)
 
       if self?.recipientSubject.value == nil || self?.recipientSubject.value == "" {
         self?.addressStateSubject.onNext(.default)
@@ -310,6 +314,13 @@ YOU ARE ABOUT TO SEND SEED PHRASE IN THE MESSAGE ATTACHED TO THIS TRANSACTION.\n
       } else {
         let amnt = amount ?? ""
         if let dec = Decimal(string: amnt), dec >= 0 {
+          if let selectedCoin = self?.selectedCoin.value, let selectedCoinBalance = self?.lastBalances[selectedCoin], lastIsMaxAmountValue {
+            let isMax = (Decimal.PIPComparableBalance(from: dec) == Decimal.PIPComparableBalance(from: selectedCoinBalance))
+            if isMax {
+              self?.isMaxAmount.accept(true)
+            }
+          }
+
           self?.amountStateSubject.onNext(.default)
         } else {
           self?.amountStateSubject.onNext(.invalid(error: "AMOUNT IS INCORRECT".localized()))
@@ -494,6 +505,7 @@ YOU ARE ABOUT TO SEND SEED PHRASE IN THE MESSAGE ATTACHED TO THIS TRANSACTION.\n
         self?.impact.onNext(.light)
         self?.sound.onNext(.click)
         self?.amountSubject.accept(val)
+        self?.isMaxAmount.accept(true)
       }).disposed(by: disposeBag)
 
     let payload = SendPayloadTableViewCellItem(reuseIdentifier: "SendPayloadTableViewCell",
@@ -519,7 +531,7 @@ YOU ARE ABOUT TO SEND SEED PHRASE IN THE MESSAGE ATTACHED TO THIS TRANSACTION.\n
 
     let button = ButtonTableViewCellItem(reuseIdentifier: "ButtonTableViewCell",
                                          identifier: CellIdentifierPrefix.button.rawValue)
-    button.title = "Send".localized()
+    button.title = "Continue".localized()
     button.buttonPattern = "purple"
     button.isButtonEnabledObservable = formChangedObservable.map({ (val) -> Bool in
       let coin = val.0
@@ -790,8 +802,9 @@ YOU ARE ABOUT TO SEND SEED PHRASE IN THE MESSAGE ATTACHED TO THIS TRANSACTION.\n
     canPayCommissionWithBaseCoin: Bool
     ) -> Observable<String?> {
       return Observable.create { (observer) -> Disposable in
-        let isMax = (Decimal.PIPComparableBalance(from: amount)
-          == Decimal.PIPComparableBalance(from: selectedCoinBalance))
+
+        let isMax = self.isMaxAmount.value
+
         let isBaseCoin = coin == Coin.baseCoin().symbol!
         let preparedAmount = amount.decimalFromPIP()
         let commission = self.commission(isDelegate: recipient.isValidPublicKey())
