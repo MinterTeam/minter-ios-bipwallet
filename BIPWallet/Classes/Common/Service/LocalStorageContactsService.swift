@@ -111,7 +111,6 @@ class LocalStorageContactsService: ContactsService {
 
   func delete(_ item: ContactItem) -> Observable<Void> {
     return Observable.create { (observer) -> Disposable in
-      let name = item.name ?? ""
       let address = item.address ?? ""
       if let res = (self.storage.objects(class: ContactEntryDataBaseModel.self, query: "address='\(address)'") ?? []).first {
         do {

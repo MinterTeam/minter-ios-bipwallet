@@ -142,7 +142,7 @@ extension ContactPickerViewController: UITableViewDelegate {
     modifyAction.backgroundColor = UIColor.mainPurpleColor()
     modifyAction.image = UIImage(named: "ContactsEditIcon")
 
-    let deleteAction = UIContextualAction(style: .destructive, title: "", handler: { [weak self] (ac: UIContextualAction, view: UIView, success: (Bool) -> Void) in
+    let deleteAction = UIContextualAction(style: .normal, title: "", handler: { [weak self] (ac: UIContextualAction, view: UIView, success: (Bool) -> Void) in
       self?.didTapDeleteOnCell.onNext(indexPath)
       success(true)
     })

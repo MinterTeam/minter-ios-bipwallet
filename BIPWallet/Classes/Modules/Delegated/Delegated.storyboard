@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="16096" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="16097" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
@@ -20,10 +20,10 @@
         </array>
     </customFonts>
     <scenes>
-        <!--Delegated Coins-->
+        <!--Delegated Stakes-->
         <scene sceneID="P0O-RN-r6v">
             <objects>
-                <viewController storyboardIdentifier="DelegatedViewController" title="Delegated Coins" useStoryboardIdentifierAsRestorationIdentifier="YES" id="BhL-Kb-Erm" customClass="DelegatedViewController" customModule="BIPWallet" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="DelegatedViewController" title="Delegated Stakes" useStoryboardIdentifierAsRestorationIdentifier="YES" id="BhL-Kb-Erm" customClass="DelegatedViewController" customModule="BIPWallet" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="lhp-q4-UAD">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="808"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
