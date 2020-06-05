@@ -9,6 +9,9 @@
 import Foundation
 
 struct ValidatorItem {
+  var iconURL: URL?
   var publicKey: String
   var name: String?
+  var isOnline: Bool = false
+  var stake: Decimal = 0
 }

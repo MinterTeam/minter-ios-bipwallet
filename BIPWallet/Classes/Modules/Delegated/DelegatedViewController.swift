@@ -23,7 +23,11 @@ class DelegatedViewController: BaseViewController, Controller, StoryboardInitial
   @IBOutlet weak var noContactsLabel: UILabel!
   @IBOutlet weak var tableView: UITableView!
 
-  let rightBarItem = UIBarButtonItem(image: UIImage(named: "ContactsAddButtonIcon"), landscapeImagePhone: nil, style: .plain, target: nil, action: nil)
+  let rightBarItem = UIBarButtonItem(image: UIImage(named: "ContactsAddButtonIcon"),
+                                     landscapeImagePhone: nil,
+                                     style: .plain,
+                                     target: nil,
+                                     action: nil)
 
   private let didTapUnbondOnCell = PublishSubject<IndexPath?>()
 
@@ -46,9 +50,7 @@ class DelegatedViewController: BaseViewController, Controller, StoryboardInitial
     rightBarItem.rx.tap.asDriver().drive(viewModel.input.didTapAdd).disposed(by: disposeBag)
 
     //Output
-    viewModel
-      .output
-      .sections
+    viewModel.output.sections
       .do(onNext: { [weak self] (items) in
         self?.noContactsLabel.alpha = items.count > 0 ? 0.0 : 1.0
       })
@@ -70,7 +72,7 @@ class DelegatedViewController: BaseViewController, Controller, StoryboardInitial
     super.viewDidLoad()
 
     rxDataSource?.animationConfiguration = AnimationConfiguration(insertAnimation: .top,
-                                                                  reloadAnimation: .automatic,
+                                                                  reloadAnimation: .none,
                                                                   deleteAnimation: .automatic)
 
     rxDataSource = RxTableViewSectionedAnimatedDataSource<BaseTableSectionItem>(
@@ -130,7 +132,7 @@ extension DelegatedViewController: UITableViewDelegate {
   func tableView(_ tableView: UITableView,
                  trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
 
-    let unbondAction = UIContextualAction(style: .destructive, title: "", handler: { [weak self] (ac: UIContextualAction, view: UIView, success: (Bool) -> Void) in
+    let unbondAction = UIContextualAction(style: .normal, title: "", handler: { [weak self] (ac: UIContextualAction, view: UIView, success: (Bool) -> Void) in
       self?.didTapUnbondOnCell.onNext(indexPath)
       success(true)
     })

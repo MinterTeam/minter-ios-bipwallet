@@ -15,6 +15,7 @@
 		08FC94142CA4263EF49422A2 /* TransactionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93E1EFA5D14C042DBEFB1B53 /* TransactionsViewController.swift */; };
 		0C86BA17E81B6A692CEEFE63 /* SendViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D8E46E887E1081D41C2ACE3 /* SendViewController.swift */; };
 		0CB21BBB81AB6CE8C790C87F /* DelegateUnbondCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BF4EE00E5AD1F06F7EFE4E6 /* DelegateUnbondCoordinator.swift */; };
+		1921CF3586EDFEAE823871A0 /* ValidatorsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EA3A25F57FF6AC176791A12 /* ValidatorsViewController.swift */; };
 		1EEF27A2C33CC1815D49FDAF /* ShareCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07CC723832DA666AF5A1E921 /* ShareCoordinator.swift */; };
 		2071CEDA020C159326FA5E19 /* ModifyContactViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AB9707AB5EA0AFEC2F118B9 /* ModifyContactViewController.swift */; };
 		23953FDC1CF7AB2FFA46615D /* BalanceViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3EA027CE7AF8EBD2F11A52F /* BalanceViewController.swift */; };
@@ -76,6 +77,7 @@
 		C2F939095E8D1FCC2D001B80 /* ConvertPopupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB75BAB365E3D44A2910AC02 /* ConvertPopupViewController.swift */; };
 		C3C143892AD9505632448C7D /* ModifyContactCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7A650AD46FECDEC8ABE46EF /* ModifyContactCoordinator.swift */; };
 		C555964A565D5D0E47D20A33 /* BalanceCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D1767764FF68A27E4AFB8F3 /* BalanceCoordinator.swift */; };
+		C988C4722613A8C5334D3778 /* ValidatorsCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED9E9C6A024DA544CB668E38 /* ValidatorsCoordinator.swift */; };
 		CC82CC9FEAD10C672D17E79F /* WalletRemoveConfirmationCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF2487E935C5A21F16A0270C /* WalletRemoveConfirmationCoordinator.swift */; };
 		D3F1230E1977330C038054F5 /* ConvertSucceedPopupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 677E3F7C0C21C1E8A45C6CE3 /* ConvertSucceedPopupViewController.swift */; };
 		D77A23A8AD092181934144EE /* WalletRemoveConfirmationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D28CE533FD063DE987995C57 /* WalletRemoveConfirmationViewModel.swift */; };
@@ -98,6 +100,14 @@
 		FA169677243E7CCD00F36FF2 /* EditWalletTitle.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FA169676243E7CCD00F36FF2 /* EditWalletTitle.storyboard */; };
 		FA16967C24421EDB00F36FF2 /* AllTransactions.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FA16967B24421EDB00F36FF2 /* AllTransactions.storyboard */; };
 		FA16967E24447C8500F36FF2 /* SelectButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA16967D24447C8500F36FF2 /* SelectButton.swift */; };
+		FA171A9B248817D100D8B813 /* DelegateUnbondConfirmPopupCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA171A8F248817D000D8B813 /* DelegateUnbondConfirmPopupCoordinator.swift */; };
+		FA171A9C248817D100D8B813 /* DelegateUnbondConfirmPopup.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FA171A90248817D000D8B813 /* DelegateUnbondConfirmPopup.storyboard */; };
+		FA171A9D248817D100D8B813 /* DelegateUnbondConfirmPopupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA171A91248817D000D8B813 /* DelegateUnbondConfirmPopupViewController.swift */; };
+		FA171A9E248817D100D8B813 /* DelegateUnbondConfirmPopupViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA171A92248817D000D8B813 /* DelegateUnbondConfirmPopupViewModel.swift */; };
+		FA171AA1248817D100D8B813 /* DelegateUnbondSucceedPopupViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA171A97248817D000D8B813 /* DelegateUnbondSucceedPopupViewModel.swift */; };
+		FA171AA2248817D100D8B813 /* DelegateUnbondSucceedPopupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA171A98248817D000D8B813 /* DelegateUnbondSucceedPopupViewController.swift */; };
+		FA171AA3248817D100D8B813 /* DelegateUnbondSucceedPopupCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA171A99248817D000D8B813 /* DelegateUnbondSucceedPopupCoordinator.swift */; };
+		FA171AA4248817D100D8B813 /* DelegateUnbondSucceedPopup.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FA171A9A248817D000D8B813 /* DelegateUnbondSucceedPopup.storyboard */; };
 		FA39EA0C2404149F00757020 /* String+Validation.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA39EA0B2404149F00757020 /* String+Validation.swift */; };
 		FA39EA0F2404D20200757020 /* LoadingTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA39EA0D2404D20100757020 /* LoadingTableViewCell.swift */; };
 		FA39EA102404D20200757020 /* LoadingTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FA39EA0E2404D20200757020 /* LoadingTableViewCell.xib */; };
@@ -247,6 +257,10 @@
 		FAAE57D424473EE10035CE99 /* DelegatedTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAAE57D324473EE10035CE99 /* DelegatedTableViewCell.swift */; };
 		FAB69142246ECBE900CFC37D /* ConvertSucceedPopup.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FAB69141246ECBE900CFC37D /* ConvertSucceedPopup.storyboard */; };
 		FAC14A41247D4A52008D1A45 /* SendSucceedPopup.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FAC14A40247D4A52008D1A45 /* SendSucceedPopup.storyboard */; };
+		FAC14A4524810FC3008D1A45 /* SearchTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAC14A4424810FC3008D1A45 /* SearchTextField.swift */; };
+		FAC14A4724811192008D1A45 /* SearchTextFieldCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FAC14A4624811192008D1A45 /* SearchTextFieldCell.xib */; };
+		FAC14A492481239D008D1A45 /* URL+ValidatorAvatar.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAC14A482481239D008D1A45 /* URL+ValidatorAvatar.swift */; };
+		FAC14A4B248250EE008D1A45 /* Validators.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FAC14A4A248250EE008D1A45 /* Validators.storyboard */; };
 		FACA652C23F2AAAF00399359 /* BaseCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = FACA652B23F2AAAF00399359 /* BaseCoordinator.swift */; };
 		FACA652F23F2AAF000399359 /* Coordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = FACA652E23F2AAF000399359 /* Coordinator.swift */; };
 		FACA653123F2AB2A00399359 /* Routable.swift in Sources */ = {isa = PBXBuildFile; fileRef = FACA653023F2AB2A00399359 /* Routable.swift */; };
@@ -328,6 +342,7 @@
 		FAF317862421189500D1556C /* TransactionTwoColumnCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAF317842421189500D1556C /* TransactionTwoColumnCell.swift */; };
 		FAF317872421189500D1556C /* TransactionTwoColumnCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FAF317852421189500D1556C /* TransactionTwoColumnCell.xib */; };
 		FB1474DD9AFFB75F0EA9A397 /* SpendCoinsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 695FA647980E498E85C23A3A /* SpendCoinsViewController.swift */; };
+		FF2B4D84542270A7DC52B580 /* ValidatorsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CBC34F69B509149CC880E13 /* ValidatorsViewModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -357,6 +372,8 @@
 		0A1699BA1E85D3D9B7D86819 /* SettingsCoordinator.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = SettingsCoordinator.swift; sourceTree = "<group>"; };
 		0B9B48A60F8E49D4C75393DB /* ConvertSucceedPopupViewModel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ConvertSucceedPopupViewModel.swift; sourceTree = "<group>"; };
 		1AA8A805991ADD2764035238 /* SignInViewModel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = SignInViewModel.swift; sourceTree = "<group>"; };
+		1CBC34F69B509149CC880E13 /* ValidatorsViewModel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ValidatorsViewModel.swift; sourceTree = "<group>"; };
+		1EA3A25F57FF6AC176791A12 /* ValidatorsViewController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ValidatorsViewController.swift; sourceTree = "<group>"; };
 		23E1DA3FB0560926AFFF948E /* WelcomeCoordinator.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = WelcomeCoordinator.swift; sourceTree = "<group>"; };
 		26F39547CFE662C862C9B8DE /* GetCoinsViewModel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = GetCoinsViewModel.swift; sourceTree = "<group>"; };
 		275CA1D92C5D4439CE63B517 /* WalletRemoveConfirmationViewController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = WalletRemoveConfirmationViewController.swift; sourceTree = "<group>"; };
@@ -432,6 +449,7 @@
 		E871F8E39370EECB321FC97D /* SendViewModel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = SendViewModel.swift; sourceTree = "<group>"; };
 		EC37B274862AEFAF63D16139 /* DelegatedViewController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = DelegatedViewController.swift; sourceTree = "<group>"; };
 		ED5C5BD42FD95B7ABB8AC9F0 /* AllTransactionsViewController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AllTransactionsViewController.swift; sourceTree = "<group>"; };
+		ED9E9C6A024DA544CB668E38 /* ValidatorsCoordinator.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ValidatorsCoordinator.swift; sourceTree = "<group>"; };
 		FA16966C2439E4D000F36FF2 /* UserDataBaseModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDataBaseModel.swift; sourceTree = "<group>"; };
 		FA169670243BAF8800F36FF2 /* PassthroughView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PassthroughView.swift; sourceTree = "<group>"; };
 		FA169672243CA81900F36FF2 /* AccountItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountItem.swift; sourceTree = "<group>"; };
@@ -439,6 +457,14 @@
 		FA169676243E7CCD00F36FF2 /* EditWalletTitle.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = EditWalletTitle.storyboard; sourceTree = "<group>"; };
 		FA16967B24421EDB00F36FF2 /* AllTransactions.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = AllTransactions.storyboard; sourceTree = "<group>"; };
 		FA16967D24447C8500F36FF2 /* SelectButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectButton.swift; sourceTree = "<group>"; };
+		FA171A8F248817D000D8B813 /* DelegateUnbondConfirmPopupCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DelegateUnbondConfirmPopupCoordinator.swift; sourceTree = "<group>"; };
+		FA171A90248817D000D8B813 /* DelegateUnbondConfirmPopup.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = DelegateUnbondConfirmPopup.storyboard; sourceTree = "<group>"; };
+		FA171A91248817D000D8B813 /* DelegateUnbondConfirmPopupViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DelegateUnbondConfirmPopupViewController.swift; sourceTree = "<group>"; };
+		FA171A92248817D000D8B813 /* DelegateUnbondConfirmPopupViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DelegateUnbondConfirmPopupViewModel.swift; sourceTree = "<group>"; };
+		FA171A97248817D000D8B813 /* DelegateUnbondSucceedPopupViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DelegateUnbondSucceedPopupViewModel.swift; sourceTree = "<group>"; };
+		FA171A98248817D000D8B813 /* DelegateUnbondSucceedPopupViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DelegateUnbondSucceedPopupViewController.swift; sourceTree = "<group>"; };
+		FA171A99248817D000D8B813 /* DelegateUnbondSucceedPopupCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DelegateUnbondSucceedPopupCoordinator.swift; sourceTree = "<group>"; };
+		FA171A9A248817D000D8B813 /* DelegateUnbondSucceedPopup.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = DelegateUnbondSucceedPopup.storyboard; sourceTree = "<group>"; };
 		FA39EA0B2404149F00757020 /* String+Validation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+Validation.swift"; sourceTree = "<group>"; };
 		FA39EA0D2404D20100757020 /* LoadingTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoadingTableViewCell.swift; sourceTree = "<group>"; };
 		FA39EA0E2404D20200757020 /* LoadingTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LoadingTableViewCell.xib; sourceTree = "<group>"; };
@@ -596,6 +622,10 @@
 		FAAE57D324473EE10035CE99 /* DelegatedTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DelegatedTableViewCell.swift; sourceTree = "<group>"; };
 		FAB69141246ECBE900CFC37D /* ConvertSucceedPopup.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = ConvertSucceedPopup.storyboard; sourceTree = "<group>"; };
 		FAC14A40247D4A52008D1A45 /* SendSucceedPopup.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = SendSucceedPopup.storyboard; sourceTree = "<group>"; };
+		FAC14A4424810FC3008D1A45 /* SearchTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchTextField.swift; sourceTree = "<group>"; };
+		FAC14A4624811192008D1A45 /* SearchTextFieldCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SearchTextFieldCell.xib; sourceTree = "<group>"; };
+		FAC14A482481239D008D1A45 /* URL+ValidatorAvatar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URL+ValidatorAvatar.swift"; sourceTree = "<group>"; };
+		FAC14A4A248250EE008D1A45 /* Validators.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Validators.storyboard; sourceTree = "<group>"; };
 		FACA652B23F2AAAF00399359 /* BaseCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseCoordinator.swift; sourceTree = "<group>"; };
 		FACA652E23F2AAF000399359 /* Coordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Coordinator.swift; sourceTree = "<group>"; };
 		FACA653023F2AB2A00399359 /* Routable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Routable.swift; sourceTree = "<group>"; };
@@ -708,6 +738,17 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		1BE6262ABA94EDA2B56E67CF /* Validators */ = {
+			isa = PBXGroup;
+			children = (
+				1EA3A25F57FF6AC176791A12 /* ValidatorsViewController.swift */,
+				1CBC34F69B509149CC880E13 /* ValidatorsViewModel.swift */,
+				ED9E9C6A024DA544CB668E38 /* ValidatorsCoordinator.swift */,
+				FAC14A4A248250EE008D1A45 /* Validators.storyboard */,
+			);
+			path = Validators;
+			sourceTree = "<group>";
+		};
 		33FA29C2A31D7C3E34527064 /* CreateWallet */ = {
 			isa = PBXGroup;
 			children = (
@@ -967,7 +1008,7 @@
 				FB17FB479621549C34C8485A /* DelegateUnbond */,
 				F0D4500DCF0F9ACCBB3C27B2 /* PIN */,
 				5472DAD040254B884E36C0E2 /* Share */,
-				8D72D7B97043226C48256103 /* SendSucceedPopup */,
+				1BE6262ABA94EDA2B56E67CF /* Validators */,
 			);
 			path = Modules;
 			sourceTree = "<group>";
@@ -1045,9 +1086,34 @@
 			path = Send;
 			sourceTree = "<group>";
 		};
+		FA171A8E248817D000D8B813 /* DelegateUnbondConfirmPopup */ = {
+			isa = PBXGroup;
+			children = (
+				FA171A8F248817D000D8B813 /* DelegateUnbondConfirmPopupCoordinator.swift */,
+				FA171A90248817D000D8B813 /* DelegateUnbondConfirmPopup.storyboard */,
+				FA171A91248817D000D8B813 /* DelegateUnbondConfirmPopupViewController.swift */,
+				FA171A92248817D000D8B813 /* DelegateUnbondConfirmPopupViewModel.swift */,
+			);
+			name = DelegateUnbondConfirmPopup;
+			path = BIPWallet/Classes/Modules/DelegateUnbond/DelegateUnbondConfirmPopup;
+			sourceTree = SOURCE_ROOT;
+		};
+		FA171A96248817D000D8B813 /* DelegateUnbondSucceedPopup */ = {
+			isa = PBXGroup;
+			children = (
+				FA171A97248817D000D8B813 /* DelegateUnbondSucceedPopupViewModel.swift */,
+				FA171A98248817D000D8B813 /* DelegateUnbondSucceedPopupViewController.swift */,
+				FA171A99248817D000D8B813 /* DelegateUnbondSucceedPopupCoordinator.swift */,
+				FA171A9A248817D000D8B813 /* DelegateUnbondSucceedPopup.storyboard */,
+			);
+			name = DelegateUnbondSucceedPopup;
+			path = BIPWallet/Classes/Modules/DelegateUnbond/DelegateUnbondSucceedPopup;
+			sourceTree = SOURCE_ROOT;
+		};
 		FA3BDE102423C5950076A7F4 /* Third Party */ = {
 			isa = PBXGroup;
 			children = (
+				FAC14A4324810FA6008D1A45 /* SearchTextField */,
 				FAD143852459761F002C2F1C /* QRCode */,
 				FA3BDEA1242BEA2A0076A7F4 /* PlayNDrop */,
 				FA3BDE42242B83C70076A7F4 /* QRCodeReader.swift */,
@@ -1117,6 +1183,7 @@
 		FA3BDE8E242BE9A40076A7F4 /* Popup */ = {
 			isa = PBXGroup;
 			children = (
+				8D72D7B97043226C48256103 /* SendSucceedPopup */,
 				FA3BDE9F242BE9BC0076A7F4 /* Popup.storyboard */,
 				FA3BDE97242BE9B60076A7F4 /* ConfirmPopupViewModel.swift */,
 				FA3BDE99242BE9B60076A7F4 /* PopupViewModel.swift */,
@@ -1350,6 +1417,15 @@
 			path = View;
 			sourceTree = "<group>";
 		};
+		FAC14A4324810FA6008D1A45 /* SearchTextField */ = {
+			isa = PBXGroup;
+			children = (
+				FAC14A4424810FC3008D1A45 /* SearchTextField.swift */,
+				FAC14A4624811192008D1A45 /* SearchTextFieldCell.xib */,
+			);
+			path = SearchTextField;
+			sourceTree = "<group>";
+		};
 		FACA652A23F2AAA100399359 /* Common */ = {
 			isa = PBXGroup;
 			children = (
@@ -1476,6 +1552,7 @@
 				FAE162D12402EE36007E9CAD /* UISegmentedControl+Font.swift */,
 				FA91D5882434B56200F901AF /* UIViewController+BackgroundTap.swift */,
 				FAD1438E245C1B83002C2F1C /* UILabel+Letterspacing.swift */,
+				FAC14A482481239D008D1A45 /* URL+ValidatorAvatar.swift */,
 			);
 			path = Helper;
 			sourceTree = "<group>";
@@ -1584,6 +1661,8 @@
 		FB17FB479621549C34C8485A /* DelegateUnbond */ = {
 			isa = PBXGroup;
 			children = (
+				FA171A8E248817D000D8B813 /* DelegateUnbondConfirmPopup */,
+				FA171A96248817D000D8B813 /* DelegateUnbondSucceedPopup */,
 				D8ED7BC3989BDCCDEDFA0902 /* DelegateUnbondViewController.swift */,
 				7BCE01A82F430E43E3946E2A /* DelegateUnbondViewModel.swift */,
 				7BF4EE00E5AD1F06F7EFE4E6 /* DelegateUnbondCoordinator.swift */,
@@ -1723,6 +1802,7 @@
 				FAE5A1BA23FD337700808B21 /* Wallet.storyboard in Resources */,
 				FA6AFB4B244DEE1800CCBE19 /* Settings.storyboard in Resources */,
 				FA16967C24421EDB00F36FF2 /* AllTransactions.storyboard in Resources */,
+				FA171A9C248817D100D8B813 /* DelegateUnbondConfirmPopup.storyboard in Resources */,
 				FA3BDE212423C5DC0076A7F4 /* CoinAutocompleteCell.xib in Resources */,
 				FA9E519D23ED9976007263B9 /* LaunchScreen.storyboard in Resources */,
 				FAE621F62406C8BE0040BE4C /* WalletCell.xib in Resources */,
@@ -1739,8 +1819,10 @@
 				FA39EA102404D20200757020 /* LoadingTableViewCell.xib in Resources */,
 				FAF04BD024486EEB004CBC07 /* DelegateUnbond.storyboard in Resources */,
 				FA41B225245D96ED008C0E5C /* Inter.otf in Resources */,
+				FA171AA4248817D100D8B813 /* DelegateUnbondSucceedPopup.storyboard in Resources */,
 				FADA6FA524615E5200FFBCCF /* beep_digi_octave.wav in Resources */,
 				FA3BDE69242BA5110076A7F4 /* TextViewTableViewCell.xib in Resources */,
+				FAC14A4B248250EE008D1A45 /* Validators.storyboard in Resources */,
 				FA91D58C243630AF00F901AF /* ContactPickerHeader.xib in Resources */,
 				FADA6FA624615E5200FFBCCF /* pop_zap.wav in Resources */,
 				FA663D3E23FEEB830029D5D0 /* CoinTableViewCell.xib in Resources */,
@@ -1753,6 +1835,7 @@
 				FA78746D242107700039E2BB /* BlankTableViewCell.xib in Resources */,
 				FA6AFB48244DC31800CCBE19 /* DisclosureTableViewCell.xib in Resources */,
 				FA169677243E7CCD00F36FF2 /* EditWalletTitle.storyboard in Resources */,
+				FAC14A4724811192008D1A45 /* SearchTextFieldCell.xib in Resources */,
 				FA3BDEA0242BE9BC0076A7F4 /* Popup.storyboard in Resources */,
 				FAE621FA24076DA10040BE4C /* AddWalletCell.xib in Resources */,
 				FA9FE562246E86A400788310 /* PopupLoadingView.xib in Resources */,
@@ -1902,6 +1985,7 @@
 				FA3BDE3D242A745E0076A7F4 /* GateService.swift in Sources */,
 				FA3BDE222423C5DC0076A7F4 /* CoinAutocompleteCell.swift in Sources */,
 				FA787471242109EC0039E2BB /* TransactionKeyValueCell.swift in Sources */,
+				FA171A9E248817D100D8B813 /* DelegateUnbondConfirmPopupViewModel.swift in Sources */,
 				FACA654223F2D01400399359 /* AppRouter.swift in Sources */,
 				FA16967E24447C8500F36FF2 /* SelectButton.swift in Sources */,
 				FACA653923F2B04300399359 /* BaseViewController.swift in Sources */,
@@ -1910,8 +1994,10 @@
 				FACA655423F403FD00399359 /* Storage.swift in Sources */,
 				FACA65BB23F791DF00399359 /* HandlerView.swift in Sources */,
 				FA3BDE182423C5A30076A7F4 /* LUAutocompleteViewDelegate.swift in Sources */,
+				FA171AA3248817D100D8B813 /* DelegateUnbondSucceedPopupCoordinator.swift in Sources */,
 				FA91D58E243634BF00F901AF /* ContactPickerHeader.swift in Sources */,
 				FA3BDE68242BA5110076A7F4 /* TextViewTableViewCell.swift in Sources */,
+				FA171AA1248817D100D8B813 /* DelegateUnbondSucceedPopupViewModel.swift in Sources */,
 				FACA657423F6BE5000399359 /* StoryboardInitializable.swift in Sources */,
 				FAF04BD72449927C004CBC07 /* ValidatorService.swift in Sources */,
 				FACA655023F4024E00399359 /* AuthStorage.swift in Sources */,
@@ -1929,6 +2015,7 @@
 				FA3BDE162423C5A30076A7F4 /* LUAutocompleteTableViewCell.swift in Sources */,
 				FA3BDE94242BE9AF0076A7F4 /* PopupViewController.swift in Sources */,
 				FA62231224507ADB006089EC /* LocalStorageAppSettings.swift in Sources */,
+				FAC14A4524810FC3008D1A45 /* SearchTextField.swift in Sources */,
 				FA663D3723FEEAD60029D5D0 /* BaseTableSectionItem.swift in Sources */,
 				FA3BDE93242BE9AF0076A7F4 /* SentPopupViewController.swift in Sources */,
 				FA663D4A240019210029D5D0 /* SeparatorTableViewCell.swift in Sources */,
@@ -1989,6 +2076,7 @@
 				FA3BDE3F242A755D0076A7F4 /* ExplorerGateService.swift in Sources */,
 				EA3D2631E1BE051E430932E2 /* CreateWalletViewModel.swift in Sources */,
 				FA6AFB44244DC25100CCBE19 /* SwitchTableViewCell.swift in Sources */,
+				FA171A9B248817D100D8B813 /* DelegateUnbondConfirmPopupCoordinator.swift in Sources */,
 				FA91D57B2430844F00F901AF /* LocalStorageContactsService.swift in Sources */,
 				7C78ADBB5FAFCB9ACB61EBF7 /* CreateWalletCoordinator.swift in Sources */,
 				0C86BA17E81B6A692CEEFE63 /* SendViewController.swift in Sources */,
@@ -2015,6 +2103,7 @@
 				FA3BDE5B242B83C80076A7F4 /* ReaderOverlayView.swift in Sources */,
 				9BFC04FFB944117F736013AC /* CoinsViewModel.swift in Sources */,
 				4F2E24D9ACAEFBEB603F3C94 /* CoinsCoordinator.swift in Sources */,
+				FAC14A492481239D008D1A45 /* URL+ValidatorAvatar.swift in Sources */,
 				FA3BDE2824251C1B0076A7F4 /* String+Coin.swift in Sources */,
 				FA3BDE78242BA7540076A7F4 /* TwoTitleTableViewCell.swift in Sources */,
 				FA3BDE55242B83C80076A7F4 /* QRCodeReaderViewControllerBuilder.swift in Sources */,
@@ -2042,6 +2131,7 @@
 				FA3BDE59242B83C80076A7F4 /* QRCodeReaderViewController.swift in Sources */,
 				FADA6F9E24615E2D00FFBCCF /* SoundHelper.swift in Sources */,
 				FB1474DD9AFFB75F0EA9A397 /* SpendCoinsViewController.swift in Sources */,
+				FA171A9D248817D100D8B813 /* DelegateUnbondConfirmPopupViewController.swift in Sources */,
 				FAD3E032246953AA00446261 /* AmountHelper.swift in Sources */,
 				247204D1E318C906847A4B65 /* SpendCoinsViewModel.swift in Sources */,
 				FA62232624517C93006089EC /* RawTransactionRouter.swift in Sources */,
@@ -2071,6 +2161,7 @@
 				62CC2D325471C176A9632324 /* AddWalletCoordinator.swift in Sources */,
 				9861F9FB12A81CA02A2BE945 /* EditWalletTitleViewController.swift in Sources */,
 				6AF05AEC01B979C77E420510 /* EditWalletTitleViewModel.swift in Sources */,
+				FA171AA2248817D100D8B813 /* DelegateUnbondSucceedPopupViewController.swift in Sources */,
 				9DC2B10E2D3D2B7244EDE917 /* EditWalletTitleCoordinator.swift in Sources */,
 				8ED3AEAAA9537E278714F7B2 /* DelegatedViewController.swift in Sources */,
 				FA62232524517C93006089EC /* RawTransactionViewController.swift in Sources */,
@@ -2103,6 +2194,9 @@
 				A79ADBBECC299C7227B8A81A /* SendSucceedPopupViewController.swift in Sources */,
 				3DCF6FDD11A1CC37BAD23868 /* SendSucceedPopupViewModel.swift in Sources */,
 				C0FE649AEC36600B2783FCF2 /* SendSucceedPopupCoordinator.swift in Sources */,
+				1921CF3586EDFEAE823871A0 /* ValidatorsViewController.swift in Sources */,
+				FF2B4D84542270A7DC52B580 /* ValidatorsViewModel.swift in Sources */,
+				C988C4722613A8C5334D3778 /* ValidatorsCoordinator.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2278,7 +2372,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 223;
+				CURRENT_PROJECT_VERSION = 224;
 				DEVELOPMENT_TEAM = A26H28FPZU;
 				INFOPLIST_FILE = BIPWallet/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
@@ -2301,7 +2395,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 223;
+				CURRENT_PROJECT_VERSION = 224;
 				DEVELOPMENT_TEAM = A26H28FPZU;
 				INFOPLIST_FILE = BIPWallet/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;

@@ -15,7 +15,7 @@ class ExplorerValidatorService: ValidatorService {
 
   private let disposeBag = DisposeBag()
 
-  private var validatorsSubject = PublishSubject<[ValidatorItem]>()
+  private var validatorsSubject = ReplaySubject<[ValidatorItem]>.create(bufferSize: 1)
 
   private lazy var manager = MinterExplorer.ValidatorManager(httpClient: APIClient.shared)
 
@@ -28,7 +28,10 @@ class ExplorerValidatorService: ValidatorService {
       return resp.filter({ (response) -> Bool in
         return response.publicKey != nil
       }).map { (response) -> ValidatorItem in
-        let item = ValidatorItem(publicKey: response.publicKey!.stringValue, name: response.name)
+        var item = ValidatorItem(publicKey: response.publicKey!.stringValue, name: response.name)
+        item.iconURL = response.iconURL
+        item.isOnline = response.status != .offline && response.status != .notDeclared
+        item.stake = response.stake ?? 0.0
         return item
       }
     }).subscribe(validatorsSubject).disposed(by: disposeBag)

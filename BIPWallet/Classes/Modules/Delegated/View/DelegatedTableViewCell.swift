@@ -48,7 +48,7 @@ class DelegatedTableViewCell: BaseCell {
       return
     }
 
-    self.validatorName.text = item.title ?? "Public Key".localized()
+    self.validatorName.text = item.title ?? TransactionTitleHelper.title(from: item.publicKey ?? "")
 
     self.publicKey.text = TransactionTitleHelper.title(from: item.publicKey ?? "")
 

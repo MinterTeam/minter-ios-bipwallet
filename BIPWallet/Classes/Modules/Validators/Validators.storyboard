@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="16097" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16087"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <array key="Inter.otf">
+            <string>Inter_Semi-Bold</string>
+        </array>
+    </customFonts>
+    <scenes>
+        <!--Choose Validator-->
+        <scene sceneID="vMa-ae-90H">
+            <objects>
+                <viewController storyboardIdentifier="ValidatorsViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="bi0-gC-l4N" customClass="ValidatorsViewController" customModule="BIPWallet" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="f15-g6-YOb" customClass="HandlerView" customModule="BIPWallet" customModuleProvider="target">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" allowsSelectionDuringEditing="YES" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="18" sectionFooterHeight="18" translatesAutoresizingMaskIntoConstraints="NO" id="gpg-0J-VlD">
+                                <rect key="frame" x="0.0" y="70" width="414" height="826"/>
+                                <color key="backgroundColor" red="0.95686274510000002" green="0.95686274510000002" blue="0.95686274510000002" alpha="1" colorSpace="deviceRGB"/>
+                                <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                            </tableView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="No validators" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cDU-RG-NcW" customClass="UHBCustomLabel" customModule="BIPWallet" customModuleProvider="target">
+                                <rect key="frame" x="149.5" y="472" width="115" height="22"/>
+                                <fontDescription key="fontDescription" name="Inter_Semi-Bold" family="Inter" pointSize="18"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="characterSpacing">
+                                        <real key="value" value="0.40000000000000002"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <constraints>
+                            <constraint firstItem="gpg-0J-VlD" firstAttribute="leading" secondItem="1QU-UR-Qp1" secondAttribute="leading" id="UYt-GA-sKs"/>
+                            <constraint firstItem="cDU-RG-NcW" firstAttribute="centerY" secondItem="gpg-0J-VlD" secondAttribute="centerY" id="Wun-MY-xxE"/>
+                            <constraint firstItem="gpg-0J-VlD" firstAttribute="top" secondItem="f15-g6-YOb" secondAttribute="top" constant="70" id="bfa-MJ-6rB"/>
+                            <constraint firstItem="cDU-RG-NcW" firstAttribute="centerX" secondItem="gpg-0J-VlD" secondAttribute="centerX" id="kf2-3S-gSW"/>
+                            <constraint firstItem="gpg-0J-VlD" firstAttribute="trailing" secondItem="1QU-UR-Qp1" secondAttribute="trailing" id="o7K-qO-hlz"/>
+                            <constraint firstAttribute="bottom" secondItem="gpg-0J-VlD" secondAttribute="bottom" id="q0I-oc-WbZ"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="1QU-UR-Qp1"/>
+                        <userDefinedRuntimeAttributes>
+                            <userDefinedRuntimeAttribute type="string" keyPath="title" value="Choose Validator"/>
+                        </userDefinedRuntimeAttributes>
+                    </view>
+                    <navigationItem key="navigationItem" title="Choose Validator" id="iTG-Ub-c6Y"/>
+                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
+                    <connections>
+                        <outlet property="noDataLabel" destination="cDU-RG-NcW" id="aHf-df-LW6"/>
+                        <outlet property="tableView" destination="gpg-0J-VlD" id="AOc-o4-dR6"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="mRh-HH-89K" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="400.00000000000006" y="119.86607142857142"/>
+        </scene>
+    </scenes>
+</document>

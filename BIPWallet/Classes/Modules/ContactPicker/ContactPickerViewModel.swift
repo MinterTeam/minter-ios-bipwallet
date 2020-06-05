@@ -26,7 +26,7 @@ class ContactPickerViewModel: BaseViewModel, ViewModel {
   struct Input {
     var didTapAddContact: AnyObserver<Void>
     var viewWillAppear: AnyObserver<Void>
-    var didSelectItem: AnyObserver<IndexPath>
+//    var didSelectItem: AnyObserver<IndexPath>
     var modelSelected: AnyObserver<BaseCellItem>
     var didAddContact: AnyObserver<ContactItem?>
     var editItem: AnyObserver<IndexPath?>
@@ -55,7 +55,7 @@ class ContactPickerViewModel: BaseViewModel, ViewModel {
 
     self.input = Input(didTapAddContact: didTapAddContact.asObserver(),
                        viewWillAppear: viewWillAppear.asObserver(),
-                       didSelectItem: itemSelected.asObserver(),
+//                       didSelectItem: itemSelected.asObserver(),
                        modelSelected: modelSelected.asObserver(),
                        didAddContact: didAddContact.asObserver(),
                        editItem: editItem.asObserver(),
@@ -93,7 +93,7 @@ class ContactPickerViewModel: BaseViewModel, ViewModel {
   private var didTapAddContact = PublishSubject<Void>()
   private var sections = PublishSubject<[BaseTableSectionItem]>()
   private var viewWillAppear = PublishSubject<Void>()
-  private var itemSelected = PublishSubject<IndexPath>()
+//  private var itemSelected = PublishSubject<IndexPath>()
   private var modelSelected = PublishSubject<BaseCellItem>()
   private var didAddContact = PublishSubject<ContactItem?>()
   private var scrollToCell = PublishSubject<IndexPath?>()

@@ -13,10 +13,13 @@ class DelegatedCoordinator: BaseCoordinator<Void> {
 
   let rootViewController: UINavigationController
   let balanceService: BalanceService
+  let validatorService = ExplorerValidatorService()
 
   init(rootViewController: UINavigationController, balanceService: BalanceService) {
     self.rootViewController = rootViewController
     self.balanceService = balanceService
+
+    validatorService.updateValidators()
 
     super.init()
   }
@@ -32,7 +35,7 @@ class DelegatedCoordinator: BaseCoordinator<Void> {
       return val.0 != nil && val.1 != nil
     }).flatMap({ [weak self] (val) -> Observable<Void> in
       guard let `self` = self, let presentVC = controller.tabBarController else { return Observable.empty() }
-      return self.showUnbond(validator: val.0!, coin: val.1!, maxUnbondAmount: val.2, rootViewController: presentVC)
+      return self.showUnbond(validator: val.0!, coin: val.1!, maxUnbondAmounts: val.2, rootViewController: presentVC)
     }).subscribe().disposed(by: disposeBag)
 
     viewModel.output.showDelegate.flatMap({ [weak self] (val) -> Observable<Void> in
@@ -45,19 +48,21 @@ class DelegatedCoordinator: BaseCoordinator<Void> {
     return Observable.never()
   }
 
-  func showUnbond(validator: ValidatorItem? = nil, coin: String, maxUnbondAmount: Decimal? = nil, rootViewController: UIViewController) -> Observable<Void> {
+  func showUnbond(validator: ValidatorItem? = nil, coin: String, maxUnbondAmounts: [String: Decimal]? = nil, rootViewController: UIViewController) -> Observable<Void> {
     let coordinator = DelegateUnbondCoordinator(rootViewController: rootViewController,
-                                                balanceService: self.balanceService)
+                                                balanceService: self.balanceService,
+                                                validatorService: self.validatorService)
     coordinator.validatorItem = validator
     coordinator.isUnbond = true
     coordinator.coin = coin
-    coordinator.maxUnbondAmount = maxUnbondAmount
+    coordinator.maxUnbondAmounts = maxUnbondAmounts
     return coordinate(to: coordinator)
   }
 
   func showDelegate(validator: ValidatorItem? = nil, rootViewController: UIViewController) -> Observable<Void> {
     let coordinator = DelegateUnbondCoordinator(rootViewController: rootViewController,
-                                                balanceService: self.balanceService)
+                                                balanceService: self.balanceService,
+                                                validatorService: self.validatorService)
     coordinator.validatorItem = validator
     return coordinate(to: coordinator)
   }

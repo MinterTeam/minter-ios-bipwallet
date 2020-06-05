@@ -12,6 +12,7 @@ import RxCocoa
 import BigInt
 import MinterCore
 import MinterExplorer
+import MinterMy
 import RxSwiftExt
 
 enum DelegateUnbondViewModelError: Error {
@@ -26,61 +27,89 @@ class DelegateUnbondViewModel: BaseViewModel, ViewModel {
 
   // MARK: -
 
+  struct Autocomplete {
+    var autocompleteValidatorsItems = ReplaySubject<[SearchTextFieldItem]>.create(bufferSize: 1)
+    var itemsSource: [String: ValidatorItem] = [:]
+  }
+
+  class Amount {
+    var value = BehaviorRelay<String?>(value: "")
+    var isMax = BehaviorRelay<Bool>(value: false)
+
+    let disposeBag = DisposeBag()
+
+    init() {
+      bind()
+    }
+
+    private func bind() {
+      value.distinctUntilChanged()
+        .subscribe(onNext: { _ in self.isMax.accept(false) })
+        .disposed(by: disposeBag)
+    }
+  }
+
+  private var autocomplete = Autocomplete()
+
   private let coinFormatter = CurrencyNumberFormatter.coinFormatter
 
-  private(set) var maxUnbondAmount: Decimal?
+  private(set) var maxUnbondAmounts: [String: Decimal]?
   private(set) var isUnbond = false
-  private(set) var validator: ValidatorItem?
 
+  var validator: ValidatorItem? {
+    didSet {
+      if let validator = validator {
+        self.validatorPublicKey.onNext(TransactionTitleHelper.title(from: validator.publicKey))
+        self.validatorName.onNext(validator.name ?? TransactionTitleHelper.title(from: validator.publicKey))
+      }
+    }
+  }
   private var balances: [String: Decimal] = [:]
   private var validators: [String: Decimal] = [:]
   private var coinsPickerSource: [String: SpendCoinPickerItem] = [:]
   private var validatorsPickerSource: [String: ValidatorItem] = [:]
   private let coin = BehaviorRelay<String?>(value: "")
-  private let amount = BehaviorRelay<String?>(value: "")
-  private let isLoading = BehaviorSubject<Bool>(value: false)
-  private let didTapValidator = PublishSubject<Void>()
+  private let validatorSubject = BehaviorRelay<String?>(value: "")
+  private let amount = Amount()//BehaviorRelay<String?>(value: "")
+  private let shouldClear = ReplaySubject<Void>.create(bufferSize: 1)
   private let didTapCoin = PublishSubject<Void>()
-  private let successMessage = PublishSubject<String>()
   private let errorMessage = PublishSubject<String>()
-
-  lazy private var form = Observable.combineLatest(coin, didSelectValidator, amount).map { (val) -> (String?, ValidatorItem?, Decimal?) in
+  private let didSelectAutocompleteItem = PublishSubject<SearchTextFieldItem>()
+  private let didTapShowValidators = PublishSubject<Void>()
+  lazy private var form = Observable.combineLatest(coin, validatorSubject, amount.value).map { (val) -> (String?, ValidatorItem?, Decimal?) in
     let publicKey = val.1
     var coin: String?
 
     var validator: ValidatorItem?
-    if let firstValue = publicKey.first?.value, let firstItem = self.validatorsPickerSource[firstValue] {
+    if let firstValue = publicKey, let firstItem = self.validatorsPickerSource[firstValue] {
       validator = firstItem
+    } else if let publicKey = publicKey, publicKey.isValidPublicKey() {
+      validator = ValidatorItem(publicKey: publicKey)
     }
     if let coinKey = val.0 {
       coin = self.coinsPickerSource[coinKey]?.coin
     }
-    if self.isUnbond {
-      coin = val.0
-    }
     var amount = Decimal(string: val.2 ?? "")
     return (coin, validator, amount)
-  }.share()
+  }
 
   private var isButtonEnabled: Observable<Bool> {
-    return Observable.merge(isValidForm, isLoading).withLatestFrom(Observable.combineLatest(isValidForm, isLoading)) { first, val -> Bool in
-      let (form, isLoading) = val
-      return form && !isLoading
-    }
+    return isValidForm
   }
 
   private var isValidForm: Observable<Bool> {
     return form.map { (val) -> Bool in
-      let (coin, validator, amount) = val
-      return coin != nil && (validator?.publicKey.isValidPublicKey() ?? false) && amount != nil
-    }.share()
+      let (coin, _, amount) = val
+      return coin != nil && (self.validator?.publicKey.isValidPublicKey() ?? false) && amount != nil
+    }
   }
-  private let didSelectValidator = PublishSubject<[Int: String]>()
+
   private let didSelectCoin = PublishSubject<[Int: String]>()
-  private let validatorName = PublishSubject<String>()
-  private let validatorPublicKey = PublishSubject<String>()
+  private let validatorName = ReplaySubject<String>.create(bufferSize: 1)
+  private let validatorPublicKey = ReplaySubject<String>.create(bufferSize: 1)
   private let didTapSend = PublishSubject<Void>()
   private let didTapUseMax = PublishSubject<Void>()
+  private let didEndEditingValidator = PublishSubject<Void>()
 
   // MARK: - ViewModel
 
@@ -91,28 +120,35 @@ class DelegateUnbondViewModel: BaseViewModel, ViewModel {
   struct Input {
     var coin: BehaviorRelay<String?>
     var amount: BehaviorRelay<String?>
-    var didTapValidator: AnyObserver<Void>
+    var didTapClear: AnyObserver<Void>
     var didTapCoin: AnyObserver<Void>
-    var didSelectValidator: AnyObserver<[Int: String]>
     var didSelectCoin: AnyObserver<[Int: String]>
     var didTapSend: AnyObserver<Void>
     var didTapUseMax: AnyObserver<Void>
+    var didSelectAutocompleteItem: AnyObserver<SearchTextFieldItem>
+    var didTapShowValidators: AnyObserver<Void>
+    var validator: BehaviorRelay<String?>
+    var didEndEditingValidator: AnyObserver<Void>
   }
 
   struct Output {
     var validatorName: Observable<String>
     var validatorPublicKey: Observable<String>
-    var showValidators: Observable<[[String]]>
+    var showInput: Observable<Void>
     var showCoins: Observable<[[String]]>
-    var isLoading: Observable<Bool>
+//    var isLoading: Observable<Bool>
     var isButtonEnabled: Observable<Bool>
-    var buttonTitle: Observable<String?>
     var title: Observable<String?>
     var description: Observable<String?>
-    var successMessage: Observable<String>
+//    var successMessage: Observable<(String, String?)>
     var errorMessage: Observable<String>
     var fee: Observable<String>
     var hasMultipleCoins: Observable<Bool>
+    var autocompleteValidatorsItems: Observable<[SearchTextFieldItem]>
+    var didTapShowValidators: Observable<Void>
+    var disableValidatorChange: Observable<Bool>
+    var showConfirmation: Observable<(String?, Decimal?, String?)>
+    var coinTitle: Observable<String?>
   }
 
   struct Dependency {
@@ -122,40 +158,59 @@ class DelegateUnbondViewModel: BaseViewModel, ViewModel {
     var accountService: AccountService
   }
 
-  init(validator: ValidatorItem? = nil, coinName: String? = nil, isUnbond: Bool = false, maxUnbondAmount: Decimal? = nil, dependency: Dependency) {
+  init(validator: ValidatorItem? = nil,
+       coinName: String? = nil,
+       isUnbond: Bool = false,
+       maxUnbondAmounts: [String: Decimal]? = nil,
+       dependency: Dependency) {
+
     super.init()
 
-    self.maxUnbondAmount = maxUnbondAmount
+    self.isUnbond = isUnbond
+    self.validator = validator
+
+    if let coinName = coinName, let balance = maxUnbondAmounts?[coinName] {
+      let item = SpendCoinPickerItem(coin: coinName, balance: balance)
+      self.coin.accept(item.title ?? "")
+    }
+
+    maxUnbondAmounts?.forEach({ (val) in
+      let item = SpendCoinPickerItem(coin: val.key, balance: val.value)
+      guard let title = item.title else {
+        return
+      }
+      self.coinsPickerSource[title] = item
+    })
+
+    self.maxUnbondAmounts = maxUnbondAmounts
 
     self.dependency = dependency
 
     self.input = Input(coin: coin,
-                       amount: amount,
-                       didTapValidator: didTapValidator.asObserver(),
+                       amount: amount.value,
+                       didTapClear: shouldClear.asObserver(),
                        didTapCoin: didTapCoin.asObserver(),
-                       didSelectValidator: didSelectValidator.asObserver(),
                        didSelectCoin: didSelectCoin.asObserver(),
                        didTapSend: didTapSend.asObserver(),
-                       didTapUseMax: didTapUseMax.asObserver()
+                       didTapUseMax: didTapUseMax.asObserver(),
+                       didSelectAutocompleteItem: didSelectAutocompleteItem.asObserver(),
+                       didTapShowValidators: didTapShowValidators.asObserver(),
+                       validator: validatorSubject,
+                       didEndEditingValidator: didEndEditingValidator.asObserver()
     )
 
     self.output = Output(validatorName: validatorName.asObservable(),
                          validatorPublicKey: validatorPublicKey.asObservable(),
-                         showValidators: showValidatorsObservable(),
+                         showInput: shouldClear.asObservable(),//showInput(),
                          showCoins: showCoinsObservable(),
-                         isLoading: isLoading,
                          isButtonEnabled: isButtonEnabled,
-                         buttonTitle: isLoading.map { val in
-                          return val ? "" : isUnbond ? "Unbond".localized() : "Delegate".localized()
-                         },
                          title: Observable.just((isUnbond ? "Unbond".localized() : "Delegate".localized())),
                          description: {
                           if isUnbond {
                             return Observable.just("The process will be finalized within ~30 days after the request has been sent.")
                           }
                           return Observable.just("Delegate your coins to validators and receive related regular payments.")
-    }(),
-                         successMessage: successMessage.asObservable(),
+                         }(),
                          errorMessage: errorMessage.asObservable(),
                          fee: self.dependency.gateService.currentGas().map({ (gas) -> String in
                           let comType = self.isUnbond ? RawTransactionType.unbond.commission() : RawTransactionType.delegate.commission()
@@ -168,33 +223,32 @@ class DelegateUnbondViewModel: BaseViewModel, ViewModel {
                           return self.dependency.balanceService.balances().map { (value) -> Bool in
                            value.balances.keys.count > 1
                           }
-                         }()
+                         }(),
+                         autocompleteValidatorsItems: autocomplete.autocompleteValidatorsItems.asObservable(),
+                         didTapShowValidators: didTapShowValidators.asObservable(),
+                         disableValidatorChange: Observable.just(isUnbond),
+                         showConfirmation: didTapSend.withLatestFrom(form).map {
+                          ($0.0, $0.2, (self.validator?.name ?? TransactionTitleHelper.title(from: self.validator?.publicKey ?? "")))
+                         }.asObservable(),
+                         coinTitle: Observable.just(isUnbond ? "Coin you want to unbond".localized() : "Coin".localized())
     )
-
-    self.isUnbond = isUnbond
-    self.validator = validator
-    self.coin.accept(coinName)
 
     bind()
   }
 
   // MARK: -
 
-  func showValidatorsObservable() -> Observable<[[String]]> {
-    return didTapValidator.withLatestFrom(self.dependency.validatorService.validators()).map({ (items) -> [[String]] in
-      return [items.map { (item) -> String in
-        return self.pickerTitle(from: item)
-      }]
-    })
-  }
-
   func showCoinsObservable() -> Observable<[[String]]> {
-    return didTapCoin.filter({ (_) -> Bool in
-      return !self.isUnbond
-    }).map { (_) -> [[String]] in
-      return [self.coinsPickerSource.values.map { (item) -> String in
-        return item.title ?? ""
-      }]
+    return didTapCoin.map { (_) -> [[String]] in
+      return [self.coinsPickerSource.values.sorted(by: { (item1, item2) -> Bool in
+        let key1 = item1.coin ?? ""
+        let key2 = item2.coin ?? ""
+        return (key1 == Coin.baseCoin().symbol!) ? true
+          : (key2 == Coin.baseCoin().symbol!) ? false
+          : (key1 < key2)
+        }).map { (item) -> String in
+          return item.title ?? ""
+        }]
     }
   }
 
@@ -204,38 +258,61 @@ class DelegateUnbondViewModel: BaseViewModel, ViewModel {
 
   func bind() {
 
-    amount.distinctUntilChanged().debounce(.milliseconds(100), scheduler: MainScheduler.asyncInstance).map { (val) -> String? in
-      return AmountHelper.transformValue(value: val)
-    }.subscribe(onNext: { val in
-      self.amount.accept(val)
+    shouldClear.subscribe(onNext: { (_) in
+      self.validator = nil
     }).disposed(by: disposeBag)
+
+    didSelectAutocompleteItem.subscribe(onNext: { [weak self] (item) in
+      if let validatorItem = self?.autocomplete.itemsSource[item.id] {
+        self?.validator = validatorItem
+      }
+    }).disposed(by: disposeBag)
+
+    amount.value.distinctUntilChanged().debounce(.milliseconds(100), scheduler: MainScheduler.asyncInstance)
+      .map { (val) -> String? in
+        return AmountHelper.transformValue(value: val)
+      }.subscribe(onNext: { [weak self] val in
+        self?.amount.value.accept(val)
+      }).disposed(by: disposeBag)
 
     didTapUseMax.do(onNext: { [weak self] (_) in
       self?.impact.onNext(.light)
       self?.sound.onNext(.click)
-    }).withLatestFrom(coin).subscribe(onNext: { (coin) in
+    }).withLatestFrom(coin).subscribe(onNext: { [weak self] (coin) in
+      guard let `self` = self else { return }
+
       var amount: String?
-      if self.isUnbond {
-        guard let coin = coin, let balance = self.maxUnbondAmount else { return }
-        amount = CurrencyNumberFormatter.formattedDecimal(with: balance, formatter: self.coinFormatter)
-      } else {
-        guard let coin = coin, let balance = self.coinsPickerSource[coin]?.balance else { return }
-        amount = CurrencyNumberFormatter.formattedDecimal(with: balance, formatter: self.coinFormatter)
-      }
-      self.amount.accept(amount)
+      guard let coin = coin, let balance = self.coinsPickerSource[coin]?.balance else { return }
+      amount = CurrencyNumberFormatter.formattedDecimal(with: balance, formatter: CurrencyNumberFormatter.decimalFormatter, maxPlaces: 18)
+      self.amount.value.accept(amount)
+      self.amount.isMax.accept(true)
     }).disposed(by: disposeBag)
 
-    self.dependency.validatorService.validators().subscribe(onNext: { (items) in
+    self.dependency.validatorService.validators().subscribe(onNext: { [weak self] (items) in
+      guard let `self` = self else { return }
+
+      var autocompleteItems = [SearchTextFieldItem]()
       items.forEach({ (item) in
         self.validatorsPickerSource[self.pickerTitle(from: item)] = item
+        let autocompleteItem = SearchTextFieldItem(id: String.random(),
+                                                   title: item.name ?? TransactionTitleHelper.title(from: item.publicKey), subtitle: item.publicKey,
+                                                   image: UIImage(named: "DelegateIcon"),
+                                                   imageURL: URL.validatorURL(with: item.publicKey))
+        autocompleteItems.append(autocompleteItem)
+        self.autocomplete.itemsSource[autocompleteItem.id] = item
       })
+      self.autocomplete.autocompleteValidatorsItems.onNext(autocompleteItems)
+
       if let validator = self.validator {
-        let title = self.pickerTitle(from: validator)
-        self.didSelectValidator.onNext([0: title])
+        self.validator = validator
+      } else {
+        self.shouldClear.onNext(())
       }
     }).disposed(by: disposeBag)
 
-    self.dependency.balanceService.balances().subscribe(onNext: { (val) in
+    self.dependency.balanceService.balances().filter { _ in !self.isUnbond }.subscribe(onNext: { [weak self] (val) in
+      guard let `self` = self else { return }
+
       self.balances = val.balances.mapValues({ (balance) -> Decimal in
         return balance.0
       })
@@ -246,7 +323,7 @@ class DelegateUnbondViewModel: BaseViewModel, ViewModel {
         guard let title = item.title else { return }
 
         self.coinsPickerSource[title] = item
-        
+
         //If unbond - don't change coin name on default
         if !self.isUnbond && coin == Coin.baseCoin().symbol {
           self.coin.accept(title)
@@ -254,35 +331,38 @@ class DelegateUnbondViewModel: BaseViewModel, ViewModel {
       }
     }).disposed(by: disposeBag)
 
-    didSelectValidator.subscribe(onNext: { [weak self] (selection) in
-      guard let `self` = self else { return }
-      if let firstValue = selection.first?.value, let firstItem = self.validatorsPickerSource[firstValue] {
-        self.validatorPublicKey.onNext(TransactionTitleHelper.title(from: firstItem.publicKey))
-        self.validatorName.onNext(firstItem.name ?? "Public Key".localized())
+    didEndEditingValidator.withLatestFrom(form).subscribe(onNext: { [weak self] (val) in
+      if let validator = val.1 {
+        self?.validator = validator
       }
     }).disposed(by: disposeBag)
 
-    didSelectCoin.subscribe(onNext: { (val) in
-      guard let selectedCoin = val.values.first, let selectedItem = self.coinsPickerSource[selectedCoin] else {
-        return
+    didSelectCoin.subscribe(onNext: { [weak self] (val) in
+      guard let selectedCoin = val.values.first,
+        let selectedItem = self?.coinsPickerSource[selectedCoin] else {
+          return
       }
-      self.coin.accept(selectedItem.title)
+      self?.coin.accept(selectedItem.title)
     }).disposed(by: disposeBag)
 
-    didTapSend.do(onNext: { [weak self] (_) in
-      self?.impact.onNext(.hard)
-      self?.sound.onNext(.bip)
-    }).withLatestFrom(self.isValidForm).filter { $0 == true }
-      .withLatestFrom(Observable.combineLatest(self.form, self.dependency.balanceService.account))
+  }
+
+  lazy var sendObservable = Observable.combineLatest(self.form, self.dependency.balanceService.account).share()
+
+  func performSend() -> Observable<Event<String?>> {
+    return Observable.just(())
+      .withLatestFrom(self.isValidForm).filter { $0 == true }
       .do(onNext: { [weak self] (_) in
-        self?.isLoading.onNext(true)
+        self?.impact.onNext(.hard)
+        self?.sound.onNext(.bip)
       })
+      .withLatestFrom(Observable.combineLatest(form, dependency.balanceService.account))
       .flatMap { [weak self] (val) -> Observable<RawTransaction> in
         guard let `self` = self,
           let coin = val.0.0,
-          let publicKey = val.0.1,
+          let validator = self.validator,
           let amount = val.0.2,
-          let aPublicKey = PublicKey(publicKey.publicKey),
+          let aPublicKey = PublicKey(validator.publicKey),
           let account = val.1 else { return Observable.empty() }
 
         let baseCoinBalance = (self.balances[Coin.baseCoin().symbol!] ?? 0.0)
@@ -290,7 +370,7 @@ class DelegateUnbondViewModel: BaseViewModel, ViewModel {
         //Update amount if needed
         var newAmount = amount
         var gasCoin = coin
-        
+
         //In unbond - send tx as is
         if self.isUnbond {
           //Gas coin here - MNT
@@ -305,9 +385,13 @@ class DelegateUnbondViewModel: BaseViewModel, ViewModel {
             //all good - send tx
           } else {
             //check if USE MAX
-            newAmount = amount - self.currentCommission()
             //IF yes - subtract commission
             //else  - error
+            if self.amount.isMax.value {
+              newAmount = amount - self.currentCommission()
+            } else {
+              return Observable.error(DelegateUnbondViewModelError.insufficientFunds)
+            }
           }
         } else {
           //check if can pay with baseCoin
@@ -315,48 +399,50 @@ class DelegateUnbondViewModel: BaseViewModel, ViewModel {
             //all good - send tx
             gasCoin = Coin.baseCoin().symbol!
           } else {
-            //else - send estimate request and subtract commission from amount
-            return self.makeTransactionWithCommission(account: account, gasCoin: gasCoin, publicKey: aPublicKey, coin: coin, amount: amount)
+            //else - is isMax send estimate request and subtract commission from amount
+            if self.amount.isMax.value {
+              return self.makeTransactionWithCommission(account: account,
+                                                        gasCoin: gasCoin,
+                                                        publicKey: aPublicKey,
+                                                        coin: coin,
+                                                        amount: amount)
+            }
           }
         }
-        return self.makeTransaction(account: account, gasCoin: gasCoin, publicKey: aPublicKey, coin: coin, amount: newAmount)
-    }.flatMap { [weak self] (transaction) -> Observable<Event<String>> in
-      guard let `self` = self else { return Observable.empty() }
-      return self.signTransaction(rawTransaction: transaction).materialize()
-    }
-    .flatMap({ [weak self] (transaction) -> Observable<Event<String?>> in
-      guard let `self` = self else { return Observable.empty() }
-      switch transaction {
-      case .error(let error):
-        return Observable.error(error).materialize()
 
-      case .completed:
-        return Observable.never().materialize()
+        return self.makeTransaction(account: account,
+                                    gasCoin: gasCoin,
+                                    publicKey: aPublicKey,
+                                    coin: coin,
+                                    amount: newAmount)
 
-      case .next(let signedTx):
-        return self.dependency.gateService.send(rawTx: signedTx).materialize()
-      }
-    })
-    .do(onNext: { (_) in
-      self.isLoading.onNext(false)
-    })
-    .subscribe(onNext: { [weak self] val in
-      switch val {
-      case .completed:
-        return
+      }.flatMap { [weak self] (transaction) -> Observable<Event<String>> in
+        guard let `self` = self else { return Observable.empty() }
+        return self.signTransaction(rawTransaction: transaction).materialize()
+      }.flatMap({ [weak self] (transaction) -> Observable<Event<String?>> in
+        guard let `self` = self else { return Observable.empty() }
+        switch transaction {
+        case .error(let error):
+          return Observable.error(error).materialize()
 
-      case .next(let hash):
-        if self?.isUnbond ?? false {
-          self?.successMessage.onNext("Coins have been successfully unbonded".localized())
-        } else {
-          self?.successMessage.onNext("Coins have been successfully delegated".localized())
+        case .completed:
+          return Observable.never().materialize()
+
+        case .next(let signedTx):
+          return self.dependency.gateService.send(rawTx: signedTx).materialize()
         }
-        self?.clearForm()
+      }).do(onNext: { [weak self] (val) in
+        switch val {
+        case .next(_):
+          self?.clearForm()
 
-      case .error(let error):
-        self?.handleError(error)
-      }
-    }).disposed(by: disposeBag)
+        case .error(let error):
+          self?.handleError(error)
+
+        case .completed:
+          return
+        }
+      })
   }
 
   func pickerTitle(from item: ValidatorItem) -> String {
@@ -369,7 +455,7 @@ class DelegateUnbondViewModel: BaseViewModel, ViewModel {
   }
 
   func clearForm() {
-    self.amount.accept(nil)
+    self.amount.value.accept(nil)
   }
 
   func handleError(_ error: Error) {
@@ -401,8 +487,11 @@ class DelegateUnbondViewModel: BaseViewModel, ViewModel {
 
 extension DelegateUnbondViewModel {
 
-  func makeTransactionWithCommission(account: AccountItem, gasCoin: String,
-                       publicKey: PublicKey, coin: String, amount: Decimal) -> Observable<RawTransaction> {
+  func makeTransactionWithCommission(account: AccountItem,
+                                     gasCoin: String,
+                                     publicKey: PublicKey,
+                                     coin: String,
+                                     amount: Decimal) -> Observable<RawTransaction> {
 
     return self.makeTransaction(account: account,
                                 gasCoin: gasCoin,

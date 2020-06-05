@@ -147,21 +147,16 @@ class SendViewModel: BaseViewModel, ViewModel, WalletSelectableViewModel {// swi
     return selectedCoin.value == Coin.baseCoin().symbol!
   }
 
-  private func canPayCommissionWithBaseCoin(baseCoinBalance: Decimal, isDelegate: Bool = false) -> Bool {
-    if baseCoinBalance >= commission(isDelegate: isDelegate) {
+  private func canPayCommissionWithBaseCoin(baseCoinBalance: Decimal) -> Bool {
+    if baseCoinBalance >= commission() {
       return true
     }
     return false
   }
 
-  private func commission(isDelegate: Bool = false) -> Decimal {
+  private func commission() -> Decimal {
     let payloadCom = payloadComission().decimalFromPIP()
-    let val: Decimal
-    if isDelegate {
-      val = (payloadCom + RawTransactionType.delegate.commission()).PIPToDecimal()
-    } else {
-      val = (payloadCom + RawTransactionType.sendCoin.commission()).PIPToDecimal()
-    }
+    let val = (payloadCom + RawTransactionType.sendCoin.commission()).PIPToDecimal()
     return Decimal(GateManager.shared.lastGas) * val
   }
 
@@ -289,9 +284,11 @@ YOU ARE ABOUT TO SEND SEED PHRASE IN THE MESSAGE ATTACHED TO THIS TRANSACTION.\n
     didScanQRSubject.asObservable()
       .subscribe(onNext: { [weak self] (val) in
         let url = URL(string: val ?? "")
-        if true == val?.isValidPublicKey() || true == val?.isValidAddress() {
+        if true == val?.isValidAddress() {
           self?.recipientSubject.accept(val)
           return
+        } else if true == val?.isValidPublicKey() {
+            //Handle Public Key
         } else if let url = url,
           let rawViewController = RawTransactionRouter.rawTransactionViewController(with: url) {
             self?.showViewControllerSubject.onNext(rawViewController)
@@ -375,7 +372,7 @@ YOU ARE ABOUT TO SEND SEED PHRASE IN THE MESSAGE ATTACHED TO THIS TRANSACTION.\n
           break
         case .next(let contact):
           guard let addr = contact?.address else { return }
-          if addr.isValidAddress() || addr.isValidPublicKey() {
+          if self?.isValidMinterRecipient(recipient: addr) ?? false {
             self?.addressSubject.accept(addr)
             self?.addressStateSubject.onNext(.default)
           }
@@ -605,7 +602,7 @@ YOU ARE ABOUT TO SEND SEED PHRASE IN THE MESSAGE ATTACHED TO THIS TRANSACTION.\n
   }
 
   func isValidMinterRecipient(recipient: String) -> Bool {
-    return recipient.isValidAddress() || recipient.isValidPublicKey()
+    return recipient.isValidAddress()
   }
 
   func isAmountValid(amount: Decimal) -> Bool {
@@ -718,8 +715,7 @@ YOU ARE ABOUT TO SEND SEED PHRASE IN THE MESSAGE ATTACHED TO THIS TRANSACTION.\n
                               coin: coin,
                               payload: payload,
                               selectedAddress: selectedAddress,
-                              canPayCommissionWithBaseCoin: self.canPayCommissionWithBaseCoin(baseCoinBalance: baseCoinBalance,
-                                                                                              isDelegate: recipient.isValidPublicKey()))
+                              canPayCommissionWithBaseCoin: self.canPayCommissionWithBaseCoin(baseCoinBalance: baseCoinBalance))
       }).flatMapLatest({ (signedTx) -> Observable<String?> in
         return GateManager.shared.send(rawTx: signedTx)
       }).subscribe(onNext: { [weak self] (val) in
@@ -772,14 +768,7 @@ YOU ARE ABOUT TO SEND SEED PHRASE IN THE MESSAGE ATTACHED TO THIS TRANSACTION.\n
                       payload: String) -> RawTransaction? {
     var rawTx: RawTransaction?
     let gasPrice = (try? currentGas.value()) ?? 1
-    if recipient.isValidPublicKey() {
-      rawTx = DelegateRawTransaction(nonce: nonce,
-                                     gasPrice: gasPrice,
-                                     gasCoin: gasCoin,
-                                     publicKey: recipient,
-                                     coin: coin,
-                                     value: value)
-    } else if recipient.isValidAddress() {
+    if recipient.isValidAddress() {
       rawTx = SendCoinRawTransaction(nonce: nonce,
                                      gasPrice: gasPrice,
                                      gasCoin: gasCoin,
@@ -807,7 +796,7 @@ YOU ARE ABOUT TO SEND SEED PHRASE IN THE MESSAGE ATTACHED TO THIS TRANSACTION.\n
 
         let isBaseCoin = coin == Coin.baseCoin().symbol!
         let preparedAmount = amount.decimalFromPIP()
-        let commission = self.commission(isDelegate: recipient.isValidPublicKey())
+        let commission = self.commission()
         if
           let mnemonic = self.accountManager.mnemonic(for: selectedAddress),
           let seed = self.accountManager.seed(mnemonic: mnemonic),
@@ -896,9 +885,6 @@ YOU ARE ABOUT TO SEND SEED PHRASE IN THE MESSAGE ATTACHED TO THIS TRANSACTION.\n
   private func comissionText(recipient: String, for gas: Int, payloadData: Data? = nil) -> String {
     let payloadCom = Decimal((payloadData ?? Data()).count) * RawTransaction.payloadByteComissionPrice.decimalFromPIP()
     var commission = (RawTransactionType.sendCoin.commission() + payloadCom).PIPToDecimal() * Decimal(gas)
-    if recipient.isValidPublicKey() {
-      commission = (RawTransactionType.delegate.commission() + payloadCom).PIPToDecimal() * Decimal(gas)
-    }
     let balanceString = coinFormatter.formattedDecimal(with: commission)
     return balanceString + " " + (Coin.baseCoin().symbol ?? "")
   }
@@ -941,11 +927,7 @@ extension SendViewModel {
     viewModel.amount = amount
     viewModel.coin = selectedCoin.value
     viewModel.username = to
-    if to.isValidPublicKey() {
-      viewModel.avatarImage = UIImage(named: "delegateImage")
-    } else {
-      viewModel.avatarImageURL = MinterMyAPIURL.avatarAddress(address: address).url()
-    }
+    viewModel.avatarImageURL = MinterMyAPIURL.avatarAddress(address: address).url()
     viewModel.popupTitle = "Confirm Transaction".localized()
     viewModel.buttonTitle = "Confirm".localized()
     viewModel.cancelTitle = "Cancel".localized()
@@ -955,11 +937,7 @@ extension SendViewModel {
   func sentViewModel(to: String, address: String) -> SentPopupViewModel {
     let viewModel = SentPopupViewModel(dependency: SentPopupViewModel.Dependency(recipientInfoService: self.dependency.recipientInfoService))
     viewModel.actionButtonTitle = "View Transaction".localized()
-    if to.isValidPublicKey() {
-      viewModel.avatarImage = UIImage(named: "delegateImage")
-    } else {
-      viewModel.avatarImageURL = MinterMyAPIURL.avatarAddress(address: address).url()
-    }
+    viewModel.avatarImageURL = MinterMyAPIURL.avatarAddress(address: address).url()
     viewModel.secondButtonTitle = "Close".localized()
     viewModel.username = to
     viewModel.title = "Success!".localized()

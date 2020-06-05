@@ -148,7 +148,7 @@ extension SignInViewController: DraggableViewDelegate {
 
     let percentage = translation.y/targetView.bounds.height
 
-    if percentage >= 0.75 {
+    if percentage >= 0.5 {
       updateBlurView(percentage: 0.0)
       self.dismiss(animated: true) {}
     } else {

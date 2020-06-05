@@ -56,9 +56,7 @@ class RawTransactionViewController: BaseViewController, Controller, StoryboardIn
 			.drive(tableView.rx.items(dataSource: rxDataSource!))
 			.disposed(by: disposeBag)
 
-		viewModel
-			.output
-			.shouldClose
+		viewModel.output.shouldClose
 			.subscribe(onNext: { [weak self] (_) in
 				self?.dismiss(animated: true, completion: nil)
 		}).disposed(by: disposeBag)
@@ -74,10 +72,7 @@ class RawTransactionViewController: BaseViewController, Controller, StoryboardIn
 			banner.show()
 		}).disposed(by: disposeBag)
 
-		viewModel
-			.output
-			.successNotification
-			.asObservable()
+		viewModel.output.successNotification.asObservable()
 			.filter({ (notification) -> Bool in
 				return nil != notification
 			}).subscribe(onNext: { (notification) in
@@ -87,20 +82,14 @@ class RawTransactionViewController: BaseViewController, Controller, StoryboardIn
 				banner.show()
 			}).disposed(by: disposeBag)
 
-		viewModel
-			.output
-			.vibrate
-			.asDriver(onErrorJustReturn: ())
+		viewModel.output.vibrate.asDriver(onErrorJustReturn: ())
 			.drive(onNext: { [weak self] _ in
 				SoundHelper.playSoundIfAllowed(type: .bip)
 				self?.hardImpactFeedbackGenerator.prepare()
 				self?.hardImpactFeedbackGenerator.impactOccurred()
 		}).disposed(by: disposeBag)
 
-		viewModel
-			.output
-			.popup
-			.asDriver(onErrorJustReturn: nil)
+		viewModel.output.popup.asDriver(onErrorJustReturn: nil)
 			.drive(onNext: { [weak self] (popup) in
 				if popup == nil {
 					self?.popupViewController?.dismiss(animated: true, completion: nil)
@@ -125,7 +114,7 @@ class RawTransactionViewController: BaseViewController, Controller, StoryboardIn
 													inPopupViewController: self!.popupViewController,
 													inTabbar: false)
 				}
-		}).disposed(by: disposeBag)
+      }).disposed(by: disposeBag)
 
 		self.title = "Confirm Transaction".localized()
 	}

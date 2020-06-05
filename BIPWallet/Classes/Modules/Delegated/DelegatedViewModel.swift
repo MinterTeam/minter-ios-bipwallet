@@ -37,7 +37,7 @@ class DelegatedViewModel: BaseViewModel, ViewModel {
   struct Output {
     var sections: Observable<[BaseTableSectionItem]>
     var showDelegate: Observable<ValidatorItem?>
-    var showUnbond: Observable<(ValidatorItem?, String?, Decimal?)>
+    var showUnbond: Observable<(ValidatorItem?, String?, [String: Decimal]?)>
   }
 
   struct Dependency {
@@ -55,7 +55,7 @@ class DelegatedViewModel: BaseViewModel, ViewModel {
   private var willDisplayCell = PublishSubject<WillDisplayCellEvent>()
   private var didTapUnbond = PublishSubject<IndexPath?>()
   private let showDelegate = PublishSubject<ValidatorItem?>()
-  private let showUnbond = PublishSubject<(ValidatorItem?, String?, Decimal?)>()
+  private let showUnbond = PublishSubject<(ValidatorItem?, String?, [String: Decimal]?)>()
   private let didTapAdd = PublishSubject<Void>()
 
   init(dependency: Dependency) {
@@ -91,7 +91,7 @@ class DelegatedViewModel: BaseViewModel, ViewModel {
     }).subscribe(showDelegate).disposed(by: disposeBag)
 
     //TODO: look if can migrate to 'model selected'
-    didTapUnbond.map { (indexPath) -> (ValidatorItem?, String?, Decimal?) in
+    didTapUnbond.map { (indexPath) -> (ValidatorItem?, String?, [String: Decimal]?) in
       guard let indexPath = indexPath else { return (nil, nil, nil) }
 
       let section = indexPath.section
@@ -105,8 +105,10 @@ class DelegatedViewModel: BaseViewModel, ViewModel {
           : (key1 < key2)
       })[safe: row]
 
-      if let item = coin?.value, let publicKey = item.publicKey, let amount = item.value {
-        return (ValidatorItem(publicKey: publicKey, name: item.validatorName), coin?.key, amount)
+      if let item = coin?.value, let publicKey = item.publicKey, let amount = self.datasource[publicKey] {
+        return (ValidatorItem(publicKey: publicKey, name: item.validatorName), coin?.key, amount.mapValues({ (delegation) -> Decimal in
+          return delegation.value ?? 0.0
+        }))
       }
       return (nil, nil, nil)
     }.do(onNext: { [weak self] (_) in
@@ -132,9 +134,13 @@ class DelegatedViewModel: BaseViewModel, ViewModel {
       let items = val.value.sorted(by: { (delegation1, delegation2) -> Bool in
         let key1 = delegation1.value.coin ?? ""
         let key2 = delegation2.value.coin ?? ""
+
+        let value1 = delegation1.value.bipValue ?? 0.0
+        let value2 = delegation2.value.bipValue ?? 0.0
+
         return (key1 == Coin.baseCoin().symbol!) ? true
           : (key2 == Coin.baseCoin().symbol!) ? false
-          : (key1 < key2)
+          : (value1 > value2)
       }).map { (delegation) -> [BaseCellItem] in
         let coin = delegation.value.coin
         let publicKey = delegation.value.publicKey
@@ -183,8 +189,7 @@ class DelegatedViewModel: BaseViewModel, ViewModel {
   }
 
   func loadData() {
-    self.dependency.balanceService
-      .delegatedBalance()
+    self.dependency.balanceService.delegatedBalance()
       .do(afterNext: { [weak self] (val) in
         self?.createSections()
       }).subscribe(onNext: { [weak self] (val) in

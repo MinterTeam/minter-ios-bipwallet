@@ -24,6 +24,7 @@ class HandlerView: UIView {
 
   let titleLabel = UILabel()
 
+  @IBInspectable
   var title: String? = "" {
     didSet {
       titleLabel.text = title

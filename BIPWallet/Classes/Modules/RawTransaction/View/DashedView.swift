@@ -9,27 +9,42 @@
 import UIKit
 
 class DashedView: UIView {
-	
-	var shapeLayer = CAShapeLayer()
-	
+
+	private var shapeLayer = CAShapeLayer()
+
 	required init?(coder: NSCoder) {
 		super.init(coder: coder)
+
+    drawDashedBorder()
 	}
+
+  @IBInspectable
+  var showDashedBorder = true {
+    didSet {
+      shapeLayer.removeFromSuperlayer()
+      if showDashedBorder {
+        drawDashedBorder()
+      }
+    }
+  }
+
+  func drawDashedBorder() {
+    shapeLayer.bounds = bounds
+    shapeLayer.position = CGPoint(x: bounds.width/2, y: bounds.height/2)
+    shapeLayer.fillColor = nil
+    shapeLayer.strokeColor = UIColor.mainGreyColor(alpha: 0.4).cgColor
+    shapeLayer.lineWidth = 2.0
+    shapeLayer.lineJoin = CAShapeLayerLineJoin.round
+    shapeLayer.lineDashPattern = [3, 3]
+    shapeLayer.path = UIBezierPath(roundedRect: bounds, cornerRadius: 8.0).cgPath
+
+    self.layer.addSublayer(shapeLayer)
+  }
 
 	override func layoutSubviews() {
 		super.layoutSubviews()
-		shapeLayer.removeFromSuperlayer()
 
-		shapeLayer.bounds = bounds
-		shapeLayer.position = CGPoint(x: bounds.width/2, y: bounds.height/2)
-		shapeLayer.fillColor = nil
-		shapeLayer.strokeColor = UIColor.mainGreyColor(alpha: 0.4).cgColor
-		shapeLayer.lineWidth = 2.0
-    shapeLayer.lineJoin = CAShapeLayerLineJoin.round
-		shapeLayer.lineDashPattern = [3, 3]
-		shapeLayer.path = UIBezierPath(roundedRect: bounds, cornerRadius: 8.0).cgPath
-
-		self.layer.addSublayer(shapeLayer)
+    shapeLayer.path = UIBezierPath(roundedRect: bounds, cornerRadius: 8.0).cgPath
 	}
 
 }

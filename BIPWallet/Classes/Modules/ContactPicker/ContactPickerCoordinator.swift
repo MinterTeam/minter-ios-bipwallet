@@ -32,7 +32,7 @@ class ContactPickerCoordinator: BaseCoordinator<ContactPickerResult> {
     let viewModel = ContactPickerViewModel(dependency: dependecy)
     controller.viewModel = viewModel
 
-    let cancel = controller.rx.viewDidDisappear.map { _ in CoordinationResult.cancel }
+    let cancel = controller.rx.deallocated.map { _ in CoordinationResult.cancel }
     let contact = viewModel.output.didSelectContact.filter({ (item) -> Bool in
       return item != nil
     }).map { CoordinationResult.contact($0!) }.do(onNext: { [weak self] (result) in

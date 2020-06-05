@@ -94,12 +94,14 @@ class RawTransactionViewModel: BaseViewModel, ViewModel {// swiftlint:disable:th
 	private let decimalFormatter = CurrencyNumberFormatter.decimalFormatter
 	private let noMantissaFormatter = CurrencyNumberFormatter.decimalShortNoMantissaFormatter
 
+  ///Check data is used to rewrite RawTx Data
+  private var checkData: Data?
+
 	// MARK: -
 
 	init(// swiftlint:disable:this type_body_length cyclomatic_complexity function_body_length
 		dependency: Dependency,
     isLoggedIn: Bool = false,
-//    account: AccountItem?,
 		nonce: BigUInt?,
 		gasPrice: BigUInt?,
 		gasCoin: String?,
@@ -110,8 +112,6 @@ class RawTransactionViewModel: BaseViewModel, ViewModel {// swiftlint:disable:th
 		signatureType: Data?,
 		userData: [String: Any]? = [:]
 	) throws {
-
-//    self.account = account
 
 		self.dependency = dependency
 
@@ -127,6 +127,23 @@ class RawTransactionViewModel: BaseViewModel, ViewModel {// swiftlint:disable:th
 		self.data = data
 
 		try makeFields(data: data)
+
+    if let data = data, let txData = RLP.decode(data), let content = txData[0]?.content {
+      switch content {
+      case .list(let items, _, _):
+        switch type {
+          case .redeemCheck:
+          guard let checkData = items[0].data else {
+            throw RawTransactionViewModelError.incorrectTxData
+          }
+          self.checkData = checkData
+        default:
+          break
+        }
+      default:
+        break
+      }
+    }
 
 		self.input = Input()
 		self.output = Output(sections: sectionsSubject.asObservable(),
@@ -211,6 +228,12 @@ class RawTransactionViewModel: BaseViewModel, ViewModel {// swiftlint:disable:th
 
 				let gasPrice = (self?.gasPrice != nil) ? self!.gasPrice! : BigUInt(try self?.currentGas.value() ?? RawTransactionDefaultGasPrice)
 				let resultNonce = (self?.nonce != nil) ? self!.nonce! : nnnc
+
+        if let passwordString = self?.userData?["p"] as? String,
+          let proof = RawTransactionSigner.proof(address: address, passphrase: passwordString),
+          let checkData = self?.checkData {
+            self?.data = MinterCore.RedeemCheckRawTransactionData(rawCheck: checkData, proof: proof).encode()
+        }
 
 				let tx = RawTransaction(nonce: resultNonce,
 																gasPrice: gasPrice,
@@ -539,11 +562,11 @@ extension RawTransactionViewModel {
 
 							fields.append(["key": "Check".localized(), "value": "Mc" + checkData.toHexString()])
               if
-                let passwordString = userData?["p"] as? String,
-                let address = self.account?.address,
-								let proof = RawTransactionSigner.proof(address: address, passphrase: passwordString) {
-                  self.data = MinterCore.RedeemCheckRawTransactionData(rawCheck: checkData, proof: proof).encode()
-                  fields.append(["key": "Proof".localized(), "value": proof.toHexString()])
+                let passwordString = userData?["p"] as? String{//,
+//                let address = self.account?.address,
+//								let proof = RawTransactionSigner.proof(address: address, passphrase: passwordString) {
+//                  self.data = MinterCore.RedeemCheckRawTransactionData(rawCheck: checkData, proof: proof).encode()
+                  fields.append(["key": "Password".localized(), "value": passwordString])
               } else if let proofData = items[1].data, proofData.count > 0 {
                 fields.append(["key": "Proof".localized(), "value": proofData.toHexString()])
 							} else {

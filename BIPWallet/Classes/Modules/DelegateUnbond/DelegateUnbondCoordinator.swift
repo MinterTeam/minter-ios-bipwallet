@@ -14,18 +14,20 @@ class DelegateUnbondCoordinator: BaseCoordinator<Void> {
   let rootViewController: UIViewController
   let balanceService: BalanceService
   var validatorItem: ValidatorItem?
+  let validatorService: ValidatorService
   var isUnbond = false
-  var maxUnbondAmount: Decimal?
+  var maxUnbondAmounts: [String: Decimal]?
   var coin: String?
+  var confirmPopupCoordiantor: DelegateUnbondConfirmPopupCoordinator?
+  let controller = DelegateUnbondViewController.initFromStoryboard(name: "DelegateUnbond")
 
-  init(rootViewController: UIViewController, balanceService: BalanceService) {
+  init(rootViewController: UIViewController, balanceService: BalanceService, validatorService: ValidatorService) {
     self.rootViewController = rootViewController
     self.balanceService = balanceService
+    self.validatorService = validatorService
   }
 
   override func start() -> Observable<Void> {
-    let validatorService = ExplorerValidatorService()
-    validatorService.updateValidators()
     let accountService = LocalStorageAccountService()
 
     let gateService = ExplorerGateService()
@@ -40,10 +42,9 @@ class DelegateUnbondCoordinator: BaseCoordinator<Void> {
     let viewModel = DelegateUnbondViewModel(validator: validatorItem,
                                             coinName: coin,
                                             isUnbond: isUnbond,
-                                            maxUnbondAmount: maxUnbondAmount,
+                                            maxUnbondAmounts: maxUnbondAmounts,
                                             dependency: dependency)
 
-    let controller = DelegateUnbondViewController.initFromStoryboard(name: "DelegateUnbond")
     controller.viewModel = viewModel
 
     controller.modalPresentationStyle = .overCurrentContext
@@ -51,7 +52,61 @@ class DelegateUnbondCoordinator: BaseCoordinator<Void> {
 
     rootViewController.present(controller, animated: true, completion: nil)
 
-    return controller.rx.viewDidDisappear.map { _ in Void() }.take(1)
+    viewModel.output.didTapShowValidators.flatMap { [weak self] (_) -> Observable<ValidatorsCoordinatorResult> in
+      guard let `self` = self else { return Observable.empty() }
+      return self.showValidators(rootViewController: self.controller,
+                                 validatorService: self.validatorService)
+    }.subscribe(onNext: { result in
+      switch result {
+      case .validator(let validator):
+        viewModel.validator = validator
+      case .cancel:
+        break
+      }
+    }).disposed(by: disposeBag)
+
+    viewModel.output.showConfirmation.flatMap({ [weak self] (val) -> Observable<DelegateUnbondConfirmPopupCoordinatorResult> in
+      guard let `self` = self else { return Observable.empty() }
+
+      let amount = CurrencyNumberFormatter.formattedDecimal(with: val.1 ?? 0.0,
+                                                            formatter: CurrencyNumberFormatter.decimalFormatter) + " " + (val.0 ?? "")
+
+      self.confirmPopupCoordiantor = DelegateUnbondConfirmPopupCoordinator(rootViewController: self.controller,
+                                                                           isUnbond: self.isUnbond,
+                                                                           amountText: amount,
+                                                                           validatorText: val.2 ?? "")
+
+      guard let confirmPopupCoordiantor = self.confirmPopupCoordiantor else { return Observable.empty() }
+
+      return self.coordinate(to: confirmPopupCoordiantor)
+    }).flatMap { (result) -> Observable<Event<String?>> in
+      switch result {
+      case .confirmed:
+        return viewModel.performSend()
+
+      case .canceled:
+        return Observable.empty()
+      }
+    }.flatMap({ (val) -> Observable<Void> in
+      switch val {
+      case .next(let hash):
+        return self.confirmPopupCoordiantor!.showSucceed("Successful " + (self.isUnbond ? "unbond" : "delegation"), hash: hash)
+
+      case .error(_):
+        self.confirmPopupCoordiantor?.close()
+        return Observable.empty()
+
+      case .completed:
+        return Observable.empty()
+      }
+    }).subscribe().disposed(by: disposeBag)
+
+    return controller.rx.deallocated.map { _ in Void() }.take(1)
+  }
+
+  func showValidators(rootViewController: UIViewController, validatorService: ValidatorService) -> Observable<ValidatorsCoordinatorResult> {
+    let coordinator = ValidatorsCoordinator(rootViewController: rootViewController, validatorService: validatorService)
+    return coordinate(to: coordinator)
   }
 
 }

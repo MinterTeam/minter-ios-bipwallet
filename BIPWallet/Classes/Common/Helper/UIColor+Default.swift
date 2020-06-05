@@ -49,7 +49,7 @@ extension UIColor {
   static func textFieldBackgroundColor(alpha: CGFloat = 1) -> UIColor {
     return UIColor(hex: 0xF4F4F4, alpha: alpha)!
   }
-  
+
   static func activeTextFieldBackgroundColor(alpha: CGFloat = 1) -> UIColor {
     return UIColor(hex: 0xF7F5FF, alpha: alpha)!
   }
@@ -57,7 +57,10 @@ extension UIColor {
   static func secondaryGrayColor(alpha: CGFloat = 1) -> UIColor {
     return UIColor(hex: 0xF7F5FF, alpha: alpha)!
   }
-  
+
+  static func separatorColor() -> UIColor {
+    return UIColor(hex: 0xE1E1E1, alpha: 1.0)!
+  }
 
   static func textFieldPlaceholderTextColor(alpha: CGFloat = 1) -> UIColor {
     return UIColor(hex: 0x8E8E8E, alpha: alpha)!
