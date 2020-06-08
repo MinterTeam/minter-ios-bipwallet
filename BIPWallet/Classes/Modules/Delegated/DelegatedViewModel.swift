@@ -180,7 +180,7 @@ class DelegatedViewModel: BaseViewModel, ViewModel {
       validatorItem.didTapCopy
         .map { _ in return ValidatorItem(publicKey: val.key, name: val.value.values.first?.validatorName) }
         .subscribe(onNext: { [weak self] val in
-          UIPasteboard.general.string = val.publicKey
+          UIPasteboard.general.string = val?.publicKey
           self?.showNotifyMessage.onNext("Copied!")
         })
         .disposed(by: disposeBag)

@@ -136,11 +136,9 @@ class DelegateUnbondViewModel: BaseViewModel, ViewModel {
     var validatorPublicKey: Observable<String>
     var showInput: Observable<Void>
     var showCoins: Observable<[[String]]>
-//    var isLoading: Observable<Bool>
     var isButtonEnabled: Observable<Bool>
     var title: Observable<String?>
     var description: Observable<String?>
-//    var successMessage: Observable<(String, String?)>
     var errorMessage: Observable<String>
     var fee: Observable<String>
     var hasMultipleCoins: Observable<Bool>

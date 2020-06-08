@@ -13,11 +13,12 @@ class DelegatedCoordinator: BaseCoordinator<Void> {
 
   let rootViewController: UINavigationController
   let balanceService: BalanceService
-  let validatorService = ExplorerValidatorService()
+  let validatorService: ValidatorService
 
-  init(rootViewController: UINavigationController, balanceService: BalanceService) {
+  init(rootViewController: UINavigationController, balanceService: BalanceService, validatorService: ValidatorService) {
     self.rootViewController = rootViewController
     self.balanceService = balanceService
+    self.validatorService = validatorService
 
     validatorService.updateValidators()
 

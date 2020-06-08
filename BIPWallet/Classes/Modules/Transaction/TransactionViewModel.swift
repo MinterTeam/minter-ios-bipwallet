@@ -94,6 +94,8 @@ class TransactionViewModel: BaseViewModel, ViewModel {
       cellItems = delegateUnbondTransactionItems(data: txData)
     } else if let txData = transaction.data as? ConvertTransactionData {
       cellItems = convertTransactionItems(data: txData)
+    } else if let txData = transaction.data as? SellAllCoinsTransactionData {
+      cellItems = sellAllTransactionItems(data: txData)
     } else if let txData = transaction.data as? RedeemCheckRawTransactionData {
       cellItems = redeemCheckTransactionItems(data: txData)
     } else {
@@ -266,6 +268,108 @@ class TransactionViewModel: BaseViewModel, ViewModel {
   }
 
   func convertTransactionItems(data: ConvertTransactionData) -> [BaseCellItem] {
+    var cellItems = [BaseCellItem]()
+
+    let from = TransactionAddressCellItem(reuseIdentifier: "TransactionAddressCell",
+                                          identifier: "TransactionAddressCell_From")
+    from.address = transaction.from
+    from.name = ""
+    from.title = "From"
+    if let address = transaction.from {
+      from.avatarURL = MinterMyAPIURL.avatarAddress(address: address).url()
+      from.name = self.dependency.recipientInfoService.title(for: address) ?? ""
+    }
+    from.didTapAddress.subscribe(onNext: { [weak self] (_) in
+      UIPasteboard.general.string = self?.transaction.from
+      self?.copied.onNext(())
+    }).disposed(by: disposeBag)
+    cellItems.append(from)
+
+    let blank1 = BlankTableViewCellItem(reuseIdentifier: "BlankTableViewCell",
+                                        identifier: "BlankTableViewCell_AfterFrom")
+    blank1.height = 23.0
+    blank1.color = .white
+    cellItems.append(blank1)
+
+    let separator1 = SeparatorTableViewCellItem(reuseIdentifier: "SeparatorTableViewCell",
+                                                identifier: "SeparatorTableViewCell")
+    cellItems.append(separator1)
+
+    if let payload = transaction.payload?.base64Decoded(), payload.count > 0 {
+      let payloadItem = TransactionKeyValueCellItem(reuseIdentifier: "TransactionKeyValueCell",
+                                                    identifier: "TransactionKeyValueCell_Payload")
+      payloadItem.key = "Payload".localized()
+      payloadItem.value = payload
+      cellItems.append(payloadItem)
+      
+      let blank = BlankTableViewCellItem(reuseIdentifier: "BlankTableViewCell",
+                                         identifier: "BlankTableViewCell_\(String.random())")
+      blank.height = 10
+      cellItems.append(blank)
+
+      let separator2 = SeparatorTableViewCellItem(reuseIdentifier: "SeparatorTableViewCell",
+                                                  identifier: "SeparatorTableViewCell")
+      cellItems.append(separator2)
+    }
+
+    if let date = transaction.date {
+      let dateItem = TransactionKeyValueCellItem(reuseIdentifier: "TransactionKeyValueCell",
+                                                 identifier: "TransactionKeyValueCell_Timestamp")
+      dateItem.key = "Timestamp".localized()
+      dateItem.value = fullDateFormatter.string(from: date)
+      cellItems.append(dateItem)
+
+      let blank4 = BlankTableViewCellItem(reuseIdentifier: "BlankTableViewCell",
+                                          identifier: "BlankTableViewCell_Timestamp")
+      blank4.height = 5.0
+      blank4.color = .white
+      cellItems.append(blank4)
+    }
+
+    let coins = TransactionTwoColumnCellItem(reuseIdentifier: "TransactionTwoColumnCell",
+                                             identifier: "TransactionTwoColumnCell_Coins")
+    coins.key1 = "From Coin".localized()
+    coins.value1 = data.fromCoin
+    coins.key2 = "To Coin".localized()
+    coins.value2 = data.toCoin
+    cellItems.append(coins)
+
+    let blank2 = BlankTableViewCellItem(reuseIdentifier: "BlankTableViewCell",
+                                        identifier: "BlankTableViewCell_Coins")
+    blank2.height = 5.0
+    blank2.color = .white
+    cellItems.append(blank2)
+
+    let amounts = TransactionTwoColumnCellItem(reuseIdentifier: "TransactionTwoColumnCell",
+                                               identifier: "TransactionTwoColumnCell_Amounts")
+    amounts.key1 = "Amount Spent".localized()
+    amounts.value1 = CurrencyNumberFormatter.formattedDecimal(with: data.valueToSell ?? 0.0,
+                                                              formatter: coinFormatter)
+    amounts.key2 = "Amount Received".localized()
+    amounts.value2 = CurrencyNumberFormatter.formattedDecimal(with: data.valueToBuy ?? 0.0,
+                                                              formatter: coinFormatter)
+    cellItems.append(amounts)
+
+    let blank3 = BlankTableViewCellItem(reuseIdentifier: "BlankTableViewCell",
+                                        identifier: "BlankTableViewCell_Amount")
+    blank3.height = 5.0
+    blank3.color = .white
+    cellItems.append(blank3)
+
+    cellItems.append(feeBlock())
+
+    let blank4 = BlankTableViewCellItem(reuseIdentifier: "BlankTableViewCell",
+                                        identifier: "BlankTableViewCell_BeforeShare")
+    blank4.height = 10.0
+    blank4.color = .white
+    cellItems.append(blank4)
+
+    cellItems.append(shareTransaction())
+
+    return cellItems
+  }
+
+  func sellAllTransactionItems(data: SellAllCoinsTransactionData) -> [BaseCellItem] {
     var cellItems = [BaseCellItem]()
 
     let from = TransactionAddressCellItem(reuseIdentifier: "TransactionAddressCell",

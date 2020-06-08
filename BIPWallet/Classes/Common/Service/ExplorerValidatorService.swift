@@ -26,13 +26,13 @@ class ExplorerValidatorService: ValidatorService {
   func updateValidators() {
     self.update().map({ (resp) -> [ValidatorItem] in
       return resp.filter({ (response) -> Bool in
-        return response.publicKey != nil
+        return response.publicKey != nil && response.publicKey?.stringValue.isValidPublicKey() ?? false
       }).map { (response) -> ValidatorItem in
         var item = ValidatorItem(publicKey: response.publicKey!.stringValue, name: response.name)
-        item.iconURL = response.iconURL
-        item.isOnline = response.status != .offline && response.status != .notDeclared
-        item.stake = response.stake ?? 0.0
-        return item
+        item!.iconURL = response.iconURL
+        item!.isOnline = response.status != .offline && response.status != .notDeclared
+        item!.stake = response.stake ?? 0.0
+        return item!
       }
     }).subscribe(validatorsSubject).disposed(by: disposeBag)
   }

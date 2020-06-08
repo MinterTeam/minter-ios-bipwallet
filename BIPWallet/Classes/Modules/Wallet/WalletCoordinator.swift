@@ -33,6 +33,9 @@ class WalletCoordinator: BaseCoordinator<Void> {
 
   override func start() -> Observable<Void> {
     let contactsService = LocalStorageContactsService()
+    let validatorService = ExplorerValidatorService()
+    validatorService.updateValidators()
+
     let recipientInfoService = ExplorerRecipientInfoService(contactsService: contactsService)
 
     let controller = WalletViewController.initFromStoryboard(name: "Wallet")
@@ -62,7 +65,9 @@ class WalletCoordinator: BaseCoordinator<Void> {
                                                 balanceService: balanceService,
                                                 authService: authService,
                                                 recipientInfoService: recipientInfoService,
-                                                transactionService: transactionService)
+                                                transactionService: transactionService,
+                                                validatorService: validatorService
+                                                )
     coordinate(to: balanceCoordiantor).subscribe().disposed(by: disposeBag)
 
     let sendTabbarItem = UITabBarItem(title: "Send".localized(),
@@ -76,7 +81,8 @@ class WalletCoordinator: BaseCoordinator<Void> {
                                           balanceService: balanceService,
                                           authService: authService,
                                           contactsService: contactsService,
-                                          recipientInfoService: recipientInfoService
+                                          recipientInfoService: recipientInfoService,
+                                          validatorService: validatorService
                                           )
     coordinate(to: sendCoordinator).subscribe().disposed(by: disposeBag)
 

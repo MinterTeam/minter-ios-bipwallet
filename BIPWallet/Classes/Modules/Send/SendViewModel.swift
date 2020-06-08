@@ -63,6 +63,7 @@ class SendViewModel: BaseViewModel, ViewModel, WalletSelectableViewModel {// swi
     var timerText: Observable<NSAttributedString?>
     var usernameDidEndEditing: Observable<Void>
     var showSendSucceed: Observable<(String?, String?)>
+    var didScanQR: Observable<String?>
   }
 
   struct Dependency {
@@ -92,7 +93,6 @@ class SendViewModel: BaseViewModel, ViewModel, WalletSelectableViewModel {// swi
   private let coinSubject = BehaviorRelay<String?>(value: "")
   private let recipientSubject = BehaviorRelay<String?>(value: "")
   private let addressSubject = BehaviorRelay<String?>(value: "")
-//  private var recipientAddress = BehaviorRelay<String?>(value: nil)
   private let amountSubject = BehaviorRelay<String?>(value: "")
   private let shouldShowAlertSubject = PublishSubject<String>()
   //used to update input amount value
@@ -220,7 +220,8 @@ class SendViewModel: BaseViewModel, ViewModel, WalletSelectableViewModel {// swi
                           let ago = Date().timeIntervalSince1970 - ($0 ?? 0)
                           return self.headerViewLastUpdatedTitleText(seconds: ago) },
                          usernameDidEndEditing: usernameDidEndEditing.asObservable(),
-                         showSendSucceed: showSendSucceed.asObservable()
+                         showSendSucceed: showSendSucceed.asObservable(),
+                         didScanQR: didScanQRSubject.asObservable()
     )
 
     amountSubject.distinctUntilChanged()//.observeOn(MainScheduler.asyncInstance)
@@ -288,7 +289,7 @@ YOU ARE ABOUT TO SEND SEED PHRASE IN THE MESSAGE ATTACHED TO THIS TRANSACTION.\n
           self?.recipientSubject.accept(val)
           return
         } else if true == val?.isValidPublicKey() {
-            //Handle Public Key
+          return
         } else if let url = url,
           let rawViewController = RawTransactionRouter.rawTransactionViewController(with: url) {
             self?.showViewControllerSubject.onNext(rawViewController)

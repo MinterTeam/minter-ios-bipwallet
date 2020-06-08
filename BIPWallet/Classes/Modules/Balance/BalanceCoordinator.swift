@@ -21,18 +21,24 @@ class BalanceCoordinator: BaseCoordinator<Void> {
   let balanceService: BalanceService
   let recipientInfoService: RecipientInfoService
   let transactionService: TransactionService
+  let validatorService: ValidatorService
 
   init(navigationController: UINavigationController,
        balanceService: BalanceService,
        authService: AuthService,
        recipientInfoService: RecipientInfoService,
-       transactionService: TransactionService) {
+       transactionService: TransactionService,
+       validatorService: ValidatorService
+  ) {
 
     self.navigationController = navigationController
     self.balanceService = balanceService
     self.authService = authService
     self.recipientInfoService = recipientInfoService
     self.transactionService = transactionService
+    self.validatorService = validatorService
+
+    validatorService.updateValidators()
 
     super.init()
   }
@@ -70,6 +76,9 @@ class BalanceCoordinator: BaseCoordinator<Void> {
     }.subscribe().disposed(by: disposeBag)
 
     viewModel.output.didScanQR.flatMap { (val) -> Observable<Void> in
+      if let item = ValidatorItem(publicKey: val ?? ""), let root = controller.tabBarController {
+        return self.showDelegateUnbond(rootViewController: root, validatorItem: item)
+      }
       guard let url = URL(string: val ?? "") else {
         return Observable.empty()
       }
@@ -77,7 +86,7 @@ class BalanceCoordinator: BaseCoordinator<Void> {
     }.subscribe().disposed(by: disposeBag)
 
     viewModel.output.didScanQR.filter({ (str) -> Bool in
-      return (str?.isValidAddress() ?? false) || (str?.isValidPublicKey() ?? false)
+      return (str?.isValidAddress() ?? false)
     }).subscribe(didScanRecipient).disposed(by: disposeBag)
 
     coins.didScrollToPoint?.subscribe(onNext: { (point) in
@@ -137,8 +146,18 @@ class BalanceCoordinator: BaseCoordinator<Void> {
 
 extension BalanceCoordinator {
 
+  func showDelegateUnbond(rootViewController: UIViewController, validatorItem: ValidatorItem) -> Observable<Void> {
+    let coordiantor = DelegateUnbondCoordinator(rootViewController: rootViewController,
+                                                balanceService: self.balanceService,
+                                                validatorService: self.validatorService)
+    coordiantor.validatorItem = validatorItem
+    return coordinate(to: coordiantor)
+  }
+
   func showDelegated(inViewController: UINavigationController, balanceService: BalanceService) -> Observable<Void> {
-    let delegatedCoordinator = DelegatedCoordinator(rootViewController: inViewController, balanceService: balanceService)
+    let delegatedCoordinator = DelegatedCoordinator(rootViewController: inViewController,
+                                                    balanceService: balanceService,
+                                                    validatorService: self.validatorService)
     return coordinate(to: delegatedCoordinator)
   }
 

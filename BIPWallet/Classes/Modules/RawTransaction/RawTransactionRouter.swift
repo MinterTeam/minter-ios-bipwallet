@@ -114,17 +114,14 @@ class RawTransactionRouter {
 	}
 
 	static func rawTransactionViewController(with url: URL) -> UIViewController? {
-//		if url.path.contains("tx") {
-      // new format
-      if url.params()["d"] == nil {
-        let txData = String(url.path.split(separator: "/").last ?? "")
-        var params = url.params()
-        params["d"] = txData
-        guard let viewController = RawTransactionRouter.viewController(path: ["tx"], param: params) else { return nil }
-        return UINavigationController(rootViewController: viewController)
-      }
-//			return RawTransactionRouter.viewController(path: ["tx"], param: url.params())
-//		}
+    // new format
+    if url.params()["d"] == nil {
+      let txData = String(url.path.split(separator: "/").last ?? "")
+      var params = url.params()
+      params["d"] = txData
+      guard let viewController = RawTransactionRouter.viewController(path: ["tx"], param: params) else { return nil }
+      return UINavigationController(rootViewController: viewController)
+    }
 		return nil
 	}
 
@@ -146,7 +143,6 @@ class RawTransactionRouter {
                                                           authService: self.authService)
       viewModel = try RawTransactionViewModel(
         dependency: dependency,
-//        account: AccountItem(title: nil, address: ""),//Session.shared.accounts.value.first,
         nonce: nonce,
         gasPrice: gasPrice,
         gasCoin: gasCoin,
@@ -162,8 +158,6 @@ class RawTransactionRouter {
 
     let viewController = RawTransactionViewController.initFromStoryboard(name: "RawTransaction")
     viewController.viewModel = viewModel
-//    viewController.navigationBar.barStyle = .black
-//    (viewController.viewControllers.first as? RawTransactionViewController)?.viewModel = viewModel
     return viewController
   }
 

@@ -184,9 +184,9 @@ class BalanceViewModel: BaseViewModel, ViewModel, WalletSelectableViewModel {
         if true == val?.isValidAddress() {
           return
         } else if true == val?.isValidPublicKey() {
-            //Handle Public Key
+          return
         } else if let url = url, let rawViewController = RawTransactionRouter.rawTransactionViewController(with: url) {
-            return
+          return
         }
         self?.showErrorMessage.onNext("Invalid transaction data".localized())
       }).disposed(by: disposeBag)

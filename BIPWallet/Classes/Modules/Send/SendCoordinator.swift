@@ -20,18 +20,22 @@ class SendCoordinator: BaseCoordinator<Void> {
   let balanceService: BalanceService
   let contactsService: ContactsService
   let recipientInfoService: RecipientInfoService
+  let validatorService: ValidatorService
 
   init(navigationController: UINavigationController,
        balanceService: BalanceService,
        authService: AuthService,
        contactsService: ContactsService,
-       recipientInfoService: RecipientInfoService) {
+       recipientInfoService: RecipientInfoService,
+       validatorService: ValidatorService
+  ) {
 
     self.navigationController = navigationController
     self.authService = authService
     self.balanceService = balanceService
     self.contactsService = contactsService
     self.recipientInfoService = recipientInfoService
+    self.validatorService = validatorService
 
     super.init()
 
@@ -84,6 +88,13 @@ class SendCoordinator: BaseCoordinator<Void> {
       }
     }).subscribe().disposed(by: disposeBag)
 
+    viewModel.output.didScanQR.flatMap { (val) -> Observable<Void> in
+      if let item = ValidatorItem(publicKey: val ?? ""), let root = controller.tabBarController {
+        return self.showDelegateUnbond(rootViewController: root, validatorItem: item)
+      }
+      return Observable.empty()
+    }.subscribe().disposed(by: disposeBag)
+
     recipient.subscribe(viewModel.input.didScanQR).disposed(by: disposeBag)
 
     self.bindSelectWallet(with: controller, viewModel: viewModel)
@@ -95,7 +106,15 @@ class SendCoordinator: BaseCoordinator<Void> {
 }
 
 extension SendCoordinator {
-  
+
+  func showDelegateUnbond(rootViewController: UIViewController, validatorItem: ValidatorItem) -> Observable<Void> {
+    let coordiantor = DelegateUnbondCoordinator(rootViewController: rootViewController,
+                                                balanceService: self.balanceService,
+                                                validatorService: self.validatorService)
+    coordiantor.validatorItem = validatorItem
+    return coordinate(to: coordiantor)
+  }
+
   func showAddContact(rootViewController: UIViewController, address: String) -> Observable<ContactItem?> {
     let coordinator = ModifyContactCoordinator(address: address, rootViewController: rootViewController, contactsService: contactsService)
     return coordinate(to: coordinator)

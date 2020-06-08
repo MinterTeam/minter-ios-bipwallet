@@ -14,4 +14,11 @@ struct ValidatorItem {
   var name: String?
   var isOnline: Bool = false
   var stake: Decimal = 0
+
+  init?(publicKey: String, name: String? = nil) {
+    guard publicKey.isValidPublicKey() else {
+      return nil
+    }
+    self.publicKey = publicKey
+  }
 }
