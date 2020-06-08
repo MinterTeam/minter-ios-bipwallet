@@ -100,6 +100,31 @@ class BalanceViewController: SegmentedPagerTabStripViewController, Controller, S
       .drive(viewModel.input.didTapDelegatedBalance)
       .disposed(by: disposeBag)
 
+    shareItem.rx.tap.asDriver().drive(viewModel.input.didTapShare).disposed(by: disposeBag)
+    scanQRItem.rx.tap.asDriver().drive(viewModel.input.didTapScanQR).disposed(by: disposeBag)
+
+    Observable.of(self.availableBalance.rx.tapGesture(), self.balanceTitle.rx.tapGesture()).merge().when(.ended)
+      .map {_ in}.subscribe(viewModel.input.didTapBalance).disposed(by: disposeBag)
+
+    containerViewTap.filter { (recognizer) -> Bool in
+      let point = recognizer.location(in: self.balanceView)
+      return self.availableBalance.frame.contains(point) || self.balanceTitle.frame.contains(point)
+    }.map {_ in}.subscribe(viewModel.input.didTapBalance).disposed(by: disposeBag)
+
+    containerViewTap.filter { (recognizer) -> Bool in
+      let point = recognizer.location(in: self.balanceView)
+      return self.delegatedBalanceTitle.frame.contains(point) || self.delegatedBalance.frame.contains(point)
+    }.map {_ in}.subscribe(viewModel.input.didTapDelegatedBalance).disposed(by: disposeBag)
+
+    readerVC.completionBlock = { [weak self] (result: QRCodeReaderResult?) in
+      self?.readerVC.stopScanning()
+      self?.readerVC.dismiss(animated: true) {
+        if let res = result?.value {
+          self?.viewModel.input.didScanQR.onNext(res)
+        }
+      }
+    }
+
     //Output
     viewModel.output
       .availabaleBalance
@@ -127,29 +152,9 @@ class BalanceViewController: SegmentedPagerTabStripViewController, Controller, S
       .drive(self.balanceTitle.rx.text)
       .disposed(by: disposeBag)
 
-    Observable.of(self.availableBalance.rx.tapGesture(), self.balanceTitle.rx.tapGesture()).merge().when(.ended)
-      .map {_ in}.subscribe(viewModel.input.didTapBalance).disposed(by: disposeBag)
-
-    containerViewTap.filter { (recognizer) -> Bool in
-      let point = recognizer.location(in: self.balanceView)
-      return self.availableBalance.frame.contains(point) || self.balanceTitle.frame.contains(point)
-    }.map {_ in}.subscribe(viewModel.input.didTapBalance).disposed(by: disposeBag)
-
-    containerViewTap.filter { (recognizer) -> Bool in
-      let point = recognizer.location(in: self.balanceView)
-      return self.delegatedBalanceTitle.frame.contains(point) || self.delegatedBalance.frame.contains(point)
-    }.map {_ in}.subscribe(viewModel.input.didTapDelegatedBalance).disposed(by: disposeBag)
-
-    shareItem.rx.tap.asDriver().drive(viewModel.input.didTapShare).disposed(by: disposeBag)
-
-    readerVC.completionBlock = { [weak self] (result: QRCodeReaderResult?) in
-      self?.readerVC.stopScanning()
-      self?.readerVC.dismiss(animated: true) {
-        if let res = result?.value {
-          self?.viewModel.input.didScanQR.onNext(res)
-        }
-      }
-    }
+    viewModel.output.openAppSettings.asDriver(onErrorJustReturn: ()).drive(onNext: { [weak self] (_) in
+      self?.openAppSpecificSettings()
+    }).disposed(by: disposeBag)
   }
 
   func configureDefault() {
@@ -235,5 +240,14 @@ class BalanceViewController: SegmentedPagerTabStripViewController, Controller, S
       return (inBalance || inDelegated)
     })
   }).when(.ended).share()
+
+  @objc func openAppSpecificSettings() {
+    guard let url = URL(string: UIApplication.openSettingsURLString), UIApplication.shared.canOpenURL(url) else {
+      return
+    }
+
+    UIApplication.shared.open(url, options: [:]) { (_) in
+    }
+  }
 
 }

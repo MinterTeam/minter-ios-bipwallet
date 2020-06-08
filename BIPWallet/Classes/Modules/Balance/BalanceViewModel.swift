@@ -11,6 +11,7 @@ import RxSwift
 import MinterCore
 import RxReachability
 import Reachability
+import AVFoundation
 
 class BalanceViewModel: BaseViewModel, ViewModel, WalletSelectableViewModel {
 
@@ -36,6 +37,8 @@ class BalanceViewModel: BaseViewModel, ViewModel, WalletSelectableViewModel {
   private let didTapBalance = PublishSubject<Void>()
   private let didTapShare = PublishSubject<Void>()
   private let didScanQR = PublishSubject<String?>()
+  private let didTapScanQR = PublishSubject<Void>()
+  private let openAppSettingsSubject = PublishSubject<Void>()
   private let balanceTitle = PublishSubject<String?>()
   lazy var balanceTitleObservable = Observable.of(Observable<Int>.timer(0, period: 0.5, scheduler: MainScheduler.instance).map {_ in}, self.changedBalanceTypeSubject.map {_ in}).merge()
 
@@ -52,6 +55,7 @@ class BalanceViewModel: BaseViewModel, ViewModel, WalletSelectableViewModel {
     var didTapBalance: AnyObserver<Void>
     var didTapShare: AnyObserver<Void>
     var didScanQR: AnyObserver<String?>
+    var didTapScanQR: AnyObserver<Void>
   }
 
   struct Output {
@@ -63,6 +67,7 @@ class BalanceViewModel: BaseViewModel, ViewModel, WalletSelectableViewModel {
     var balanceTitle: Observable<String?>
     var didTapShare: Observable<Void>
     var didScanQR: Observable<String?>
+    var openAppSettings: Observable<Void>
   }
 
   struct Dependency {
@@ -80,7 +85,8 @@ class BalanceViewModel: BaseViewModel, ViewModel, WalletSelectableViewModel {
                        didTapDelegatedBalance: didTapDelegatedBalance.asObserver(),
                        didTapBalance: didTapBalance.asObserver(),
                        didTapShare: didTapShare.asObserver(),
-                       didScanQR: didScanQR.asObserver()
+                       didScanQR: didScanQR.asObserver(),
+                       didTapScanQR: didTapScanQR.asObserver()
     )
 
     self.output = Output(availabaleBalance: availableBalance.asObservable(),
@@ -90,7 +96,8 @@ class BalanceViewModel: BaseViewModel, ViewModel, WalletSelectableViewModel {
                          showDelegated: didTapDelegatedBalance.asObservable(),
                          balanceTitle: balanceTitle.asObservable(),
                          didTapShare: didTapShare.asObservable(),
-                         didScanQR: didScanQR.asObservable()
+                         didScanQR: didScanQR.asObservable(),
+                         openAppSettings: openAppSettingsSubject.asObservable()
     )
 
     bind()
@@ -111,7 +118,6 @@ class BalanceViewModel: BaseViewModel, ViewModel, WalletSelectableViewModel {
     //Setting balance for the first time after load
     dependency.balanceService.balances().withLatestFrom(changedBalanceTypeSubject) { [weak self] balances, balanceType in
       return self?.balanceHeaderText(balanceType: balanceType, balances: balances)
-//      return text?.1 ?? NSAttributedString()
     }.subscribe(onNext: { val in
       self.balanceTitle.onNext(val?.title)
       self.availableBalance.onNext(val?.text ?? NSAttributedString())
@@ -123,6 +129,27 @@ class BalanceViewModel: BaseViewModel, ViewModel, WalletSelectableViewModel {
       str += ""
       str += Coin.baseCoin().symbol!
       self.delegatedBalance.onNext(str)
+    }).disposed(by: disposeBag)
+
+    didTapScanQR.asObservable().subscribe(onNext: { [weak self] (_) in
+      switch AVCaptureDevice.authorizationStatus(for: .video) {
+      case .notDetermined:
+        AVCaptureDevice.requestAccess(for: .video) { granted in
+          if granted {} else {
+            self?.openAppSettingsSubject.onNext(())
+          }
+        }
+      case .denied:
+        self?.openAppSettingsSubject.onNext(())
+        return
+
+      case .restricted:
+        self?.openAppSettingsSubject.onNext(())
+        return
+
+      default:
+        return
+      }
     }).disposed(by: disposeBag)
 
     dependency.balanceService.updateDelegated()
@@ -150,6 +177,19 @@ class BalanceViewModel: BaseViewModel, ViewModel, WalletSelectableViewModel {
     })
     .subscribe(self.showErrorMessage)
     .disposed(by: disposeBag)
+
+    didScanQR.asObservable()
+      .subscribe(onNext: { [weak self] (val) in
+        let url = URL(string: val ?? "")
+        if true == val?.isValidAddress() {
+          return
+        } else if true == val?.isValidPublicKey() {
+            //Handle Public Key
+        } else if let url = url, let rawViewController = RawTransactionRouter.rawTransactionViewController(with: url) {
+            return
+        }
+        self?.showErrorMessage.onNext("Invalid transaction data".localized())
+      }).disposed(by: disposeBag)
   }
 
   func balanceHeaderText(balanceType: BalanceType, balances: BalanceService.BalancesResponse) -> BalanceHeaderItem {

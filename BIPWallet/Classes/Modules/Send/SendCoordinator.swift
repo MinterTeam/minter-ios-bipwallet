@@ -205,8 +205,9 @@ extension SendCoordinator {
       }).subscribe(onNext: { [weak self] (result) in
         switch result {
         case .changedTitle(_):
-//          try? self?.balanceService.changeAddress(account.address)
-          return;
+          if let address = self?.authService.selectedAccount()?.address {
+            try? self?.balanceService.changeAddress(address)
+          }
         case .cancel:
           return
         case .removed:

@@ -147,7 +147,7 @@ class DelegateUnbondViewModel: BaseViewModel, ViewModel {
     var autocompleteValidatorsItems: Observable<[SearchTextFieldItem]>
     var didTapShowValidators: Observable<Void>
     var disableValidatorChange: Observable<Bool>
-    var showConfirmation: Observable<(String?, Decimal?, String?)>
+    var showConfirmation: Observable<(String?, String?)>
     var coinTitle: Observable<String?>
   }
 
@@ -228,7 +228,10 @@ class DelegateUnbondViewModel: BaseViewModel, ViewModel {
                          didTapShowValidators: didTapShowValidators.asObservable(),
                          disableValidatorChange: Observable.just(isUnbond),
                          showConfirmation: didTapSend.withLatestFrom(form).map {
-                          ($0.0, $0.2, (self.validator?.name ?? TransactionTitleHelper.title(from: self.validator?.publicKey ?? "")))
+                          let amount = CurrencyNumberFormatter.formattedDecimal(with: $0.2 ?? 0.0,
+                                                                                formatter: CurrencyNumberFormatter.decimalFormatter, maxPlaces: self.amount.isMax.value ? 18 : 8) + " " + ($0.0 ?? "")
+                          let validatorName = self.validator?.name ?? TransactionTitleHelper.title(from: self.validator?.publicKey ?? "")
+                          return (amount, validatorName)
                          }.asObservable(),
                          coinTitle: Observable.just(isUnbond ? "Coin you want to unbond".localized() : "Coin".localized())
     )
@@ -381,7 +384,7 @@ class DelegateUnbondViewModel: BaseViewModel, ViewModel {
         if coin == Coin.baseCoin().symbol! {
           //check if can pay comission
           let amountWithCommission = amount + self.currentCommission()
-          if baseCoinBalance > amountWithCommission {
+          if baseCoinBalance >= amountWithCommission {
             //all good - send tx
           } else {
             //check if USE MAX
@@ -389,8 +392,6 @@ class DelegateUnbondViewModel: BaseViewModel, ViewModel {
             //else  - error
             if self.amount.isMax.value {
               newAmount = amount - self.currentCommission()
-            } else {
-              return Observable.error(DelegateUnbondViewModelError.insufficientFunds)
             }
           }
         } else {

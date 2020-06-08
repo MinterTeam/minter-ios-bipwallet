@@ -16,6 +16,7 @@ class DelegatedTableViewCellItem: BaseCellItem {
   var publicKey: String?
 
   var didTapAdd = PublishSubject<Void>()
+  var didTapCopy = PublishSubject<Void>()
 }
 
 class DelegatedTableViewCell: BaseCell {
@@ -30,6 +31,7 @@ class DelegatedTableViewCell: BaseCell {
   }
   @IBOutlet weak var publicKey: UILabel!
   @IBOutlet weak var addButton: UIButton!
+  @IBOutlet weak var copyButton: UIButton!
 
 	// MARK: -
 
@@ -64,6 +66,8 @@ class DelegatedTableViewCell: BaseCell {
     }
 
     addButton.rx.tap.asDriver().drive(item.didTapAdd).disposed(by: disposeBag)
+    copyButton.rx.tap.asDriver().drive(item.didTapCopy).disposed(by: disposeBag)
+    
   }
 
   override func prepareForReuse() {

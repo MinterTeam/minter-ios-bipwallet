@@ -12,12 +12,6 @@
             <string>Inter_Medium</string>
             <string>Inter_Semi-Bold</string>
         </array>
-        <array key="Ubuntu-M.ttf">
-            <string>Ubuntu-Medium</string>
-        </array>
-        <array key="Ubuntu-R.ttf">
-            <string>Ubuntu</string>
-        </array>
     </customFonts>
     <scenes>
         <!--Delegated Stakes-->
@@ -47,7 +41,7 @@
                                                     </constraints>
                                                 </imageView>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Public Key" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Hqc-Ul-mDe" customClass="SlashedZeroesLabel" customModule="BIPWallet" customModuleProvider="target">
-                                                    <rect key="frame" x="48" y="6" width="81" height="26"/>
+                                                    <rect key="frame" x="48" y="6" width="291" height="26"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="20" id="dUx-gx-qL8"/>
                                                     </constraints>
@@ -61,7 +55,7 @@
                                                     </userDefinedRuntimeAttributes>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="middleTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8YV-5L-DBd" customClass="SlashedZeroesLabel" customModule="BIPWallet" customModuleProvider="target">
-                                                    <rect key="frame" x="48" y="32" width="291" height="14"/>
+                                                    <rect key="frame" x="48" y="32" width="27" height="14"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="14" id="juS-UZ-yqD"/>
                                                     </constraints>
@@ -75,91 +69,48 @@
                                                     </userDefinedRuntimeAttributes>
                                                 </label>
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="right" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="og3-KX-cbR" customClass="TransactionAddressButton" customModule="BIPWallet" customModuleProvider="target">
-                                                    <rect key="frame" x="344" y="15.5" width="70" height="22"/>
+                                                    <rect key="frame" x="374" y="15.5" width="40" height="22"/>
                                                     <constraints>
-                                                        <constraint firstAttribute="width" constant="70" id="frC-wv-FnB"/>
+                                                        <constraint firstAttribute="width" constant="40" id="frC-wv-FnB"/>
                                                     </constraints>
                                                     <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="10" maxY="0.0"/>
                                                     <state key="normal" image="DelegationAddButtonIcon">
                                                         <color key="titleColor" red="0.31372549020000001" green="0.18039215689999999" blue="0.76078431369999999" alpha="1" colorSpace="deviceRGB"/>
                                                     </state>
                                                 </button>
+                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="right" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="sCN-Sj-Pd3" customClass="TransactionAddressButton" customModule="BIPWallet" customModuleProvider="target">
+                                                    <rect key="frame" x="339" y="15.5" width="40" height="22"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" constant="40" id="tow-GY-2tG"/>
+                                                    </constraints>
+                                                    <color key="tintColor" red="0.1843137255" green="0.1137254902" blue="0.41176470590000003" alpha="1" colorSpace="deviceRGB"/>
+                                                    <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="10" maxY="0.0"/>
+                                                    <state key="normal" image="CopyIcon">
+                                                        <color key="titleColor" red="0.31372549020000001" green="0.18039215689999999" blue="0.76078431369999999" alpha="1" colorSpace="deviceRGB"/>
+                                                    </state>
+                                                </button>
                                             </subviews>
                                             <constraints>
+                                                <constraint firstItem="sCN-Sj-Pd3" firstAttribute="centerY" secondItem="og3-KX-cbR" secondAttribute="centerY" id="0kY-Tc-FbN"/>
                                                 <constraint firstItem="8YV-5L-DBd" firstAttribute="top" secondItem="Hqc-Ul-mDe" secondAttribute="bottom" id="B4E-q5-Ckq"/>
                                                 <constraint firstAttribute="trailing" secondItem="og3-KX-cbR" secondAttribute="trailing" id="Ee4-j7-3QG"/>
                                                 <constraint firstItem="Hqc-Ul-mDe" firstAttribute="top" secondItem="O5M-OR-gXy" secondAttribute="top" constant="6" id="Ivf-tn-PZe"/>
                                                 <constraint firstItem="iJn-3i-B26" firstAttribute="top" secondItem="Hqc-Ul-mDe" secondAttribute="top" constant="6" id="L0n-yl-8TA"/>
                                                 <constraint firstItem="Hqc-Ul-mDe" firstAttribute="leading" secondItem="iJn-3i-B26" secondAttribute="trailing" constant="12" id="UpM-Mp-CI6"/>
                                                 <constraint firstItem="iJn-3i-B26" firstAttribute="leading" secondItem="O5M-OR-gXy" secondAttribute="leading" constant="12" id="XxY-r2-N9k"/>
-                                                <constraint firstItem="og3-KX-cbR" firstAttribute="leading" secondItem="8YV-5L-DBd" secondAttribute="trailing" constant="5" id="aGc-Ba-gK6"/>
                                                 <constraint firstAttribute="bottom" secondItem="8YV-5L-DBd" secondAttribute="bottom" constant="7" id="aeR-U4-GFr"/>
                                                 <constraint firstItem="og3-KX-cbR" firstAttribute="centerY" secondItem="O5M-OR-gXy" secondAttribute="centerY" id="eMe-uB-Z0j"/>
                                                 <constraint firstItem="8YV-5L-DBd" firstAttribute="leading" secondItem="Hqc-Ul-mDe" secondAttribute="leading" id="oIm-Dr-qO9"/>
+                                                <constraint firstItem="og3-KX-cbR" firstAttribute="leading" secondItem="sCN-Sj-Pd3" secondAttribute="trailing" constant="-5" id="p0s-v7-VZo"/>
+                                                <constraint firstItem="sCN-Sj-Pd3" firstAttribute="leading" secondItem="Hqc-Ul-mDe" secondAttribute="trailing" id="sfi-75-zHm"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                         <connections>
                                             <outlet property="addButton" destination="og3-KX-cbR" id="Dtz-Mo-haj"/>
+                                            <outlet property="copyButton" destination="sCN-Sj-Pd3" id="wr4-vJ-GeR"/>
                                             <outlet property="publicKey" destination="8YV-5L-DBd" id="rvA-nD-XeH"/>
                                             <outlet property="validatorIcon" destination="iJn-3i-B26" id="A8Z-Gu-4GB"/>
                                             <outlet property="validatorName" destination="Hqc-Ul-mDe" id="9nY-Hk-4Mu"/>
-                                        </connections>
-                                    </tableViewCell>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="TwoTitleTableViewCell" rowHeight="53" id="yee-0p-Lob">
-                                        <rect key="frame" x="0.0" y="108.5" width="414" height="53"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="yee-0p-Lob" id="ajL-G6-zGu">
-                                            <rect key="frame" x="0.0" y="0.0" width="414" height="53"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                            <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="br0-cJ-Luc" customClass="UHBCustomLabel" customModule="BIPWallet" customModuleProvider="target">
-                                                    <rect key="frame" x="58" y="17.5" width="34.5" height="16.5"/>
-                                                    <fontDescription key="fontDescription" name="Ubuntu" family="Ubuntu" pointSize="14"/>
-                                                    <nil key="textColor"/>
-                                                    <nil key="highlightedColor"/>
-                                                    <userDefinedRuntimeAttributes>
-                                                        <userDefinedRuntimeAttribute type="number" keyPath="characterSpacing">
-                                                            <real key="value" value="0.40000000000000002"/>
-                                                        </userDefinedRuntimeAttribute>
-                                                    </userDefinedRuntimeAttributes>
-                                                </label>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Label" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="PAp-5X-QwJ" customClass="UHBCustomLabel" customModule="BIPWallet" customModuleProvider="target">
-                                                    <rect key="frame" x="366.5" y="16.5" width="39.5" height="19"/>
-                                                    <fontDescription key="fontDescription" name="Ubuntu-Medium" family="Ubuntu" pointSize="16"/>
-                                                    <nil key="textColor"/>
-                                                    <nil key="highlightedColor"/>
-                                                    <userDefinedRuntimeAttributes>
-                                                        <userDefinedRuntimeAttribute type="number" keyPath="characterSpacing">
-                                                            <real key="value" value="0.40000000000000002"/>
-                                                        </userDefinedRuntimeAttribute>
-                                                    </userDefinedRuntimeAttributes>
-                                                </label>
-                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="delegateImage" translatesAutoresizingMaskIntoConstraints="NO" id="Pqs-VY-75i">
-                                                    <rect key="frame" x="12" y="16" width="34" height="21"/>
-                                                    <constraints>
-                                                        <constraint firstAttribute="height" constant="34" id="10B-SW-eQs"/>
-                                                        <constraint firstAttribute="width" constant="34" id="tAl-nz-C3t"/>
-                                                    </constraints>
-                                                    <userDefinedRuntimeAttributes>
-                                                        <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
-                                                            <integer key="value" value="17"/>
-                                                        </userDefinedRuntimeAttribute>
-                                                    </userDefinedRuntimeAttributes>
-                                                </imageView>
-                                            </subviews>
-                                            <constraints>
-                                                <constraint firstAttribute="bottom" secondItem="Pqs-VY-75i" secondAttribute="bottom" constant="16" id="DyH-SN-ool"/>
-                                                <constraint firstItem="Pqs-VY-75i" firstAttribute="leading" secondItem="ajL-G6-zGu" secondAttribute="leading" constant="12" id="KtD-1H-ZYS"/>
-                                                <constraint firstItem="br0-cJ-Luc" firstAttribute="leading" secondItem="Pqs-VY-75i" secondAttribute="trailing" constant="12" id="OYV-cu-kTN"/>
-                                                <constraint firstItem="PAp-5X-QwJ" firstAttribute="centerY" secondItem="br0-cJ-Luc" secondAttribute="centerY" id="f9L-5K-h9y"/>
-                                                <constraint firstAttribute="trailing" secondItem="PAp-5X-QwJ" secondAttribute="trailing" constant="8" id="pYi-Me-xbw"/>
-                                                <constraint firstItem="Pqs-VY-75i" firstAttribute="top" secondItem="ajL-G6-zGu" secondAttribute="top" constant="16" id="yKX-ha-YEg"/>
-                                            </constraints>
-                                        </tableViewCellContentView>
-                                        <viewLayoutGuide key="safeArea" id="jBR-cN-eFi"/>
-                                        <connections>
-                                            <outlet property="label" destination="br0-cJ-Luc" id="rtv-Sb-o2Z"/>
-                                            <outlet property="sublabel" destination="PAp-5X-QwJ" id="6o6-SV-aw8"/>
                                         </connections>
                                     </tableViewCell>
                                 </prototypes>
@@ -200,6 +151,7 @@
         </scene>
     </scenes>
     <resources>
+        <image name="CopyIcon" width="20" height="22"/>
         <image name="DelegationAddButtonIcon" width="20" height="20"/>
         <image name="delegateImage" width="128" height="128"/>
     </resources>

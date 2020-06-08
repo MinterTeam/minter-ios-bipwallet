@@ -68,13 +68,10 @@ class DelegateUnbondCoordinator: BaseCoordinator<Void> {
     viewModel.output.showConfirmation.flatMap({ [weak self] (val) -> Observable<DelegateUnbondConfirmPopupCoordinatorResult> in
       guard let `self` = self else { return Observable.empty() }
 
-      let amount = CurrencyNumberFormatter.formattedDecimal(with: val.1 ?? 0.0,
-                                                            formatter: CurrencyNumberFormatter.decimalFormatter) + " " + (val.0 ?? "")
-
       self.confirmPopupCoordiantor = DelegateUnbondConfirmPopupCoordinator(rootViewController: self.controller,
                                                                            isUnbond: self.isUnbond,
-                                                                           amountText: amount,
-                                                                           validatorText: val.2 ?? "")
+                                                                           amountText: val.0,
+                                                                           validatorText: val.1 ?? "")
 
       guard let confirmPopupCoordiantor = self.confirmPopupCoordiantor else { return Observable.empty() }
 

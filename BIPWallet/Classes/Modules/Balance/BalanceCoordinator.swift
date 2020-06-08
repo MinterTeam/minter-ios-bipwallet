@@ -118,22 +118,6 @@ class BalanceCoordinator: BaseCoordinator<Void> {
     }).distinctUntilChanged({ (acc1, acc2) -> Bool in
       return (acc1?.address ?? "") == (acc2?.address ?? "")
     }).subscribe().disposed(by: disposeBag)
-//      .flatMap { [weak self] (item) -> Observable<Event<(AccountItem?, BalanceService.BalancesResponse)>> in
-//      guard let `self` = self, let address = item?.address else { return Observable.empty() }
-//      return Observable.zip(self.balanceService.account, self.balanceService.balances(address: address)).materialize()
-//    }.flatMap({ (event) -> Observable<Void> in
-//      switch event {
-//      case .next(let val):
-//        guard let account = val.0 else { return Observable.empty() }
-//        account.emoji = AccountItem.emoji(for: val.1.totalMainCoinBalance)
-//        //Updating account emoji on getting newest balance data
-//        return self.authService.updateAccount(account: account)
-//      case .completed:
-//        return Observable.empty()
-//      case .error(_):
-//        return Observable.empty()
-//      }
-//    }).subscribe().disposed(by: disposeBag)
 
     //Updating emoji
     self.balanceService.balances().withLatestFrom(self.balanceService.account) {
@@ -190,7 +174,8 @@ extension BalanceCoordinator {
 
   func bindSelectWallet(with controller: UIViewController, viewModel: WalletSelectableViewModel) {
     //Showing select wallet
-    let selectWalletObservable = viewModel.showWalletObservable().flatMap({ (_) -> Observable<SelectWalletCoordinationResult> in
+    let selectWalletObservable = viewModel.showWalletObservable().flatMap({ [weak self] (_) -> Observable<SelectWalletCoordinationResult> in
+      guard let `self` = self else { return Observable.empty() }
       return self.showSelectWallet(rootViewController: controller)
     }).do(onNext: { [weak self] (result) in
       switch result {
@@ -262,8 +247,10 @@ extension BalanceCoordinator {
       }).subscribe(onNext: { [weak self] (result) in
         switch result {
         case .changedTitle(_):
-          return
-//          try? self?.balanceService.changeAddress(account.address)
+          //Change address to itself to update UI
+          if let address = self?.authService.selectedAccount()?.address {
+            try? self?.balanceService.changeAddress(address)
+          }
         case .cancel:
           return
         case .removed:
