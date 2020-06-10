@@ -100,24 +100,20 @@ class PINViewController: BaseViewController, Controller, StoryboardInitializable
 
     pinView.becomeFirstResponder()
     pinView.textField.inputView = button0
-
-    self.navigationController?.navigationBar.shadowImage = UIImage()
-  }
-
-  override func viewDidAppear(_ animated: Bool) {
-    super.viewDidAppear(animated)
   }
 
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
 
     self.navigationController?.navigationBar.barTintColor = .mainPurpleColor()
-  }
-
-  override func viewWillDisappear(_ animated: Bool) {
-    super.viewWillDisappear(animated)
-
-    self.navigationController?.navigationBar.barTintColor = .white
+    self.navigationController?.navigationBar.isTranslucent = false
+    self.navigationController?.navigationBar.setBackgroundImage(UIImage(named: "NavigationBar"), for: .default)
+    self.navigationController?.navigationBar.titleTextAttributes = [
+      NSAttributedString.Key.foregroundColor: UIColor.white,
+      NSAttributedString.Key.font: UIFont.semiBoldFont(of: 18.0)
+    ]
+    self.navigationController?.navigationBar.shadowImage = UIImage(named: "PurpleNavigationBarShadowImage")
+    self.navigationController?.navigationBar.backIndicatorImage = UIImage(named: "BackButtonWhiteIcon")
   }
 
   func shakeError() {
@@ -136,6 +132,11 @@ class PINViewController: BaseViewController, Controller, StoryboardInitializable
     self.hardImpactFeedbackGenerator.prepare()
     self.hardImpactFeedbackGenerator.impactOccurred()
   }
+
+  override var preferredStatusBarStyle: UIStatusBarStyle {
+    return .lightContent
+  }
+
 }
 
 extension PINViewController: CBPinEntryViewDelegate {

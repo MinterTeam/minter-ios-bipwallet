@@ -732,12 +732,6 @@ YOU ARE ABOUT TO SEND SEED PHRASE IN THE MESSAGE ATTACHED TO THIS TRANSACTION.\n
         let recipient = self?.dependency.recipientInfoService.title(for: rec) ?? rec
 
         self?.showSendSucceed.onNext((recipient, address))
-
-//        if let sentViewModel = self?.sentViewModel(to: recipient, address: address) {
-//          let popup = SentPopupViewController.initFromStoryboard(name: "Popup")
-//          popup.viewModel = sentViewModel
-//          self?.popupSubject.onNext(popup)
-//        }
         self?.clear()
       }, onError: { [weak self] (error) in
         self?.handle(error: error)

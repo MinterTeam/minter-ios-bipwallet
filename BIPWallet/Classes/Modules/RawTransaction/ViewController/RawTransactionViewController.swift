@@ -10,6 +10,7 @@ import UIKit
 import RxSwift
 import RxDataSources
 import NotificationBannerSwift
+import SafariServices
 
 class RawTransactionViewController: BaseViewController, Controller, StoryboardInitializable {
 
@@ -137,13 +138,11 @@ extension RawTransactionViewController: SentPopupViewControllerDelegate, Confirm
 		SoundHelper.playSoundIfAllowed(type: .click)
 		hardImpactFeedbackGenerator.prepare()
 		hardImpactFeedbackGenerator.impactOccurred()
-//		AnalyticsHelper.defaultAnalytics.track(event: .rawTransactionPopupViewTransactionButton)
 	}
 
 	func didTapSecondButton(viewController: ConfirmPopupViewController) {
 		SoundHelper.playSoundIfAllowed(type: .cancel)
 		lightImpactFeedbackGenerator.prepare()
-//		AnalyticsHelper.defaultAnalytics.track(event: .rawTransactionPopupCloseButton)
 		viewController.dismiss(animated: true, completion: nil)
 	}
 
@@ -153,13 +152,12 @@ extension RawTransactionViewController: SentPopupViewControllerDelegate, Confirm
 		SoundHelper.playSoundIfAllowed(type: .click)
 		hardImpactFeedbackGenerator.prepare()
 		hardImpactFeedbackGenerator.impactOccurred()
-//		AnalyticsHelper.defaultAnalytics.track(event: .rawTransactionPopupViewTransactionButton)
 		let presentingVC = self.presentingViewController
 		viewController.dismiss(animated: true) { [weak self] in
 			self?.dismiss(animated: true) {
 				if let url = self?.viewModel.lastTransactionExplorerURL() {
-//					let vc = BaseSafariViewController(url: url)
-//					presentingVC?.present(vc, animated: true) {}
+					let vc = SFSafariViewController(url: url)
+					presentingVC?.present(vc, animated: true) {}
 				}
 			}
 		}
@@ -169,13 +167,13 @@ extension RawTransactionViewController: SentPopupViewControllerDelegate, Confirm
 		SoundHelper.playSoundIfAllowed(type: .click)
 		lightImpactFeedbackGenerator.prepare()
 		lightImpactFeedbackGenerator.impactOccurred()
-//		AnalyticsHelper.defaultAnalytics.track(event: .rawTransactionPopupShareTransactionButton)
+
 		let presentingVC = self.presentingViewController
 		viewController.dismiss(animated: true) { [weak self] in
 			self?.dismiss(animated: true) {
 				if let url = self?.viewModel.output.lastTransactionExplorerURL() {
-//					let vc = ActivityRouter.activityViewController(activities: [url], sourceView: self!.view)
-//					presentingVC?.present(vc, animated: true, completion: nil)
+					let vc = UIActivityViewController(activityItems: [url], applicationActivities: nil)
+					presentingVC?.present(vc, animated: true, completion: nil)
 				}
 			}
 		}
@@ -184,7 +182,6 @@ extension RawTransactionViewController: SentPopupViewControllerDelegate, Confirm
 	func didTapSecondButton(viewController: SentPopupViewController) {
 		SoundHelper.playSoundIfAllowed(type: .cancel)
 		lightImpactFeedbackGenerator.prepare()
-//		AnalyticsHelper.defaultAnalytics.track(event: .rawTransactionPopupCloseButton)
 		viewController.dismiss(animated: true) { [weak self] in
 			self?.dismiss(animated: true) {}
 		}

@@ -52,6 +52,9 @@ class EditWalletTitleViewController: BaseViewController, Controller, StoryboardI
       .disposed(by: disposeBag)
 
     self.saveButton.rx.tap.asDriver().drive(viewModel.input.didTapSave).disposed(by: disposeBag)
+    self.textField.rx.controlEvent(.editingDidEndOnExit).asDriver().map{_ in}
+      .drive(viewModel.input.didTapSave).disposed(by: disposeBag)
+
     self.confirmRemoveButton.rx.tap.asDriver().drive(viewModel.input.didTapRemove).disposed(by: disposeBag)
 
     //Output
@@ -142,11 +145,6 @@ class EditWalletTitleViewController: BaseViewController, Controller, StoryboardI
                                          y: frame.minY,
                                          width: self.mainView.bounds.width,
                                          height: self.confirmationView.bounds.height)
- 
-//    self.mainView.frame = CGRect(x: frame.minX,
-//                                 y: frame.minY,
-//                                 width: self.mainView.bounds.width,
-//                                 height: self.mainView.bounds.height)
 
     self.confirmationView.snp.makeConstraints { (maker) in
       maker.width.equalToSuperview().offset(-16)

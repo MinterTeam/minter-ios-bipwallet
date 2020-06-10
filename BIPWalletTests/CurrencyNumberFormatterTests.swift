@@ -75,13 +75,4 @@ class CurrencyNumberFormatterTests: XCTestCase {
     XCTAssert(val == correctValue)
   }
 
-//  func testNumbers8() throws {
-//    let usernameTest = NSPredicate(format: "SELF MATCHES %@", "^[^\\s](.{1,18})[^\\s]$")
-//    XCTAssert(usernameTest.evaluate(with: "1"))
-//    XCTAssert(usernameTest.evaluate(with: "!23566---==1"))
-//    XCTAssert(!usernameTest.evaluate(with: " !23566---==1"))
-//    XCTAssert(usernameTest.evaluate(with: "😊"))
-//    XCTAssert(!usernameTest.evaluate(with: "1234567890123456789"))
-//  }
-
 }

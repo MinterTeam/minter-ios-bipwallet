@@ -98,6 +98,18 @@ class SettingsViewController: BaseViewController, Controller, StoryboardInitiali
 
     configure(with: viewModel)
   }
+  
+  override func viewWillAppear(_ animated: Bool) {
+    super.viewWillAppear(animated)
+
+    self.navigationController?.navigationBar.backIndicatorImage = UIImage(named: "BackButtonIcon")
+    self.navigationController?.navigationBar.barTintColor = .white
+    self.navigationController?.navigationBar.setBackgroundImage(nil, for: .default)
+    self.navigationController?.navigationBar.titleTextAttributes = [
+      NSAttributedString.Key.foregroundColor: UIColor.mainBlackColor(),
+      NSAttributedString.Key.font: UIFont.semiBoldFont(of: 18.0)
+    ]
+  }
 
   private func registerCells() {
     tableView.register(UINib(nibName: "SeparatorTableViewCell", bundle: nil),

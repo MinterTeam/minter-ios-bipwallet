@@ -8,6 +8,7 @@
 
 import Foundation
 import RxSwift
+import MinterCore
 import MinterExplorer
 import MinterMy
 
@@ -86,17 +87,17 @@ class TransactionViewModel: BaseViewModel, ViewModel {
     var section1 = BaseTableSectionItem(identifier: "TransactionSection", header: " ")
 
     var cellItems = [BaseCellItem]()
-    if let txData = transaction.data as? SendCoinTransactionData {
+    if let txData = transaction.data as? MinterExplorer.SendCoinTransactionData {
       cellItems = sendTransactionItems(data: txData)
     } else if let txData = transaction.data as? MultisendCoinTransactionData {
       cellItems = multisendTransactionItems(data: txData)
     } else if let txData = transaction.data as? DelegatableUnbondableTransactionData {
       cellItems = delegateUnbondTransactionItems(data: txData)
-    } else if let txData = transaction.data as? ConvertTransactionData {
+    } else if let txData = transaction.data as? MinterExplorer.ConvertTransactionData {
       cellItems = convertTransactionItems(data: txData)
-    } else if let txData = transaction.data as? SellAllCoinsTransactionData {
+    } else if let txData = transaction.data as? MinterExplorer.SellAllCoinsTransactionData {
       cellItems = sellAllTransactionItems(data: txData)
-    } else if let txData = transaction.data as? RedeemCheckRawTransactionData {
+    } else if let txData = transaction.data as? MinterExplorer.RedeemCheckRawTransactionData {
       cellItems = redeemCheckTransactionItems(data: txData)
     } else {
       cellItems = systemTransactionItems(data: transaction.data)
@@ -106,7 +107,7 @@ class TransactionViewModel: BaseViewModel, ViewModel {
     sections.onNext([section1])
   }
 
-  func systemTransactionItems(data: TransactionData?) -> [BaseCellItem] {
+  func systemTransactionItems(data: MinterExplorer.TransactionData?) -> [BaseCellItem] {
     var cellItems = [BaseCellItem]()
 
     if let payload = transaction.payload?.base64Decoded(), payload.count > 0 {
@@ -159,7 +160,7 @@ class TransactionViewModel: BaseViewModel, ViewModel {
     return cellItems
   }
 
-  func redeemCheckTransactionItems(data: RedeemCheckRawTransactionData) -> [BaseCellItem] {
+  func redeemCheckTransactionItems(data: MinterExplorer.RedeemCheckRawTransactionData) -> [BaseCellItem] {
     var cellItems = [BaseCellItem]()
 
     let from = TransactionAddressCellItem(reuseIdentifier: "TransactionAddressCell",
@@ -267,7 +268,7 @@ class TransactionViewModel: BaseViewModel, ViewModel {
     return cellItems
   }
 
-  func convertTransactionItems(data: ConvertTransactionData) -> [BaseCellItem] {
+  func convertTransactionItems(data: MinterExplorer.ConvertTransactionData) -> [BaseCellItem] {
     var cellItems = [BaseCellItem]()
 
     let from = TransactionAddressCellItem(reuseIdentifier: "TransactionAddressCell",
@@ -369,7 +370,7 @@ class TransactionViewModel: BaseViewModel, ViewModel {
     return cellItems
   }
 
-  func sellAllTransactionItems(data: SellAllCoinsTransactionData) -> [BaseCellItem] {
+  func sellAllTransactionItems(data: MinterExplorer.SellAllCoinsTransactionData) -> [BaseCellItem] {
     var cellItems = [BaseCellItem]()
 
     let from = TransactionAddressCellItem(reuseIdentifier: "TransactionAddressCell",
@@ -471,7 +472,7 @@ class TransactionViewModel: BaseViewModel, ViewModel {
     return cellItems
   }
 
-  func sendTransactionItems(data: SendCoinTransactionData) -> [BaseCellItem] {
+  func sendTransactionItems(data: MinterExplorer.SendCoinTransactionData) -> [BaseCellItem] {
     var cellItems = [BaseCellItem]()
 
     let from = TransactionAddressCellItem(reuseIdentifier: "TransactionAddressCell",
@@ -812,8 +813,24 @@ class TransactionViewModel: BaseViewModel, ViewModel {
     let feeBlock = TransactionTwoColumnCellItem(reuseIdentifier: "TransactionTwoColumnCell",
                                                 identifier: "TransactionTwoColumnCell_FeeBlock")
     feeBlock.key1 = "Fee".localized()
-    feeBlock.value1 = CurrencyNumberFormatter.formattedDecimal(with: transaction.fee ?? 0.0,
+    if transaction.feeCoin != Coin.baseCoin().symbol! {
+      var feeString = ""
+      feeString = (transaction.feeCoin ?? "")
+      feeString += " ("
+      feeString += CurrencyNumberFormatter.formattedDecimal(with: transaction.fee ?? 0.0,
+                                                            formatter: coinFormatter)
+      feeString += " "
+      feeString += Coin.baseCoin().symbol!
+      feeString += ")"
+      feeBlock.value1 = feeString
+    } else {
+      var feeString = CurrencyNumberFormatter.formattedDecimal(with: transaction.fee ?? 0.0,
                                                                formatter: coinFormatter)
+      feeString += " "
+      feeString += Coin.baseCoin().symbol!
+      feeBlock.value1 = feeString
+    }
+
     feeBlock.key2 = "Block".localized()
     feeBlock.value2 = String(transaction.block ?? 0)
     feeBlock.value2Interactable = true

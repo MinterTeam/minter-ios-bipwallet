@@ -39,13 +39,13 @@ class SettingsCoordinator: BaseCoordinator<SettingsCoordinatorResult> {
 
     viewModel.output.showPIN.flatMap { (_) -> Observable<PINCoordinatorResult> in
       return self.showPIN()
-    }.subscribe(onNext: { result in
+    }.subscribe(onNext: { [weak self] result in
       switch result {
       case .success:
         break
       case .failure:
         //logout
-        self.authService.logout()
+        self?.logout()
         logoutSubject.onNext(())
         break
       case .cancel:
@@ -54,12 +54,12 @@ class SettingsCoordinator: BaseCoordinator<SettingsCoordinatorResult> {
     }).disposed(by: disposeBag)
 
     viewModel.output.changePIN.flatMap { [weak self] (_) -> Observable<PINCoordinatorResult> in
-      guard let `self` = self else { return Observable.never() }
+      guard let `self` = self else { return Observable.empty() }
       return self.changePIN()
     }.subscribe().disposed(by: disposeBag)
 
-    viewModel.output.didTapLogout.subscribe(onNext: { (_) in
-      self.authService.logout()
+    viewModel.output.didTapLogout.subscribe(onNext: { [weak self] (_) in
+      self?.logout()
       logoutSubject.onNext(())
     }).disposed(by: disposeBag)
 
@@ -98,6 +98,11 @@ class SettingsCoordinator: BaseCoordinator<SettingsCoordinatorResult> {
                                      state: .change,
                                      pinService: pinService)
     return coordinate(to: coordinator)
+  }
+
+  private func logout() {
+    self.authService.logout()
+    self.pinService.removePIN()
   }
 
 }

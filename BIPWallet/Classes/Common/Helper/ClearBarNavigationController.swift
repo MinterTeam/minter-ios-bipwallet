@@ -17,4 +17,8 @@ class ClearBarNavigationController: UINavigationController {
     self.navigationBar.isHidden = true
   }
 
+  override var childForStatusBarStyle: UIViewController? {
+    return viewControllers.last
+  }
+
 }

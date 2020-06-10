@@ -41,8 +41,13 @@ final class AppCoordinator: BaseCoordinator<Void> {
         case .success:
           return self.start()
 
+        case .failure:
+          self.authService.logout()
+          self.pinService.removePIN()
+          return self.startWelcome().flatMap { self.start() }
+
         default:
-          return self.startWelcome()
+          return self.startWelcome().flatMap { self.start() }
         }
       }).subscribe().disposed(by: disposeBag)
     }
@@ -81,9 +86,23 @@ final class AppCoordinator: BaseCoordinator<Void> {
   }
 
   private func startPin() -> Observable<PINCoordinatorResult> {
-    let navigation = UINavigationController()
+    let navigation = ClearBarNavigationController()
     window.rootViewController = navigation
-    let coordinator = PINCoordinator(navigationController: navigation, pinService: self.pinService)
+
+    let options: UIView.AnimationOptions = .transitionCrossDissolve
+
+    // The duration of the transition animation, measured in seconds.
+    let duration: TimeInterval = 0.3
+
+    // Creates a transition animation.
+    // Though `animations` is optional, the documentation tells us that it must not be nil. ¯\_(ツ)_/¯
+    UIView.transition(with: window, duration: duration, options: options, animations: {}, completion:
+    { completed in
+        // maybe do something on completion here
+    })
+
+    let coordinator = PINCoordinator(navigationController: navigation,
+                                     pinService: self.pinService)
     return coordinate(to: coordinator)
   }
 

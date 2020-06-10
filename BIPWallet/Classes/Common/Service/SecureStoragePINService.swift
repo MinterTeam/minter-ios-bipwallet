@@ -16,8 +16,8 @@ enum SecureStoragePINServiceError: Error {
 
 class SecureStoragePINService: PINService {
 
-  let PINRequiredMinimumSeconds = 5.0//60.0 * 2.0
-  let PINMaxAttempts = 3
+  let PINRequiredMinimumSeconds = 60.0 * 2.0
+  let PINMaxAttempts = 5
 
   init() {
 //    Observable.of(UIApplication.shared.rx.applicationDidBecomeActive.map {$0 as AnyObject},
@@ -74,6 +74,7 @@ class SecureStoragePINService: PINService {
 
   func removePIN() {
     storage.removeObject(forKey: StorageKeys.pin.rawValue)
+    self.setPINAttempts(attempts: 0)
   }
 
   func setPIN(code: String) {
@@ -90,16 +91,17 @@ class SecureStoragePINService: PINService {
   }
 
   func unlock(with code: String) throws -> Bool {
+    let attempts = self.getPINAttempts() + 1
+    self.setPINAttempts(attempts: attempts)
+
+    if attempts >= PINMaxAttempts {
+      throw SecureStoragePINServiceError.PINMaxAttemptsExceeded
+    }
+
     if checkPIN(code: code) {
       self.unlocked = true
       self.setPINAttempts(attempts: 0)
       return true
-    } else {
-      let attempts = self.getPINAttempts()
-      if attempts > PINMaxAttempts {
-        throw SecureStoragePINServiceError.PINMaxAttemptsExceeded
-      }
-      self.setPINAttempts(attempts: attempts+1)
     }
     return false
   }

@@ -31,8 +31,8 @@ extension TransactionViewableViewModel {
     var title = ""
     if hasAddress {
       title = self.titleFor(recipient: transaction.data?.to ?? "") ?? transaction.data?.to ?? ""
-      signMultiplier = -1.0
     } else {
+      signMultiplier = -1.0
       title = self.titleFor(recipient: transaction.from ?? "") ?? transaction.from ?? ""
     }
 
@@ -54,7 +54,7 @@ extension TransactionViewableViewModel {
       transactionCellItem.amount = CurrencyNumberFormatter.formattedDecimal(with: amount,
                                                                             formatter: CurrencyNumberFormatter.transactionFormatter)
     }
-    transactionCellItem.type = "Send".localized()
+    transactionCellItem.type = hasAddress ? "Receive".localized() : "Send".localized()
     return transactionCellItem
   }
 
@@ -69,8 +69,8 @@ extension TransactionViewableViewModel {
     if hasAddress {
       let addr = transaction.data?.to ?? ""
       title = self.titleFor(recipient: addr) ?? addr
-      signMultiplier = -1.0
     } else {
+      signMultiplier = -1.0
       let addr = transaction.from ?? ""
       title = self.titleFor(recipient: addr) ?? addr
     }
@@ -198,7 +198,7 @@ extension TransactionViewableViewModel {
     transactionCellItem.type = "Check".localized()
     transactionCellItem.txHash = transaction.hash
     transactionCellItem.title = (transaction.hash ?? title)
-    transactionCellItem.image = UIImage(named: "redeemCheckImage")
+    transactionCellItem.image = UIImage(named: "redeemCheckIcon")
 
     if let data = transaction.data as? MinterExplorer.RedeemCheckRawTransactionData {
       let hasAddress = address?.stripMinterHexPrefix() == (transaction.from ?? "").stripMinterHexPrefix()

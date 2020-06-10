@@ -367,7 +367,7 @@ class DelegateUnbondViewModel: BaseViewModel, ViewModel {
           let account = val.1 else { return Observable.empty() }
 
         let baseCoinBalance = (self.balances[Coin.baseCoin().symbol!] ?? 0.0)
-        let coinBalance = (self.balances[coin] ?? 0.0)
+//        let coinBalance = (self.balances[coin] ?? 0.0)
         //Update amount if needed
         var newAmount = amount
         var gasCoin = coin

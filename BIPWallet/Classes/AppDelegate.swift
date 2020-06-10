@@ -61,8 +61,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     Observable.of(UIApplication.shared.rx.didOpenApp.skip(1).map { _ -> RouteMatchResult? in
       return nil
     }, RxRouting.instance.register("mintertestnet://bip.to/tx/<transaction>").map { val -> RouteMatchResult? in
-        return val
-    }).switchLatest().flatMap { (result) -> Observable<Event<Void>> in
+      return val
+    }).merge().flatMap { (result) -> Observable<Event<Void>> in
 
       guard let url = result?.url else {
         if !pinService.isUnlocked() {
@@ -125,6 +125,7 @@ extension AppDelegate {
       NSAttributedString.Key.foregroundColor: UIColor.mainGreyColor(),
       NSAttributedString.Key.font : UIFont.mediumFont(of: 11.0)
     ], for: .normal)
+
     UITabBarItem.appearance().setTitleTextAttributes([
       NSAttributedString.Key.foregroundColor : UIColor.mainColor(),
       NSAttributedString.Key.font : UIFont.mediumFont(of: 11.0)

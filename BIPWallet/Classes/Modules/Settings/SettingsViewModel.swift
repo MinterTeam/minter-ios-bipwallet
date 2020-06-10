@@ -110,6 +110,9 @@ class SettingsViewModel: BaseViewModel, ViewModel {
     switchItem.isOnSubject.subscribe(onNext: { [weak self] (val) in
       guard let `self` = self else { return }
       self.dependency.appSettings.isSoundEnabled = val
+      if val {
+        self.sound.onNext(.click)
+      }
     }).disposed(by: disposeBag)
 
     let enablePin = SwitchTableViewCellItem(reuseIdentifier: "SwitchTableViewCell",

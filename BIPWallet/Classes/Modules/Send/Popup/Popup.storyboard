@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="16096" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="fsb-YM-YKJ">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="16097" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="fsb-YM-YKJ">
     <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
@@ -224,10 +224,10 @@
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
                                         <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="8Il-XT-rwG" customClass="DroppableView" customModule="BIPWallet" customModuleProvider="target">
-                                            <rect key="frame" x="8" y="149" width="359" height="369"/>
+                                            <rect key="frame" x="8" y="182" width="359" height="303"/>
                                             <subviews>
                                                 <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9Ha-rn-GNz">
-                                                    <rect key="frame" x="0.0" y="0.0" width="359" height="369"/>
+                                                    <rect key="frame" x="0.0" y="0.0" width="359" height="303"/>
                                                     <subviews>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Coins are received by" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="h6U-TR-Z3p">
                                                             <rect key="frame" x="91.5" y="96" width="176" height="21"/>
@@ -249,14 +249,14 @@
                                                             <state key="normal" title="Button"/>
                                                             <userDefinedRuntimeAttributes>
                                                                 <userDefinedRuntimeAttribute type="string" keyPath="pattern" value="filled"/>
-                                                                <userDefinedRuntimeAttribute type="string" keyPath="color" value="green"/>
+                                                                <userDefinedRuntimeAttribute type="string" keyPath="color" value="purple"/>
                                                             </userDefinedRuntimeAttributes>
                                                             <connections>
                                                                 <action selector="actionBtnDidTap:" destination="bWo-dA-5gC" eventType="touchUpInside" id="0kb-Sk-hMg"/>
                                                             </connections>
                                                         </button>
                                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7sq-up-q09" customClass="DefaultButton" customModule="BIPWallet" customModuleProvider="target">
-                                                            <rect key="frame" x="16" y="303" width="327" height="50"/>
+                                                            <rect key="frame" x="16" y="237" width="327" height="50"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="height" constant="50" id="P6N-z0-vH1"/>
                                                             </constraints>
@@ -268,36 +268,20 @@
                                                                 <action selector="secondButtonDidTap:" destination="bWo-dA-5gC" eventType="touchUpInside" id="BWE-yp-r5n"/>
                                                             </connections>
                                                         </button>
-                                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7Rf-Ag-NSL" customClass="DefaultButton" customModule="BIPWallet" customModuleProvider="target">
-                                                            <rect key="frame" x="16" y="237" width="327" height="50"/>
-                                                            <constraints>
-                                                                <constraint firstAttribute="height" constant="50" id="dIi-pQ-8ei"/>
-                                                            </constraints>
-                                                            <state key="normal" title="Share Transaction"/>
-                                                            <userDefinedRuntimeAttributes>
-                                                                <userDefinedRuntimeAttribute type="string" keyPath="pattern" value="purple"/>
-                                                            </userDefinedRuntimeAttributes>
-                                                            <connections>
-                                                                <action selector="secondActionButtonDidTap:" destination="bWo-dA-5gC" eventType="touchUpInside" id="oKd-m0-CRA"/>
-                                                            </connections>
-                                                        </button>
                                                     </subviews>
                                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                     <constraints>
                                                         <constraint firstAttribute="trailing" secondItem="eX8-4T-odh" secondAttribute="trailing" constant="25" id="4yC-iC-DvQ"/>
                                                         <constraint firstItem="h6U-TR-Z3p" firstAttribute="centerX" secondItem="9Ha-rn-GNz" secondAttribute="centerX" id="7Uo-cd-qJA"/>
                                                         <constraint firstItem="eX8-4T-odh" firstAttribute="leading" secondItem="9Ha-rn-GNz" secondAttribute="leading" constant="25" id="Amd-6B-51y"/>
-                                                        <constraint firstItem="7sq-up-q09" firstAttribute="top" secondItem="7Rf-Ag-NSL" secondAttribute="bottom" constant="16" id="JUF-xD-e4Z"/>
-                                                        <constraint firstItem="7Rf-Ag-NSL" firstAttribute="trailing" secondItem="OQs-Ri-1BK" secondAttribute="trailing" id="PFT-q3-7wa"/>
+                                                        <constraint firstItem="7sq-up-q09" firstAttribute="top" secondItem="OQs-Ri-1BK" secondAttribute="bottom" constant="16" id="V9T-RE-QGY"/>
                                                         <constraint firstItem="OQs-Ri-1BK" firstAttribute="top" secondItem="eX8-4T-odh" secondAttribute="bottom" constant="22" id="V9b-SY-CmW"/>
-                                                        <constraint firstItem="7Rf-Ag-NSL" firstAttribute="leading" secondItem="OQs-Ri-1BK" secondAttribute="leading" id="h2X-W4-aKA"/>
                                                         <constraint firstAttribute="trailing" secondItem="OQs-Ri-1BK" secondAttribute="trailing" constant="16" id="hPU-St-yfh"/>
                                                         <constraint firstItem="eX8-4T-odh" firstAttribute="top" secondItem="h6U-TR-Z3p" secondAttribute="bottom" constant="10" id="iYs-Bs-EGD"/>
                                                         <constraint firstAttribute="bottom" secondItem="7sq-up-q09" secondAttribute="bottom" constant="16" id="jZT-rK-26z"/>
                                                         <constraint firstItem="7sq-up-q09" firstAttribute="trailing" secondItem="OQs-Ri-1BK" secondAttribute="trailing" id="kFM-dQ-aCW"/>
                                                         <constraint firstItem="OQs-Ri-1BK" firstAttribute="leading" secondItem="9Ha-rn-GNz" secondAttribute="leading" constant="16" id="ksO-iC-BFL"/>
                                                         <constraint firstItem="7sq-up-q09" firstAttribute="leading" secondItem="OQs-Ri-1BK" secondAttribute="leading" id="uxH-7k-TMS"/>
-                                                        <constraint firstItem="7Rf-Ag-NSL" firstAttribute="top" secondItem="OQs-Ri-1BK" secondAttribute="bottom" constant="16" id="wts-Gu-y3H"/>
                                                     </constraints>
                                                     <userDefinedRuntimeAttributes>
                                                         <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
@@ -352,7 +336,6 @@
                         <outlet property="descTitle" destination="h6U-TR-Z3p" id="jht-fc-c1y"/>
                         <outlet property="popupView" destination="8Il-XT-rwG" id="WOk-UD-TgN"/>
                         <outlet property="receiverLabel" destination="eX8-4T-odh" id="Pi0-bg-lNV"/>
-                        <outlet property="seconActionButton" destination="7Rf-Ag-NSL" id="NyL-1O-p6D"/>
                         <outlet property="secondButton" destination="7sq-up-q09" id="Co8-66-cyR"/>
                     </connections>
                 </viewController>

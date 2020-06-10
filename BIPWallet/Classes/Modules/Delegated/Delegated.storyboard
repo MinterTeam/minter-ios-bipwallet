@@ -17,7 +17,7 @@
         <!--Delegated Stakes-->
         <scene sceneID="P0O-RN-r6v">
             <objects>
-                <viewController storyboardIdentifier="DelegatedViewController" title="Delegated Stakes" useStoryboardIdentifierAsRestorationIdentifier="YES" id="BhL-Kb-Erm" customClass="DelegatedViewController" customModule="BIPWallet" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="DelegatedViewController" title="Delegated Stakes" hidesBottomBarWhenPushed="YES" useStoryboardIdentifierAsRestorationIdentifier="YES" id="BhL-Kb-Erm" customClass="DelegatedViewController" customModule="BIPWallet" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="lhp-q4-UAD">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="808"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -55,7 +55,7 @@
                                                     </userDefinedRuntimeAttributes>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="middleTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8YV-5L-DBd" customClass="SlashedZeroesLabel" customModule="BIPWallet" customModuleProvider="target">
-                                                    <rect key="frame" x="48" y="32" width="27" height="14"/>
+                                                    <rect key="frame" x="48" y="32" width="29" height="14"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="14" id="juS-UZ-yqD"/>
                                                     </constraints>
@@ -116,7 +116,7 @@
                                 </prototypes>
                             </tableView>
                             <label opaque="NO" userInteractionEnabled="NO" alpha="0.0" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="You don't have any delegated stakes yet." textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hOI-jh-zgq" customClass="UHBCustomLabel" customModule="BIPWallet" customModuleProvider="target">
-                                <rect key="frame" x="42" y="393.5" width="330.5" height="21"/>
+                                <rect key="frame" x="29.5" y="393" width="355" height="22"/>
                                 <fontDescription key="fontDescription" name="Inter_Semi-Bold" family="Inter" pointSize="18"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>

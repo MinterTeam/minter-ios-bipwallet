@@ -167,26 +167,21 @@ class RawTransactionViewModel: BaseViewModel, ViewModel {// swiftlint:disable:th
                                             dependency: ConfirmPopupViewModel.Dependency(authService: self.dependency.authService))
 			viewModel.buttonTitle = "Confirm".localized()
 			viewModel.cancelTitle = "Cancel".localized()
-			viewModel
-				.output
-				.didTapActionButton
+			viewModel.output.didTapActionButton
         .subscribe(onNext: { [weak self] (item) in
           self?.account = item
           self?.sendButtonDidTapSubject.onNext(())
         })
 				.disposed(by: self.disposeBag)
 
-			viewModel
-				.output
-				.didTapCancel
+			viewModel.output.didTapCancel
 				.asDriver(onErrorJustReturn: ())
 				.drive(onNext: { _ in
 					self.popupSubject.onNext(nil)
 				})
 				.disposed(by: self.disposeBag)
 
-			self.sendingTxSubject
-				.asDriver(onErrorJustReturn: false)
+			self.sendingTxSubject.asDriver(onErrorJustReturn: false)
 				.drive(viewModel.input.activityIndicator)
 				.disposed(by: self.disposeBag)
 
@@ -247,14 +242,10 @@ class RawTransactionViewModel: BaseViewModel, ViewModel {// swiftlint:disable:th
 			}).subscribe(onNext: { [weak self] (result) in
 				self?.lastSentTransactionHash = result
 				if let sentViewModel = self?.sentViewModel() {
-          
           let sentViewController = SentPopupViewController.initFromStoryboard(name: "Popup")
           sentViewController.viewModel = sentViewModel
 					self?.popupSubject.onNext(sentViewController)
 				}
-//				Session.shared.loadTransactions()
-//				Session.shared.loadBalances()
-//				Session.shared.loadDelegatedBalance()
 
 				self?.sendingTxSubject.onNext(false)
 			}, onError: { [weak self] (error) in
@@ -291,7 +282,7 @@ class RawTransactionViewModel: BaseViewModel, ViewModel {// swiftlint:disable:th
 
 		let button = ButtonTableViewCellItem(reuseIdentifier: "ButtonTableViewCell",
 																				 identifier: CellIdentifierPrefix.button.rawValue)
-		button.title = "Proceed".localized()
+		button.title = "Continue".localized()
 		button.buttonPattern = "filled"
     button.buttonColor = "green"
 		button.output?.didTapButton
@@ -322,8 +313,8 @@ class RawTransactionViewModel: BaseViewModel, ViewModel {// swiftlint:disable:th
     let contacts = LocalStorageContactsService()
     let recipientInfo = ExplorerRecipientInfoService(contactsService: contacts)
     let vm = SentPopupViewModel(dependency: SentPopupViewModel.Dependency(recipientInfoService: recipientInfo))
-		vm.actionButtonTitle = "VIEW TRANSACTION".localized()
-		vm.secondButtonTitle = "CLOSE".localized()
+		vm.actionButtonTitle = "View Transaction".localized()
+		vm.secondButtonTitle = "Close".localized()
 		vm.title = "Success!".localized()
 		vm.noAvatar = true
 		vm.desc = "Transaction sent!"
@@ -331,6 +322,9 @@ class RawTransactionViewModel: BaseViewModel, ViewModel {// swiftlint:disable:th
 	}
 
 	private func commissionText(for gas: Int, payloadData: Data? = nil) -> String {
+    if self.type == .redeemCheck {
+      return "0.00 " + (Coin.baseCoin().symbol ?? "")
+    }
 		let payloadCom = Decimal((payloadData ?? Data()).count) * RawTransaction.payloadByteComissionPrice.decimalFromPIP()
 		let commission = (self.type
 			.commission(options: [.multisendCount: self.multisendAddressCount,
@@ -412,9 +406,14 @@ extension RawTransactionViewModel {
 							let value = BigUInt(valueData)
 							let amountString = CurrencyNumberFormatter.formattedDecimal(with: (Decimal(bigInt: value) ?? 0).PIPToDecimal(),
 																																					formatter: decimalFormatter)
+
+              let minimumValueToBuyString = CurrencyNumberFormatter.formattedDecimal(with: (Decimal(bigInt: minimumValueToBuy) ?? 0).PIPToDecimal(),
+                                                                                     formatter: coinFormatter)
+
 							fields.append(["key": "Coin From".localized(), "value": coinFrom])
 							fields.append(["key": "Amount".localized(), "value": amountString])
 							fields.append(["key": "Coin To".localized(), "value": coinTo])
+              fields.append(["key": "Minimum Value To Buy", "value": minimumValueToBuyString])
 
 						case .sellAllCoins:
 							fields.append(["key": "Type".localized(), "value": "Sell All"])
@@ -427,8 +426,13 @@ extension RawTransactionViewModel {
 								coinFrom.isValidCoin() else {
 									throw RawTransactionViewModelError.incorrectTxData
 							}
+
+              let minimumValueToBuy = BigUInt(minimumValueToBuyData)
+              let minimumValueToBuyString = CurrencyNumberFormatter.formattedDecimal(with: (Decimal(bigInt: minimumValueToBuy) ?? 0).PIPToDecimal(),
+                                                                                     formatter: decimalFormatter)
 							fields.append(["key": "Coin From".localized(), "value": coinFrom])
 							fields.append(["key": "Coin To".localized(), "value": coinTo])
+              fields.append(["key": "Minimum Value To Buy", "value": minimumValueToBuyString])
 
 						case .buyCoin:
 							fields.append(["key": "Type".localized(), "value": "Buy Coin"])
@@ -437,18 +441,22 @@ extension RawTransactionViewModel {
 								let valueData = items[1].data,
 								let coinToData = items[2].data,
 								let coinTo = String(coinData: coinToData),
-								let maximumValueToBuyData = items[2].data,
+								let maximumValueToSpendData = items[2].data,
 								coinTo.isValidCoin(),
 								coinFrom.isValidCoin() else {
 									throw RawTransactionViewModelError.incorrectTxData
 							}
-							let maximumValueToBuy = BigUInt(maximumValueToBuyData)
+							let maximumValueToSpend = BigUInt(maximumValueToSpendData)
 							let value = BigUInt(valueData)
 							let amountString = CurrencyNumberFormatter.formattedDecimal(with: (Decimal(bigInt: value) ?? 0).PIPToDecimal(),
-																																					formatter: decimalFormatter)
+																																					formatter: coinFormatter)
+
+              let maximumValueToSpendString = CurrencyNumberFormatter.formattedDecimal(with: (Decimal(bigInt: maximumValueToSpend) ?? 0).PIPToDecimal(),
+                                                                                     formatter: coinFormatter)
 							fields.append(["key": "Coin From".localized(), "value": coinFrom])
 							fields.append(["key": "Amount".localized(), "value": amountString])
 							fields.append(["key": "Coin To".localized(), "value": coinTo])
+              fields.append(["key": "Maximum Value To Spend".localized(), "value": maximumValueToSpendString])
 
 						case .createCoin:
 							fields.append(["key": "Type".localized(), "value": "Create Coin"])
@@ -467,9 +475,9 @@ extension RawTransactionViewModel {
 							let initialReserve = BigUInt(initialReserveData)
 							let crr = BigUInt(constantReserveRatioData)
 							let initialAmountString = CurrencyNumberFormatter.formattedDecimal(with: (Decimal(bigInt: initialAmount) ?? 0).PIPToDecimal(),
-																																								 formatter: decimalFormatter)
+																																								 formatter: coinFormatter)
 							let initialReserveString = CurrencyNumberFormatter.formattedDecimal(with: (Decimal(bigInt: initialReserve) ?? 0).PIPToDecimal(),
-																																									formatter: decimalFormatter)
+																																									formatter: coinFormatter)
 							let crrString = CurrencyNumberFormatter.formattedDecimal(with: (Decimal(bigInt: crr) ?? 0),
 																																			 formatter: noMantissaFormatter)
 							fields.append(["key": "Coin Name".localized(), "value": coinName])
@@ -477,6 +485,14 @@ extension RawTransactionViewModel {
 							fields.append(["key": "Initial Amount".localized(), "value": initialAmountString])
 							fields.append(["key": "Initial Reserve".localized(), "value": initialReserveString])
 							fields.append(["key": "Constant Reserve Ration".localized(), "value": crrString])
+              if let maxSupplyData = items[safe: 5]?.data {
+                let maxSupply = BigUInt(maxSupplyData)
+                let maxSupplyString = CurrencyNumberFormatter.formattedDecimal(with: (Decimal(bigInt: maxSupply) ?? 0).PIPToDecimal(),
+                                                                               formatter: coinFormatter)
+                fields.append(["key": "Max Supply".localized(), "value": BigUInt.compare(maxSupply, BigUInt(decimal: Decimal(pow(10.0, 15.0)))!) == .orderedSame ? "10¹⁵" : maxSupplyString])
+              } else {
+                fields.append(["key": "Max Supply".localized(), "value": "10¹⁵"])
+              }
 
 						case .declareCandidacy:
 							fields.append(["key": "Type".localized(), "value": "DECLARE CANDIDACY".localized()])
@@ -495,7 +511,7 @@ extension RawTransactionViewModel {
 
 							let stake = BigUInt(stakeData)
 							let amountString = CurrencyNumberFormatter.formattedDecimal(with: (Decimal(bigInt: stake) ?? 0).PIPToDecimal(),
-																																					formatter: decimalFormatter)
+																																					formatter: coinFormatter)
 							fields.append(["key": "Address".localized(), "value": "Mx" + addressData.toHexString()])
 							fields.append(["key": "Public Key".localized(), "value": "Mp" + publicKeyData.toHexString()])
 							fields.append(["key": "Commission".localized(), "value": commissionString])
@@ -514,7 +530,7 @@ extension RawTransactionViewModel {
 							}
 							let stake = BigUInt(stakeData)
 							let amountString = CurrencyNumberFormatter.formattedDecimal(with: (Decimal(bigInt: stake) ?? 0).PIPToDecimal(),
-																																					formatter: decimalFormatter)
+																																					formatter: coinFormatter)
 							fields.append(["key": "Public Key".localized(), "value": "Mp" + publicKeyData.toHexString()])
 							fields.append(["key": "Coin".localized(), "value": coin])
 							fields.append(["key": "Amount".localized(), "value": amountString])
@@ -530,7 +546,7 @@ extension RawTransactionViewModel {
 							}
 							let stake = BigUInt(stakeData)
 							let amountString = CurrencyNumberFormatter.formattedDecimal(with: (Decimal(bigInt: stake) ?? 0).PIPToDecimal(),
-																																					formatter: decimalFormatter)
+																																					formatter: coinFormatter)
 							fields.append(["key": "Public Key".localized(), "value": "Mp" + publicKeyData.toHexString()])
 							fields.append(["key": "Coin".localized(), "value": coin])
 							fields.append(["key": "Amount".localized(), "value": amountString])
@@ -561,12 +577,8 @@ extension RawTransactionViewModel {
 							}
 
 							fields.append(["key": "Check".localized(), "value": "Mc" + checkData.toHexString()])
-              if
-                let passwordString = userData?["p"] as? String{//,
-//                let address = self.account?.address,
-//								let proof = RawTransactionSigner.proof(address: address, passphrase: passwordString) {
-//                  self.data = MinterCore.RedeemCheckRawTransactionData(rawCheck: checkData, proof: proof).encode()
-                  fields.append(["key": "Password".localized(), "value": passwordString])
+              if let passwordString = userData?["p"] as? String {
+                fields.append(["key": "Password".localized(), "value": passwordString])
               } else if let proofData = items[1].data, proofData.count > 0 {
                 fields.append(["key": "Proof".localized(), "value": proofData.toHexString()])
 							} else {
@@ -588,7 +600,30 @@ extension RawTransactionViewModel {
 							fields.append(["key": "Public Key".localized(), "value": "Mp" + publicKeyData.toHexString()])
 
 						case .createMultisigAddress:
-							break
+              fields.append(["key": "Type".localized(), "value": "Create Multisig Address".localized()])
+              guard
+                let thresholdData = items[0].data,
+                let weightData = items[1].data,
+                let weightArray = RLP.decode(weightData),
+                let addressData = items[2].data,
+                let addressArray = RLP.decode(addressData)
+              else {
+                  throw RawTransactionViewModelError.incorrectTxData
+              }
+              for idx in 0..<(weightArray.count ?? 0) {
+                let address = "Mx" + (addressArray[idx]?.data?.toHexString() ?? "")
+
+                let weight = BigUInt(weightArray[idx]?.data ?? Data())
+                let weightString = CurrencyNumberFormatter.formattedDecimal(with: (Decimal(bigInt: weight) ?? 0),
+                                                                            formatter: noMantissaFormatter)
+                fields.append(["key": "Address : Weight".localized(),
+                               "value": TransactionTitleHelper.title(from: address) + " : " + weightString])
+              }
+              let threshold = BigUInt(thresholdData)
+              let thresholdString = CurrencyNumberFormatter.formattedDecimal(with: (Decimal(bigInt: threshold) ?? 0),
+                                                                             formatter: noMantissaFormatter)
+              fields.append(["key": "Threshold".localized(), "value": thresholdString])
+
 						case .multisend:
 							guard
 								let arrayData = items[0].data,
@@ -608,7 +643,7 @@ extension RawTransactionViewModel {
 											let value = BigUInt(valueData)
 											let amount = (Decimal(bigInt: value) ?? 0).PIPToDecimal()
 											let amountString = CurrencyNumberFormatter.formattedDecimal(with: amount,
-																																									formatter: decimalFormatter)
+																																									formatter: coinFormatter)
 											let sendingValue = amountString + " " + coin
 											fields.append(["key": "You're Sending".localized(), "value": sendingValue])
 											fields.append(["key": "To".localized(), "value": "Mx" + address])
@@ -627,6 +662,7 @@ extension RawTransactionViewModel {
 							fields.append(["key": "Owner Address".localized(), "value": "Mx" + ownerAddressData.toHexString()])
 						}
 						break
+            
 					case .noItem: break
 					case .data(_): break
 					}

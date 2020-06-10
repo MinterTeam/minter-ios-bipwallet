@@ -13,7 +13,7 @@ class WhiteNavigationController: UINavigationController {
   override func loadView() {
     super.loadView()
 
-    self.navigationBar.shadowImage = UIImage(named: "NavigationBarShadowImage")
+    self.navigationBar.shadowImage = UIImage(named: "PurpleNavigationBarShadowImage")
   }
 
   override func viewDidLoad() {

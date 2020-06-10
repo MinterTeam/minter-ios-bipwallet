@@ -103,9 +103,17 @@ class PINCoordinator: BaseCoordinator<PINCoordinatorResult> {
     let viewModel = PINViewModel(dependency: PINViewModel.Dependency(pinService: self.pinService))
     viewModel.isBiometricEnabled = pinService.isBiometricEnabled()
     if state == .confirm {
+      viewModel.title = "Confirm PIN-code"
       viewModel.desc = "Please confirm a 4-digit PIN".localized()
+    } else if state == .unset || state == .unlock {
+      viewModel.title = "Current PIN-code"
+      viewModel.desc = "Please enter a 4-digit PIN".localized()
+    } else if state == .change {
+      viewModel.title = "Current PIN-code"
+      viewModel.desc = "Please enter a 4-digit PIN".localized()
     } else {
-      viewModel.desc = "Please confirm a 4-digit PIN".localized()
+      viewModel.title = "Set PIN-code"
+      viewModel.desc = "Please enter a 4-digit PIN".localized()
     }
     if self.state != .unlock {
       viewModel.isBiometricEnabled = false
