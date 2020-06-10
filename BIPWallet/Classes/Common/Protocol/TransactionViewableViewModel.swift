@@ -79,11 +79,7 @@ extension TransactionViewableViewModel {
                                                    identifier: "MultisendTransactionTableViewCell_\(sectionId)")
     transactionCellItem.txHash = transaction.hash
     transactionCellItem.title = title
-    let txAddress = ((signMultiplier > 0 ? transaction.from : transaction.data?.to) ?? "")
-    transactionCellItem.imageURL = MinterMyAPIURL.avatarAddress(address: txAddress).url()
-    if let avatarURL =  self.avatarURLFor(recipient: txAddress) {
-      transactionCellItem.imageURL = avatarURL
-    }
+    transactionCellItem.image = UIImage(named: "MultisendIcon")
 
     if let data = transaction.data as? MultisendCoinTransactionData {
       if let val = data.values?.filter({ (val) -> Bool in
@@ -93,21 +89,11 @@ extension TransactionViewableViewModel {
           transactionCellItem.amount = CurrencyNumberFormatter.formattedDecimal(with:payload.value,
                                                                                 formatter: CurrencyNumberFormatter.transactionFormatter)
           transactionCellItem.coin = payload.coin
-          if hasAddress {
-            transactionCellItem.imageURL = MinterMyAPIURL.avatarAddress(address: payload.to).url()
-          } else {
-            if let from = transaction.from {
-              transactionCellItem.imageURL = MinterMyAPIURL.avatarAddress(address: from).url()
-            }
-          }
         }
       }
 
       if (transactionCellItem.title?.count ?? 0) == 0 {
         transactionCellItem.title = self.titleFor(recipient: transaction.from ?? "") ?? transaction.from
-        if let from = transaction.from {
-          transactionCellItem.imageURL = MinterMyAPIURL.avatarAddress(address: from).url()
-        }
       }
     }
     transactionCellItem.type = "Multisend".localized()
@@ -222,12 +208,19 @@ extension TransactionViewableViewModel {
                                                    identifier: "SystemTransactionTableViewCell_\(sectionId)")
     transactionCellItem.txHash = transaction.hash
     guard let txType = transaction.type else { return nil }
+    transactionCellItem.title = transaction.hash
+    transactionCellItem.image = UIImage(named: "systemTransactionImage")
 
     switch txType {
     case .create:
       transactionCellItem.type = "Create Coin"
+
     case .createMultisig:
-      transactionCellItem.type = "Create Multisig"
+      transactionCellItem.type = "Create Multisig Address"
+      if let data = transaction.data as? CreateMultisigAddressTransactionData {
+        transactionCellItem.title = TransactionTitleHelper.title(from: data.multisigAddress ?? "")
+        transactionCellItem.image = UIImage(named: "MultisigIcon")
+      }
     case .declare:
       transactionCellItem.type = "Declare Candidate"
     case .editCandidate:
@@ -239,8 +232,6 @@ extension TransactionViewableViewModel {
     default:
       break
     }
-    transactionCellItem.title = transaction.hash
-    transactionCellItem.image = UIImage(named: "systemTransactionImage")
     return transactionCellItem
   }
 

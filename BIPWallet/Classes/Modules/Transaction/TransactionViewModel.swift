@@ -19,7 +19,7 @@ class TransactionViewModel: BaseViewModel, ViewModel {
   private let transaction: MinterExplorer.Transaction
   private let viewWillAppear = PublishSubject<Void>()
   private let viewDidDisappear = PublishSubject<Void>()
-  private let sections = PublishSubject<[BaseTableSectionItem]>()
+  private let sections = ReplaySubject<[BaseTableSectionItem]>.create(bufferSize: 1)
   private let didDismiss = PublishSubject<Void>()
   private let didTapShare = PublishSubject<Void>()
   private let copied = PublishSubject<Void>()
@@ -73,9 +73,9 @@ class TransactionViewModel: BaseViewModel, ViewModel {
 
   func bind() {
 
-    viewWillAppear.subscribe(onNext: { [weak self] (_) in
-      self?.createSections()
-    }).disposed(by: disposeBag)
+//    viewWillAppear.subscribe(onNext: { [weak self] (_) in
+      self.createSections()
+//    }).disposed(by: disposeBag)
 
     viewDidDisappear.subscribe(didDismiss).disposed(by: disposeBag)
   }
@@ -99,6 +99,8 @@ class TransactionViewModel: BaseViewModel, ViewModel {
       cellItems = sellAllTransactionItems(data: txData)
     } else if let txData = transaction.data as? MinterExplorer.RedeemCheckRawTransactionData {
       cellItems = redeemCheckTransactionItems(data: txData)
+    } else if let txData = transaction.data as? MinterExplorer.CreateMultisigAddressTransactionData {
+      cellItems = createMultisigAddressItems(data: txData)
     } else {
       cellItems = systemTransactionItems(data: transaction.data)
     }
@@ -704,101 +706,83 @@ class TransactionViewModel: BaseViewModel, ViewModel {
     }).disposed(by: disposeBag)
     cellItems.append(from)
 
-    let blank1 = BlankTableViewCellItem(reuseIdentifier: "BlankTableViewCell",
-                                        identifier: "BlankTableViewCell_AfterFrom")
-    blank1.height = 6.0
-    blank1.color = .white
-    cellItems.append(blank1)
+    cellItems.append(blankItem(height: 6))
 
-    for i in 0..<(data.values ?? []).count {
-      guard let value = (data.values ?? [])[safe: i] else { continue }
-      let to = TransactionAddressCellItem(reuseIdentifier: "TransactionAddressCell",
-                                          identifier: "TransactionAddressCell_address_\(i)")
-      to.address = value.to
-      to.name = ""
-      to.title = "To"
-      to.avatarURL = MinterMyAPIURL.avatarAddress(address: value.to).url()
-      to.name = self.dependency.recipientInfoService.title(for: value.to) ?? ""
-      to.didTapAddress.subscribe(onNext: { [weak self] (_) in
-        UIPasteboard.general.string = value.to
-        self?.copied.onNext(())
-      }).disposed(by: disposeBag)
-      cellItems.append(to)
+    cellItems.append(blankItem(height: 10.0))
 
-      let amountCoin = TransactionTwoColumnCellItem(reuseIdentifier: "TransactionTwoColumnCell",
-                                                    identifier: "TransactionTwoColumnCell_address_\(i)")
-      amountCoin.key1 = "Amount".localized()
-      amountCoin.value1 = CurrencyNumberFormatter.formattedDecimal(with: value.value,
-                                                                   formatter: coinFormatter)
-      amountCoin.key2 = "Coin".localized()
-      amountCoin.value2 = value.coin
-      cellItems.append(amountCoin)
-
-      let blank1 = BlankTableViewCellItem(reuseIdentifier: "BlankTableViewCell",
-                                          identifier: "BlankTableViewCell_address_\(i)")
-      blank1.height = 10.0
-      blank1.color = .white
-      cellItems.append(blank1)
-
-      let separator1 = SeparatorTableViewCellItem(reuseIdentifier: "SeparatorTableViewCell",
-                                                  identifier: "SeparatorTableViewCell_address_\(i)")
-      cellItems.append(separator1)
-    }
-
-    if let payload = transaction.payload?.base64Decoded(), payload.count > 0 {
-      let payloadItem = TransactionKeyValueCellItem(reuseIdentifier: "TransactionKeyValueCell",
-                                                    identifier: "TransactionKeyValueCell_Payload")
-      payloadItem.key = "Payload".localized()
-      payloadItem.value = payload
-      cellItems.append(payloadItem)
-
-      let blank = BlankTableViewCellItem(reuseIdentifier: "BlankTableViewCell", identifier: "BlankTableViewCell_\(String.random())")
-      blank.height = 10
-      cellItems.append(blank)
-
-      let blank1 = BlankTableViewCellItem(reuseIdentifier: "BlankTableViewCell",
-                                         identifier: "BlankTableViewCell_\(String.random())")
-      blank1.height = 10.0
-      blank1.color = .white
-      cellItems.append(blank1)
-
-      let separator2 = SeparatorTableViewCellItem(reuseIdentifier: "SeparatorTableViewCell",
-                                                 identifier: "SeparatorTableViewCell_2")
-      cellItems.append(separator2)
-    }
+    cellItems.append(contentsOf: payloadBlock())
 
     if let date = transaction.date {
-      let dateItem = TransactionKeyValueCellItem(reuseIdentifier: "TransactionKeyValueCell",
-                                                    identifier: "TransactionKeyValueCell_Timestamp")
-      dateItem.key = "Timestamp".localized()
-      dateItem.value = fullDateFormatter.string(from: date)
-      cellItems.append(dateItem)
-
-      let blank4 = BlankTableViewCellItem(reuseIdentifier: "BlankTableViewCell",
-                                          identifier: "BlankTableViewCell_Timestamp")
-      blank4.height = 5.0
-      blank4.color = .white
-      cellItems.append(blank4)
+      cellItems.append(contentsOf: dateBlock())
+      cellItems.append(blankItem(height: 5.0))
     }
 
-    let blank3 = BlankTableViewCellItem(reuseIdentifier: "BlankTableViewCell",
-                                        identifier: "BlankTableViewCell_AmountCoin")
-    blank3.height = 5.0
-    blank3.color = .white
-    cellItems.append(blank3)
+    cellItems.append(blankItem(height: 5))
 
     cellItems.append(feeBlock())
 
-    let blank4 = BlankTableViewCellItem(reuseIdentifier: "BlankTableViewCell",
-                                        identifier: "BlankTableViewCell_BeforeShare")
-    blank4.height = 10.0
-    blank4.color = .white
-    cellItems.append(blank4)
+    cellItems.append(blankItem(height: 10))
 
     cellItems.append(shareTransaction())
 
     return cellItems
   }
+  
+  func createMultisigAddressItems(data: CreateMultisigAddressTransactionData) -> [BaseCellItem] {
+    var cellItems = [BaseCellItem]()
+
+    let from = TransactionAddressCellItem(reuseIdentifier: "TransactionAddressCell",
+                                          identifier: "TransactionAddressCell_From")
+    from.address = transaction.from
+    from.name = ""
+    from.title = "From"
+    if let address = transaction.from {
+      from.avatarURL = MinterMyAPIURL.avatarAddress(address: address).url()
+      from.name = self.dependency.recipientInfoService.title(for: address) ?? ""
+    }
+    from.didTapAddress.subscribe(onNext: { [weak self] (_) in
+      UIPasteboard.general.string = self?.transaction.from
+      self?.copied.onNext(())
+    }).disposed(by: disposeBag)
+    cellItems.append(from)
+
+    cellItems.append(blankItem(height: 16))
+
+    let separator1 = SeparatorTableViewCellItem(reuseIdentifier: "SeparatorTableViewCell",
+                                                identifier: "SeparatorTableViewCell_\(String.random())")
+    cellItems.append(separator1)
+
+    let address = TransactionKeyValueCellItem(reuseIdentifier: "TransactionKeyValueCell",
+                                              identifier: "TransactionKeyValueCell_Address")
+    address.key = "Multisig Address".localized()
+    address.value = data.multisigAddress
+    cellItems.append(address)
+
+    cellItems.append(blankItem(height: 10.0))
+
+    cellItems.append(contentsOf: payloadBlock())
+
+    if let date = transaction.date {
+      let separator1 = SeparatorTableViewCellItem(reuseIdentifier: "SeparatorTableViewCell",
+                                                  identifier: "SeparatorTableViewCell_\(String.random())")
+      cellItems.append(separator1)
+
+      cellItems.append(contentsOf: dateBlock())
+      cellItems.append(blankItem(height: 5.0))
+    }
+
+    cellItems.append(blankItem(height: 5))
+
+    cellItems.append(feeBlock())
+
+    cellItems.append(blankItem(height: 10))
+
+    cellItems.append(shareTransaction())
+    
+    return cellItems
+  }
+
+  // MARK: - Blocks
 
   func shareTransaction() -> ButtonTableViewCellItem {
     let shareButton = ButtonTableViewCellItem(reuseIdentifier: "ButtonTableViewCell",
@@ -839,6 +823,50 @@ class TransactionViewModel: BaseViewModel, ViewModel {
       .drive(showExplorer).disposed(by: disposeBag)
 
     return feeBlock
+  }
+
+  func payloadBlock() -> [BaseCellItem] {
+    var payloadCells = [BaseCellItem]()
+    if let payload = transaction.payload?.base64Decoded(), payload.count > 0 {
+      let separator1 = SeparatorTableViewCellItem(reuseIdentifier: "SeparatorTableViewCell",
+                                                  identifier: "SeparatorTableViewCell_\(String.random())")
+      payloadCells.append(separator1)
+      let payloadItem = TransactionKeyValueCellItem(reuseIdentifier: "TransactionKeyValueCell",
+                                                    identifier: "TransactionKeyValueCell_Payload")
+      payloadItem.key = "Payload".localized()
+      payloadItem.value = payload
+      payloadCells.append(payloadItem)
+
+      let blank = BlankTableViewCellItem(reuseIdentifier: "BlankTableViewCell",
+                                         identifier: "BlankTableViewCell_\(String.random())")
+      blank.height = 10
+      payloadCells.append(blank)
+
+      let separator2 = SeparatorTableViewCellItem(reuseIdentifier: "SeparatorTableViewCell",
+                                                 identifier: "SeparatorTableViewCell_\(String.random())")
+      payloadCells.append(separator2)
+    }
+    return payloadCells
+  }
+  
+  func blankItem(height: CGFloat = 10.0, color: UIColor = .white) -> BlankTableViewCellItem {
+    let blank = BlankTableViewCellItem(reuseIdentifier: "BlankTableViewCell",
+                                       identifier: "BlankTableViewCell_address_\(String.random())")
+    blank.height = height
+    blank.color = color
+    return blank
+  }
+
+  func dateBlock() -> [BaseCellItem] {
+    var block = [BaseCellItem]()
+    if let date = transaction.date {
+      let dateItem = TransactionKeyValueCellItem(reuseIdentifier: "TransactionKeyValueCell",
+                                                 identifier: "TransactionKeyValueCell_\(String.random())")
+      dateItem.key = "Timestamp".localized()
+      dateItem.value = fullDateFormatter.string(from: date)
+      block.append(dateItem)
+    }
+    return block
   }
 
 }
