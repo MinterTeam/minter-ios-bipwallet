@@ -181,7 +181,7 @@ extension TransactionViewableViewModel {
 
     let transactionCellItem = TransactionCellItem(reuseIdentifier: "TransactionCell",
                                                            identifier: "RedeemCheckTableViewCell\(sectionId)")
-    transactionCellItem.type = "Check".localized()
+    transactionCellItem.type = "Redeem Check".localized()
     transactionCellItem.txHash = transaction.hash
     transactionCellItem.title = (transaction.hash ?? title)
     transactionCellItem.image = UIImage(named: "redeemCheckIcon")
