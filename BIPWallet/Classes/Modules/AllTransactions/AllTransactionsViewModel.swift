@@ -240,7 +240,7 @@ class AllTransactionsViewModel: BaseViewModel, ViewModel, TransactionViewableVie
       case .redeemCheck:
         transactionCellItem = self.redeemCheckTransactionItem(with: transaction)
 
-      case .create, .declare, .setCandidateOnline,
+      case .createCoin, .declare, .setCandidateOnline,
            .setCandidateOffline, .createMultisig, .editCandidate:
         transactionCellItem = self.systemTransactionItem(with: transaction)
       }

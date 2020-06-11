@@ -27,12 +27,13 @@ extension TransactionViewableViewModel {
 
     var signMultiplier = 1.0
     let hasAddress = address?.stripMinterHexPrefix() == (transaction.from ?? "").stripMinterHexPrefix()
+    let isSelf = address?.stripMinterHexPrefix() == (transaction.from ?? "").stripMinterHexPrefix() && address?.stripMinterHexPrefix() == (transaction.data?.to ?? "").stripMinterHexPrefix()
 
     var title = ""
-    if hasAddress {
+    if hasAddress && !isSelf {
+      signMultiplier = -1.0
       title = self.titleFor(recipient: transaction.data?.to ?? "") ?? transaction.data?.to ?? ""
     } else {
-      signMultiplier = -1.0
       title = self.titleFor(recipient: transaction.from ?? "") ?? transaction.from ?? ""
     }
 
@@ -54,7 +55,7 @@ extension TransactionViewableViewModel {
       transactionCellItem.amount = CurrencyNumberFormatter.formattedDecimal(with: amount,
                                                                             formatter: CurrencyNumberFormatter.transactionFormatter)
     }
-    transactionCellItem.type = hasAddress ? "Receive".localized() : "Send".localized()
+    transactionCellItem.type = !hasAddress || isSelf ? "Receive".localized() : "Send".localized()
     return transactionCellItem
   }
 
@@ -64,13 +65,14 @@ extension TransactionViewableViewModel {
 
     var signMultiplier = 1.0
     let hasAddress = address?.stripMinterHexPrefix() == (transaction.from ?? "").stripMinterHexPrefix()
+    let isSelf = address?.stripMinterHexPrefix() == (transaction.from ?? "").stripMinterHexPrefix() && address?.stripMinterHexPrefix() == (transaction.data?.to ?? "").stripMinterHexPrefix()
 
     var title = ""
-    if hasAddress {
+    if hasAddress && !isSelf {
+      signMultiplier = -1.0
       let addr = transaction.data?.to ?? ""
       title = self.titleFor(recipient: addr) ?? addr
     } else {
-      signMultiplier = -1.0
       let addr = transaction.from ?? ""
       title = self.titleFor(recipient: addr) ?? addr
     }
@@ -164,8 +166,7 @@ extension TransactionViewableViewModel {
         transactionCellItem.title = data.coin ?? ""
       }
       transactionCellItem.type = transaction.type == .unbond ? "Unbond".localized() : "Delegate".localized()
-      transactionCellItem.image = transaction.type == .unbond ? UIImage(named: "unbondImage") : UIImage(named: "delegateImage")
-      
+      transactionCellItem.image = transaction.type == .unbond ? UIImage(named: "UnbondIcon") : UIImage(named: "DelegateIcon")
     }
     return transactionCellItem
   }
@@ -212,8 +213,15 @@ extension TransactionViewableViewModel {
     transactionCellItem.image = UIImage(named: "systemTransactionImage")
 
     switch txType {
-    case .create:
+    case .createCoin:
       transactionCellItem.type = "Create Coin"
+      if let data = transaction.data as? CreateCoinTransactionData {
+        transactionCellItem.title = data.name ?? data.symbol ?? ""
+        transactionCellItem.coin = data.symbol ?? ""
+        transactionCellItem.amount = CurrencyNumberFormatter.formattedDecimal(with: data.initialAmount ?? 0.0,
+                                                                              formatter: CurrencyNumberFormatter.transactionFormatter)
+        transactionCellItem.image = UIImage(named: "CreateCoin")
+      }
 
     case .createMultisig:
       transactionCellItem.type = "Create Multisig Address"
@@ -222,13 +230,33 @@ extension TransactionViewableViewModel {
         transactionCellItem.image = UIImage(named: "MultisigIcon")
       }
     case .declare:
-      transactionCellItem.type = "Declare Candidate"
+      transactionCellItem.type = "Declare Candidacy"
+      if let data = transaction.data as? DeclareCandidacyTransactionData {
+        transactionCellItem.title = TransactionTitleHelper.title(from: data.pubKey ?? "")
+        transactionCellItem.image = UIImage(named: "SystemIcon")
+        transactionCellItem.amount = CurrencyNumberFormatter.formattedDecimal(with: -(data.stake ?? 0.0),
+                                                                              formatter: CurrencyNumberFormatter.transactionFormatter)
+        transactionCellItem.coin = data.coin
+      }
     case .editCandidate:
       transactionCellItem.type = "Edit Candidate"
+      if let data = transaction.data as? EditCandidateTransactionData {
+        transactionCellItem.title = TransactionTitleHelper.title(from: data.pubKey ?? "")
+        transactionCellItem.image = UIImage(named: "SystemIcon")
+      }
     case .setCandidateOffline:
       transactionCellItem.type = "Set Candidate Offline"
+      if let data = transaction.data as? SetCandidateBaseTransactionData {
+        transactionCellItem.title = TransactionTitleHelper.title(from: data.pubKey ?? "")
+        transactionCellItem.image = UIImage(named: "SystemIcon")
+      }
     case .setCandidateOnline:
       transactionCellItem.type = "Set Candidate Online"
+      if let data = transaction.data as? SetCandidateBaseTransactionData {
+        transactionCellItem.title = TransactionTitleHelper.title(from: data.pubKey ?? "")
+        transactionCellItem.image = UIImage(named: "SystemIcon")
+      }
+
     default:
       break
     }

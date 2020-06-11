@@ -64,7 +64,8 @@ class TransactionAddressCell: BaseCell {
 
     if let avatarImage = item.avatar {
       avatar.image = avatarImage
-    } else if let url = item.avatarURL {
+    }
+    if let url = item.avatarURL {
       avatar.af_setImage(withURL: url)
     }
     title.text = item.title

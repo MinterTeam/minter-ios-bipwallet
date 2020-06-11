@@ -38,6 +38,8 @@ class TransactionTwoColumnCell: BaseCell {
       value2.titleLabel?.font = UIFont.semiBoldFont(of: 14.0)
     }
   }
+  @IBOutlet weak var value1Label: UILabel!
+  @IBOutlet weak var value2Label: UILabel!
 
   // MARK: -
 
@@ -62,7 +64,10 @@ class TransactionTwoColumnCell: BaseCell {
     key2.text = item.key2
 
     value1.setTitle(item.value1, for: .normal)
+    value1Label.text = item.value1
+
     value2.setTitle(item.value2, for: .normal)
+    value2Label.text = item.value2
 
     value1.isEnabled = item.value1Interactable
     if item.value1Interactable {
