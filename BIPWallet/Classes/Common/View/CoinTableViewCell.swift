@@ -82,7 +82,7 @@ class CoinTableViewCell: BaseCell {
       UIView.animate(withDuration: 0.2, animations: { [weak self] in
         self?.title.alpha = 1.0
         self?.layoutIfNeeded()
-      }) {  [weak self] (finished) in
+      }) { [weak self] (finished) in
         self?.isShowingCoin = false
       }
 		}

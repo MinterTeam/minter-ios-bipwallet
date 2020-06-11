@@ -39,12 +39,26 @@ enum Environment: String {
 
   var telegramChannelURL: String {
     switch self {
+    case .dev: return "tg://resolve?domain=MinterTeam"
+    case .prod: return "tg://resolve?domain=MinterTeam"
+    }
+  }
+
+  var telegramChannelURLRU: String {
+    switch self {
     case .dev: return "tg://resolve?domain=MinterNetwork"
     case .prod: return "tg://resolve?domain=MinterNetwork"
     }
   }
 
   var telegramChannelWEBURL: String {
+    switch self {
+    case .dev: return "https://t.me/MinterTeam"
+    case .prod: return "https://t.me/MinterTeam"
+    }
+  }
+
+  var telegramChannelWEBURLRU: String {
     switch self {
     case .dev: return "https://t.me/MinterNetwork"
     case .prod: return "https://t.me/MinterNetwork"

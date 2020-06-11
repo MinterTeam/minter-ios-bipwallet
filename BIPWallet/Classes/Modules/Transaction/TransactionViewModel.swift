@@ -885,7 +885,7 @@ class TransactionViewModel: BaseViewModel, ViewModel {
       UIPasteboard.general.string = data.pubKey
       self?.copied.onNext(())
     }).disposed(by: disposeBag)
-    to.avatar = UIImage(named: "DelegateIcon")
+    to.avatar = UIImage(named: "SystemIcon")
     cellItems.append(to)
 
     cellItems.append(blankItem(height: 16))

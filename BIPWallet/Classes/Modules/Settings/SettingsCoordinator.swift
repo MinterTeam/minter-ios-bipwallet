@@ -67,18 +67,29 @@ class SettingsCoordinator: BaseCoordinator<SettingsCoordinatorResult> {
 
     viewModel.output.didTapOurChannel.subscribe(onNext: { _ in
       let conf = Configuration()
-      if let url = URL(string: conf.environment.telegramChannelURL), UIApplication.shared.canOpenURL(url) {
-        UIApplication.shared.open(url, options: [:], completionHandler: nil)
-      } else if let url = URL(string: conf.environment.telegramChannelWEBURL) {
-        UIApplication.shared.open(url, options: [:], completionHandler: nil)
+      var url: URL?
+      if Locale.preferredLanguages.first?.hasPrefix("ru") ?? false {
+        url = URL(string: conf.environment.telegramChannelURLRU)
+        if !UIApplication.shared.canOpenURL(url!) {
+          url = URL(string: conf.environment.telegramChannelWEBURLRU)
+        }
+      } else {
+        url = URL(string: conf.environment.telegramChannelURL)
+        if !UIApplication.shared.canOpenURL(url!) {
+          url = URL(string: conf.environment.telegramChannelWEBURL)
+        }
       }
+      guard let resUrl = url else {
+        return
+      }
+      UIApplication.shared.open(resUrl, options: [:], completionHandler: nil)
     }).disposed(by: disposeBag)
 
     viewModel.output.didTapSupport.subscribe(onNext: { _ in
       let conf = Configuration()
-      if let url = URL(string: conf.environment.supportTelegramChannelURL) {
+      if let url = URL(string: conf.environment.supportTelegramChannelURL), UIApplication.shared.canOpenURL(url) {
         UIApplication.shared.open(url, options: [:], completionHandler: nil)
-      } else if let url = URL(string: conf.environment.supportTelegramChannelWEBURL), UIApplication.shared.canOpenURL(url) {
+      } else if let url = URL(string: conf.environment.supportTelegramChannelWEBURL) {
         UIApplication.shared.open(url, options: [:], completionHandler: nil)
       }
     }).disposed(by: disposeBag)
