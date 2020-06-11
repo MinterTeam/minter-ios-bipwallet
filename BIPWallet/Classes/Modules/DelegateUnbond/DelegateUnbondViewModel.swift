@@ -226,8 +226,7 @@ class DelegateUnbondViewModel: BaseViewModel, ViewModel {
                          didTapShowValidators: didTapShowValidators.asObservable(),
                          disableValidatorChange: Observable.just(isUnbond),
                          showConfirmation: didTapSend.withLatestFrom(form).map {
-                          let amount = CurrencyNumberFormatter.formattedDecimal(with: $0.2 ?? 0.0,
-                                                                                formatter: CurrencyNumberFormatter.decimalFormatter, maxPlaces: self.amount.isMax.value ? 18 : 8) + " " + ($0.0 ?? "")
+                          let amount = CurrencyNumberFormatter.coinFormatter.formattedDecimal(with: $0.2 ?? 0.0) + " " + ($0.0 ?? "")
                           let validatorName = self.validator?.name ?? TransactionTitleHelper.title(from: self.validator?.publicKey ?? "")
                           return (amount, validatorName)
                          }.asObservable(),

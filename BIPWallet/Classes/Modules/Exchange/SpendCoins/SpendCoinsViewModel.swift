@@ -153,7 +153,8 @@ class SpendCoinsViewModel: ConvertCoinsViewModel, ViewModel {
         let coinFrom = self.selectedCoin?.transformToCoinName(),
         let amount = self.spendAmount.value else { return }
 
-      let fromString = CurrencyNumberFormatter.formattedDecimal(with: Decimal(string: amount) ?? 0.0, formatter: self.decimalFormatter) + " " + coinFrom
+      let fromString = CurrencyNumberFormatter.coinFormatter
+        .formattedDecimal(with: Decimal(string: amount) ?? 0.0) + " " + coinFrom
       let toString = approx
 
       self.showConfirmation.onNext((fromString, toString))

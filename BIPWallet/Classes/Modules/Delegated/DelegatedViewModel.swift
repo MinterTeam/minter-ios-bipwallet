@@ -102,7 +102,7 @@ class DelegatedViewModel: BaseViewModel, ViewModel {
         let key2 = delegation2.value.coin ?? ""
         return (key1 == Coin.baseCoin().symbol!) ? true
           : (key2 == Coin.baseCoin().symbol!) ? false
-          : (key1 < key2)
+          : (delegation1.value.bipValue ?? 0 > delegation2.value.bipValue ?? 0)
       })[safe: row]
 
       if let item = coin?.value, let publicKey = item.publicKey, let amount = self.datasource[publicKey] {

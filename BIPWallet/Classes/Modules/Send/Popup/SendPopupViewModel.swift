@@ -25,7 +25,6 @@ class SendPopupViewModel: PopupViewModel, ViewModel {
 
 	override init() {
 		super.init()
-		formatter.maximumFractionDigits = 100
 	}
 
 	// MARK: -
@@ -33,7 +32,7 @@ class SendPopupViewModel: PopupViewModel, ViewModel {
 	var amount: Decimal?
 	var coin: String?
 	var amountString: String? {
-		return formatter.string(from: (amount ?? 0) as NSNumber)
+    return formatter.formattedDecimal(with: amount ?? 0.0)
 	}
 	var avatarImageURL: URL?
 	var avatarImage: UIImage?

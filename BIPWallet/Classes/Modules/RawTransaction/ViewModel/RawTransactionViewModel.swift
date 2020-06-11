@@ -323,7 +323,7 @@ class RawTransactionViewModel: BaseViewModel, ViewModel {// swiftlint:disable:th
 
 	private func commissionText(for gas: Int, payloadData: Data? = nil) -> String {
     if self.type == .redeemCheck {
-      return "0.00 " + (Coin.baseCoin().symbol ?? "")
+      return "0.0000 " + (Coin.baseCoin().symbol ?? "")
     }
 		let payloadCom = Decimal((payloadData ?? Data()).count) * RawTransaction.payloadByteComissionPrice.decimalFromPIP()
 		let commission = (self.type

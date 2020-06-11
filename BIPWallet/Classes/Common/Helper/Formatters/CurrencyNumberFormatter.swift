@@ -10,15 +10,25 @@ import Foundation
 
 class CurrencyNumberFormatter: NumberFormatter {
 
-  func formattedDecimal(with number: Decimal, maxPlaces: Int = 8) -> String {
-		return CurrencyNumberFormatter.formattedDecimal(with: number, formatter: self, maxPlaces: maxPlaces)
+  func formattedDecimal(with number: Decimal, maxPlaces: Int? = nil) -> String {
+    let places = maxPlaces ?? ((number >= 1) ? 4 : 8)
+		return CurrencyNumberFormatter.formattedDecimal(with: number, formatter: self, maxPlaces: places)
 	}
 
-  class func formattedDecimal(with number: Decimal, formatter: NumberFormatter, maxPlaces: Int = 8) -> String {
+  class func formattedDecimal(with number: Decimal, formatter: NumberFormatter, maxPlaces: Int? = nil) -> String {
 		let newNF = formatter.copy() as! NumberFormatter // swiftlint:disable:this force_cast
-    var amount = number * pow(10.0, maxPlaces)
-    amount.round(.down)
-    amount = amount / pow(10.0, maxPlaces)
+    var amount: Decimal
+    let places = maxPlaces ?? ((number >= 1) ? 4 : 8)
+    if number >= 1 {
+      amount = number * pow(10.0, places)
+      amount.round(.down)
+      amount = amount / pow(10.0, places)
+    } else {
+      amount = number * pow(10.0, places)
+      amount.round(.up)
+      amount = amount / pow(10.0, places)
+    }
+
 		for _ in 0...18 {
 
 			defer {
@@ -32,7 +42,7 @@ class CurrencyNumberFormatter: NumberFormatter {
 			let lh = CurrencyNumberFormatter.decimal(from: str) ?? 0
 			if abs(lh) < 1 {
 				let count = number.significantFractionalDecimalDigits
-        newNF.minimumFractionDigits = max(4, min(maxPlaces, count))
+        newNF.minimumFractionDigits = max(4, min(places, count))
 				newNF.roundingMode = .up
 				let l0Str = newNF.string(from: number as NSNumber) ?? ""
 
