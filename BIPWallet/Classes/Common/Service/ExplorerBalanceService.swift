@@ -313,7 +313,7 @@ class ExplorerTransactionService: TransactionService {
 
   func transactions(address: String, filter: TransactionServiceFilter?, page: Int) -> Observable<[MinterExplorer.Transaction]> {
     return Observable.create { (observable) -> Disposable in
-      self.explorerManager.transactions(address: "Mx548d9aa8e72dedad2bdc419400dd5fff90eabac4", sendType: filter?.rawValue, page: page) { (transactions, error) in
+      self.explorerManager.transactions(address: address, sendType: filter?.rawValue, page: page) { (transactions, error) in
 
         guard error == nil else {
           observable.onError(error!)
