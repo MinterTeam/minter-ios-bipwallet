@@ -116,6 +116,20 @@ class PINViewController: BaseViewController, Controller, StoryboardInitializable
     self.navigationController?.navigationBar.backIndicatorImage = UIImage(named: "BackButtonWhiteIcon")
   }
 
+  override func willMove(toParent parent: UIViewController?) {
+    if nil == parent {
+      self.navigationController?.navigationBar.backIndicatorImage = UIImage(named: "BackButtonIcon")
+      self.navigationController?.navigationBar.barTintColor = .white
+      self.navigationController?.navigationBar.setBackgroundImage(nil, for: .default)
+      self.navigationController?.navigationBar.titleTextAttributes = [
+        NSAttributedString.Key.foregroundColor: UIColor.mainBlackColor(),
+        NSAttributedString.Key.font: UIFont.semiBoldFont(of: 18.0)
+      ]
+    }
+
+    super.willMove(toParent: parent)
+  }
+
   func shakeError() {
     let animation = CABasicAnimation(keyPath: "position")
     animation.duration = 0.07

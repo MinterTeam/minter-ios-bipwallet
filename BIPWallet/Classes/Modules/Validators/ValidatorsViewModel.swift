@@ -99,9 +99,7 @@ class ValidatorsViewModel: BaseViewModel, ViewModel {
       return item1.stake > item2.stake
     }).forEach { (item) in
       var newItem = item
-      if newItem.name == nil {
-        newItem.name = TransactionTitleHelper.title(from: item.publicKey)
-      }
+      newItem.name = newItem.name ?? TransactionTitleHelper.title(from: item.publicKey)
 
       let key = "All Validators".uppercased().localized()
       let letterArray = datasource[key]

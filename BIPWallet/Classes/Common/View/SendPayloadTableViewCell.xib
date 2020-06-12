@@ -75,7 +75,7 @@
                             <constraint firstItem="SRL-Ee-Dgc" firstAttribute="trailing" secondItem="RoG-l2-n9c" secondAttribute="trailing" constant="-8" id="hDT-FY-geE"/>
                         </constraints>
                     </view>
-                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" adjustsImageWhenHighlighted="NO" lineBreakMode="middleTruncation" hasAttributedTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Stz-7B-9zT">
+                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="fill" contentVerticalAlignment="center" adjustsImageWhenHighlighted="NO" lineBreakMode="middleTruncation" hasAttributedTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Stz-7B-9zT">
                         <rect key="frame" x="24" y="29" width="836" height="48"/>
                         <accessibility key="accessibilityConfiguration" label="Add message Button"/>
                         <inset key="titleEdgeInsets" minX="-24" minY="0.0" maxX="0.0" maxY="0.0"/>
@@ -85,7 +85,7 @@
                                 <fragment content=" ">
                                     <attributes>
                                         <color key="NSColor" red="0.098039215690000001" green="0.098039215690000001" blue="0.098039215690000001" alpha="1" colorSpace="deviceRGB"/>
-                                        <font key="NSFont" metaFont="system" size="18"/>
+                                        <font key="NSFont" metaFont="label" size="18"/>
                                         <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
                                     </attributes>
                                 </fragment>

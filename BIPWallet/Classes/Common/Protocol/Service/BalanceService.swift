@@ -17,6 +17,7 @@ enum BalanceServiceError: Error {
 
 protocol BalanceService {
   typealias BalancesResponse = (
+    address: String,
     totalMainCoinBalance: Decimal,
     totalUSDBalance: Decimal,
     baseCoinBalance: Decimal,
@@ -30,11 +31,11 @@ protocol BalanceService {
 
   func changeAddress(_ address: String) throws
   func balances() -> Observable<BalancesResponse>
-  func delegatedBalance() -> Observable<([AddressDelegation]?, Decimal?)>
+  func delegatedBalance() -> Observable<(String?, [AddressDelegation]?, Decimal?)>
   func updateBalance()
   func updateDelegated()
   func lastBlockAgo() -> Observable<TimeInterval?>
 
   func balances(address: String) -> Observable<BalancesResponse>
-  func balances(addresses: [String]) -> Observable<[String: BalancesResponse]>
+//  func balances(addresses: [String]) -> Observable<[String: BalancesResponse]>
 }

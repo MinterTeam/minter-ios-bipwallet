@@ -51,7 +51,7 @@ class ExplorerBalanceService: BalanceService {
   }
 
   private var balancesSubject = ReplaySubject<BalancesResponse>.create(bufferSize: 1)
-  private var delegatedSubject = ReplaySubject<([AddressDelegation]?, Decimal?)>.create(bufferSize: 1)
+  private var delegatedSubject = ReplaySubject<(String?, [AddressDelegation]?, Decimal?)>.create(bufferSize: 1)
   private var lastBlockAgoSubject = ReplaySubject<TimeInterval?>.create(bufferSize: 1)
 
   var disposeBag = DisposeBag()
@@ -82,7 +82,7 @@ class ExplorerBalanceService: BalanceService {
     return balancesSubject.asObservable()
   }
 
-  func delegated() -> Observable<([AddressDelegation]?, Decimal?)> {
+  func delegated() -> Observable<(String?, [AddressDelegation]?, Decimal?)> {
     return delegatedSubject.asObservable()
   }
 
@@ -103,7 +103,7 @@ class ExplorerBalanceService: BalanceService {
     }).disposed(by: disposeBag)
   }
 
-  func delegatedBalance() -> Observable<([AddressDelegation]?, Decimal?)> {
+  func delegatedBalance() -> Observable<(String?, [AddressDelegation]?, Decimal?)> {
     return delegatedSubject.asObservable()
 
 //      .subscribe(onNext: { [weak self] (delegation, total) in
@@ -121,7 +121,10 @@ class ExplorerBalanceService: BalanceService {
     account.flatMapLatest { (account) -> Observable<([AddressDelegation]?, Decimal?)> in
       guard let address = account?.address, address.isValidAddress() else { return Observable.empty() }
       return self.addressManager.delegations(address: address)
-    }.asDriver(onErrorJustReturn: (nil, nil))
+    }.withLatestFrom(account) {
+      ($1?.address, $0.0, $0.1)
+    }
+    .asDriver(onErrorJustReturn: (nil, nil, nil))
     .drive(delegatedSubject)
     .disposed(by: disposeBag)
   }
@@ -169,19 +172,19 @@ class ExplorerBalanceService: BalanceService {
           return
         }
 
-        let address = response ?? [:]
-        guard let ads = (address["address"] as? String)?.stripMinterHexPrefix(),
-          let coins = address["balances"] as? [[String: Any]] else {
+        let addr = response ?? [:]
+        guard let ads = (addr["address"] as? String)?.stripMinterHexPrefix(),
+          let coins = addr["balances"] as? [[String: Any]] else {
             observer.onError(ExplorerBalanceServiceError.noAddress)
           return
         }
 
-        if let totalBalanceBaseCoin = address["total_balance_sum"] as? String,
+        if let totalBalanceBaseCoin = addr["total_balance_sum"] as? String,
           let totalBalance = Decimal(string: totalBalanceBaseCoin) {
           totalMainCoinBalance = totalBalance
         }
 
-        if let totalBalanceUSD = address["total_balance_sum_usd"] as? String,
+        if let totalBalanceUSD = addr["total_balance_sum_usd"] as? String,
           let totalBalance = Decimal(string: totalBalanceUSD) {
           totalUSDBalance = totalBalance
         }
@@ -203,7 +206,7 @@ class ExplorerBalanceService: BalanceService {
           }
         })
 
-        let resp = BalancesResponse(totalMainCoinBalance, totalUSDBalance, baseCoinBalance, allBalances)
+        let resp = BalancesResponse(address: address, totalMainCoinBalance, totalUSDBalance, baseCoinBalance, allBalances)
         observer.onNext(resp)
         observer.onCompleted()
       }
@@ -211,80 +214,9 @@ class ExplorerBalanceService: BalanceService {
       return Disposables.create()
     }
   }
-  
+
   func balances(addresses: [String]) -> Observable<[String: BalancesResponse]> {
     return Observable.create { (observer) -> Disposable in
-      let addresses = addresses.filter({ (address) -> Bool in
-        return address.isValidAddress()
-      })
-
-      guard !addresses.isEmpty else {
-        observer.onError(ExplorerBalanceServiceError.noAddress)
-        return Disposables.create()
-      }
-
-      self.addressManager.addresses(addresses: addresses, withSum: true) { (result, error) in
-        print(result)
-        print(error)
-
-//        guard let balances = result?["data"] as? [[String: Any]] else {
-//          observer.onError(ExplorerBalanceServiceError.noAddress)
-//          return
-//        }
-
-        var ret: [String: BalancesResponse] = [:]
-        result?.forEach { balanceDict in
-          var totalMainCoinBalance: Decimal = 0
-          var totalUSDBalance: Decimal = 0
-          var baseCoinBalance: Decimal = 0
-          //Second decimal to be used for BIP equivalent
-          var allBalances = [String: (Decimal, Decimal)]()
-
-//          guard nil == err else {
-//            observer.onError(err!)
-//            return
-//          }
-
-//          let address = response ?? [:]
-          guard let ads = (balanceDict["address"] as? String)?.stripMinterHexPrefix(),
-            let coins = balanceDict["balances"] as? [[String: Any]] else {
-              observer.onError(ExplorerBalanceServiceError.noAddress)
-            return
-          }
-
-          if let totalBalanceBaseCoin = balanceDict["total_balance_sum"] as? String,
-            let totalBalance = Decimal(string: totalBalanceBaseCoin) {
-            totalMainCoinBalance = totalBalance
-          }
-
-          if let totalBalanceUSD = balanceDict["total_balance_sum_usd"] as? String,
-            let totalBalance = Decimal(string: totalBalanceUSD) {
-            totalUSDBalance = totalBalance
-          }
-
-          baseCoinBalance = coins.filter({ (dict) -> Bool in
-            return ((dict["coin"] as? String) ?? "").uppercased() == Coin.baseCoin().symbol!.uppercased()
-          }).map({ (dict) -> Decimal in
-            return Decimal(string: (dict["amount"] as? String) ?? "0.0") ?? 0.0
-          }).reduce(0, +)
-
-          if let defaultCoin = Coin.baseCoin().symbol {
-            allBalances[defaultCoin] = (0.0, 0.0)
-          }
-          coins.forEach({ (dict) in
-            if let key = dict["coin"] as? String {
-              let amnt = Decimal(string: (dict["amount"] as? String) ?? "0.0") ?? 0.0
-              let bipAmount = Decimal(string: (dict["bip_amount"] as? String) ?? "0.0") ?? 0.0
-              allBalances[key.uppercased()] = (amnt, bipAmount)
-            }
-          })
-
-          let resp = BalancesResponse(totalMainCoinBalance, totalUSDBalance, baseCoinBalance, allBalances)
-////          observer.onNext(resp)
-////          observer.onCompleted()
-        }
-
-      }
       return Disposables.create()
     }
   }

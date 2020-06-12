@@ -115,8 +115,8 @@
                                     </tableViewCell>
                                 </prototypes>
                             </tableView>
-                            <label opaque="NO" userInteractionEnabled="NO" alpha="0.0" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="You don't have any delegated stakes yet." textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hOI-jh-zgq" customClass="UHBCustomLabel" customModule="BIPWallet" customModuleProvider="target">
-                                <rect key="frame" x="29.5" y="393" width="355" height="22"/>
+                            <label opaque="NO" userInteractionEnabled="NO" alpha="0.0" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="You don't have any delegated stakes yet." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hOI-jh-zgq" customClass="UHBCustomLabel" customModule="BIPWallet" customModuleProvider="target">
+                                <rect key="frame" x="16" y="393" width="414" height="22"/>
                                 <fontDescription key="fontDescription" name="Inter_Semi-Bold" family="Inter" pointSize="18"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
@@ -132,11 +132,18 @@
                             <constraint firstItem="hOI-jh-zgq" firstAttribute="centerY" secondItem="iuC-kD-CCL" secondAttribute="centerY" id="1qk-fu-7h4"/>
                             <constraint firstAttribute="bottom" secondItem="iuC-kD-CCL" secondAttribute="bottom" id="6D6-ex-aZt"/>
                             <constraint firstItem="iuC-kD-CCL" firstAttribute="trailing" secondItem="Xto-aH-6bY" secondAttribute="trailing" id="9lQ-WU-6q5"/>
+                            <constraint firstItem="hOI-jh-zgq" firstAttribute="trailing" secondItem="iuC-kD-CCL" secondAttribute="trailing" constant="16" id="CQU-oY-gi8"/>
                             <constraint firstItem="hOI-jh-zgq" firstAttribute="centerX" secondItem="iuC-kD-CCL" secondAttribute="centerX" id="V6b-BR-4Sj"/>
+                            <constraint firstItem="hOI-jh-zgq" firstAttribute="leading" secondItem="iuC-kD-CCL" secondAttribute="leading" constant="16" id="c4X-sw-E4h"/>
                             <constraint firstItem="iuC-kD-CCL" firstAttribute="top" secondItem="lhp-q4-UAD" secondAttribute="top" id="gI5-my-QoU"/>
                             <constraint firstItem="iuC-kD-CCL" firstAttribute="leading" secondItem="Xto-aH-6bY" secondAttribute="leading" id="sVk-x0-bXI"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="Xto-aH-6bY"/>
+                        <variation key="default">
+                            <mask key="constraints">
+                                <exclude reference="V6b-BR-4Sj"/>
+                            </mask>
+                        </variation>
                     </view>
                     <extendedEdge key="edgesForExtendedLayout" bottom="YES"/>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" translucent="NO" prompted="NO"/>

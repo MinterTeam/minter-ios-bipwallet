@@ -129,11 +129,16 @@ class BalanceCoordinator: BaseCoordinator<Void> {
     }).subscribe().disposed(by: disposeBag)
 
     //Updating emoji
-    self.balanceService.balances().withLatestFrom(self.balanceService.account) {
-      return ($0, $1)
-    }.flatMap({ (val) -> Observable<Void> in
-      guard let account = val.1 else { return Observable.empty() }
-      account.emoji = AccountItem.emoji(for: val.0.totalMainCoinBalance)
+    Observable.combineLatest(self.balanceService.balances(), self.balanceService.delegatedBalance()).withLatestFrom(self.balanceService.account) {
+      return ($1, $0)
+    }.filter({ (val) -> Bool in
+      guard let address = val.0?.address else { return false }
+      return val.1.0.address == address && val.1.1.0 == address
+    }).flatMap({ (val) -> Observable<Void> in
+      guard let account = val.0 else { return Observable.empty() }
+      let balance = val.1.0
+      let delegated = val.1.1
+      account.emoji = AccountItem.emoji(for: balance.totalMainCoinBalance + (delegated.2 ?? 0.0))
       //Updating account emoji on getting newest balance data
       return self.authService.updateAccount(account: account)
     }).subscribe().disposed(by: disposeBag)

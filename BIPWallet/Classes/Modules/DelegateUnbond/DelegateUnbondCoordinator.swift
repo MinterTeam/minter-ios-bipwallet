@@ -31,7 +31,7 @@ class DelegateUnbondCoordinator: BaseCoordinator<Void> {
     let accountService = LocalStorageAccountService()
 
     let gateService = ExplorerGateService()
-    
+
     gateService.updateGas()
 
     let dependency = DelegateUnbondViewModel.Dependency(validatorService: validatorService,

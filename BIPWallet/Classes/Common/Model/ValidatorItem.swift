@@ -19,6 +19,7 @@ struct ValidatorItem {
     guard publicKey.isValidPublicKey() else {
       return nil
     }
+    self.name = name
     self.publicKey = publicKey
   }
 }

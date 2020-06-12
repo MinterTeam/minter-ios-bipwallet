@@ -36,15 +36,15 @@ class DelegateUnbondSucceedPopupCoordinator: BaseCoordinator<Void> {
     viewModel.output.didTapAction.map({ [weak self] (_) -> URL? in
       guard let transactionHash = self?.transactionHash else { return nil }
       return self?.explorerURL(hash: transactionHash)//URL(string: MinterExplorerBaseURL! + "/transactions/" + (hash ?? ""))
-    }).subscribe(onNext: { [weak controller, weak self] (url) in
+    }).subscribe(onNext: { [weak controller, weak self, weak rootViewController] (url) in
       guard let url = url else { return }
-      let safari = SFSafariViewController(url: url)
       controller?.dismiss(animated: true, completion: {
-        self?.rootViewController?.present(safari, animated: true) {}
+        let safari = SFSafariViewController(url: url)
+        rootViewController?.present(safari, animated: true) {}
       })
     }).disposed(by: disposeBag)
 
-    return controller.rx.deallocated.map {_ in}
+    return controller.rx.deallocated.debug().map {_ in}
   }
 
   func explorerURL(hash: String?) -> URL? {

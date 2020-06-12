@@ -179,10 +179,20 @@ class DelegateUnbondViewController: BaseViewController, Controller, StoryboardIn
         guard let keyboardSize = not.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue else { return }
         let keyboardFrame = keyboardSize.cgRectValue
         let keyboardHeight = keyboardFrame.height
+
         var bottomPadding = self.view.bounds.height - (self.view.bounds.height - keyboardHeight) + 8.0
 
         if ViewController.keyboardWillHideNotification == not.name {
           bottomPadding = 34
+        }
+
+        //Some magic numbers to make field visible
+        if self.view.bounds.height < 600 {
+          if self.validatorTextField.isFirstResponder {
+            bottomPadding -= 80
+          } else if self.amountTextField.isFirstResponder {
+            bottomPadding -= 30
+          }
         }
 
         self.bottomConstraint?.constant = bottomPadding

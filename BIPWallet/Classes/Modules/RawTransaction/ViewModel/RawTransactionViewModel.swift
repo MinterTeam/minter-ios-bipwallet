@@ -397,7 +397,7 @@ extension RawTransactionViewModel {
 								let valueData = items[1].data,
 								let coinToData = items[2].data,
 								let coinTo = String(coinData: coinToData),
-								let minimumValueToBuyData = items[2].data,
+								let minimumValueToBuyData = items[3].data,
 								coinTo.isValidCoin(),
 								coinFrom.isValidCoin() else {
 									throw RawTransactionViewModelError.incorrectTxData
@@ -441,7 +441,7 @@ extension RawTransactionViewModel {
 								let valueData = items[1].data,
 								let coinToData = items[2].data,
 								let coinTo = String(coinData: coinToData),
-								let maximumValueToSpendData = items[2].data,
+								let maximumValueToSpendData = items[3].data,
 								coinTo.isValidCoin(),
 								coinFrom.isValidCoin() else {
 									throw RawTransactionViewModelError.incorrectTxData
@@ -489,9 +489,9 @@ extension RawTransactionViewModel {
                 let maxSupply = BigUInt(maxSupplyData)
                 let maxSupplyString = CurrencyNumberFormatter.formattedDecimal(with: (Decimal(bigInt: maxSupply) ?? 0).PIPToDecimal(),
                                                                                formatter: coinFormatter)
-                fields.append(["key": "Max Supply".localized(), "value": BigUInt.compare(maxSupply, BigUInt(decimal: Decimal(pow(10.0, 15.0)))!) == .orderedSame ? "10¹⁵" : maxSupplyString])
+                fields.append(["key": "Max Supply".localized(), "value": BigUInt.compare(maxSupply, BigUInt(decimal: Decimal(pow(10.0, 18.0+15.0)))!) == .orderedSame ? "10¹⁵ (max)" : maxSupplyString])
               } else {
-                fields.append(["key": "Max Supply".localized(), "value": "10¹⁵"])
+                fields.append(["key": "Max Supply".localized(), "value": "10¹⁵ (max)"])
               }
 
 						case .declareCandidacy:

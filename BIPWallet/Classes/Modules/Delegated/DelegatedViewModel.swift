@@ -171,6 +171,7 @@ class DelegatedViewModel: BaseViewModel, ViewModel {
       let validatorItem = DelegatedTableViewCellItem(reuseIdentifier: "DelegatedTableViewCell",
                                                      identifier: "DelegatedTableViewCell_\(val.key)")
       validatorItem.publicKey = val.key
+      validatorItem.title = val.value.values.first?.validatorName
       validatorItem.iconURL = val.value.values.first?.validatorIconURL
 
       validatorItem.didTapAdd.map { _ in return ValidatorItem(publicKey: val.key, name: val.value.values.first?.validatorName) }
@@ -201,7 +202,7 @@ class DelegatedViewModel: BaseViewModel, ViewModel {
       .do(afterNext: { [weak self] (val) in
         self?.createSections()
       }).subscribe(onNext: { [weak self] (val) in
-        val.0?.forEach({ (delegation) in
+        val.1?.forEach({ (delegation) in
           let key = delegation.publicKey ?? ""
           if self?.datasource[key] == nil {
             self?.datasource[key] = [:]

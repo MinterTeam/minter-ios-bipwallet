@@ -125,7 +125,8 @@ class BalanceViewModel: BaseViewModel, ViewModel, WalletSelectableViewModel {
 
     //Showing delegated balance
     dependency.balanceService.delegatedBalance().subscribe(onNext: { (val) in
-      var str = CurrencyNumberFormatter.formattedDecimal(with: val.1 ?? 0.0, formatter: CurrencyNumberFormatter.coinFormatter)
+      let balance = val.2 ?? 0
+      var str = CurrencyNumberFormatter.formattedDecimal(with: balance, formatter: CurrencyNumberFormatter.coinFormatter)
       str += ""
       str += Coin.baseCoin().symbol!
       self.delegatedBalance.onNext(str)

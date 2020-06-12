@@ -30,7 +30,7 @@ class ExplorerValidatorService: ValidatorService {
       }).map { (response) -> ValidatorItem in
         var item = ValidatorItem(publicKey: response.publicKey!.stringValue, name: response.name)
         item!.iconURL = response.iconURL
-        item!.isOnline = response.status != .offline && response.status != .notDeclared
+        item!.isOnline = response.status == .ready
         item!.stake = response.stake ?? 0.0
         return item!
       }

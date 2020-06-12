@@ -71,9 +71,9 @@ class DelegatedViewController: BaseViewController, Controller, StoryboardInitial
   override func viewDidLoad() {
     super.viewDidLoad()
 
-    rxDataSource?.animationConfiguration = AnimationConfiguration(insertAnimation: .top,
+    rxDataSource?.animationConfiguration = AnimationConfiguration(insertAnimation: .none,
                                                                   reloadAnimation: .none,
-                                                                  deleteAnimation: .automatic)
+                                                                  deleteAnimation: .none)
 
     rxDataSource = RxTableViewSectionedAnimatedDataSource<BaseTableSectionItem>(
       configureCell: { dataSource, tableView, indexPath, sm in
@@ -106,6 +106,20 @@ class DelegatedViewController: BaseViewController, Controller, StoryboardInitial
 
     self.navigationController?.navigationBar.backgroundColor = .white
     self.navigationController?.navigationBar.barTintColor = .white
+  }
+
+  override func viewWillDisappear(_ animated: Bool) {
+    super.viewWillDisappear(animated)
+  }
+
+  override func willMove(toParent parent: UIViewController?) {
+    if nil == parent {
+      self.navigationController?.navigationBar.barTintColor = UIColor(hex: 0x2F1D69)
+      self.navigationController?.navigationBar.barStyle = .default
+      self.navigationController?.navigationBar.isTranslucent = false
+    }
+
+    super.willMove(toParent: parent)
   }
 
   func registerCells() {
