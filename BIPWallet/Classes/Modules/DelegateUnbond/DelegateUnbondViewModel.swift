@@ -70,7 +70,7 @@ class DelegateUnbondViewModel: BaseViewModel, ViewModel {
   private var validatorsPickerSource: [String: ValidatorItem] = [:]
   private let coin = BehaviorRelay<String?>(value: "")
   private let validatorSubject = BehaviorRelay<String?>(value: "")
-  private let amount = Amount()//BehaviorRelay<String?>(value: "")
+  private let amount = Amount()
   private let shouldClear = ReplaySubject<Void>.create(bufferSize: 1)
   private let didTapCoin = PublishSubject<Void>()
   private let errorMessage = PublishSubject<String>()
@@ -366,7 +366,6 @@ class DelegateUnbondViewModel: BaseViewModel, ViewModel {
           let account = val.1 else { return Observable.empty() }
 
         let baseCoinBalance = (self.balances[Coin.baseCoin().symbol!] ?? 0.0)
-//        let coinBalance = (self.balances[coin] ?? 0.0)
         //Update amount if needed
         var newAmount = amount
         var gasCoin = coin
@@ -518,10 +517,16 @@ extension DelegateUnbondViewModel {
   }
 
   func makeTransaction(account: AccountItem, gasCoin: String, publicKey: PublicKey, coin: String, amount: Decimal) -> Observable<RawTransaction> {
-    return self.dependency.gateService.nonce(address: account.address).flatMap { nonce in
+    return Observable.combineLatest(
+      self.dependency.gateService.nonce(address: account.address),
+      self.dependency.gateService.currentGas()
+    ).flatMap { val -> Observable<RawTransaction> in
+      let nonce = val.0
+      let gas = val.1
       return Observable.create { (observer) -> Disposable in
         if self.isUnbond {
           let transaction = UnbondRawTransaction(nonce: BigUInt(nonce+1),
+                                                 gasPrice: gas,
                                                  gasCoin: gasCoin,
                                                  publicKey: publicKey.stringValue,
                                                  coin: coin,
@@ -529,6 +534,7 @@ extension DelegateUnbondViewModel {
           observer.onNext(transaction)
         } else {
           let transaction = DelegateRawTransaction(nonce: BigUInt(nonce+1),
+                                                   gasPrice: gas,
                                                    gasCoin: gasCoin,
                                                    publicKey: publicKey.stringValue,
                                                    coin: coin,

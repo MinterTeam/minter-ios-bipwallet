@@ -8,6 +8,7 @@
 
 import UIKit
 import RxSwift
+import CardPresentationController
 
 enum ValidatorsCoordinatorResult {
   case validator(item: ValidatorItem)
@@ -39,7 +40,22 @@ class ValidatorsCoordinator: BaseCoordinator<ValidatorsCoordinatorResult> {
       controller.dismiss(animated: true, completion: nil)
     })
 
-    rootViewController.present(controller, animated: true) {}
+//    rootViewController.present(controller, animated: true) {}
+    var cardConfig = CardConfiguration()
+    cardConfig.horizontalInset = 0.0
+    cardConfig.verticalInset = 0.0
+    cardConfig.verticalSpacing = 0.0
+    cardConfig.cornerRadius = 0.0
+    cardConfig.backFadeAlpha = 1.0
+    cardConfig.dismissAreaHeight = 5
+    CardPresentationController.useSystemPresentationOniOS13 = true
+
+    //Seem to be a bug, but without "main.async" it delays
+    DispatchQueue.main.async { [weak self] in
+      self?.rootViewController.presentCard(controller,
+                                           configuration: cardConfig,
+                                           animated: true)
+    }
 
     return result.take(1)
   }

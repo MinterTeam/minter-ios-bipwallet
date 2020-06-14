@@ -52,7 +52,9 @@ class DelegateUnbondCoordinator: BaseCoordinator<Void> {
 
     rootViewController.present(controller, animated: true, completion: nil)
 
-    viewModel.output.didTapShowValidators.flatMap { [weak self] (_) -> Observable<ValidatorsCoordinatorResult> in
+    viewModel.output.didTapShowValidators.do(onNext: { (_) in
+      self.controller.view.endEditing(false)
+    }).flatMap { [weak self] (_) -> Observable<ValidatorsCoordinatorResult> in
       guard let `self` = self else { return Observable.empty() }
       return self.showValidators(rootViewController: self.controller,
                                  validatorService: self.validatorService)

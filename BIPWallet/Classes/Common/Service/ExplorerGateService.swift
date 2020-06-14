@@ -16,7 +16,7 @@ class ExplorerGateService: GateService {
 
   private let gateManager = GateManager(httpClient: APIClient())
 
-  private let gasSubject = PublishSubject<Int>()
+  private let gasSubject = ReplaySubject<Int>.create(bufferSize: 1)
 
   func currentGas() -> Observable<Int> {
     return gasSubject.asObserver()

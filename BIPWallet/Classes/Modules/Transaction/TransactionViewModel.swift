@@ -844,6 +844,9 @@ class TransactionViewModel: BaseViewModel, ViewModel {
     ratio.key2 = "Max Supply".localized()
     ratio.value2 = CurrencyNumberFormatter.formattedDecimal(with: data.maxSupply ?? 0.0,
                                                             formatter: coinFormatter)
+    if (data.maxSupply ?? 0.0) == Decimal(pow(10, 15)) {
+      ratio.value2 = "10¹⁵ (max)"
+    }
     cellItems.append(ratio)
 
     cellItems.append(blankItem(height: 5))
