@@ -63,12 +63,12 @@ extension TransactionViewableViewModel {
     let transaction = transactionItem
     let sectionId = nil != transaction.txn ? String(transaction.txn!) : (transaction.hash ?? String.random(length: 20))
 
-    var signMultiplier = 1.0
+    var signMultiplier = Decimal(1.0)
     let hasAddress = address?.stripMinterHexPrefix() == (transaction.from ?? "").stripMinterHexPrefix()
     let isSelf = address?.stripMinterHexPrefix() == (transaction.from ?? "").stripMinterHexPrefix() && address?.stripMinterHexPrefix() == (transaction.data?.to ?? "").stripMinterHexPrefix()
 
     var title = ""
-    if hasAddress && !isSelf {
+    if hasAddress {
       signMultiplier = -1.0
       let addr = transaction.data?.to ?? ""
       title = self.titleFor(recipient: addr) ?? addr
@@ -83,21 +83,32 @@ extension TransactionViewableViewModel {
     transactionCellItem.title = title
     transactionCellItem.image = UIImage(named: "MultisendIcon")
 
-    if let data = transaction.data as? MultisendCoinTransactionData {
-      if let val = data.values?.filter({ (val) -> Bool in
-        return address?.stripMinterHexPrefix() == val.to.stripMinterHexPrefix()
-      }), val.count > 0 {
-        if let payload = val.first {
-          transactionCellItem.amount = CurrencyNumberFormatter.formattedDecimal(with:payload.value,
-                                                                                formatter: CurrencyNumberFormatter.transactionFormatter)
-          transactionCellItem.coin = payload.coin
-        }
-      }
+    var values = [MultisendCoinTransactionData.MultisendValues]()
 
-      if (transactionCellItem.title?.count ?? 0) == 0 {
-        transactionCellItem.title = self.titleFor(recipient: transaction.from ?? "") ?? transaction.from
+    if let data = transaction.data as? MultisendCoinTransactionData {
+      if !hasAddress {
+        values = data.values?.filter({ (val) -> Bool in
+          return address?.stripMinterHexPrefix() == val.to.stripMinterHexPrefix()
+        }) ?? []
+      } else {
+        values = data.values ?? []
       }
     }
+
+    if Set(values.map{$0.coin}).count == 1 {
+      let amount = values.reduce(0) { $0 + $1.value}
+      transactionCellItem.amount = CurrencyNumberFormatter.formattedDecimal(with: signMultiplier * amount,
+                                                                            formatter: CurrencyNumberFormatter.transactionFormatter)
+      transactionCellItem.coin = values.first?.coin
+    } else {
+      transactionCellItem.amount = ""
+      transactionCellItem.coin = "Multiple Coins"
+    }
+
+    if (transactionCellItem.title?.count ?? 0) == 0 {
+      transactionCellItem.title = self.titleFor(recipient: transaction.from ?? "") ?? transaction.from
+    }
+    
     transactionCellItem.type = "Multisend".localized()
     return transactionCellItem
   }

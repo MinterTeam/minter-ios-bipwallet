@@ -18,10 +18,15 @@ class TransactionCoordinator: BaseCoordinator<Void> {
   var rootViewController: UIViewController
   var transaction: MinterExplorer.Transaction
   var recipientInfoService: RecipientInfoService
+  let address: String
 
-  init(transaction: MinterExplorer.Transaction, rootViewController: UIViewController, recipientInfoService: RecipientInfoService) {
+  init(transaction: MinterExplorer.Transaction,
+       address: String,
+       rootViewController: UIViewController,
+       recipientInfoService: RecipientInfoService) {
     self.rootViewController = rootViewController
     self.transaction = transaction
+    self.address = address
     self.recipientInfoService = recipientInfoService
 
     super.init()
@@ -30,6 +35,7 @@ class TransactionCoordinator: BaseCoordinator<Void> {
   override func start() -> Observable<Void> {
     let dependency = TransactionViewModel.Dependency(recipientInfoService: recipientInfoService)
     let viewModel = TransactionViewModel(transaction: self.transaction,
+                                         address: self.address,
                                          dependency: dependency)
 
     let viewController = TransactionViewController.initFromStoryboard(name: "Transaction")

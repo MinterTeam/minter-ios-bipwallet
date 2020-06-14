@@ -17,6 +17,7 @@ class TransactionViewModel: BaseViewModel, ViewModel {
   // MARK: -
 
   private let transaction: MinterExplorer.Transaction
+  private let address: String
   private let viewWillAppear = PublishSubject<Void>()
   private let viewDidDisappear = PublishSubject<Void>()
   private let sections = ReplaySubject<[BaseTableSectionItem]>.create(bufferSize: 1)
@@ -48,8 +49,9 @@ class TransactionViewModel: BaseViewModel, ViewModel {
     var recipientInfoService: RecipientInfoService
   }
 
-  init(transaction: MinterExplorer.Transaction, dependency: Dependency) {
+  init(transaction: MinterExplorer.Transaction, address: String, dependency: Dependency) {
     self.transaction = transaction
+    self.address = address
 
     self.input = Input(viewWillAppear: viewWillAppear.asObserver(),
                        viewDidDisappear: viewDidDisappear.asObserver()
@@ -73,9 +75,7 @@ class TransactionViewModel: BaseViewModel, ViewModel {
 
   func bind() {
 
-//    viewWillAppear.subscribe(onNext: { [weak self] (_) in
-      self.createSections()
-//    }).disposed(by: disposeBag)
+    self.createSections()
 
     viewDidDisappear.subscribe(didDismiss).disposed(by: disposeBag)
   }
@@ -719,6 +719,21 @@ class TransactionViewModel: BaseViewModel, ViewModel {
 
     cellItems.append(blankItem(height: 6))
 
+    if self.address != transaction.from {
+      let to = TransactionAddressCellItem(reuseIdentifier: "TransactionAddressCell",
+                                          identifier: "TransactionAddressCell_To")
+      to.address = self.address
+      to.name = self.dependency.recipientInfoService.title(for: self.address) ?? ""
+      to.title = "To"
+      to.didTapAddress.subscribe(onNext: { [weak self] (_) in
+        UIPasteboard.general.string = self?.address
+        self?.copied.onNext(())
+      }).disposed(by: disposeBag)
+      to.avatar = transaction.type == .unbond ? UIImage(named: "UnbondIcon") : UIImage(named: "DelegateIcon")
+      to.avatarURL = self.dependency.recipientInfoService.avatarURL(for: self.address)
+      cellItems.append(to)
+    }
+
     cellItems.append(blankItem(height: 10.0))
 
     cellItems.append(contentsOf: payloadBlock())
@@ -726,6 +741,30 @@ class TransactionViewModel: BaseViewModel, ViewModel {
     if let date = transaction.date {
       cellItems.append(contentsOf: dateBlock())
       cellItems.append(blankItem(height: 5.0))
+    }
+
+    var values = [MultisendCoinTransactionData.MultisendValues]()
+    if let data = transaction.data as? MultisendCoinTransactionData {
+      if address.stripMinterHexPrefix() != (transaction.from ?? "").stripMinterHexPrefix() {
+        values = data.values?.filter({ (val) -> Bool in
+          return address.stripMinterHexPrefix() == val.to.stripMinterHexPrefix()
+        }) ?? []
+      } else {
+        values = data.values ?? []
+      }
+    }
+
+    if Set(values.map{$0.coin}).count == 1 {
+      let amount = values.reduce(0) { $0 + $1.value}
+
+      let amountCoin = TransactionTwoColumnCellItem(reuseIdentifier: "TransactionTwoColumnCell",
+                                                    identifier: "TransactionTwoColumnCell_AmountCoin")
+      amountCoin.key1 = "Stake".localized()
+      amountCoin.value1 = CurrencyNumberFormatter.formattedDecimal(with: amount,
+                                                                   formatter: coinFormatter)
+      amountCoin.key2 = "Coin".localized()
+      amountCoin.value2 = values.first?.coin
+      cellItems.append(amountCoin)
     }
 
     cellItems.append(blankItem(height: 5))

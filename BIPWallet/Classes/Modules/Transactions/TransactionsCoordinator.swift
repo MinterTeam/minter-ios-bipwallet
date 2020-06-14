@@ -39,9 +39,10 @@ class TransactionsCoordinator: BaseCoordinator<Void> {
                                                       infoService: self.recipientInfoService)
     let viewModel = TransactionsViewModel(dependency: dependency)
 
-    viewModel.output.showTransaction.flatMap({ [weak self] (transaction) -> Observable<Void> in
-      guard let `self` = self, let transaction = transaction else { return Observable.empty() }
+    viewModel.output.showTransaction.withLatestFrom(self.balanceService.account) { ($0, $1) }.flatMap({ [weak self] (val) -> Observable<Void> in
+      guard let `self` = self, let transaction = val.0, let address = val.1?.address else { return Observable.empty() }
       let transactionCoordinator = TransactionCoordinator(transaction: transaction,
+                                                          address: address,
                                                           rootViewController: self.сontroller,
                                                           recipientInfoService: self.recipientInfoService)
       return self.coordinate(to: transactionCoordinator)
