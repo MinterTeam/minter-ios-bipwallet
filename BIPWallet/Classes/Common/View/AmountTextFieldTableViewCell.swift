@@ -76,7 +76,6 @@ class AmountTextFieldTableViewCell: TextFieldTableViewCell {
 			default:
 				textField.layer.cornerRadius = 8.0
 				textField.layer.borderWidth = 0
-//				textField.layer.borderColor = UIColor.mainGreyColor(alpha: 0.4).cgColor
 				textField.rightView = UIView()
 				textField.rightViewMode = .never
 				errorTitle.text = ""
@@ -113,10 +112,7 @@ class AmountTextFieldTableViewCell: TextFieldTableViewCell {
 
 		if let item = item as? AmountTextFieldTableViewCellItem {
 			if let didTapUseMax = item.input?.didTapUseMax {
-				useMaxButton
-					.rx
-					.tap
-					.asDriver(onErrorJustReturn: ())
+				useMaxButton.rx.tap.asDriver(onErrorJustReturn: ())
 					.drive(didTapUseMax)
 					.disposed(by: disposeBag)
 			}

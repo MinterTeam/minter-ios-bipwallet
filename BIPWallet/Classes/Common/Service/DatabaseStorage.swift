@@ -21,13 +21,27 @@ protocol DatabaseStorage {
 
 class RealmDatabaseStorage: DatabaseStorage {
 
-	private init() {}
+	private init() {
+    let config = Realm.Configuration(
+      schemaVersion: 1,
+      migrationBlock: { migration, oldSchemaVersion in
+        if oldSchemaVersion < 1 {
+          migration.enumerateObjects(ofType: AccountDataBaseModel.className()) { (oldAccount, newAccount) in
+            newAccount?["id"] = UUID().uuidString
+            newAccount?["lastSelected"] = Date().timeIntervalSince1970
+            newAccount?["title"] = nil
+            newAccount?["emoji"] = "🦐"
+          }
+        }
+      })
+    Realm.Configuration.defaultConfiguration = config
+  }
 
 	static let shared = RealmDatabaseStorage()
 
 	// MARK: -
 
-	private let realm = try! Realm()// swiftlint:disable:this force_try
+	private lazy var realm = try! Realm()// swiftlint:disable:this force_try
 
 	// MARK: -
 

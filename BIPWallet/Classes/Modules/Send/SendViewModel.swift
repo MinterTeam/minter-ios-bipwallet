@@ -487,9 +487,8 @@ YOU ARE ABOUT TO SEND SEED PHRASE IN THE MESSAGE ATTACHED TO THIS TRANSACTION.\n
     amount.stateObservable = amountStateSubject.asObservable()
     amount.keyboardType = .decimalPad
     (amount.text <-> amountSubject).disposed(by: disposeBag)
-    amount.output?.didTapUseMax
-      .withLatestFrom(Observable
-        .combineLatest(formChangedObservable, dependency.balanceService.balances())
+    amount.output?.didTapUseMax.withLatestFrom(
+      Observable.combineLatest(formChangedObservable, dependency.balanceService.balances())
       ).map({ [weak self] (val) -> String? in
         guard let _self = self else { return nil } //swiftlint:disable:this identifier_name
         let form = val.0

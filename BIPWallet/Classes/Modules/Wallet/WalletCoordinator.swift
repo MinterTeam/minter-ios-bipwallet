@@ -20,15 +20,19 @@ class WalletCoordinator: BaseCoordinator<Void> {
   let pinService: PINService
   let transactionService: TransactionService
 
-  init(window: UIWindow, authService: AuthService, pinService: PINService, transactionService: TransactionService) {
+  init(window: UIWindow,
+       authService: AuthService,
+       pinService: PINService,
+       transactionService: TransactionService,
+       balanceService: BalanceService) {
+
     self.window = window
     self.authService = authService
     self.pinService = pinService
     self.transactionService = transactionService
-
+    self.balanceService = balanceService
     let address = (self.authService.selectedAccount()?.address ?? "")
-
-    self.balanceService = ExplorerBalanceService(address: address)
+    try? self.balanceService.changeAddress(address)
 
     super.init()
   }

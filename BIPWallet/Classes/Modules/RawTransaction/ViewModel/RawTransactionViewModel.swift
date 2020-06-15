@@ -284,7 +284,7 @@ class RawTransactionViewModel: BaseViewModel, ViewModel {// swiftlint:disable:th
 																				 identifier: CellIdentifierPrefix.button.rawValue)
 		button.title = "Continue".localized()
 		button.buttonPattern = "filled"
-    button.buttonColor = "green"
+    button.buttonColor = "purple"
 		button.output?.didTapButton
 			.asDriver(onErrorJustReturn: ())
 			.drive(proceedButtonDidTapSubject.asObserver())

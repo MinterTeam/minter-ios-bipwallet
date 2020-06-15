@@ -14,7 +14,7 @@ import SwiftCentrifuge
 
 class ExplorerBalanceService: BalanceService {
 
-  private var channel: String
+  private var channel: String?
   private var client: CentrifugeClient?
   private var isConnected: Bool = false
   private var addressSubscription: CentrifugeSubscription?
@@ -23,10 +23,13 @@ class ExplorerBalanceService: BalanceService {
 
   private let accountManager = AccountManager()
 
-  init(address: String) {
-    let adr = "Mx" + address.stripMinterHexPrefix()
-    self.channel = adr
-    try? self.changeAddress(adr)
+  init() {
+//    let adr = "Mx" + address.stripMinterHexPrefix()
+//    guard adr.isValidAddress() else {
+//      return nil
+//    }
+////    self.channel = adr
+////    try? self.changeAddress(adr)
 
     self.accountSubject.filter{$0 != nil}.subscribe(onNext: { [weak self] (item) in
 //      self?.unsubscribeAccountBalanceChange()
@@ -88,7 +91,7 @@ class ExplorerBalanceService: BalanceService {
 
   func updateBalance() {
 
-    account.flatMapLatest { (account) -> Observable<Event<BalancesResponse>> in
+    account.filter{$0 != nil}.flatMapLatest { (account) -> Observable<Event<BalancesResponse>> in
       return self.balances(address: account!.address).materialize()
     }.subscribe(onNext: { event in
       switch event {
@@ -279,14 +282,14 @@ extension ExplorerBalanceService: CentrifugeClientDelegate, CentrifugeSubscripti
   }
 
   private func subscribeAccountBalanceChange() {
-    guard self.isConnected == true else {
+    guard self.isConnected == true, let channel = self.channel else {
       return
     }
 
     do {
-      let subs = try client?.newSubscription(channel: self.channel, delegate: self)
+      let subs = try client?.newSubscription(channel: channel, delegate: self)
       subs?.subscribe()
-      accountSubscription[self.channel] = subs
+      accountSubscription[channel] = subs
 
     } catch {
       print("Can not create subscription: \(error)")
@@ -308,8 +311,9 @@ extension ExplorerBalanceService: CentrifugeClientDelegate, CentrifugeSubscripti
 
   private func unsubscribeAccountBalanceChange() {
 //    addressSubscription?.unsubscribe()
-    accountSubscription[self.channel]?.unsubscribe()
-    accountSubscription[self.channel] = nil
+    guard let channel = self.channel else { return }
+    accountSubscription[channel]?.unsubscribe()
+    accountSubscription[channel] = nil
   }
 
   private func unsubscribeBlocksChange() {
@@ -345,11 +349,11 @@ extension ExplorerBalanceService: CentrifugeClientDelegate, CentrifugeSubscripti
   }
 
   func onJoin(_ sub: CentrifugeSubscription, _ event: CentrifugeJoinEvent) {
-    print(event)
+//    print(event)
   }
 
   func onLeave(_ sub: CentrifugeSubscription, _ event: CentrifugeLeaveEvent) {
-    print(event)
+//    print(event)
   }
 
 }

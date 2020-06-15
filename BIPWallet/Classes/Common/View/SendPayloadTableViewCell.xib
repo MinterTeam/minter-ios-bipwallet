@@ -37,7 +37,7 @@
                         </userDefinedRuntimeAttributes>
                     </label>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="249" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" text=" " textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aIa-Ld-0La">
-                        <rect key="frame" x="37" y="0.0" width="823" height="14"/>
+                        <rect key="frame" x="37" y="0.0" width="823" height="15"/>
                         <fontDescription key="fontDescription" name="Inter_Semi-Bold" family="Inter" pointSize="12"/>
                         <color key="textColor" red="0.93333333330000001" green="0.13725490200000001" blue="0.16862745100000001" alpha="1" colorSpace="deviceRGB"/>
                         <nil key="highlightedColor"/>
@@ -75,21 +75,13 @@
                             <constraint firstItem="SRL-Ee-Dgc" firstAttribute="trailing" secondItem="RoG-l2-n9c" secondAttribute="trailing" constant="-8" id="hDT-FY-geE"/>
                         </constraints>
                     </view>
-                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="fill" contentVerticalAlignment="center" adjustsImageWhenHighlighted="NO" lineBreakMode="middleTruncation" hasAttributedTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Stz-7B-9zT">
+                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" adjustsImageWhenHighlighted="NO" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Stz-7B-9zT" userLabel="Add Message">
                         <rect key="frame" x="24" y="29" width="836" height="48"/>
                         <accessibility key="accessibilityConfiguration" label="Add message Button"/>
-                        <inset key="titleEdgeInsets" minX="-24" minY="0.0" maxX="0.0" maxY="0.0"/>
+                        <fontDescription key="fontDescription" name="Inter_Semi-Bold" family="Inter" pointSize="18"/>
                         <inset key="imageEdgeInsets" minX="16" minY="0.0" maxX="16" maxY="0.0"/>
-                        <state key="normal" backgroundImage="AddMessageBackgroundImage">
-                            <attributedString key="attributedTitle">
-                                <fragment content=" ">
-                                    <attributes>
-                                        <color key="NSColor" red="0.098039215690000001" green="0.098039215690000001" blue="0.098039215690000001" alpha="1" colorSpace="deviceRGB"/>
-                                        <font key="NSFont" metaFont="label" size="18"/>
-                                        <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
-                                    </attributes>
-                                </fragment>
-                            </attributedString>
+                        <state key="normal" title=" Add Message" backgroundImage="AddMessageBackgroundImage">
+                            <color key="titleColor" red="0.098039215690000001" green="0.098039215690000001" blue="0.098039215690000001" alpha="1" colorSpace="deviceRGB"/>
                         </state>
                         <state key="selected" backgroundImage="AddMessageBackgroundImage">
                             <preferredSymbolConfiguration key="preferredSymbolConfiguration" scale="default"/>
@@ -126,7 +118,7 @@
         </tableViewCell>
     </objects>
     <resources>
-        <image name="AddMessageBackgroundImage" width="322" height="48"/>
+        <image name="AddMessageBackgroundImage" width="327" height="48"/>
         <image name="TextFieldCancelIcon" width="20" height="20"/>
     </resources>
 </document>

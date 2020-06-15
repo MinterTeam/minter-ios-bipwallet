@@ -113,7 +113,12 @@ class BalanceViewController: SegmentedPagerTabStripViewController, Controller, S
 
     containerViewTap.filter { (recognizer) -> Bool in
       let point = recognizer.location(in: self.balanceView)
-      return self.delegatedBalanceTitle.frame.contains(point) || self.delegatedBalance.frame.contains(point)
+
+      let delegatedBalanceTitleFrame = self.delegatedBalanceTitle.frame.inset(by: UIEdgeInsets(top: -50, left: -50, bottom: -50, right: -50))
+      let delegatedBalanceFrame = self.delegatedBalance.frame.inset(by: UIEdgeInsets(top: -50, left: -50, bottom: -50, right: -50))
+
+      return delegatedBalanceTitleFrame.contains(point)
+        || delegatedBalanceFrame.contains(point)
     }.map {_ in}.subscribe(viewModel.input.didTapDelegatedBalance).disposed(by: disposeBag)
 
     readerVC.completionBlock = { [weak self] (result: QRCodeReaderResult?) in

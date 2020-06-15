@@ -42,6 +42,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     MinterMySDK.initialize(network: isTestnet ? .testnet : .mainnet)
 
     window = UIWindow()
+    window?.makeKeyAndVisible()
 
     let pinService = SecureStoragePINService()
     let authService = LocalStorageAuthService(storage: SecureStorage(namespace: "Auth"),

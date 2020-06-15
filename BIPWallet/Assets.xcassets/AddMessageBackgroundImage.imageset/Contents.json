@@ -3,49 +3,16 @@
     {
       "filename" : "Empty.png",
       "idiom" : "universal",
-      "resizing" : {
-        "cap-insets" : {
-          "left" : 228,
-          "right" : 17
-        },
-        "center" : {
-          "mode" : "tile",
-          "width" : 78
-        },
-        "mode" : "3-part-horizontal"
-      },
       "scale" : "1x"
     },
     {
       "filename" : "Empty@2x.png",
       "idiom" : "universal",
-      "resizing" : {
-        "cap-insets" : {
-          "left" : 454,
-          "right" : 25
-        },
-        "center" : {
-          "mode" : "tile",
-          "width" : 165
-        },
-        "mode" : "3-part-horizontal"
-      },
       "scale" : "2x"
     },
     {
       "filename" : "Empty@3x.png",
       "idiom" : "universal",
-      "resizing" : {
-        "cap-insets" : {
-          "left" : 683,
-          "right" : 45
-        },
-        "center" : {
-          "mode" : "tile",
-          "width" : 220
-        },
-        "mode" : "3-part-horizontal"
-      },
       "scale" : "3x"
     }
   ],

@@ -26,6 +26,15 @@ class UsernameGrowingTextView: GrowingTextView {
     self.textContainerInset = UIEdgeInsets(top: 14.0, left: 16.0, bottom: 14.0, right: 32.0)
   }
 
+  override func canPerformAction(_ action: Selector, withSender sender: Any?) -> Bool {
+    switch action {
+    case #selector(paste(_:)):
+      return true
+    default:
+      return super.canPerformAction(action, withSender: sender)
+    }
+  }
+
 }
 
 class PayloadGrowingTextView: GrowingTextView {
@@ -36,4 +45,14 @@ class PayloadGrowingTextView: GrowingTextView {
     self.textContainerInset = UIEdgeInsets(top: 14.0, left: 16.0, bottom: 14.0, right: 34.0)
   }
 
+  override func canPerformAction(_ action: Selector, withSender sender: Any?) -> Bool {
+    switch action {
+    case #selector(paste(_:)):
+      return true
+    default:
+      return super.canPerformAction(action, withSender: sender)
+    }
+  }
+
 }
+ 
