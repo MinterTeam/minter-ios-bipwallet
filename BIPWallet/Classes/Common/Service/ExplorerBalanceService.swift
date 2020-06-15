@@ -33,6 +33,9 @@ class ExplorerBalanceService: BalanceService {
 
     self.accountSubject.filter{$0 != nil}.subscribe(onNext: { [weak self] (item) in
 //      self?.unsubscribeAccountBalanceChange()
+      if !(self?.isConnected ?? true) {
+        self?.websocketConnect()
+      }
       if let address = item?.address {
         self?.channel = "Mx" + address.stripMinterHexPrefix()
         self?.subscribeAccountBalanceChange()
