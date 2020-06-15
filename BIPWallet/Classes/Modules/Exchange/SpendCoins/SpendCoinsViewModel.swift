@@ -324,17 +324,18 @@ class SpendCoinsViewModel: ConvertCoinsViewModel, ViewModel {
                                   selectedAddress: selectedAddress,
                                   minimumBuyValue: minimumBuyValue)
     }
-    .delay(.seconds(3), scheduler: MainScheduler.instance)
+    .delay(.seconds(0), scheduler: MainScheduler.instance)
     .flatMap({ [weak self] (hash) -> Observable<MinterExplorer.Transaction?> in
       guard let `self` = self, let hash = hash else { return Observable.error(SpendCoindsViewModelError.incorrectParams) }
       return self.dependency.transactionService.transaction(hash: hash)
+        .retry(.exponentialDelayed(maxCount: 3, initial: 1.0, multiplier: 2.0), scheduler: MainScheduler.instance, shouldRetry: nil)
         .do(onError: { [weak self] (error) in
           //If error in getting transaction - show convert succeeed without estimates
           self?.exchangeSucceeded.onNext((message: "Coins have been exchanged".localized(), transactionHash: hash))
           self?.shouldClearForm.value = true
           self?.dependency.balanceService.updateBalance()
         })
-    })
+      })
     .subscribe(onNext: { [weak self] (transaction) in
       guard let `self` = self else { return }
       if let transactionData = transaction?.data as? MinterExplorer.ConvertTransactionData,

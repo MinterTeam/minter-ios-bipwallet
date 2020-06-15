@@ -951,7 +951,7 @@
 		FA9FE561246E86A400788310 /* PopupLoadingView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PopupLoadingView.xib; sourceTree = "<group>"; };
 		FA9FE563246E86E100788310 /* PopupLoadingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopupLoadingView.swift; sourceTree = "<group>"; };
 		FAAAD9D424977B7A00D7F5FE /* BIPWalletTestnet.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BIPWalletTestnet.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		FAAAD9D524977B7A00D7F5FE /* BIPWallet copy-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "BIPWallet copy-Info.plist"; path = "/Users/alex/Documents/NewWallet/BIPWallet/BIPWallet copy-Info.plist"; sourceTree = "<absolute>"; };
+		FAAAD9D524977B7A00D7F5FE /* BIPWalletTestnet-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "BIPWalletTestnet-Info.plist"; path = "/Users/alex/Documents/NewWallet/BIPWallet/BIPWalletTestnet-Info.plist"; sourceTree = "<absolute>"; };
 		FAAAD9D624977BDF00D7F5FE /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		FAAE57D024473E680035CE99 /* Delegated.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Delegated.storyboard; sourceTree = "<group>"; };
 		FAAE57D324473EE10035CE99 /* DelegatedTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DelegatedTableViewCell.swift; sourceTree = "<group>"; };
@@ -1696,7 +1696,6 @@
 				FA9E518E23ED9972007263B9 /* Products */,
 				59B3275C88C0DE980516A76A /* Pods */,
 				A2CFCEF1D1A05E93BCE74263 /* Frameworks */,
-				FAAAD9D524977B7A00D7F5FE /* BIPWallet copy-Info.plist */,
 			);
 			sourceTree = "<group>";
 		};
@@ -1722,6 +1721,7 @@
 				FA9E519B23ED9976007263B9 /* LaunchScreen.storyboard */,
 				FA9E519E23ED9976007263B9 /* Info.plist */,
 				FA3BDEA5242BEA3D0076A7F4 /* BIPWallet-Bridging-Header.h */,
+				FAAAD9D524977B7A00D7F5FE /* BIPWalletTestnet-Info.plist */,
 			);
 			path = BIPWallet;
 			sourceTree = "<group>";
@@ -3252,9 +3252,9 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIconTestnet;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 240;
+				CURRENT_PROJECT_VERSION = 241;
 				DEVELOPMENT_TEAM = A26H28FPZU;
-				INFOPLIST_FILE = "BIPWallet copy-Info.plist";
+				INFOPLIST_FILE = "BIPWalletTestnet-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -3275,9 +3275,9 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIconTestnet;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 240;
+				CURRENT_PROJECT_VERSION = 241;
 				DEVELOPMENT_TEAM = A26H28FPZU;
-				INFOPLIST_FILE = "BIPWallet copy-Info.plist";
+				INFOPLIST_FILE = "BIPWalletTestnet-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
