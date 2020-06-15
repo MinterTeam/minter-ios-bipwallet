@@ -18,7 +18,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
   var window: UIWindow?
   var disposeBag = DisposeBag()
-  let isTestnet = true//(Bundle.main.infoDictionary?["CFBundleName"] as? String)?.contains("Testnet") ?? false
+  let isTestnet = (Bundle.main.infoDictionary?["CFBundleName"] as? String)?.contains("Testnet") ?? false
 
   func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
 

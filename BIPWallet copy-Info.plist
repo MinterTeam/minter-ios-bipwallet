@@ -22,17 +22,17 @@
 			<key>CFBundleTypeRole</key>
 			<string>Editor</string>
 			<key>CFBundleURLName</key>
-			<string>minter</string>
+			<string>mintertestnet</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>minter</string>
+				<string>mintertestnet</string>
 			</array>
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
 	<string>$(CURRENT_PROJECT_VERSION)</string>
 	<key>Configuration</key>
-	<string>prod</string>
+	<string>dev</string>
 	<key>LSApplicationQueriesSchemes</key>
 	<array>
 		<string>tg</string>

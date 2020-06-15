@@ -114,8 +114,8 @@ class BalanceViewController: SegmentedPagerTabStripViewController, Controller, S
     containerViewTap.filter { (recognizer) -> Bool in
       let point = recognizer.location(in: self.balanceView)
 
-      let delegatedBalanceTitleFrame = self.delegatedBalanceTitle.frame.inset(by: UIEdgeInsets(top: -50, left: -50, bottom: -50, right: -50))
-      let delegatedBalanceFrame = self.delegatedBalance.frame.inset(by: UIEdgeInsets(top: -50, left: -50, bottom: -50, right: -50))
+      let delegatedBalanceTitleFrame = self.delegatedBalanceTitle.frame.inset(by: UIEdgeInsets(top: -5, left: -15, bottom: -20, right: -15))
+      let delegatedBalanceFrame = self.delegatedBalance.frame.inset(by: UIEdgeInsets(top: -15, left: -15, bottom: -15, right: -15))
 
       return delegatedBalanceTitleFrame.contains(point)
         || delegatedBalanceFrame.contains(point)
