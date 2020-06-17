@@ -70,7 +70,7 @@ class SendCoordinator: BaseCoordinator<Void> {
                                   address: val.1,
                                   shouldHideActionButton: shouldHideActionButton)
 
-    }.flatMap({ [weak self] (val) -> Observable<Any> in
+    }.delay(.milliseconds(1500), scheduler: MainScheduler.asyncInstance).flatMap({ [weak self] (val) -> Observable<Any> in
       guard let `self` = self, let tabbarViewController = controller.tabBarController else { return Observable.empty() }
 
       switch val {
@@ -83,6 +83,7 @@ class SendCoordinator: BaseCoordinator<Void> {
         let safari = SFSafariViewController(url: url)
         tabbarViewController.present(safari, animated: true) {}
         return safari.rx.deallocated.map {_ in ""}
+
       case .cancel:
         return Observable.empty()
       }

@@ -115,7 +115,7 @@
                                     </tableViewCell>
                                 </prototypes>
                             </tableView>
-                            <label opaque="NO" userInteractionEnabled="NO" alpha="0.0" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="You don't have any delegated stakes yet." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hOI-jh-zgq" customClass="UHBCustomLabel" customModule="BIPWallet" customModuleProvider="target">
+                            <label opaque="NO" userInteractionEnabled="NO" alpha="0.0" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="You don't have any delegated stakes yet" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hOI-jh-zgq" customClass="UHBCustomLabel" customModule="BIPWallet" customModuleProvider="target">
                                 <rect key="frame" x="16" y="393" width="382" height="22"/>
                                 <fontDescription key="fontDescription" name="Inter_Semi-Bold" family="Inter" pointSize="18"/>
                                 <nil key="textColor"/>

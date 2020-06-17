@@ -321,7 +321,8 @@ class GetCoinsViewModel: ConvertCoinsViewModel, ViewModel {
 
             if let hash = hash {
               self.dependency.transactionService.transaction(hash: hash)
-                .delay(.seconds(3), scheduler: MainScheduler.instance)
+                .delay(.seconds(1), scheduler: MainScheduler.instance)
+                .retry(.exponentialDelayed(maxCount: 3, initial: 1.0, multiplier: 2.0), scheduler: MainScheduler.instance, shouldRetry: nil)
                 .subscribe(onNext: { [weak self] (transaction) in
                   guard let `self` = self else { return }
                   if let transactionData = transaction?.data as? MinterExplorer.ConvertTransactionData,

@@ -61,6 +61,7 @@ class DelegateUnbondViewModel: BaseViewModel, ViewModel, LastBlockViewable {
       if let validator = validator {
         self.validatorPublicKey.onNext(TransactionTitleHelper.title(from: validator.publicKey))
         self.validatorName.onNext(validator.name ?? TransactionTitleHelper.title(from: validator.publicKey))
+        self.validatorSubject.accept(validator.publicKey)
       }
     }
   }

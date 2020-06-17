@@ -295,7 +295,7 @@
                                 <constraint firstAttribute="height" constant="48" id="C1U-0g-vFZ"/>
                             </constraints>
                             <fontDescription key="fontDescription" name="Inter" family="Inter" pointSize="17"/>
-                            <textInputTraits key="textInputTraits"/>
+                            <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                         </textField>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Add a title to your wallet (you can do it later)" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="weF-NH-bNv" customClass="UHBCustomLabel" customModule="BIPWallet" customModuleProvider="target">
                             <rect key="frame" x="16" y="214.5" width="235.5" height="13"/>

@@ -414,7 +414,7 @@ extension SendViewController {
   func didTapSecondButton(viewController: SentPopupViewController) {
     SoundHelper.playSoundIfAllowed(type: .cancel)
     lightImpactFeedbackGenerator.prepare()
-//    AnalyticsHelper.defaultAnalytics.track(event: .sentCoinPopupCloseButton)
+
     viewController.dismiss(animated: true, completion: nil)
   }
 

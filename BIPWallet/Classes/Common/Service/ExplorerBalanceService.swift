@@ -47,6 +47,8 @@ class ExplorerBalanceService: BalanceService {
         self?.channel = "Mx" + address.stripMinterHexPrefix()
         self?.websocketConnect()
       }
+      self?.updateBalance()
+      self?.updateDelegated()
     }).disposed(by: disposeBag)
 
     UIApplication.shared.rx.applicationDidEnterBackground.subscribe(onNext: { [weak self] (_) in

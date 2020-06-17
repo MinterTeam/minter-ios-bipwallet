@@ -34,6 +34,7 @@ class UsernameTableViewCell: TextViewTableViewCell {
 		setDefault()
 		activityIndicator?.backgroundColor = .clear
 		textView.font = UIFont.mediumFont(of: 16.0)
+    textView.autocorrectionType = .no
 	}
 
 	@objc

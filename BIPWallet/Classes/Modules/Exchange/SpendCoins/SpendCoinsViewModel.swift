@@ -324,7 +324,7 @@ class SpendCoinsViewModel: ConvertCoinsViewModel, ViewModel {
                                   selectedAddress: selectedAddress,
                                   minimumBuyValue: minimumBuyValue)
     }
-    .delay(.seconds(0), scheduler: MainScheduler.instance)
+    .delay(.seconds(1), scheduler: MainScheduler.instance)
     .flatMap({ [weak self] (hash) -> Observable<MinterExplorer.Transaction?> in
       guard let `self` = self, let hash = hash else { return Observable.error(SpendCoindsViewModelError.incorrectParams) }
       return self.dependency.transactionService.transaction(hash: hash)
