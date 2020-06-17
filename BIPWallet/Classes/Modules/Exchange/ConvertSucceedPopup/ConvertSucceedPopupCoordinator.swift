@@ -38,8 +38,8 @@ class ConvertSucceedPopupCoordinator: BaseCoordinator<Void> {
       return self?.explorerURL(hash: transactionHash)//URL(string: MinterExplorerBaseURL! + "/transactions/" + (hash ?? ""))
     }).subscribe(onNext: { [weak controller, weak self] (url) in
       guard let url = url else { return }
-      let safari = SFSafariViewController(url: url)
       controller?.dismiss(animated: true, completion: {
+        let safari = SFSafariViewController(url: url)
         self?.rootViewController?.present(safari, animated: true) {}
       })
     }).disposed(by: disposeBag)

@@ -36,6 +36,7 @@ class DelegateUnbondViewController: BaseViewController, Controller, StoryboardIn
   @IBOutlet weak var multipleWalletsImage: UIImageView!
   @IBOutlet weak var clearValidatorButton: UIButton!
   @IBOutlet weak var coinTitle: UILabel!
+  @IBOutlet weak var lastBlockButton: UIButton!
 
   // MARK: - ControllerProtocol
 
@@ -119,6 +120,8 @@ class DelegateUnbondViewController: BaseViewController, Controller, StoryboardIn
     viewModel.output.coinTitle.asDriver(onErrorJustReturn: nil)
       .drive(coinTitle.rx.text)
       .disposed(by: disposeBag)
+
+    viewModel.output.lastBlock.asDriver(onErrorJustReturn: nil).drive(lastBlockButton.rx.attributedTitle(for: .normal)).disposed(by: disposeBag)
 
     //Input
     (validatorTextField.rx.text <-> viewModel.input.validator).disposed(by: disposeBag)

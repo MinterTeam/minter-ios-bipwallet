@@ -66,16 +66,16 @@ class DelegatedViewController: BaseViewController, Controller, StoryboardInitial
 
   // MARK: -
 
-  var rxDataSource: RxTableViewSectionedAnimatedDataSource<BaseTableSectionItem>?
+  var rxDataSource: RxTableViewSectionedReloadDataSource<BaseTableSectionItem>?
 
   override func viewDidLoad() {
     super.viewDidLoad()
 
-    rxDataSource?.animationConfiguration = AnimationConfiguration(insertAnimation: .none,
-                                                                  reloadAnimation: .none,
-                                                                  deleteAnimation: .none)
+//    rxDataSource?.animationConfiguration = AnimationConfiguration(insertAnimation: .none,
+//                                                                  reloadAnimation: .none,
+//                                                                  deleteAnimation: .none)
 
-    rxDataSource = RxTableViewSectionedAnimatedDataSource<BaseTableSectionItem>(
+    rxDataSource = RxTableViewSectionedReloadDataSource<BaseTableSectionItem>(
       configureCell: { dataSource, tableView, indexPath, sm in
 
         guard let item = try? dataSource.model(at: indexPath) as? BaseCellItem,

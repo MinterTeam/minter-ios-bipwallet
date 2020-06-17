@@ -23,7 +23,7 @@ enum DelegateUnbondViewModelError: Error {
   case cantGetEstimate
 }
 
-class DelegateUnbondViewModel: BaseViewModel, ViewModel {
+class DelegateUnbondViewModel: BaseViewModel, ViewModel, LastBlockViewable {
 
   // MARK: -
 
@@ -110,6 +110,7 @@ class DelegateUnbondViewModel: BaseViewModel, ViewModel {
   private let didTapSend = PublishSubject<Void>()
   private let didTapUseMax = PublishSubject<Void>()
   private let didEndEditingValidator = PublishSubject<Void>()
+  lazy var balanceTitleObservable = Observable.of(Observable<Int>.timer(0, period: 1, scheduler: MainScheduler.instance).map {_ in}).merge()
 
   // MARK: - ViewModel
 
@@ -147,6 +148,7 @@ class DelegateUnbondViewModel: BaseViewModel, ViewModel {
     var disableValidatorChange: Observable<Bool>
     var showConfirmation: Observable<(String?, String?)>
     var coinTitle: Observable<String?>
+    var lastBlock: Observable<NSAttributedString?>
   }
 
   struct Dependency {
@@ -230,7 +232,11 @@ class DelegateUnbondViewModel: BaseViewModel, ViewModel {
                           let validatorName = self.validator?.name ?? TransactionTitleHelper.title(from: self.validator?.publicKey ?? "")
                           return (amount, validatorName)
                          }.asObservable(),
-                         coinTitle: Observable.just(isUnbond ? "Coin you want to unbond".localized() : "Coin".localized())
+                         coinTitle: Observable.just(isUnbond ? "Coin you want to unbond".localized() : "Coin".localized()),
+                         lastBlock: balanceTitleObservable.withLatestFrom(self.dependency.balanceService.lastBlockAgo()).map {
+                          let ago = Date().timeIntervalSince1970 - ($0 ?? 0)
+                          return self.headerViewLastUpdatedTitleText(seconds: ago)
+                         }
     )
 
     bind()
@@ -293,6 +299,7 @@ class DelegateUnbondViewModel: BaseViewModel, ViewModel {
 
       var autocompleteItems = [SearchTextFieldItem]()
       items.forEach({ (item) in
+        guard item.isOnline else { return }
         self.validatorsPickerSource[self.pickerTitle(from: item)] = item
         let autocompleteItem = SearchTextFieldItem(id: String.random(),
                                                    title: item.name ?? TransactionTitleHelper.title(from: item.publicKey), subtitle: item.publicKey,
@@ -300,7 +307,7 @@ class DelegateUnbondViewModel: BaseViewModel, ViewModel {
                                                    imageURL: URL.validatorURL(with: item.publicKey))
         autocompleteItems.append(autocompleteItem)
         self.autocomplete.itemsSource[autocompleteItem.id] = item
-      })
+        })
       self.autocomplete.autocompleteValidatorsItems.onNext(autocompleteItems)
 
       if let validator = self.validator {
@@ -392,7 +399,7 @@ class DelegateUnbondViewModel: BaseViewModel, ViewModel {
           }
         } else {
           //check if can pay with baseCoin
-          if baseCoinBalance > self.currentCommission() {
+          if baseCoinBalance >= self.currentCommission() {
             //all good - send tx
             gasCoin = Coin.baseCoin().symbol!
           } else {

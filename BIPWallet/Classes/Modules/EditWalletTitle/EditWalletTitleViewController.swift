@@ -52,8 +52,15 @@ class EditWalletTitleViewController: BaseViewController, Controller, StoryboardI
       .disposed(by: disposeBag)
 
     self.saveButton.rx.tap.asDriver().drive(viewModel.input.didTapSave).disposed(by: disposeBag)
+
     self.textField.rx.controlEvent(.editingDidEndOnExit).asDriver().map{_ in}
       .drive(viewModel.input.didTapSave).disposed(by: disposeBag)
+
+    Observable.of(self.saveButton.rx.tap.map{_ in},
+                  self.textField.rx.controlEvent(.editingDidEndOnExit).map{_ in}).merge()
+      .subscribe(onNext: { [weak self] (_) in
+        self?.textField.resignFirstResponder()
+      }).disposed(by: disposeBag)
 
     self.confirmRemoveButton.rx.tap.asDriver().drive(viewModel.input.didTapRemove).disposed(by: disposeBag)
 

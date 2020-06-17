@@ -589,6 +589,8 @@
 		FAAE57D124473E690035CE99 /* Delegated.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FAAE57D024473E680035CE99 /* Delegated.storyboard */; };
 		FAAE57D424473EE10035CE99 /* DelegatedTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAAE57D324473EE10035CE99 /* DelegatedTableViewCell.swift */; };
 		FAB69142246ECBE900CFC37D /* ConvertSucceedPopup.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FAB69141246ECBE900CFC37D /* ConvertSucceedPopup.storyboard */; };
+		FAC149012498C08B00F556C2 /* LastBlockViewable.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAC149002498C08B00F556C2 /* LastBlockViewable.swift */; };
+		FAC149022498C59F00F556C2 /* LastBlockViewable.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAC149002498C08B00F556C2 /* LastBlockViewable.swift */; };
 		FAC14A41247D4A52008D1A45 /* SendSucceedPopup.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FAC14A40247D4A52008D1A45 /* SendSucceedPopup.storyboard */; };
 		FAC14A4524810FC3008D1A45 /* SearchTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAC14A4424810FC3008D1A45 /* SearchTextField.swift */; };
 		FAC14A4724811192008D1A45 /* SearchTextFieldCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FAC14A4624811192008D1A45 /* SearchTextFieldCell.xib */; };
@@ -956,6 +958,7 @@
 		FAAE57D024473E680035CE99 /* Delegated.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Delegated.storyboard; sourceTree = "<group>"; };
 		FAAE57D324473EE10035CE99 /* DelegatedTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DelegatedTableViewCell.swift; sourceTree = "<group>"; };
 		FAB69141246ECBE900CFC37D /* ConvertSucceedPopup.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = ConvertSucceedPopup.storyboard; sourceTree = "<group>"; };
+		FAC149002498C08B00F556C2 /* LastBlockViewable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LastBlockViewable.swift; sourceTree = "<group>"; };
 		FAC14A40247D4A52008D1A45 /* SendSucceedPopup.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = SendSucceedPopup.storyboard; sourceTree = "<group>"; };
 		FAC14A4424810FC3008D1A45 /* SearchTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchTextField.swift; sourceTree = "<group>"; };
 		FAC14A4624811192008D1A45 /* SearchTextFieldCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SearchTextFieldCell.xib; sourceTree = "<group>"; };
@@ -1802,6 +1805,7 @@
 				FACA657323F6BE5000399359 /* StoryboardInitializable.swift */,
 				FAE162D72403DA4F007E9CAD /* TransactionViewableViewModel.swift */,
 				FA62232D24534450006089EC /* WalletSelectableViewModel.swift */,
+				FAC149002498C08B00F556C2 /* LastBlockViewable.swift */,
 			);
 			path = Protocol;
 			sourceTree = "<group>";
@@ -2574,6 +2578,7 @@
 				FA3BDE56242B83C80076A7F4 /* QRCodeReaderView.swift in Sources */,
 				FA3BDEA9242BFB730076A7F4 /* GrowingTextView.swift in Sources */,
 				E56D2E5CB6B34140762F8C6A /* SettingsCoordinator.swift in Sources */,
+				FAC149012498C08B00F556C2 /* LastBlockViewable.swift in Sources */,
 				FA6223332455DA75006089EC /* SettingsTableHeaderView.swift in Sources */,
 				FA62232E24534451006089EC /* WalletSelectableViewModel.swift in Sources */,
 				06078762B3329C5ADE218F90 /* CoinsViewController.swift in Sources */,
@@ -2861,6 +2866,7 @@
 				FAAAD91E24977B7A00D7F5FE /* QRCodeReaderView.swift in Sources */,
 				FAAAD91F24977B7A00D7F5FE /* GrowingTextView.swift in Sources */,
 				FAAAD92024977B7A00D7F5FE /* SettingsCoordinator.swift in Sources */,
+				FAC149022498C59F00F556C2 /* LastBlockViewable.swift in Sources */,
 				FAAAD92124977B7A00D7F5FE /* SettingsTableHeaderView.swift in Sources */,
 				FAAAD92224977B7A00D7F5FE /* WalletSelectableViewModel.swift in Sources */,
 				FAAAD92324977B7A00D7F5FE /* CoinsViewController.swift in Sources */,
@@ -3122,7 +3128,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 240;
+				CURRENT_PROJECT_VERSION = 249;
 				DEVELOPMENT_TEAM = A26H28FPZU;
 				INFOPLIST_FILE = BIPWallet/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
@@ -3145,7 +3151,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 240;
+				CURRENT_PROJECT_VERSION = 249;
 				DEVELOPMENT_TEAM = A26H28FPZU;
 				INFOPLIST_FILE = BIPWallet/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
@@ -3252,7 +3258,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIconTestnet;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 241;
+				CURRENT_PROJECT_VERSION = 249;
 				DEVELOPMENT_TEAM = A26H28FPZU;
 				INFOPLIST_FILE = "BIPWalletTestnet-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
@@ -3275,7 +3281,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIconTestnet;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 241;
+				CURRENT_PROJECT_VERSION = 249;
 				DEVELOPMENT_TEAM = A26H28FPZU;
 				INFOPLIST_FILE = "BIPWalletTestnet-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
