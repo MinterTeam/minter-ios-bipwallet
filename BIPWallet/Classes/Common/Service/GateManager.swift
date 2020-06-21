@@ -275,17 +275,19 @@ class GateManager: BaseManager {
 	/// - Parameters:
 	///   - rawTransaction: encoded transaction
 	///   - completion: method which will be called after request finished
-	public func sendRawTransaction(rawTransaction: String, completion: ((String?, Error?) -> ())?) {
+  ///   -
+  public func sendRawTransaction(rawTransaction: String, completion: ( ((hash: String?, height: Decimal?, error: Error?)) -> ())?) {
 
 		let url = MinterGateAPIURL.send.url()
 
 		self.httpClient.postRequest(url, parameters: ["transaction" : rawTransaction]) { (response, error) in
 
 			var tx: String?
+      var block: Decimal?
 			var err: Error?
 
 			defer {
-				completion?(tx, err)
+				completion?((hash: tx, height: block, error: err))
 			}
 
 			guard nil == error else {
@@ -293,9 +295,15 @@ class GateManager: BaseManager {
 				return
 			}
 
-			if let resp = response.data as? [String : Any],
-				let hash = resp["hash"] as? String {
-				tx = hash
+      if let resp = response.data as? [String: Any] {
+        if let hash = resp["hash"] as? String {
+          tx = hash
+        }
+        if let transaction = resp["transaction"] as? [String: Any] {
+          if let blockVal = transaction["height"] as? String {
+            block = Decimal(string: blockVal)
+          }
+        }
 			} else {
 				err = GateManagerError.wrongResponse
 			}
@@ -386,15 +394,15 @@ extension GateManager {
     }
   }
 
-  func send(rawTx: String?) -> Observable<String?> {
+  func send(rawTx: String?) -> Observable<(String?, Decimal?)> {
     return Observable.create { observer -> Disposable in
       if rawTx != nil {
-        self.sendRawTransaction(rawTransaction: rawTx!, completion: { (hash, error) in
+        self.sendRawTransaction(rawTransaction: rawTx!, completion: { (hash, block, error) in
           guard nil == error else {
             observer.onError(error!)
             return
           }
-          observer.onNext(hash)
+          observer.onNext((hash, block))
           observer.onCompleted()
         })
       } else {

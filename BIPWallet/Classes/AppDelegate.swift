@@ -12,6 +12,7 @@ import RxRouting
 import MinterCore
 import MinterExplorer
 import MinterMy
+import Firebase
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -23,6 +24,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
   func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
 
     let isUITesting = ProcessInfo.processInfo.arguments.contains("UITesting")
+    FirebaseApp.configure()
 
     let conf = Configuration()
     if isUITesting {
@@ -63,6 +65,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
       return nil
     }, RxRouting.instance.register("mintertestnet://bip.to/tx/<transaction>").map { val -> RouteMatchResult? in
       return val
+    }, RxRouting.instance.register("https://bip.to/tx/<transaction>").map { val -> RouteMatchResult? in
+      return val
+    }, RxRouting.instance.register("https://testnet.bip.to/tx/<transaction>").map { val -> RouteMatchResult? in
+      return val
     }).merge().flatMap { (result) -> Observable<Event<Void>> in
 
       guard let url = result?.url else {
@@ -78,7 +84,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     return true
   }
-  
+
   func application(_ app: UIApplication,
                    open url: URL,
                    options: [UIApplication.OpenURLOptionsKey: Any] = [:]) -> Bool {
@@ -86,6 +92,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         return true
     }
     return false
+  }
+
+  func application(_ application: UIApplication, continue userActivity: NSUserActivity, restorationHandler: @escaping ([UIUserActivityRestoring]?) -> Void) -> Bool {
+    if let url = userActivity.webpageURL {
+      if RxRouting.instance.handle(url: url) {
+        return true
+      }
+    }
+    return true
   }
 
 }

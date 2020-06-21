@@ -108,9 +108,12 @@ class SendViewController: BaseViewController,
     autocompleteViewWrapper.frame = .zero
     self.view.addSubview(autocompleteViewWrapper)
 
+    //HACK to layout table
+    UIView.setAnimationsEnabled(false)
     tableView.beginUpdates()
     tableView.endUpdates()
     self.view.layoutIfNeeded()
+    UIView.setAnimationsEnabled(true)
   }
 
   // MARK: -

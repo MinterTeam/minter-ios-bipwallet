@@ -30,12 +30,13 @@ class DelegateUnbondSucceedPopupViewModel: BaseViewModel, ViewModel {
   struct Output {
     var didTapAction: Observable<Void>
     var didTapCancel: Observable<Void>
+    var message: Observable<String?>
     var description: Observable<String?>
   }
 
   struct Dependency {}
 
-  init(dependency: Dependency, message: String?) {
+  init(dependency: Dependency, message: String?, desc: String?) {
     super.init()
 
     self.input = Input(didTapAction: didTapAction.asObserver(),
@@ -44,7 +45,8 @@ class DelegateUnbondSucceedPopupViewModel: BaseViewModel, ViewModel {
 
     self.output = Output(didTapAction: didTapAction.asObservable(),
                          didTapCancel: didTapCancel.asObservable(),
-                         description: Observable.just(message)
+                         message: Observable.just(message),
+                         description: Observable.just(desc)
     )
 
     self.dependency = dependency

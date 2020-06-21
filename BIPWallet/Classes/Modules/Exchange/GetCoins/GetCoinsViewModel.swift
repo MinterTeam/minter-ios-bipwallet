@@ -302,7 +302,7 @@ class GetCoinsViewModel: ConvertCoinsViewModel, ViewModel {
                                             maximumValueToSell: maxValueToSell)
           let signedTx = RawTransactionSigner.sign(rawTx: rawTx, privateKey: privateKey)
 
-          GateManager.shared.sendRawTransaction(rawTransaction: signedTx!, completion: { (hash, err) in
+          GateManager.shared.sendRawTransaction(rawTransaction: signedTx!, completion: { (hash, block, err) in
 
             self?.isLoading.onNext(false)
 

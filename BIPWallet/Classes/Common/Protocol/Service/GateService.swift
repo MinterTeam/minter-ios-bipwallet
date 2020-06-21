@@ -13,6 +13,6 @@ protocol GateService {
   func updateGas()
   func currentGas() -> Observable<Int>
   func nonce(address: String) -> Observable<Int>
-  func send(rawTx: String?) -> Observable<String?>
+  func send(rawTx: String?) -> Observable<(String?, Decimal?)>
   func estimateComission(rawTx: String) -> Observable<Decimal>
 }

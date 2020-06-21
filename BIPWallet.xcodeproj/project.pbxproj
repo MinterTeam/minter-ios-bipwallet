@@ -16,6 +16,7 @@
 		0C86BA17E81B6A692CEEFE63 /* SendViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D8E46E887E1081D41C2ACE3 /* SendViewController.swift */; };
 		0CB21BBB81AB6CE8C790C87F /* DelegateUnbondCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BF4EE00E5AD1F06F7EFE4E6 /* DelegateUnbondCoordinator.swift */; };
 		1921CF3586EDFEAE823871A0 /* ValidatorsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EA3A25F57FF6AC176791A12 /* ValidatorsViewController.swift */; };
+		1C7FBCB7812A84F318EEF9D4 /* Pods_BIPWallet.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CD2CA24CF49F10509A4262CE /* Pods_BIPWallet.framework */; };
 		1EEF27A2C33CC1815D49FDAF /* ShareCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07CC723832DA666AF5A1E921 /* ShareCoordinator.swift */; };
 		2071CEDA020C159326FA5E19 /* ModifyContactViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AB9707AB5EA0AFEC2F118B9 /* ModifyContactViewController.swift */; };
 		23953FDC1CF7AB2FFA46615D /* BalanceViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3EA027CE7AF8EBD2F11A52F /* BalanceViewController.swift */; };
@@ -86,6 +87,7 @@
 		DFBAAA5D30D5C99E980D3F96 /* DelegateUnbondViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8ED7BC3989BDCCDEDFA0902 /* DelegateUnbondViewController.swift */; };
 		E084136C773B6D6BD0EAB0CA /* AllTransactionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED5C5BD42FD95B7ABB8AC9F0 /* AllTransactionsViewController.swift */; };
 		E267E578C4157B7DDDA7A08C /* SignInCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56D4777C11E6B51FD5EFEF67 /* SignInCoordinator.swift */; };
+		E390EF4E5B6E9FD761CCF2A7 /* Pods_BIPWalletTestnet.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 97EDBAEEA4AAAFA54AE63466 /* Pods_BIPWalletTestnet.framework */; };
 		E4F59A9DDF1B680B043F844E /* SpendCoinsCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBEFA6552A37F83C43A8B723 /* SpendCoinsCoordinator.swift */; };
 		E56D2E5CB6B34140762F8C6A /* SettingsCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A1699BA1E85D3D9B7D86819 /* SettingsCoordinator.swift */; };
 		E9C5F4B357C52D10851BB0D9 /* WelcomeCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23E1DA3FB0560926AFFF948E /* WelcomeCoordinator.swift */; };
@@ -108,6 +110,12 @@
 		FA171AA2248817D100D8B813 /* DelegateUnbondSucceedPopupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA171A98248817D000D8B813 /* DelegateUnbondSucceedPopupViewController.swift */; };
 		FA171AA3248817D100D8B813 /* DelegateUnbondSucceedPopupCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA171A99248817D000D8B813 /* DelegateUnbondSucceedPopupCoordinator.swift */; };
 		FA171AA4248817D100D8B813 /* DelegateUnbondSucceedPopup.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FA171A9A248817D000D8B813 /* DelegateUnbondSucceedPopup.storyboard */; };
+		FA28DCC9249CA5F2005B14DF /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = FA28DCC8249CA5F2005B14DF /* GoogleService-Info.plist */; };
+		FA28DCCB249CA5F8005B14DF /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = FA28DCCA249CA5F8005B14DF /* GoogleService-Info.plist */; };
+		FA28DCD1249FE12A005B14DF /* RawTransactionFieldWithBlockTimeTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA28DCCF249FE12A005B14DF /* RawTransactionFieldWithBlockTimeTableViewCell.swift */; };
+		FA28DCD2249FE12A005B14DF /* RawTransactionFieldWithBlockTimeTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA28DCCF249FE12A005B14DF /* RawTransactionFieldWithBlockTimeTableViewCell.swift */; };
+		FA28DCD3249FE12A005B14DF /* RawTransactionFieldWithBlockTimeTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FA28DCD0249FE12A005B14DF /* RawTransactionFieldWithBlockTimeTableViewCell.xib */; };
+		FA28DCD4249FE12A005B14DF /* RawTransactionFieldWithBlockTimeTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FA28DCD0249FE12A005B14DF /* RawTransactionFieldWithBlockTimeTableViewCell.xib */; };
 		FA39EA0C2404149F00757020 /* String+Validation.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA39EA0B2404149F00757020 /* String+Validation.swift */; };
 		FA39EA0F2404D20200757020 /* LoadingTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA39EA0D2404D20100757020 /* LoadingTableViewCell.swift */; };
 		FA39EA102404D20200757020 /* LoadingTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FA39EA0E2404D20200757020 /* LoadingTableViewCell.xib */; };
@@ -515,7 +523,6 @@
 		FAAAD98524977B7A00D7F5FE /* ValidatorsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EA3A25F57FF6AC176791A12 /* ValidatorsViewController.swift */; };
 		FAAAD98624977B7A00D7F5FE /* ValidatorsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CBC34F69B509149CC880E13 /* ValidatorsViewModel.swift */; };
 		FAAAD98724977B7A00D7F5FE /* ValidatorsCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED9E9C6A024DA544CB668E38 /* ValidatorsCoordinator.swift */; };
-		FAAAD98924977B7A00D7F5FE /* Pods_BIPWallet.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CD2CA24CF49F10509A4262CE /* Pods_BIPWallet.framework */; };
 		FAAAD98B24977B7A00D7F5FE /* Wallet.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FAE5A1B923FD337700808B21 /* Wallet.storyboard */; };
 		FAAAD98C24977B7A00D7F5FE /* Settings.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FA6AFB4A244DEE1800CCBE19 /* Settings.storyboard */; };
 		FAAAD98D24977B7A00D7F5FE /* AllTransactions.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FA16967B24421EDB00F36FF2 /* AllTransactions.storyboard */; };
@@ -713,7 +720,6 @@
 		26F39547CFE662C862C9B8DE /* GetCoinsViewModel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = GetCoinsViewModel.swift; sourceTree = "<group>"; };
 		275CA1D92C5D4439CE63B517 /* WalletRemoveConfirmationViewController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = WalletRemoveConfirmationViewController.swift; sourceTree = "<group>"; };
 		2924B1B7D5AB1A435CC790BF /* TransactionsCoordinator.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = TransactionsCoordinator.swift; sourceTree = "<group>"; };
-		2B16A12CF440C4646DF7C60C /* Pods-BIPWallet.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BIPWallet.release.xcconfig"; path = "Target Support Files/Pods-BIPWallet/Pods-BIPWallet.release.xcconfig"; sourceTree = "<group>"; };
 		2BDF96D21A9400683E4FAC02 /* BalanceViewModel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = BalanceViewModel.swift; sourceTree = "<group>"; };
 		2CEE965A03D1A7A9BDFF0F70 /* SendSucceedPopupViewController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = SendSucceedPopupViewController.swift; sourceTree = "<group>"; };
 		2F11C9676BD8403551407CEF /* ContactRemoveConfirmationViewModel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ContactRemoveConfirmationViewModel.swift; sourceTree = "<group>"; };
@@ -730,7 +736,6 @@
 		6689D709B64BA12DDB270A15 /* AllTransactionsCoordinator.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AllTransactionsCoordinator.swift; sourceTree = "<group>"; };
 		6758512864C31E1DE18DF763 /* TransactionsViewModel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = TransactionsViewModel.swift; sourceTree = "<group>"; };
 		677E3F7C0C21C1E8A45C6CE3 /* ConvertSucceedPopupViewController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ConvertSucceedPopupViewController.swift; sourceTree = "<group>"; };
-		678F85AF5586FEB059E7FB72 /* Pods-BIPWallet.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BIPWallet.debug.xcconfig"; path = "Target Support Files/Pods-BIPWallet/Pods-BIPWallet.debug.xcconfig"; sourceTree = "<group>"; };
 		67920BD50DD7AA8BB25A766A /* CreateWalletCoordinator.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = CreateWalletCoordinator.swift; sourceTree = "<group>"; };
 		695FA647980E498E85C23A3A /* SpendCoinsViewController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = SpendCoinsViewController.swift; sourceTree = "<group>"; };
 		6BFE7D4C0EDF8077A91F11DA /* CoinsCoordinator.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = CoinsCoordinator.swift; sourceTree = "<group>"; };
@@ -747,9 +752,11 @@
 		84D8D6F1B1BFA78E3728840F /* WelcomeViewModel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = WelcomeViewModel.swift; sourceTree = "<group>"; };
 		871DF013F541398FC6004FAB /* AddWalletViewController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AddWalletViewController.swift; sourceTree = "<group>"; };
 		8938E33FA4387FC23FF84125 /* TransactionViewModel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = TransactionViewModel.swift; sourceTree = "<group>"; };
+		921AA94598E7A84B73E5317B /* Pods-BIPWalletTestnet.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BIPWalletTestnet.release.xcconfig"; path = "Target Support Files/Pods-BIPWalletTestnet/Pods-BIPWalletTestnet.release.xcconfig"; sourceTree = "<group>"; };
 		93E1EFA5D14C042DBEFB1B53 /* TransactionsViewController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = TransactionsViewController.swift; sourceTree = "<group>"; };
 		963FED72BE0E36BC241E2A73 /* ContactRemoveConfirmationViewController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ContactRemoveConfirmationViewController.swift; sourceTree = "<group>"; };
 		97C182505C2365294519F60B /* AllTransactionsViewModel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AllTransactionsViewModel.swift; sourceTree = "<group>"; };
+		97EDBAEEA4AAAFA54AE63466 /* Pods_BIPWalletTestnet.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_BIPWalletTestnet.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		9C17A7067B59E275634A1E96 /* CreateWalletViewModel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = CreateWalletViewModel.swift; sourceTree = "<group>"; };
 		9CDAD40967BBF10D24E87F24 /* ConvertPopupViewModel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ConvertPopupViewModel.swift; sourceTree = "<group>"; };
 		9D1767764FF68A27E4AFB8F3 /* BalanceCoordinator.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = BalanceCoordinator.swift; sourceTree = "<group>"; };
@@ -766,10 +773,12 @@
 		B8E0096D71E19EA82181D8C4 /* PINViewModel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = PINViewModel.swift; sourceTree = "<group>"; };
 		BBEFA6552A37F83C43A8B723 /* SpendCoinsCoordinator.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = SpendCoinsCoordinator.swift; sourceTree = "<group>"; };
 		BC22754583BEF2DFF236AF30 /* AddWalletViewModel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AddWalletViewModel.swift; sourceTree = "<group>"; };
+		C36A741E373282D31F63A1EF /* Pods-BIPWallet.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BIPWallet.release.xcconfig"; path = "Target Support Files/Pods-BIPWallet/Pods-BIPWallet.release.xcconfig"; sourceTree = "<group>"; };
 		C7A650AD46FECDEC8ABE46EF /* ModifyContactCoordinator.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ModifyContactCoordinator.swift; sourceTree = "<group>"; };
 		CD2CA24CF49F10509A4262CE /* Pods_BIPWallet.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_BIPWallet.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		CE30E104E142EDACAB8AE528 /* ConvertSucceedPopupCoordinator.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ConvertSucceedPopupCoordinator.swift; sourceTree = "<group>"; };
 		D082D6F1BD8A4E016C5D8A85 /* AddWalletCoordinator.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AddWalletCoordinator.swift; sourceTree = "<group>"; };
+		D09E69C3E00BDA0CBFDC73F9 /* Pods-BIPWallet.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BIPWallet.debug.xcconfig"; path = "Target Support Files/Pods-BIPWallet/Pods-BIPWallet.debug.xcconfig"; sourceTree = "<group>"; };
 		D259A66E4193B27C54578FCC /* CoinsViewModel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = CoinsViewModel.swift; sourceTree = "<group>"; };
 		D28CE533FD063DE987995C57 /* WalletRemoveConfirmationViewModel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = WalletRemoveConfirmationViewModel.swift; sourceTree = "<group>"; };
 		D7ED873BC7793657464C0B44 /* SendSucceedPopupCoordinator.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = SendSucceedPopupCoordinator.swift; sourceTree = "<group>"; };
@@ -785,6 +794,7 @@
 		EC37B274862AEFAF63D16139 /* DelegatedViewController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = DelegatedViewController.swift; sourceTree = "<group>"; };
 		ED5C5BD42FD95B7ABB8AC9F0 /* AllTransactionsViewController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AllTransactionsViewController.swift; sourceTree = "<group>"; };
 		ED9E9C6A024DA544CB668E38 /* ValidatorsCoordinator.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ValidatorsCoordinator.swift; sourceTree = "<group>"; };
+		F0496807D99E628DD4229073 /* Pods-BIPWalletTestnet.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BIPWalletTestnet.debug.xcconfig"; path = "Target Support Files/Pods-BIPWalletTestnet/Pods-BIPWalletTestnet.debug.xcconfig"; sourceTree = "<group>"; };
 		FA16966C2439E4D000F36FF2 /* UserDataBaseModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDataBaseModel.swift; sourceTree = "<group>"; };
 		FA169670243BAF8800F36FF2 /* PassthroughView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PassthroughView.swift; sourceTree = "<group>"; };
 		FA169672243CA81900F36FF2 /* AccountItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountItem.swift; sourceTree = "<group>"; };
@@ -800,6 +810,12 @@
 		FA171A98248817D000D8B813 /* DelegateUnbondSucceedPopupViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DelegateUnbondSucceedPopupViewController.swift; sourceTree = "<group>"; };
 		FA171A99248817D000D8B813 /* DelegateUnbondSucceedPopupCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DelegateUnbondSucceedPopupCoordinator.swift; sourceTree = "<group>"; };
 		FA171A9A248817D000D8B813 /* DelegateUnbondSucceedPopup.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = DelegateUnbondSucceedPopup.storyboard; sourceTree = "<group>"; };
+		FA28DCC4249B77DB005B14DF /* BIPWalletTestnet.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = BIPWalletTestnet.entitlements; sourceTree = "<group>"; };
+		FA28DCC5249B77FE005B14DF /* BIPWallet.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = BIPWallet.entitlements; sourceTree = "<group>"; };
+		FA28DCC8249CA5F2005B14DF /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		FA28DCCA249CA5F8005B14DF /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		FA28DCCF249FE12A005B14DF /* RawTransactionFieldWithBlockTimeTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RawTransactionFieldWithBlockTimeTableViewCell.swift; sourceTree = "<group>"; };
+		FA28DCD0249FE12A005B14DF /* RawTransactionFieldWithBlockTimeTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = RawTransactionFieldWithBlockTimeTableViewCell.xib; sourceTree = "<group>"; };
 		FA39EA0B2404149F00757020 /* String+Validation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+Validation.swift"; sourceTree = "<group>"; };
 		FA39EA0D2404D20100757020 /* LoadingTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoadingTableViewCell.swift; sourceTree = "<group>"; };
 		FA39EA0E2404D20200757020 /* LoadingTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LoadingTableViewCell.xib; sourceTree = "<group>"; };
@@ -1056,6 +1072,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				F5D7A362541DE5C2FEF937D6 /* Pods_BIPWallet.framework in Frameworks */,
+				1C7FBCB7812A84F318EEF9D4 /* Pods_BIPWallet.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1077,7 +1094,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				FAAAD98924977B7A00D7F5FE /* Pods_BIPWallet.framework in Frameworks */,
+				E390EF4E5B6E9FD761CCF2A7 /* Pods_BIPWalletTestnet.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1192,8 +1209,10 @@
 		59B3275C88C0DE980516A76A /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				678F85AF5586FEB059E7FB72 /* Pods-BIPWallet.debug.xcconfig */,
-				2B16A12CF440C4646DF7C60C /* Pods-BIPWallet.release.xcconfig */,
+				D09E69C3E00BDA0CBFDC73F9 /* Pods-BIPWallet.debug.xcconfig */,
+				C36A741E373282D31F63A1EF /* Pods-BIPWallet.release.xcconfig */,
+				F0496807D99E628DD4229073 /* Pods-BIPWalletTestnet.debug.xcconfig */,
+				921AA94598E7A84B73E5317B /* Pods-BIPWalletTestnet.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -1259,6 +1278,7 @@
 			isa = PBXGroup;
 			children = (
 				CD2CA24CF49F10509A4262CE /* Pods_BIPWallet.framework */,
+				97EDBAEEA4AAAFA54AE63466 /* Pods_BIPWalletTestnet.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -1456,6 +1476,31 @@
 			path = BIPWallet/Classes/Modules/DelegateUnbond/DelegateUnbondSucceedPopup;
 			sourceTree = SOURCE_ROOT;
 		};
+		FA28DCCC249CA62D005B14DF /* Firebase */ = {
+			isa = PBXGroup;
+			children = (
+				FA28DCCE249CA63E005B14DF /* Mainnet */,
+				FA28DCCD249CA633005B14DF /* Testnet */,
+			);
+			path = Firebase;
+			sourceTree = "<group>";
+		};
+		FA28DCCD249CA633005B14DF /* Testnet */ = {
+			isa = PBXGroup;
+			children = (
+				FA28DCC8249CA5F2005B14DF /* GoogleService-Info.plist */,
+			);
+			path = Testnet;
+			sourceTree = "<group>";
+		};
+		FA28DCCE249CA63E005B14DF /* Mainnet */ = {
+			isa = PBXGroup;
+			children = (
+				FA28DCCA249CA5F8005B14DF /* GoogleService-Info.plist */,
+			);
+			path = Mainnet;
+			sourceTree = "<group>";
+		};
 		FA3BDE102423C5950076A7F4 /* Third Party */ = {
 			isa = PBXGroup;
 			children = (
@@ -1592,6 +1637,8 @@
 				FA62231824517C93006089EC /* DashedView.swift */,
 				FA62231924517C93006089EC /* RawTransactionFieldTableViewCell.swift */,
 				FA62231A24517C93006089EC /* RawTransactionFieldTableViewCell.xib */,
+				FA28DCCF249FE12A005B14DF /* RawTransactionFieldWithBlockTimeTableViewCell.swift */,
+				FA28DCD0249FE12A005B14DF /* RawTransactionFieldWithBlockTimeTableViewCell.xib */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -1716,6 +1763,9 @@
 		FA9E518F23ED9972007263B9 /* BIPWallet */ = {
 			isa = PBXGroup;
 			children = (
+				FA28DCCC249CA62D005B14DF /* Firebase */,
+				FA28DCC4249B77DB005B14DF /* BIPWalletTestnet.entitlements */,
+				FA28DCC5249B77FE005B14DF /* BIPWallet.entitlements */,
 				FADB357723F1A42400FCDBF9 /* Classes */,
 				FA9E519623ED9972007263B9 /* Main.storyboard */,
 				FADA6F9F24615E5200FFBCCF /* Sounds */,
@@ -2054,6 +2104,7 @@
 				FA9E518A23ED9972007263B9 /* Frameworks */,
 				FA9E518B23ED9972007263B9 /* Resources */,
 				5F6C762B5FF1E75E61F8DBEE /* [CP] Embed Pods Frameworks */,
+				FA28DCC7249CA155005B14DF /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -2104,11 +2155,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = FAAAD9D124977B7A00D7F5FE /* Build configuration list for PBXNativeTarget "BIPWalletTestnet" */;
 			buildPhases = (
-				FAAAD87F24977B7A00D7F5FE /* [CP] Check Pods Manifest.lock */,
+				6DFDEFEC7A9E2685CCB1E5C6 /* [CP] Check Pods Manifest.lock */,
 				FAAAD88024977B7A00D7F5FE /* Sources */,
 				FAAAD98824977B7A00D7F5FE /* Frameworks */,
 				FAAAD98A24977B7A00D7F5FE /* Resources */,
-				FAAAD9D024977B7A00D7F5FE /* [CP] Embed Pods Frameworks */,
+				FA28DCC6249CA148005B14DF /* ShellScript */,
+				1DBE2B0CF3A91E5AF992B45A /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -2195,6 +2247,7 @@
 				FAC14A4B248250EE008D1A45 /* Validators.storyboard in Resources */,
 				FA91D58C243630AF00F901AF /* ContactPickerHeader.xib in Resources */,
 				FADA6FA624615E5200FFBCCF /* pop_zap.wav in Resources */,
+				FA28DCCB249CA5F8005B14DF /* GoogleService-Info.plist in Resources */,
 				FA663D3E23FEEB830029D5D0 /* CoinTableViewCell.xib in Resources */,
 				FA663D49240019210029D5D0 /* SeparatorTableViewCell.xib in Resources */,
 				FA3BDE75242BA7000076A7F4 /* UsernameTableViewCell.xib in Resources */,
@@ -2219,6 +2272,7 @@
 				FADA6FA92461C9C100FFBCCF /* ContactRemoveConfirmation.storyboard in Resources */,
 				FAE5A1BC23FD34D800808B21 /* Balance.storyboard in Resources */,
 				FAD3E02D2462C2DD00446261 /* WalletRemoveConfirmation.storyboard in Resources */,
+				FA28DCD3249FE12A005B14DF /* RawTransactionFieldWithBlockTimeTableViewCell.xib in Resources */,
 				FA3BDE79242BA7540076A7F4 /* TwoTitleTableViewCell.xib in Resources */,
 				FA6223352455DAC5006089EC /* SettingsTableHeaderView.xib in Resources */,
 				FA9E519823ED9972007263B9 /* Main.storyboard in Resources */,
@@ -2268,6 +2322,7 @@
 				FAAAD99124977B7A00D7F5FE /* WalletCell.xib in Resources */,
 				FAAAD99224977B7A00D7F5FE /* ConvertSucceedPopup.storyboard in Resources */,
 				FAAAD99324977B7A00D7F5FE /* PIN.storyboard in Resources */,
+				FA28DCC9249CA5F2005B14DF /* GoogleService-Info.plist in Resources */,
 				FAAAD99424977B7A00D7F5FE /* SendPayloadTableViewCell.xib in Resources */,
 				FAAAD99524977B7A00D7F5FE /* RawTransaction.storyboard in Resources */,
 				FAAAD99624977B7A00D7F5FE /* TransactionAddressCell.xib in Resources */,
@@ -2309,6 +2364,7 @@
 				FAAAD9BB24977B7A00D7F5FE /* ContactRemoveConfirmation.storyboard in Resources */,
 				FAAAD9BC24977B7A00D7F5FE /* Balance.storyboard in Resources */,
 				FAAAD9BD24977B7A00D7F5FE /* WalletRemoveConfirmation.storyboard in Resources */,
+				FA28DCD4249FE12A005B14DF /* RawTransactionFieldWithBlockTimeTableViewCell.xib in Resources */,
 				FAAAD9BE24977B7A00D7F5FE /* TwoTitleTableViewCell.xib in Resources */,
 				FAAAD9BF24977B7A00D7F5FE /* SettingsTableHeaderView.xib in Resources */,
 				FAAAD9C024977B7A00D7F5FE /* Main.storyboard in Resources */,
@@ -2355,6 +2411,23 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
+		1DBE2B0CF3A91E5AF992B45A /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-BIPWalletTestnet/Pods-BIPWalletTestnet-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-BIPWalletTestnet/Pods-BIPWalletTestnet-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-BIPWalletTestnet/Pods-BIPWalletTestnet-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 		5F6C762B5FF1E75E61F8DBEE /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -2372,7 +2445,7 @@
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-BIPWallet/Pods-BIPWallet-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		FAAAD87F24977B7A00D7F5FE /* [CP] Check Pods Manifest.lock */ = {
+		6DFDEFEC7A9E2685CCB1E5C6 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -2387,29 +2460,46 @@
 			outputFileListPaths = (
 			);
 			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-BIPWallet-checkManifestLockResult.txt",
+				"$(DERIVED_FILE_DIR)/Pods-BIPWalletTestnet-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		FAAAD9D024977B7A00D7F5FE /* [CP] Embed Pods Frameworks */ = {
+		FA28DCC6249CA148005B14DF /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-BIPWallet/Pods-BIPWallet-frameworks-${CONFIGURATION}-input-files.xcfilelist",
 			);
-			name = "[CP] Embed Pods Frameworks";
+			inputPaths = (
+			);
 			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-BIPWallet/Pods-BIPWallet-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-BIPWallet/Pods-BIPWallet-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
+			shellScript = "\"${PODS_ROOT}/FirebaseCrashlytics/run\"\n";
+		};
+		FA28DCC7249CA155005B14DF /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\n\"${PODS_ROOT}/FirebaseCrashlytics/run\"\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -2433,6 +2523,7 @@
 				FACA65BF23F7AEF700399359 /* UIViewController+HideKeyboard.swift in Sources */,
 				FA3BDE8B242BAB960076A7F4 /* SendPayloadTableViewCell.swift in Sources */,
 				FAF04BD92449929E004CBC07 /* TransactionService.swift in Sources */,
+				FA28DCD1249FE12A005B14DF /* RawTransactionFieldWithBlockTimeTableViewCell.swift in Sources */,
 				FACA657223F6B91C00399359 /* UIColor+HEX.swift in Sources */,
 				FA91D56D242E0F9900F901AF /* SendHeader.swift in Sources */,
 				FA3BDE81242BA95F0076A7F4 /* ValidatableTextField.swift in Sources */,
@@ -2721,6 +2812,7 @@
 				FAAAD88D24977B7A00D7F5FE /* UIViewController+HideKeyboard.swift in Sources */,
 				FAAAD88E24977B7A00D7F5FE /* SendPayloadTableViewCell.swift in Sources */,
 				FAAAD88F24977B7A00D7F5FE /* TransactionService.swift in Sources */,
+				FA28DCD2249FE12A005B14DF /* RawTransactionFieldWithBlockTimeTableViewCell.swift in Sources */,
 				FAAAD89024977B7A00D7F5FE /* UIColor+HEX.swift in Sources */,
 				FAAAD89124977B7A00D7F5FE /* SendHeader.swift in Sources */,
 				FAAAD89224977B7A00D7F5FE /* ValidatableTextField.swift in Sources */,
@@ -3124,11 +3216,12 @@
 		};
 		FA9E51B823ED9976007263B9 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 678F85AF5586FEB059E7FB72 /* Pods-BIPWallet.debug.xcconfig */;
+			baseConfigurationReference = D09E69C3E00BDA0CBFDC73F9 /* Pods-BIPWallet.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = BIPWallet/BIPWallet.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 252;
+				CURRENT_PROJECT_VERSION = 257;
 				DEVELOPMENT_TEAM = A26H28FPZU;
 				INFOPLIST_FILE = BIPWallet/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
@@ -3147,11 +3240,12 @@
 		};
 		FA9E51B923ED9976007263B9 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 2B16A12CF440C4646DF7C60C /* Pods-BIPWallet.release.xcconfig */;
+			baseConfigurationReference = C36A741E373282D31F63A1EF /* Pods-BIPWallet.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = BIPWallet/BIPWallet.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 252;
+				CURRENT_PROJECT_VERSION = 257;
 				DEVELOPMENT_TEAM = A26H28FPZU;
 				INFOPLIST_FILE = BIPWallet/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
@@ -3254,11 +3348,12 @@
 		};
 		FAAAD9D224977B7A00D7F5FE /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 678F85AF5586FEB059E7FB72 /* Pods-BIPWallet.debug.xcconfig */;
+			baseConfigurationReference = F0496807D99E628DD4229073 /* Pods-BIPWalletTestnet.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIconTestnet;
+				CODE_SIGN_ENTITLEMENTS = BIPWallet/BIPWalletTestnet.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 252;
+				CURRENT_PROJECT_VERSION = 257;
 				DEVELOPMENT_TEAM = A26H28FPZU;
 				INFOPLIST_FILE = "BIPWalletTestnet-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
@@ -3277,11 +3372,12 @@
 		};
 		FAAAD9D324977B7A00D7F5FE /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 2B16A12CF440C4646DF7C60C /* Pods-BIPWallet.release.xcconfig */;
+			baseConfigurationReference = 921AA94598E7A84B73E5317B /* Pods-BIPWalletTestnet.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIconTestnet;
+				CODE_SIGN_ENTITLEMENTS = BIPWallet/BIPWalletTestnet.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 252;
+				CURRENT_PROJECT_VERSION = 257;
 				DEVELOPMENT_TEAM = A26H28FPZU;
 				INFOPLIST_FILE = "BIPWalletTestnet-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;

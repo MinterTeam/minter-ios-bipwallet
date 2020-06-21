@@ -49,6 +49,7 @@ class RawTransactionViewModel: BaseViewModel, ViewModel {// swiftlint:disable:th
 		var account: RawTransactionViewModelAccountProtocol
 		var gate: RawTransactionViewModelGateProtocol
     var authService: AuthService
+    var balanceService: BalanceService
 	}
 
 	var input: RawTransactionViewModel.Input!
@@ -56,6 +57,11 @@ class RawTransactionViewModel: BaseViewModel, ViewModel {// swiftlint:disable:th
 	var dependency: RawTransactionViewModel.Dependency!
 
 	// MARK: -
+
+  lazy var lastBlockString = Observable<Int>.timer(0, period: 1, scheduler: MainScheduler.instance)
+    .withLatestFrom(self.dependency.balanceService.lastBlockAgo()).map {
+      self.headerViewLastUpdatedTitleText(seconds: Date().timeIntervalSince1970 - ($0 ?? 0))
+  }
 
 	private var cancelButtonDidTapSubject = PublishSubject<Void>()
 	private var errorNotificationSubject = PublishSubject<NotifiableError?>()
@@ -238,7 +244,7 @@ class RawTransactionViewModel: BaseViewModel, ViewModel {// swiftlint:disable:th
 																payload: self?.payload?.data(using: .utf8) ?? Data())
 
 				let signedTx = RawTransactionSigner.sign(rawTx: tx, privateKey: privateKey)
-				return self?.dependency.gate.send(rawTx: signedTx) ?? Observable<String?>.empty()
+        return self?.dependency.gate.send(rawTx: signedTx).map {$0.0} ?? Observable<String?>.empty()
 			}).subscribe(onNext: { [weak self] (result) in
 				self?.lastSentTransactionHash = result
 				if let sentViewModel = self?.sentViewModel() {
@@ -259,9 +265,18 @@ class RawTransactionViewModel: BaseViewModel, ViewModel {// swiftlint:disable:th
 
 	private func createSections() -> [BaseTableSectionItem] {
 		var items = [RawTransactionFieldTableViewCellItem]()
-		for field in fields {
-			let item = RawTransactionFieldTableViewCellItem(reuseIdentifier: "RawTransactionFieldTableViewCell",
-																											identifier: "RawTransactionFieldTableViewCell_" + String.random())
+    for elem in fields.enumerated() {
+      let field = elem.element
+
+      var item: RawTransactionFieldTableViewCellItem
+      if elem.offset == 0 {
+        item = RawTransactionFieldWithBlockTimeTableViewCellItem(reuseIdentifier: "RawTransactionFieldWithBlockTimeTableViewCell",
+                                                                 identifier: "RawTransactionFieldTableViewCell_" + String.random())
+        (item as? RawTransactionFieldWithBlockTimeTableViewCellItem)?.lastBlockText = self.lastBlockString
+      } else {
+        item = RawTransactionFieldTableViewCellItem(reuseIdentifier: "RawTransactionFieldTableViewCell",
+                                                    identifier: "RawTransactionFieldTableViewCell_" + String.random())
+      }
 			item.title = field["key"]
 			item.value = field["value"]
 			items.append(item)
@@ -386,7 +401,7 @@ extension RawTransactionViewModel {
 						let amountString = CurrencyNumberFormatter.formattedDecimal(with: amount,
 																																				formatter: decimalFormatter)
 						let sendingValue = amountString + " " + coin
-						fields.append(["key": "You're Sending".localized(), "value": sendingValue])
+						fields.append(["key": "You are Sending".localized(), "value": sendingValue])
 						fields.append(["key": "To".localized(), "value": "Mx" + addressData.toHexString()])
 
 						case .sellCoin:
@@ -645,7 +660,7 @@ extension RawTransactionViewModel {
 											let amountString = CurrencyNumberFormatter.formattedDecimal(with: amount,
 																																									formatter: coinFormatter)
 											let sendingValue = amountString + " " + coin
-											fields.append(["key": "You're Sending".localized(), "value": sendingValue])
+											fields.append(["key": "You are Sending".localized(), "value": sendingValue])
 											fields.append(["key": "To".localized(), "value": "Mx" + address])
 									}
 							}
@@ -675,3 +690,5 @@ extension RawTransactionViewModel {
 			}
 	}
 }
+
+extension RawTransactionViewModel: LastBlockViewable {}

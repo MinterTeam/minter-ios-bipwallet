@@ -73,7 +73,7 @@ final class AppCoordinator: BaseCoordinator<Void> {
 
       case .hasAccount:
         return self.start().do(onSubscribed: {
-          let rawCoordinator = RawTransactionCoordinator(rootViewController: self.window.rootViewController!, url: url)
+          let rawCoordinator = RawTransactionCoordinator(rootViewController: self.window.rootViewController!, url: url, balanceService: self.balanceService)
           self.coordinate(to: rawCoordinator).timeout(.seconds(3), scheduler: MainScheduler.instance).subscribe().disposed(by: self.disposeBag)
         })
 

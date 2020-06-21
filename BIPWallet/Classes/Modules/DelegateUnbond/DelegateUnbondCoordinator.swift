@@ -8,6 +8,7 @@
 
 import UIKit
 import RxSwift
+import BigInt
 
 class DelegateUnbondCoordinator: BaseCoordinator<Void> {
 
@@ -78,7 +79,7 @@ class DelegateUnbondCoordinator: BaseCoordinator<Void> {
       guard let confirmPopupCoordiantor = self.confirmPopupCoordiantor else { return Observable.empty() }
 
       return self.coordinate(to: confirmPopupCoordiantor)
-    }).flatMap { (result) -> Observable<Event<String?>> in
+    }).flatMap { (result) -> Observable<Event<(String?, Decimal?)>> in
       switch result {
       case .confirmed:
         return viewModel.performSend()
@@ -88,8 +89,18 @@ class DelegateUnbondCoordinator: BaseCoordinator<Void> {
       }
     }.flatMap({ (val) -> Observable<Void> in
       switch val {
-      case .next(let hash):
-        return self.confirmPopupCoordiantor!.showSucceed("Successful " + (self.isUnbond ? "unbond" : "delegation"), hash: hash)
+      case .next(let result):
+        let (hash, block) = result
+        let blocksLeft = blocksUntilDelegatedBalanceUpdate - ((block ?? 0.0) as NSDecimalNumber).intValue % blocksUntilDelegatedBalanceUpdate
+
+        let timeLeft = blocksLeft * 5
+        var timeLeftString = "\(timeLeft) sec"
+        if timeLeft > 60 {
+          timeLeftString = "\(timeLeft / 60) min"
+        }
+        let desc = "Please allow ~\(timeLeftString) for your delegated balance to update"
+
+        return self.confirmPopupCoordiantor!.showSucceed("Successful " + (self.isUnbond ? "unbond" : "delegation"), hash: hash, desc: desc)
 
       case .error(_):
         self.confirmPopupCoordiantor?.close()

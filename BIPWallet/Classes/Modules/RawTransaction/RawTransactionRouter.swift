@@ -22,7 +22,7 @@ class RawTransactionRouter {
                                                    pinService: SecureStoragePINService()
   )
 
-	static func viewController(path: [String], param: [String: Any]) -> UIViewController? {
+  static func viewController(path: [String], param: [String: Any], balanceService: BalanceService) -> UIViewController? {
     var nonce: BigUInt?
     var gasPrice: BigUInt?
     var gasCoin: String = Coin.baseCoin().symbol!
@@ -108,18 +108,19 @@ class RawTransactionRouter {
                             payload: payload,
                             serviceData: nil,
                             signatureType: nil,
-                            userData: userData)
+                            userData: userData,
+                            balanceService: balanceService)
     }
 		return nil
 	}
 
-	static func rawTransactionViewController(with url: URL) -> UIViewController? {
+  static func rawTransactionViewController(with url: URL, balanceService: BalanceService) -> UIViewController? {
     // new format
     if url.params()["d"] == nil {
       let txData = String(url.path.split(separator: "/").last ?? "")
       var params = url.params()
       params["d"] = txData
-      guard let viewController = RawTransactionRouter.viewController(path: ["tx"], param: params) else { return nil }
+      guard let viewController = RawTransactionRouter.viewController(path: ["tx"], param: params, balanceService: balanceService) else { return nil }
       return UINavigationController(rootViewController: viewController)
     }
 		return nil
@@ -134,13 +135,15 @@ class RawTransactionRouter {
     payload: String?,
     serviceData: Data?,
     signatureType: Data?,
-    userData: [String: Any]?
+    userData: [String: Any]?,
+    balanceService: BalanceService
   ) -> UIViewController? {
     let viewModel: RawTransactionViewModel
     do {
       let dependency = RawTransactionViewModel.Dependency(account: RawTransactionViewModelAccount(),
                                                           gate: GateManager.shared,
-                                                          authService: self.authService)
+                                                          authService: self.authService, 
+                                                          balanceService: balanceService)
       viewModel = try RawTransactionViewModel(
         dependency: dependency,
         nonce: nonce,
@@ -167,20 +170,23 @@ class RawTransactionCoordinator: BaseCoordinator<Void> {
 
   let rootViewController: UIViewController
   let url: URL
+  let balanceService: BalanceService
 
-  init(rootViewController: UIViewController, url: URL) {
+  init(rootViewController: UIViewController, url: URL, balanceService: BalanceService) {
     self.rootViewController = rootViewController
     self.url = url
+    self.balanceService = balanceService
   }
 
   override func start() -> Observable<Void> {
-    guard let controller = RawTransactionRouter.rawTransactionViewController(with: url) else {
+    guard let controller = RawTransactionRouter.rawTransactionViewController(with: url,
+                                                                             balanceService: balanceService) else {
       return Observable.empty()
     }
 
     rootViewController.present(controller, animated: true, completion: nil)
 
-    return controller.rx.viewDidDisappear.map{_ in}.take(1)
+    return controller.rx.deallocated
   }
 
 }

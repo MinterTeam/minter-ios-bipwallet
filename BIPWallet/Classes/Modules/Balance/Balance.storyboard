@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="16096" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="16097" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
@@ -69,7 +69,7 @@
                                         </userDefinedRuntimeAttributes>
                                     </label>
                                     <label opaque="NO" multipleTouchEnabled="YES" alpha="0.69999999999999996" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Delegated Balance" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ecJ-97-sxu" customClass="UHBCustomLabel" customModule="BIPWallet" customModuleProvider="target">
-                                        <rect key="frame" x="48" y="100.5" width="350" height="16"/>
+                                        <rect key="frame" x="48" y="100.5" width="366" height="16"/>
                                         <fontDescription key="fontDescription" name="Inter_Semi-Bold" family="Inter" pointSize="13"/>
                                         <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <nil key="highlightedColor"/>
@@ -80,7 +80,7 @@
                                         </userDefinedRuntimeAttributes>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0.0000 BIP" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0vM-Ic-kBX" customClass="UHBCustomLabel" customModule="BIPWallet" customModuleProvider="target">
-                                        <rect key="frame" x="48" y="119.5" width="315" height="19.5"/>
+                                        <rect key="frame" x="48" y="119.5" width="366" height="19.5"/>
                                         <fontDescription key="fontDescription" name="Inter_Semi-Bold" family="Inter" pointSize="16"/>
                                         <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <nil key="highlightedColor"/>
@@ -108,14 +108,14 @@
                                     <constraint firstAttribute="bottom" secondItem="1hC-UY-7sX" secondAttribute="bottom" constant="32" id="DkF-NQ-T6P"/>
                                     <constraint firstItem="ZpQ-ES-i6q" firstAttribute="top" secondItem="ecJ-97-sxu" secondAttribute="top" id="KpG-DL-Gv2"/>
                                     <constraint firstItem="LZU-RC-aW4" firstAttribute="top" secondItem="Jcw-bC-189" secondAttribute="top" constant="16" id="NNM-dd-MLa"/>
-                                    <constraint firstAttribute="trailing" secondItem="ecJ-97-sxu" secondAttribute="trailing" constant="16" id="QSh-gR-C4T"/>
+                                    <constraint firstAttribute="trailing" secondItem="ecJ-97-sxu" secondAttribute="trailing" id="QSh-gR-C4T"/>
                                     <constraint firstItem="LZU-RC-aW4" firstAttribute="leading" secondItem="Jcw-bC-189" secondAttribute="leading" constant="48" id="TM5-HU-Yxk"/>
-                                    <constraint firstItem="1hC-UY-7sX" firstAttribute="leading" secondItem="0vM-Ic-kBX" secondAttribute="trailing" constant="16" id="Tpw-6U-Uzc"/>
                                     <constraint firstItem="ZpQ-ES-i6q" firstAttribute="bottom" secondItem="0vM-Ic-kBX" secondAttribute="bottom" id="TwF-9h-2kf"/>
                                     <constraint firstItem="ecJ-97-sxu" firstAttribute="leading" secondItem="LZU-RC-aW4" secondAttribute="leading" id="XYh-UO-3DA"/>
                                     <constraint firstAttribute="trailing" secondItem="1hC-UY-7sX" secondAttribute="trailing" constant="11" id="YhT-Vb-ofh"/>
                                     <constraint firstAttribute="trailing" secondItem="ZpQ-ES-i6q" secondAttribute="trailing" id="duF-IH-N0J"/>
                                     <constraint firstItem="hRj-4M-g3L" firstAttribute="leading" secondItem="1jl-Ro-hiQ" secondAttribute="leading" id="gFP-De-CGP"/>
+                                    <constraint firstAttribute="trailing" secondItem="0vM-Ic-kBX" secondAttribute="trailing" id="i4R-Mr-6PC"/>
                                     <constraint firstItem="0vM-Ic-kBX" firstAttribute="top" secondItem="ecJ-97-sxu" secondAttribute="bottom" constant="3" id="jPT-pS-RcI"/>
                                     <constraint firstItem="ZpQ-ES-i6q" firstAttribute="leading" secondItem="Jcw-bC-189" secondAttribute="leading" id="m9v-M4-q2F"/>
                                     <constraint firstItem="0vM-Ic-kBX" firstAttribute="leading" secondItem="ecJ-97-sxu" secondAttribute="leading" id="nEl-hK-LCe"/>

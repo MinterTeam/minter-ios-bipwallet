@@ -39,8 +39,9 @@ def shared_pods
   pod 'ReachabilitySwift', '~> 4.3'
 	pod 'SwiftLint'
   pod 'Swinject'
-  pod 'Fabric', '~> 1.7'
-  pod 'Crashlytics', '~> 3.10'
+#  pod 'Fabric', '~> 1.7'
+#  pod 'Crashlytics', '~> 3.10'
+  pod 'Firebase/Crashlytics'
   pod 'CryptoSwift', '~> 1.0'
   pod 'KeychainSwift'
   pod 'SwiftValidator', :git => 'https://github.com/jpotts18/SwiftValidator.git', :tag => '4.2.0'
@@ -48,4 +49,8 @@ end
 
 target 'BIPWallet' do
 	shared_pods
+end
+
+target 'BIPWalletTestnet' do
+  shared_pods
 end

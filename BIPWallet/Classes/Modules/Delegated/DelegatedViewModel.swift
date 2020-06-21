@@ -98,11 +98,7 @@ class DelegatedViewModel: BaseViewModel, ViewModel {
       let row = indexPath.row/2 - 1
 
       let coin = self.sectionData()[safe: section]?.value.sorted(by: { (delegation1, delegation2) -> Bool in
-        let key1 = delegation1.value.coin ?? ""
-        let key2 = delegation2.value.coin ?? ""
-        return (key1 == Coin.baseCoin().symbol!) ? true
-          : (key2 == Coin.baseCoin().symbol!) ? false
-          : (delegation1.value.bipValue ?? 0 > delegation2.value.bipValue ?? 0)
+        return (delegation1.value.bipValue ?? 0 > delegation2.value.bipValue ?? 0)
       })[safe: row]
 
       if let item = coin?.value, let publicKey = item.publicKey, let amount = self.datasource[publicKey] {
@@ -130,17 +126,12 @@ class DelegatedViewModel: BaseViewModel, ViewModel {
   func createSections() {
 
     let sctns = sectionData().map { (val) -> BaseTableSectionItem in
-      //Sortin coins: First - base coin
       let items = val.value.sorted(by: { (delegation1, delegation2) -> Bool in
-        let key1 = delegation1.value.coin ?? ""
-        let key2 = delegation2.value.coin ?? ""
 
         let value1 = delegation1.value.bipValue ?? 0.0
         let value2 = delegation2.value.bipValue ?? 0.0
 
-        return (key1 == Coin.baseCoin().symbol!) ? true
-          : (key2 == Coin.baseCoin().symbol!) ? false
-          : (value1 > value2)
+        return (value1 > value2)
       }).map { (delegation) -> [BaseCellItem] in
         let coin = delegation.value.coin
         let publicKey = delegation.value.publicKey

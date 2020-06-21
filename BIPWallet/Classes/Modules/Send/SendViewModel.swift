@@ -284,18 +284,19 @@ YOU ARE ABOUT TO SEND SEED PHRASE IN THE MESSAGE ATTACHED TO THIS TRANSACTION.\n
 
     didScanQRSubject.asObservable()
       .subscribe(onNext: { [weak self] (val) in
+        guard let `self` = self else { return }
         let url = URL(string: val ?? "")
         if true == val?.isValidAddress() {
-          self?.recipientSubject.accept(val)
+          self.recipientSubject.accept(val)
           return
         } else if true == val?.isValidPublicKey() {
           return
         } else if let url = url,
-          let rawViewController = RawTransactionRouter.rawTransactionViewController(with: url) {
-            self?.showViewControllerSubject.onNext(rawViewController)
+          let rawViewController = RawTransactionRouter.rawTransactionViewController(with: url, balanceService: self.dependency.balanceService) {
+            self.showViewControllerSubject.onNext(rawViewController)
             return
         }
-        self?.errorNotificationSubject.onNext(NotifiableError(title: "Invalid transaction data".localized(), text: nil))
+        self.errorNotificationSubject.onNext(NotifiableError(title: "Invalid transaction data".localized(), text: nil))
       }).disposed(by: disposeBag)
 
     formChangedObservable.subscribe(onNext: { [weak self] (val) in
@@ -716,13 +717,13 @@ YOU ARE ABOUT TO SEND SEED PHRASE IN THE MESSAGE ATTACHED TO THIS TRANSACTION.\n
                               payload: payload,
                               selectedAddress: selectedAddress,
                               canPayCommissionWithBaseCoin: self.canPayCommissionWithBaseCoin(baseCoinBalance: baseCoinBalance))
-      }).flatMapLatest({ (signedTx) -> Observable<String?> in
+      }).flatMapLatest({ (signedTx) -> Observable<(String?, Decimal?)> in
         return GateManager.shared.send(rawTx: signedTx)
       }).subscribe(onNext: { [weak self] (val) in
         self?.dependency.balanceService.updateBalance()
         self?.dependency.balanceService.updateDelegated()
 
-        self?.lastSentTransactionHash = val
+        self?.lastSentTransactionHash = val.0
 
         self?.sections.value = self?.createSections() ?? []
         let rec = self?.recipientSubject.value ?? ""

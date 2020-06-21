@@ -30,7 +30,7 @@ class ExplorerGateService: GateService {
     return gateManager.nonce(address: address)
   }
 
-  func send(rawTx: String?) -> Observable<String?> {
+  func send(rawTx: String?) -> Observable<(String?, Decimal?)> {
     return gateManager.send(rawTx: rawTx)
   }
 

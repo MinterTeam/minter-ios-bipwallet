@@ -60,11 +60,12 @@ class DelegateUnbondConfirmPopupCoordinator: BaseCoordinator<DelegateUnbondConfi
     return result
   }
 
-  func showSucceed(_ message: String?, hash: String?) -> Observable<Void> {
+  func showSucceed(_ message: String?, hash: String?, desc: String?) -> Observable<Void> {
     guard let controller = controller, let rootViewController = rootViewController else { return Observable.just(()) }
     let coordiantor = DelegateUnbondSucceedPopupCoordinator(rootViewController: rootViewController,
                                                             popupViewController: controller,
                                                             message: message,
+                                                            desc: desc,
                                                             transactionHash: hash)
     return coordinate(to: coordiantor)
   }

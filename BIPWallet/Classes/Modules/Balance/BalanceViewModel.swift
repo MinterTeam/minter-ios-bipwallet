@@ -181,15 +181,16 @@ class BalanceViewModel: BaseViewModel, ViewModel, WalletSelectableViewModel {
 
     didScanQR.asObservable()
       .subscribe(onNext: { [weak self] (val) in
+        guard let `self` = self else { return }
         let url = URL(string: val ?? "")
         if true == val?.isValidAddress() {
           return
         } else if true == val?.isValidPublicKey() {
           return
-        } else if let url = url, let rawViewController = RawTransactionRouter.rawTransactionViewController(with: url) {
+        } else if let url = url, let rawViewController = RawTransactionRouter.rawTransactionViewController(with: url, balanceService: self.dependency.balanceService) {
           return
         }
-        self?.showErrorMessage.onNext("Invalid transaction data".localized())
+        self.showErrorMessage.onNext("Invalid transaction data".localized())
       }).disposed(by: disposeBag)
   }
 

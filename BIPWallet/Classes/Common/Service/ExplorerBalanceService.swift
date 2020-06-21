@@ -24,15 +24,7 @@ class ExplorerBalanceService: BalanceService {
   private let accountManager = AccountManager()
 
   init() {
-//    let adr = "Mx" + address.stripMinterHexPrefix()
-//    guard adr.isValidAddress() else {
-//      return nil
-//    }
-////    self.channel = adr
-////    try? self.changeAddress(adr)
-
     self.accountSubject.filter{$0 != nil}.subscribe(onNext: { [weak self] (item) in
-//      self?.unsubscribeAccountBalanceChange()
       if !(self?.isConnected ?? true) {
         self?.websocketConnect()
       }
@@ -104,7 +96,6 @@ class ExplorerBalanceService: BalanceService {
         break
       case .error(let error):
         return
-//        self.balancesSubject.onError(error)
       case .next(let val):
         self.balancesSubject.onNext(val)
       }
@@ -113,16 +104,6 @@ class ExplorerBalanceService: BalanceService {
 
   func delegatedBalance() -> Observable<(String?, [AddressDelegation]?, Decimal?)> {
     return delegatedSubject.asObservable()
-
-//      .subscribe(onNext: { [weak self] (delegation, total) in
-//        self?.allDelegatedBalance.onNext(delegation ?? [])
-//        if total != nil {
-//          self?.delegatedBalance.onNext(total ?? 0.0)
-//        } else {
-//          let delegated = delegation?.reduce(0) { $0 + ($1.bipValue ?? 0.0) }
-//          self?.delegatedBalance.onNext(delegated ?? 0.0)
-//        }
-//      }).disposed(by: disposeBag)
   }
 
   func updateDelegated() {

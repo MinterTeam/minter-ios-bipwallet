@@ -136,8 +136,9 @@
                     <connections>
                         <outlet property="actionButton" destination="Itg-tA-cXB" id="ELm-UD-afW"/>
                         <outlet property="cancelButton" destination="8Wl-yN-8Hu" id="6bB-fz-5oY"/>
+                        <outlet property="descLabel" destination="Ppp-Kl-qjh" id="gja-xf-gPx"/>
                         <outlet property="popupView" destination="j92-bP-jum" id="tFq-rB-bJz"/>
-                        <outlet property="textLabel" destination="Ppp-Kl-qjh" id="D8c-cI-KpK"/>
+                        <outlet property="textLabel" destination="6QU-WK-6kK" id="Aer-7e-2hd"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="uVi-fE-c2I" userLabel="First Responder" sceneMemberID="firstResponder"/>

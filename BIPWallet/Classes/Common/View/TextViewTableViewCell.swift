@@ -111,18 +111,7 @@ class TextViewTableViewCell: BaseCell, AutoGrowingTextViewDelegate {
 					}
 				}).disposed(by: disposeBag)
 
-//			textView?
-//				.rx
-//				.text
-//				.orEmpty
-//				.asObservable()
-//				.subscribe(onNext: { [weak self] (val) in
-////					self?.validateDelegate.validate(field: self!, completion: {})
-//				}).disposed(by: disposeBag)
-
 			if let textView = textView {
-//        textView.rx.didEndEditing.asDriver().drive(item.didEndEditing).disposed(by: disposeBag)
-
 				item.titleObservable?.asDriver(onErrorJustReturn: "")
 					.drive(textView.rx.text).disposed(by: disposeBag)
 			}

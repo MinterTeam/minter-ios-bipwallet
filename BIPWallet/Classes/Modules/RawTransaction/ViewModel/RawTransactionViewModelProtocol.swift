@@ -16,7 +16,7 @@ protocol RawTransactionViewModelAccountProtocol: class {
 protocol RawTransactionViewModelGateProtocol: class {
 	func nonce(address: String) -> Observable<Int>
 	func minGas() -> Observable<Int>
-	func send(rawTx: String?) -> Observable<String?>
+	func send(rawTx: String?) -> Observable<(String?, Decimal?)>
 }
 
 class RawTransactionViewModelAccount: RawTransactionViewModelAccountProtocol {

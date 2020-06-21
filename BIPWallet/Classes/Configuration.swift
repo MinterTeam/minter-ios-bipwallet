@@ -8,8 +8,7 @@
 
 import Foundation
 
-let PINRequiredMinimumSeconds = 120.0
-let PINMaxAttempts = 5
+let blocksUntilDelegatedBalanceUpdate = 120
 
 struct Configuration {
 

@@ -192,7 +192,7 @@ extension BalanceCoordinator {
   }
 
   func showRawTransaction(rootViewController: UIViewController, url: URL) -> Observable<Void> {
-    let coordinator = RawTransactionCoordinator(rootViewController: rootViewController, url: url)
+    let coordinator = RawTransactionCoordinator(rootViewController: rootViewController, url: url, balanceService: self.balanceService)
     return coordinate(to: coordinator)
   }
 

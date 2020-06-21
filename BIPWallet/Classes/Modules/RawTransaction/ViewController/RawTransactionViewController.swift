@@ -189,6 +189,7 @@ extension RawTransactionViewController: SentPopupViewControllerDelegate, Confirm
 }
 
 extension RawTransactionViewController {
+
 	private func registerCells() {
 		tableView.register(UINib(nibName: "TextFieldTableViewCell", bundle: nil),
 											 forCellReuseIdentifier: "TextFieldTableViewCell")
@@ -202,6 +203,9 @@ extension RawTransactionViewController {
 											 forCellReuseIdentifier: "BlankTableViewCell")
 		tableView.register(UINib(nibName: "RawTransactionFieldTableViewCell", bundle: nil),
 											 forCellReuseIdentifier: "RawTransactionFieldTableViewCell")
+    tableView.register(UINib(nibName: "RawTransactionFieldWithBlockTimeTableViewCell", bundle: nil),
+                       forCellReuseIdentifier: "RawTransactionFieldWithBlockTimeTableViewCell")
+
 	}
 }
 

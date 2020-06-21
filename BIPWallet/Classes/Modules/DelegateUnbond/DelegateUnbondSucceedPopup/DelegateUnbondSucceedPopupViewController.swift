@@ -14,6 +14,7 @@ class DelegateUnbondSucceedPopupViewController: PopupViewController, Controller,
   // MARK: - IBOutlet
 
   @IBOutlet weak var textLabel: UILabel!
+  @IBOutlet weak var descLabel: UILabel!
   @IBOutlet weak var actionButton: UIButton!
   @IBOutlet weak var cancelButton: UIButton!
 
@@ -27,9 +28,11 @@ class DelegateUnbondSucceedPopupViewController: PopupViewController, Controller,
     //Input
     actionButton.rx.tap.asDriver().drive(viewModel.input.didTapAction).disposed(by: disposeBag)
     cancelButton.rx.tap.asDriver().drive(viewModel.input.didTapCancel).disposed(by: disposeBag)
-    
+
     //Output
-    viewModel.output.description.asDriver(onErrorJustReturn: nil).drive(textLabel.rx.text).disposed(by: disposeBag)
+    viewModel.output.message.asDriver(onErrorJustReturn: nil).drive(textLabel.rx.text).disposed(by: disposeBag)
+
+    viewModel.output.description.asDriver(onErrorJustReturn: nil).drive(descLabel.rx.text).disposed(by: disposeBag)
   }
 
   // MARK: - ViewController

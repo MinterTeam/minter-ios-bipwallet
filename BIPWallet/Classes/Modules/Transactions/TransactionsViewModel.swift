@@ -100,7 +100,7 @@ class TransactionsViewModel: BaseViewModel, ViewModel, TransactionViewableViewMo
       self?.createSections(transactions: [])
 
       self?.address = address
-      self?.loadTransactions(address: address)
+      self?.loadTransactions(address: address, withoutLoader: true)
     }).disposed(by: disposeBag)
 
     didRefresh.subscribe(onNext: { [weak self] (_) in
@@ -136,6 +136,8 @@ class TransactionsViewModel: BaseViewModel, ViewModel, TransactionViewableViewMo
     didRefresh.subscribe(onNext: { (_) in
       self.dependency.balanceService.updateBalance()
       self.dependency.balanceService.updateDelegated()
+      guard let address = self.address else { return }
+      self.loadTransactions(address: address)
     }).disposed(by: disposeBag)
   }
 
@@ -195,6 +197,8 @@ class TransactionsViewModel: BaseViewModel, ViewModel, TransactionViewableViewMo
       convertButton.didTapButtonSubject.subscribe(didTapShowAll).disposed(by: disposeBag)
       cellItems.append(convertButton)
     } else {
+      section1 = BaseTableSectionItem(identifier: "TransactionsSection_Empty",
+                                      header: " ".localized())
       let noTransactions = BaseCellItem(reuseIdentifier: "noTransactionCell", identifier: "noTransactionCell")
       cellItems.append(noTransactions)
     }
@@ -205,6 +209,7 @@ class TransactionsViewModel: BaseViewModel, ViewModel, TransactionViewableViewMo
   func loadTransactions(address: String, withoutLoader: Bool = false) {
     dependency.transactionService
       .transactions(address: "Mx" + address.stripMinterHexPrefix(), filter: nil, page: 0)
+      .retry(.exponentialDelayed(maxCount: 3, initial: 1.0, multiplier: 2.0), scheduler: MainScheduler.instance, shouldRetry: nil)
       .do(onError: { (error) in
         self.isLoading = false
       }, onCompleted: {

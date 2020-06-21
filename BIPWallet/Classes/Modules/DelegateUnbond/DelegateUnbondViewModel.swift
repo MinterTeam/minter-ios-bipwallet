@@ -101,7 +101,7 @@ class DelegateUnbondViewModel: BaseViewModel, ViewModel, LastBlockViewable {
   private var isValidForm: Observable<Bool> {
     return form.map { (val) -> Bool in
       let (coin, _, amount) = val
-      return coin != nil && (self.validator?.publicKey.isValidPublicKey() ?? false) && amount != nil
+      return coin != nil && (self.validator?.publicKey.isValidPublicKey() ?? false) && (amount ?? 0.0) > 0.0
     }
   }
 
@@ -308,7 +308,7 @@ class DelegateUnbondViewModel: BaseViewModel, ViewModel, LastBlockViewable {
                                                    imageURL: URL.validatorURL(with: item.publicKey))
         autocompleteItems.append(autocompleteItem)
         self.autocomplete.itemsSource[autocompleteItem.id] = item
-        })
+      })
       self.autocomplete.autocompleteValidatorsItems.onNext(autocompleteItems)
 
       if let validator = self.validator {
@@ -357,7 +357,7 @@ class DelegateUnbondViewModel: BaseViewModel, ViewModel, LastBlockViewable {
 
   lazy var sendObservable = Observable.combineLatest(self.form, self.dependency.balanceService.account).share()
 
-  func performSend() -> Observable<Event<String?>> {
+  func performSend() -> Observable<Event<(String?, Decimal?)>> {
     return Observable.just(())
       .withLatestFrom(self.isValidForm).filter { $0 == true }
       .do(onNext: { [weak self] (_) in
@@ -424,7 +424,7 @@ class DelegateUnbondViewModel: BaseViewModel, ViewModel, LastBlockViewable {
       }.flatMap { [weak self] (transaction) -> Observable<Event<String>> in
         guard let `self` = self else { return Observable.empty() }
         return self.signTransaction(rawTransaction: transaction).materialize()
-      }.flatMap({ [weak self] (transaction) -> Observable<Event<String?>> in
+      }.flatMap({ [weak self] (transaction) -> Observable<Event<(String?, Decimal?)>> in
         guard let `self` = self else { return Observable.empty() }
         switch transaction {
         case .error(let error):
