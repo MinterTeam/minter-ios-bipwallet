@@ -327,7 +327,7 @@ class DelegateUnbondViewModel: BaseViewModel, ViewModel, LastBlockViewable {
 
       self.coinsPickerSource = [:]
       val.balances.keys.forEach { (coin) -> Void in
-        let item = SpendCoinPickerItem(coin: coin, balance: val.balances[coin]?.0 ?? 0.0)
+        let item = SpendCoinPickerItem(coin: coin, balance: val.balances[coin]?.0 ?? 0.0, formatter: self.coinFormatter)
         guard let title = item.title else { return }
 
         self.coinsPickerSource[title] = item
@@ -439,6 +439,7 @@ class DelegateUnbondViewModel: BaseViewModel, ViewModel, LastBlockViewable {
       }).do(onNext: { [weak self] (val) in
         switch val {
         case .next(_):
+          self?.dependency.validatorService.lastUsedPublicKey = self?.validator?.publicKey
           self?.clearForm()
 
         case .error(let error):

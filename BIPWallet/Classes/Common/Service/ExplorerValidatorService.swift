@@ -23,6 +23,9 @@ class ExplorerValidatorService: ValidatorService {
     return validatorsSubject.asObservable()
   }
 
+  @LocalStorage("ExplorerValidatorServiceLastUsed", defaultValue: nil)
+  var lastUsedPublicKey: String?
+
   func updateValidators() {
     self.update().map({ (resp) -> [ValidatorItem] in
       return resp.filter({ (response) -> Bool in

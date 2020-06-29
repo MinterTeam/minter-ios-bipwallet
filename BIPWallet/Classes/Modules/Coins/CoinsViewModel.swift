@@ -69,6 +69,11 @@ class CoinsViewModel: BaseViewModel, ViewModel {
   }
 
   func bind() {
+    dependency.balanceService.account.do(onNext: { [weak self] (_) in
+      self?.isLoading = true
+      self?.createSections(isLoading: self?.isLoading, coins: [:])
+    }).subscribe().disposed(by: disposeBag)
+
     dependency.balanceService.balances()
       .do(onError: { [weak self] (error) in
         self?.isLoading = false

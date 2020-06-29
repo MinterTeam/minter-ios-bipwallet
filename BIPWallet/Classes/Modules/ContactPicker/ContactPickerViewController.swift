@@ -135,6 +135,9 @@ extension ContactPickerViewController: UITableViewDelegate {
 
   func tableView(_ tableView: UITableView,
                  trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+
+    if viewModel.output.hasLastUsed && indexPath.section == 0 && indexPath.row == 0 { return nil }
+
     let modifyAction = UIContextualAction(style: .normal, title:  "", handler: { [weak self] (ac: UIContextualAction, view: UIView, success:(Bool) -> Void) in
       self?.didTapEditOnCell.onNext(indexPath)
       success(true)

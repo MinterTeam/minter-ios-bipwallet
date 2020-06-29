@@ -25,4 +25,5 @@ protocol ContactsService {
   func contactBy(address: String) -> Observable<ContactItem?>
   func delete(_ item: ContactItem) -> Observable<Void>
   func contactsChanged() -> Observable<Void>
+  var lastUsedAddress: String? {get set}
 }

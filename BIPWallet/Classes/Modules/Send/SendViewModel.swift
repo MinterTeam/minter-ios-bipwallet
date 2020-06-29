@@ -405,7 +405,7 @@ YOU ARE ABOUT TO SEND SEED PHRASE IN THE MESSAGE ATTACHED TO THIS TRANSACTION.\n
     }).disposed(by: disposeBag)
 
     contact.subscribe(onNext: { [weak self] (item) in
-      self?.recipientSubject.accept(item.name?.capitalized)
+      self?.recipientSubject.accept(item.name ?? item.address)
     }).disposed(by: disposeBag)
 
     viewDidAppear.withLatestFrom(GateManager.shared.minGas())
@@ -728,6 +728,8 @@ YOU ARE ABOUT TO SEND SEED PHRASE IN THE MESSAGE ATTACHED TO THIS TRANSACTION.\n
         self?.sections.value = self?.createSections() ?? []
         let rec = self?.recipientSubject.value ?? ""
         let address = self?.addressSubject.value ?? ""
+
+        self?.dependency.contactsService.lastUsedAddress = address
 
         let recipient = self?.dependency.recipientInfoService.title(for: rec) ?? rec
 

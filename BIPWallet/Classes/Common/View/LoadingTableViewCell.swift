@@ -49,5 +49,10 @@ class LoadingTableViewCell: BaseCell {
 
 		}
 	}
+  
+  override func prepareForReuse() {
+    self.activityIndicator?.startAnimating()
+    self.activityIndicator?.isHidden = false
+  }
 
 }

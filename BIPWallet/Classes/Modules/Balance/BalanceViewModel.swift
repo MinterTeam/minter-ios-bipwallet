@@ -123,6 +123,12 @@ class BalanceViewModel: BaseViewModel, ViewModel, WalletSelectableViewModel {
       self.availableBalance.onNext(val?.text ?? NSAttributedString())
     }).disposed(by: disposeBag)
 
+    dependency.balanceService.account.withLatestFrom(changedBalanceTypeSubject).subscribe(onNext: { (type) in
+      let val = self.balanceHeaderItem(balanceType: .balanceBIP, balance: 0.0, isUSD: type == .totalBalanceUSD)
+//      self.balanceTitle.onNext("")
+      self.availableBalance.onNext(val.text ?? NSAttributedString())
+    }).disposed(by: disposeBag)
+    
     //Showing delegated balance
     dependency.balanceService.delegatedBalance().subscribe(onNext: { (val) in
       let balance = val.2 ?? 0

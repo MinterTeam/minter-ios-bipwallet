@@ -60,7 +60,7 @@ class RawTransactionViewModel: BaseViewModel, ViewModel {// swiftlint:disable:th
 
   lazy var lastBlockString = Observable<Int>.timer(0, period: 1, scheduler: MainScheduler.instance)
     .withLatestFrom(self.dependency.balanceService.lastBlockAgo()).map {
-      self.headerViewLastUpdatedTitleText(seconds: Date().timeIntervalSince1970 - ($0 ?? 0))
+      self.headerViewLastUpdatedTitleText(seconds: Date().timeIntervalSince1970 - ($0 ?? 0), shortened: true)
   }
 
 	private var cancelButtonDidTapSubject = PublishSubject<Void>()

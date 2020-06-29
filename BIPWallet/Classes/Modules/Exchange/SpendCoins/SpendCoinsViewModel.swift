@@ -264,13 +264,10 @@ class SpendCoinsViewModel: ConvertCoinsViewModel, ViewModel {
       }, onSubscribe: { [weak self] in
         self?.isApproximatelyLoading.onNext(true)
       }).subscribe(onNext: { [weak self] (res) in
-        guard let _self = self else { return } //swiftlint:disable:this identifier_name
-
         let ammnt = res.0
         let val = ammnt.PIPToDecimal()
 
-        let appr = (CurrencyNumberFormatter.formattedDecimal(with: val > 0 ? val : 0,
-                                                             formatter: _self.formatter)) + " " + getCoin
+        let appr = (CurrencyNumberFormatter.coinFormatter.formattedDecimal(with: val > 0 ? val : 0)) + " " + getCoin
         self?.approximately.onNext(appr)
 
         var approximatelyRoundedVal = (ammnt * 0.9)
@@ -341,7 +338,7 @@ class SpendCoinsViewModel: ConvertCoinsViewModel, ViewModel {
       if let transactionData = transaction?.data as? MinterExplorer.ConvertTransactionData,
         let coin = transactionData.toCoin,
         let amount = transactionData.valueToBuy {
-        let string = CurrencyNumberFormatter.formattedDecimal(with: amount, formatter: self.formatter) + " " + coin
+        let string = CurrencyNumberFormatter.formattedDecimal(with: amount, formatter: CurrencyNumberFormatter.coinFormatter) + " " + coin
           self.exchangeSucceeded.onNext((message: string, transactionHash: transaction?.hash))
       } else {
         let string = "Coins have been exchanged".localized()

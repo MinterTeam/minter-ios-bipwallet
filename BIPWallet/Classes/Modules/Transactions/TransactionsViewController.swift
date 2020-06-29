@@ -29,7 +29,10 @@ class TransactionsViewController: BaseViewController, Controller, StoryboardInit
 
   @objc func handleRefresh(_ refreshControl: UIRefreshControl) {
     SoundHelper.playSoundIfAllowed(type: .refresh)
-    refreshControl.endRefreshing()
+    DispatchQueue.main.async {
+      refreshControl.beginRefreshing()
+      refreshControl.endRefreshing()
+    }
   }
 
   // MARK: - ControllerProtocol

@@ -19,6 +19,9 @@ class LocalStorageContactsService: ContactsService {
 
   let storage: DatabaseStorage
 
+  @LocalStorage("ContactPickerLastUsed", defaultValue: nil)
+  var lastUsedAddress: String?
+
   init(storage: DatabaseStorage = RealmDatabaseStorage.shared) {
     self.storage = storage
   }

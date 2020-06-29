@@ -64,9 +64,17 @@ class ValidatorsViewModel: BaseViewModel, ViewModel {
 
     modelSelected
       .map({ [weak self] (model) -> ValidatorItem? in
-        return self?.validators.filter { (item) -> Bool in
+        if let item = self?.validators.filter { (item) -> Bool in
         return item.publicKey == model.identifier
-      }.first
+        }.first {
+          return item
+        } else if let lastUsed = self?.dependency.validatorService.lastUsedPublicKey {
+          let item = self?.validators.filter {$0.publicKey == lastUsed }.first ?? ValidatorItem(publicKey: lastUsed)
+          if model.identifier.starts(with: "LastUsed_") {
+           return item
+          }
+        }
+        return nil
     }).filter({ (item) -> Bool in
       return item != nil
     }).do(onNext: { [weak self] (_) in
@@ -77,7 +85,7 @@ class ValidatorsViewModel: BaseViewModel, ViewModel {
 
   func createSections() {
 
-    let newSections = datasource.sorted(by: { (val1, val2) -> Bool in
+    var newSections = datasource.sorted(by: { (val1, val2) -> Bool in
       return val1.key < val2.key
     }).map { (val) -> BaseTableSectionItem in
       let items = val.value.map { (item) -> ContactEntryTableViewCellItem in
@@ -89,6 +97,9 @@ class ValidatorsViewModel: BaseViewModel, ViewModel {
         return contactItem
       }
       return BaseTableSectionItem(identifier: "BaseTableSectionItem_\(val.key)", header: val.key, items: items)
+    }
+    if let lastUsedSection = self.lastUsedSection() {
+      newSections.insert(lastUsedSection, at: 0)
     }
     sections.onNext(newSections)
   }
@@ -109,8 +120,24 @@ class ValidatorsViewModel: BaseViewModel, ViewModel {
         datasource[key] = [newItem]
       }
     }
+  }
 
-    createSections()
+  func lastUsedSection() -> BaseTableSectionItem? {
+    guard let lastUsed = self.dependency.validatorService.lastUsedPublicKey else {
+      return nil
+    }
+    var items: [BaseCellItem] = []
+    let validator = self.validators.filter { (item) -> Bool in
+      return item.publicKey == lastUsed
+    }.first ?? ValidatorItem(publicKey: lastUsed, name: TransactionTitleHelper.title(from: lastUsed))
+
+    let item = ContactEntryTableViewCellItem(reuseIdentifier: "ContactEntryTableViewCell", identifier: "LastUsed_\(String.random())")
+    item.address = validator?.publicKey
+    item.name = validator?.name ?? TransactionTitleHelper.title(from: lastUsed)
+    item.avatarURL = validator?.iconURL
+    // self.contactItem(with: contact, identifier: lastUsedCellIdentifier(item: contact))
+    items = [item]
+    return BaseTableSectionItem(identifier: "LastUsed", header: "LAST USED", items: items)
   }
 
   func loadData() {
@@ -119,6 +146,7 @@ class ValidatorsViewModel: BaseViewModel, ViewModel {
         let valids = items.filter { $0.isOnline }
         self?.validators = valids
         self?.prepreDatasource(with: valids)
+        self?.createSections()
       }).disposed(by: disposeBag)
   }
 

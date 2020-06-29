@@ -98,7 +98,7 @@
                                                 </attributes>
                                             </fragment>
                                             <fragment>
-                                                <string key="content"> Save this seed phrase in case you plan to use this address in the future. it gives full access to your wallet, so keep it in a very safe place.</string>
+                                                <string key="content"> Save this seed phrase in case you plan to use this address in the future. It gives full access to your wallet, so keep it in a very safe place.</string>
                                                 <attributes>
                                                     <color key="NSColor" name="textColor" catalog="System" colorSpace="catalog"/>
                                                     <font key="NSFont" size="14" name="Inter_Bold"/>

@@ -10,6 +10,7 @@ import Foundation
 import RxSwift
 
 protocol ValidatorService {
+  var lastUsedPublicKey: String? {get set}
   func validators() -> Observable<[ValidatorItem]>
   func updateValidators()
 }

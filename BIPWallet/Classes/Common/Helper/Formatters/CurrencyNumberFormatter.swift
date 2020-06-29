@@ -30,10 +30,9 @@ class CurrencyNumberFormatter: NumberFormatter {
     }
 
 		for _ in 0...18 {
-
-			defer {
-				newNF.maximumFractionDigits += 1
-			}
+      defer {
+        newNF.maximumFractionDigits += 1
+      }
 
 			guard let str = newNF.string(from: amount as NSNumber) else {
 				continue
