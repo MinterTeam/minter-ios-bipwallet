@@ -89,17 +89,6 @@ class BalanceCoordinator: BaseCoordinator<Void> {
       return (str?.isValidAddress() ?? false)
     }).subscribe(didScanRecipient).disposed(by: disposeBag)
 
-    coins.didScrollToPoint?.subscribe(onNext: { (point) in
-      if controller.segmentedControl?.selectedSegmentIndex == 0 {
-        let newPoint = headerInset + point.y
-        controller.containerViewHeightConstraint?.constant = max(-headerInset, -newPoint)
-        let contentOffset = CGPoint(x: 0, y: point.y)
-        if let transactionsViewController = transactionsViewController as? TransactionsViewController {
-          transactionsViewController.tableView?.setContentOffset(contentOffset, animated: false)
-        }
-      }
-    }).disposed(by: disposeBag)
-
     coins.didTapExchangeButton.flatMap({ [weak self] (_) -> Observable<Void> in
       guard let `self` = self else { return Observable.empty() }
       let excangeCoordinator = ExchangeCoordinator(rootController: controller,
@@ -108,25 +97,7 @@ class BalanceCoordinator: BaseCoordinator<Void> {
       return self.coordinate(to: excangeCoordinator)
     }).subscribe().disposed(by: self.disposeBag)
 
-    transactions.didScrollToPoint?.subscribe(onNext: { (point) in
-      if controller.segmentedControl.selectedSegmentIndex == 1 {
-        let newPoint = headerInset + point.y
-        controller.containerViewHeightConstraint.constant = max(-headerInset, -newPoint)
-        let contentOffset = CGPoint(x: 0, y: point.y)
-        coins.viewController?.tableView?.setContentOffset(contentOffset, animated: false)
-      }
-    }).disposed(by: disposeBag)
-
     self.bindSelectWallet(with: controller, viewModel: viewModel)
-
-    balanceService.account.do(onNext: { (_) in
-      controller.containerView?.setContentOffset(CGPoint(x: 0, y: 0), animated: false)
-      controller.containerViewHeightConstraint?.constant = 0
-      coins.viewController?.tableView?.setContentOffset(CGPoint(x: 0, y: -headerInset), animated: false)
-      (transactionsViewController as? TransactionsViewController)?.tableView?.setContentOffset(CGPoint(x: 0, y: -headerInset), animated: false)
-    }).distinctUntilChanged({ (acc1, acc2) -> Bool in
-      return (acc1?.address ?? "") == (acc2?.address ?? "")
-    }).subscribe().disposed(by: disposeBag)
 
     //Updating emoji
     Observable.combineLatest(self.balanceService.balances(), self.balanceService.delegatedBalance()).withLatestFrom(self.balanceService.account) {
@@ -142,6 +113,13 @@ class BalanceCoordinator: BaseCoordinator<Void> {
       //Updating account emoji on getting newest balance data
       return self.authService.updateAccount(account: account)
     }).subscribe().disposed(by: disposeBag)
+    
+    viewModel.didRefresh.withLatestFrom(self.balanceService.account).subscribe(onNext: { (account) in
+      guard let address = account?.address, address.isValidAddress() else { return }
+      self.balanceService.updateBalance()
+      self.balanceService.updateDelegated()
+      transactions.refresh()
+    }).disposed(by: disposeBag)
 
     navigationController.setViewControllers([controller], animated: false)
     return Observable.never()

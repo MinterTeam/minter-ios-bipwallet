@@ -35,8 +35,7 @@ class TransactionsViewModel: BaseViewModel, ViewModel, TransactionViewableViewMo
   private let isLoadingObservable = PublishSubject<Bool>()
 
   private var transactions = BehaviorSubject<[MinterExplorer.Transaction]>(value: [])
-  private var sections = PublishSubject<[BaseTableSectionItem]>()
-  private var viewDidLoad = PublishSubject<Void>()
+  private var sections = BehaviorSubject<[BaseTableSectionItem]>(value: [])
   private var didSelectItem = PublishSubject<IndexPath>()
   private var showTransaction = PublishSubject<MinterExplorer.Transaction?>()
   private var didTapShowAll = PublishSubject<Void>()
@@ -50,7 +49,6 @@ class TransactionsViewModel: BaseViewModel, ViewModel, TransactionViewableViewMo
 
   struct Input {
     var transactions: AnyObserver<[MinterExplorer.Transaction]>
-    var viewDidLoad: AnyObserver<Void>
     var didSelectItem: AnyObserver<IndexPath>
     var didRefresh: AnyObserver<Void>
   }
@@ -72,7 +70,6 @@ class TransactionsViewModel: BaseViewModel, ViewModel, TransactionViewableViewMo
   init(dependency: Dependency) {
 
     self.input = Input(transactions: transactions.asObserver(),
-                       viewDidLoad: viewDidLoad.asObserver(),
                        didSelectItem: didSelectItem.asObserver(),
                        didRefresh: didRefresh.asObserver()
     )
@@ -94,27 +91,20 @@ class TransactionsViewModel: BaseViewModel, ViewModel, TransactionViewableViewMo
   }
 
   func bind() {
-    dependency.balanceService.account.map({ (account) -> String? in
-      return account?.address
-    }).filter { $0 != nil}.map{$0!}.subscribe(onNext: { [weak self] (address) in
-      self?.createSections(transactions: [])
-
-      self?.address = address
-      self?.loadTransactions(address: address, withoutLoader: true)
-    }).disposed(by: disposeBag)
 
     didRefresh.subscribe(onNext: { [weak self] (_) in
       guard let address = self?.address else { return }
-      self?.loadTransactions(address: address, withoutLoader: true)
+      self?.loadTransactions(address: address, withoutLoader: false)
     }).disposed(by: disposeBag)
 
-    dependency.balanceService.balances().withLatestFrom(dependency.balanceService.account).subscribe(onNext: { [weak self] (account) in
+    Observable.combineLatest(dependency.balanceService.balances(), dependency.balanceService.account).debounce(.seconds(1), scheduler: MainScheduler.instance)
+      .withLatestFrom(dependency.balanceService.account).subscribe(onNext: { [weak self] (account) in
       guard let address = account?.address else { return }
       self?.loadTransactions(address: address, withoutLoader: true)
     }).disposed(by: disposeBag)
 
-    Observable.combineLatest(viewDidLoad, transactions, self.dependency.infoService.isReady()).map({ (val) -> [MinterExplorer.Transaction] in
-      return val.1
+    Observable.combineLatest(transactions, self.dependency.infoService.isReady()).map({ (val) -> [MinterExplorer.Transaction] in
+      return val.0
     }).subscribe(onNext: { [weak self] (transactions) in
       self?.createSections(isLoading: self?.isLoading ?? false, transactions: transactions)
     }).disposed(by: disposeBag)
@@ -132,13 +122,6 @@ class TransactionsViewModel: BaseViewModel, ViewModel, TransactionViewableViewMo
     }).filter({ (transaction) -> Bool in
       return nil != transaction
     }).subscribe(showTransaction).disposed(by: disposeBag)
-
-    didRefresh.subscribe(onNext: { (_) in
-      self.dependency.balanceService.updateBalance()
-      self.dependency.balanceService.updateDelegated()
-      guard let address = self.address else { return }
-      self.loadTransactions(address: address)
-    }).disposed(by: disposeBag)
   }
 
   // MARK: -

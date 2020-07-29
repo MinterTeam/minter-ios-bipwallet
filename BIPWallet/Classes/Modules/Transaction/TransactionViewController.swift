@@ -15,6 +15,7 @@ class TransactionViewController: BaseViewController, Controller, StoryboardIniti
   // MARK: - IBOutlet
 
   @IBOutlet weak var tableView: UITableView!
+  @IBOutlet weak var tableViewHeightConstraint: NSLayoutConstraint!
 
   // MARK: - ControllerProtocol
 
@@ -100,4 +101,5 @@ extension TransactionViewController {
     tableView.register(UINib(nibName: "TransactionTwoColumnCell", bundle: nil),
                        forCellReuseIdentifier: "TransactionTwoColumnCell")
   }
+
 }

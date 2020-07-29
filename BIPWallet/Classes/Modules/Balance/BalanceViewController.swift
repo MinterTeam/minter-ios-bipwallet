@@ -27,9 +27,9 @@ class BalanceViewController: SegmentedPagerTabStripViewController, Controller, S
 
   // MARK: - IBOutlet
 
-  @IBOutlet weak var balanceView: PassthroughView!
+  @IBOutlet weak var scrollView: UIScrollView!
+  @IBOutlet weak var balanceView: UIView!
   @IBOutlet weak var balanceTitle: UILabel!
-  @IBOutlet weak var containerViewHeightConstraint: NSLayoutConstraint!
   @IBOutlet weak var segmentedControlView: UIView!
   @IBOutlet weak var availableBalance: UILabel!
   @IBOutlet weak var delegatedBalanceTitle: UILabel!
@@ -39,6 +39,7 @@ class BalanceViewController: SegmentedPagerTabStripViewController, Controller, S
     }
   }
   @IBOutlet weak var delegatedBalanceButton: UIButton!
+  @IBOutlet weak var scrollViewHeightConstraint: NSLayoutConstraint!
 
   var walletSelectorButton = UIButton()
   let walletLabel = UILabel(frame: CGRect(x: 0, y: 0, width: 150, height: 30))
@@ -103,23 +104,11 @@ class BalanceViewController: SegmentedPagerTabStripViewController, Controller, S
     shareItem.rx.tap.asDriver().drive(viewModel.input.didTapShare).disposed(by: disposeBag)
     scanQRItem.rx.tap.asDriver().drive(viewModel.input.didTapScanQR).disposed(by: disposeBag)
 
-    Observable.of(self.availableBalance.rx.tapGesture(), self.balanceTitle.rx.tapGesture()).merge().when(.ended)
+    Observable.of(availableBalance.rx.tapGesture(), balanceTitle.rx.tapGesture()).merge().when(.ended)
       .map {_ in}.subscribe(viewModel.input.didTapBalance).disposed(by: disposeBag)
 
-    containerViewTap.filter { (recognizer) -> Bool in
-      let point = recognizer.location(in: self.balanceView)
-      return self.availableBalance.frame.contains(point) || self.balanceTitle.frame.contains(point)
-    }.map {_ in}.subscribe(viewModel.input.didTapBalance).disposed(by: disposeBag)
-
-    containerViewTap.filter { (recognizer) -> Bool in
-      let point = recognizer.location(in: self.balanceView)
-
-      let delegatedBalanceTitleFrame = self.delegatedBalanceTitle.frame.inset(by: UIEdgeInsets(top: -5, left: -15, bottom: -20, right: -15))
-      let delegatedBalanceFrame = self.delegatedBalance.frame.inset(by: UIEdgeInsets(top: -15, left: -15, bottom: -15, right: -15))
-
-      return delegatedBalanceTitleFrame.contains(point)
-        || delegatedBalanceFrame.contains(point)
-    }.map {_ in}.subscribe(viewModel.input.didTapDelegatedBalance).disposed(by: disposeBag)
+    Observable.of(delegatedBalanceTitle.rx.tapGesture(), delegatedBalance.rx.tapGesture()).merge().when(.ended)
+      .map {_ in}.subscribe(viewModel.input.didTapDelegatedBalance).disposed(by: disposeBag)
 
     readerVC.completionBlock = { [weak self] (result: QRCodeReaderResult?) in
       self?.readerVC.stopScanning()
@@ -129,6 +118,15 @@ class BalanceViewController: SegmentedPagerTabStripViewController, Controller, S
         }
       }
     }
+
+    self.refreshControl?.rx.controlEvent(.valueChanged)
+      .asDriver().drive(onNext: { [weak self] (_) in
+//        self?.refreshControl?.beginRefreshing()
+        self?.viewModel.input.didRefresh.onNext(())
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+          self?.refreshControl?.endRefreshing()
+        }
+      }).disposed(by: disposeBag)
 
     //Output
     viewModel.output
@@ -154,7 +152,7 @@ class BalanceViewController: SegmentedPagerTabStripViewController, Controller, S
     }).disposed(by: disposeBag)
 
     viewModel.output.balanceTitle.asDriver(onErrorJustReturn: nil)
-      .drive(self.balanceTitle.rx.text)
+      .drive(balanceTitle.rx.text)
       .disposed(by: disposeBag)
 
     viewModel.output.openAppSettings.asDriver(onErrorJustReturn: ()).drive(onNext: { [weak self] (_) in
@@ -164,15 +162,15 @@ class BalanceViewController: SegmentedPagerTabStripViewController, Controller, S
 
   func configureDefault() {
 
-    viewModel.impact.asDriver(onErrorJustReturn: .light).drive(onNext: { (type) in
+    viewModel.impact.asDriver(onErrorJustReturn: .light).drive(onNext: { [weak self] (type) in
       switch type {
       case .light:
-        self.lightImpactFeedbackGenerator.prepare()
-        self.lightImpactFeedbackGenerator.impactOccurred()
+        self?.lightImpactFeedbackGenerator.prepare()
+        self?.lightImpactFeedbackGenerator.impactOccurred()
 
       case .hard:
-        self.hardImpactFeedbackGenerator.prepare()
-        self.hardImpactFeedbackGenerator.impactOccurred()
+        self?.hardImpactFeedbackGenerator.prepare()
+        self?.hardImpactFeedbackGenerator.impactOccurred()
       }
     }).disposed(by: disposeBag)
 
@@ -198,23 +196,37 @@ class BalanceViewController: SegmentedPagerTabStripViewController, Controller, S
   let shareItem = UIBarButtonItem(image: UIImage(named: "ShareIcon"), style: .plain, target: nil, action: nil)
   let scanQRItem = UIBarButtonItem(image: UIImage(named: "ScanQRIcon"), style: .plain, target: nil, action: nil)
 
+  var refreshControl: UIRefreshControl?
+
   override func viewDidLoad() {
     super.viewDidLoad()
 
-    configure(with: viewModel)
+    refreshControl = UIRefreshControl()
+    refreshControl?.translatesAutoresizingMaskIntoConstraints = false
+    refreshControl?.tintColor = .white
+
+    scrollView.translatesAutoresizingMaskIntoConstraints = false
+    scrollView.addSubview(self.refreshControl!)
+
+    refreshControl?.snp.makeConstraints { (maker) in
+      maker.top.equalTo(self.scrollView).offset(-50)
+      maker.centerX.equalTo(self.scrollView)
+      maker.width.height.equalTo(30)
+    }
 
     segmentedControl.setFont(UIFont.semiBoldFont(of: 14.0))
 
     scanQRItem.tintColor = .white
-    
     shareItem.tintColor = .white
 
-    self.navigationItem.rightBarButtonItems = [scanQRItem, shareItem]
-    
+    navigationItem.rightBarButtonItems = [scanQRItem, shareItem]
+
     scanQRItem.rx.tap.subscribe(onNext: { [weak self] (_) in
       guard let `self` = self else { return }
       self.present(self.readerVC, animated: true, completion: nil)
     }).disposed(by: disposeBag)
+
+    configure(with: viewModel)
 
     //HACK: to layout child view controllers
     view.layoutIfNeeded()
@@ -233,25 +245,25 @@ class BalanceViewController: SegmentedPagerTabStripViewController, Controller, S
     return controllers
   }
 
-  lazy var containerViewTap = self.containerView.rx.tapGesture(configuration: { gesture, delegate in
-
-    delegate.beginPolicy = .custom({ (gestureRecognizer) -> Bool in
-      let point1 = gestureRecognizer.location(in: self.balanceView)
-      let inBalance = self.availableBalance.frame.contains(point1) || self.balanceTitle.frame.contains(point1)
-
-      let point2 = gestureRecognizer.location(in: self.balanceView)
-      let inDelegated = self.delegatedBalanceTitle.frame.contains(point2) || self.delegatedBalance.frame.contains(point2)
-
-      return (inBalance || inDelegated)
-    })
-  }).when(.ended).share()
-
   @objc func openAppSpecificSettings() {
     guard let url = URL(string: UIApplication.openSettingsURLString), UIApplication.shared.canOpenURL(url) else {
       return
     }
 
-    UIApplication.shared.open(url, options: [:]) { (_) in
+    UIApplication.shared.open(url, options: [:]) { (_) in}
+  }
+
+  override func viewDidLayoutSubviews() {
+    super.viewDidLayoutSubviews()
+
+    let maxHeight = max(controllers.map {
+      ($0.view.subviews.first { (view) -> Bool in
+        return view is UITableView
+      } as? UITableView)?.contentSize.height ?? 0.0
+    }.max() ?? 0.0, 500.0)
+
+    if scrollViewHeightConstraint.constant != maxHeight {
+      scrollViewHeightConstraint.constant = maxHeight
     }
   }
 

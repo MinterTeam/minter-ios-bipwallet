@@ -18,24 +18,7 @@ class CoinsViewController: BaseViewController, Controller, StoryboardInitializab
   // MARK: -
 
   @IBOutlet weak var tableView: UITableView!
-
-  var refreshControl: UIRefreshControl! {
-    didSet {
-      refreshControl.tintColor = .white
-      refreshControl.translatesAutoresizingMaskIntoConstraints = false
-      refreshControl.addTarget(self, action:
-        #selector(CoinsViewController.handleRefresh(_:)),
-                               for: UIControl.Event.valueChanged)
-    }
-  }
-
-  @objc func handleRefresh(_ refreshControl: UIRefreshControl) {
-    SoundHelper.playSoundIfAllowed(type: .refresh)
-    DispatchQueue.main.async {
-      refreshControl.beginRefreshing()
-      refreshControl.endRefreshing()
-    }
-  }
+  @IBOutlet weak var tableViewHeightConstraint: NSLayoutConstraint!
 
   // MARK: - ControllerProtocol
 
@@ -51,10 +34,6 @@ class CoinsViewController: BaseViewController, Controller, StoryboardInitializab
     //Input
     self.rx.viewDidLoad.asDriver(onErrorJustReturn: ())
       .drive(viewModel.input.viewDidLoad)
-      .disposed(by: disposeBag)
-
-    self.refreshControl?.rx.controlEvent(.valueChanged)
-      .asDriver().drive(viewModel.input.didRefresh)
       .disposed(by: disposeBag)
 
     //Output
@@ -86,18 +65,6 @@ class CoinsViewController: BaseViewController, Controller, StoryboardInitializab
         cell.configure(item: item)
         return cell
       })
-
-    tableView.contentInset = UIEdgeInsets(top: 230, left: 0, bottom: 0, right: 0)
-
-    refreshControl = UIRefreshControl()
-
-    self.tableView.addSubview(self.refreshControl)
-
-    refreshControl.snp.makeConstraints { (maker) in
-      maker.top.equalTo(self.tableView).offset(-270)
-      maker.centerX.equalTo(self.tableView)
-      maker.width.height.equalTo(30)
-    }
 
     configure(with: viewModel)
   }

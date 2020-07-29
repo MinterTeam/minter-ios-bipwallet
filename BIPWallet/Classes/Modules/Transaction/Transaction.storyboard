@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="16096" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="16097.2" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
@@ -16,8 +16,8 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="RdA-zY-5L6">
-                                <rect key="frame" x="0.0" y="64" width="414" height="832"/>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" ambiguous="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="RdA-zY-5L6">
+                                <rect key="frame" x="0.0" y="64" width="414" height="1000"/>
                             </tableView>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
@@ -25,7 +25,6 @@
                             <constraint firstItem="RdA-zY-5L6" firstAttribute="leading" secondItem="zVi-M3-VM8" secondAttribute="leading" id="0Yf-1R-aos"/>
                             <constraint firstItem="RdA-zY-5L6" firstAttribute="top" secondItem="8nw-9f-0GA" secondAttribute="top" constant="64" id="3wP-rL-Ske"/>
                             <constraint firstItem="RdA-zY-5L6" firstAttribute="trailing" secondItem="zVi-M3-VM8" secondAttribute="trailing" id="Dy0-GX-5qU"/>
-                            <constraint firstAttribute="bottom" secondItem="RdA-zY-5L6" secondAttribute="bottom" id="ibX-Z6-7K2"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="zVi-M3-VM8"/>
                     </view>

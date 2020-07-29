@@ -17,16 +17,6 @@ class TransactionsViewController: BaseViewController, Controller, StoryboardInit
   @IBOutlet weak var noTransactionsLabel: UILabel!
   @IBOutlet weak var tableView: UITableView!
 
-  var refreshControl: UIRefreshControl! {
-    didSet {
-      refreshControl.tintColor = .white
-      refreshControl.translatesAutoresizingMaskIntoConstraints = false
-      refreshControl.addTarget(self, action:
-        #selector(CoinsViewController.handleRefresh(_:)),
-                               for: UIControl.Event.valueChanged)
-    }
-  }
-
   @objc func handleRefresh(_ refreshControl: UIRefreshControl) {
     SoundHelper.playSoundIfAllowed(type: .refresh)
     DispatchQueue.main.async {
@@ -45,19 +35,14 @@ class TransactionsViewController: BaseViewController, Controller, StoryboardInit
 
   func configure(with viewModel: TransactionsViewModel) {
     //Input
-    self.rx.viewDidLoad
-      .asDriver(onErrorJustReturn: ())
-      .drive(viewModel.input.viewDidLoad)
-      .disposed(by: disposeBag)
+//    self.rx.viewDidLoad
+//      .asDriver(onErrorJustReturn: ())
+//      .drive(viewModel.input.viewDidLoad)
+//      .disposed(by: disposeBag)
 
     tableView.rx.itemSelected.asDriver()
       .drive(viewModel.input.didSelectItem)
       .disposed(by: disposeBag)
-
-    self.refreshControl?.rx.controlEvent(.valueChanged)
-      .asDriver().drive(viewModel.input.didRefresh)
-      .disposed(by: disposeBag)
-
     //Output
     viewModel.output.sections
       .bind(to: tableView.rx.items(dataSource: rxDataSource!))
@@ -65,10 +50,6 @@ class TransactionsViewController: BaseViewController, Controller, StoryboardInit
 
     viewModel.output.showNoTransactions.map { $0 ? 1.0 : 0.0 }
       .asDriver(onErrorJustReturn: 0.0).drive(noTransactionsLabel.rx.alpha)
-      .disposed(by: disposeBag)
-    
-    viewModel.output.isLoading.asDriver(onErrorJustReturn: false)
-      .drive(refreshControl.rx.isRefreshing)
       .disposed(by: disposeBag)
   }
 
@@ -96,18 +77,6 @@ class TransactionsViewController: BaseViewController, Controller, StoryboardInit
 
     tableView.rx.setDelegate(self).disposed(by: disposeBag)
 
-    tableView.contentInset = UIEdgeInsets(top: 230, left: 0, bottom: 0, right: 0)
-    
-    refreshControl = UIRefreshControl()
-
-    self.tableView.addSubview(self.refreshControl)
-
-    refreshControl.snp.makeConstraints { (maker) in
-      maker.top.equalTo(self.tableView).offset(-270)
-      maker.centerX.equalTo(self.tableView)
-      maker.width.height.equalTo(30)
-    }
-    
     configure(with: viewModel)
   }
 }

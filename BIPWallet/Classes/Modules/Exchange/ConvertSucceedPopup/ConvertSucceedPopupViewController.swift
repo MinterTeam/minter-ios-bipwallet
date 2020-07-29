@@ -27,7 +27,7 @@ class ConvertSucceedPopupViewController: PopupViewController, Controller, Storyb
     //Input
     actionButton.rx.tap.asDriver().drive(viewModel.input.didTapAction).disposed(by: disposeBag)
     cancelButton.rx.tap.asDriver().drive(viewModel.input.didTapCancel).disposed(by: disposeBag)
-    
+
     //Output
     viewModel.output.description.asDriver(onErrorJustReturn: nil).drive(textLabel.rx.text).disposed(by: disposeBag)
   }

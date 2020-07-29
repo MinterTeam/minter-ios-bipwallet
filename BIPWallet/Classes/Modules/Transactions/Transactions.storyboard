@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="16097" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="16097.2" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16087"/>
-        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <customFonts key="customFonts">
@@ -17,13 +16,22 @@
         <scene sceneID="DPv-Pp-3U6">
             <objects>
                 <viewController storyboardIdentifier="TransactionsViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="Fhn-kN-AZj" customClass="TransactionsViewController" customModule="BIPWallet" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="nJa-uP-JE9">
+                    <view key="view" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="nJa-uP-JE9">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" style="grouped" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="18" sectionFooterHeight="18" translatesAutoresizingMaskIntoConstraints="NO" id="Whn-ZE-c7s">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="No transactions yet" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CLD-4l-70M">
+                                <rect key="frame" x="127" y="696" width="160.5" height="21"/>
+                                <fontDescription key="fontDescription" name="Inter_Semi-Bold" family="Inter" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" style="grouped" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="18" sectionFooterHeight="18" translatesAutoresizingMaskIntoConstraints="NO" id="Whn-ZE-c7s">
                                 <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="896" id="HbX-hj-xe3"/>
+                                </constraints>
                                 <color key="separatorColor" red="0.8862745098" green="0.8862745098" blue="0.8862745098" alpha="1" colorSpace="custom" customColorSpace="deviceRGB"/>
                                 <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                                 <prototypes>
@@ -50,25 +58,24 @@
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                 </prototypes>
+                                <variation key="default">
+                                    <mask key="constraints">
+                                        <exclude reference="HbX-hj-xe3"/>
+                                    </mask>
+                                </variation>
                             </tableView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="No transactions yet" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CLD-4l-70M">
-                                <rect key="frame" x="127" y="696" width="160.5" height="21"/>
-                                <fontDescription key="fontDescription" name="Inter_Semi-Bold" family="Inter" pointSize="17"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
-                            <constraint firstItem="Whn-ZE-c7s" firstAttribute="trailing" secondItem="tR0-cY-Wvz" secondAttribute="trailing" id="19S-oK-5eB"/>
-                            <constraint firstItem="Whn-ZE-c7s" firstAttribute="leading" secondItem="tR0-cY-Wvz" secondAttribute="leading" id="NcJ-IK-B7i"/>
-                            <constraint firstAttribute="bottom" secondItem="Whn-ZE-c7s" secondAttribute="bottom" id="h4B-qK-uKg"/>
+                            <constraint firstItem="Whn-ZE-c7s" firstAttribute="trailing" secondItem="nJa-uP-JE9" secondAttribute="trailing" id="19S-oK-5eB"/>
+                            <constraint firstAttribute="bottom" secondItem="Whn-ZE-c7s" secondAttribute="bottom" priority="999" id="KnF-rG-SaU"/>
+                            <constraint firstItem="Whn-ZE-c7s" firstAttribute="leading" secondItem="nJa-uP-JE9" secondAttribute="leading" id="NcJ-IK-B7i"/>
                             <constraint firstItem="Whn-ZE-c7s" firstAttribute="top" secondItem="nJa-uP-JE9" secondAttribute="top" id="jQ5-pT-yZZ"/>
                             <constraint firstItem="CLD-4l-70M" firstAttribute="centerX" secondItem="Whn-ZE-c7s" secondAttribute="centerX" id="oHf-7s-ban"/>
                             <constraint firstItem="CLD-4l-70M" firstAttribute="top" secondItem="Whn-ZE-c7s" secondAttribute="bottom" constant="-200" id="pOA-l5-qKR"/>
                         </constraints>
-                        <viewLayoutGuide key="safeArea" id="tR0-cY-Wvz"/>
                     </view>
+                    <size key="freeformSize" width="414" height="896"/>
                     <connections>
                         <outlet property="noTransactionsLabel" destination="CLD-4l-70M" id="STh-Wg-pyM"/>
                         <outlet property="tableView" destination="Whn-ZE-c7s" id="o45-45-s52"/>
