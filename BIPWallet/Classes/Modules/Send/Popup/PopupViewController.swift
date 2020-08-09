@@ -15,18 +15,12 @@ protocol PopupViewControllerDelegate: class {
 
 class PopupViewController: BaseViewController, CCMPlayNDropViewDelegate {
 
-//	var disposeBag = DisposeBag()
-
 	weak var popupViewControllerDelegate: PopupViewControllerDelegate?
 
 	// MARK: - IBOutlets
 
 	@IBOutlet weak var popupTitle: UILabel!
-	@IBOutlet weak var popupHeader: UIView! {
-		didSet {
-//			popupHeader.roundCorners([.topLeft, .topRight], radius: 16.0)
-		}
-	}
+	@IBOutlet weak var popupHeader: UIView!
 	@IBOutlet weak var popupView: DroppableView!
 	@IBOutlet weak var blurView: UIVisualEffectView!
 

@@ -116,6 +116,10 @@
 		FA28DCD2249FE12A005B14DF /* RawTransactionFieldWithBlockTimeTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA28DCCF249FE12A005B14DF /* RawTransactionFieldWithBlockTimeTableViewCell.swift */; };
 		FA28DCD3249FE12A005B14DF /* RawTransactionFieldWithBlockTimeTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FA28DCD0249FE12A005B14DF /* RawTransactionFieldWithBlockTimeTableViewCell.xib */; };
 		FA28DCD4249FE12A005B14DF /* RawTransactionFieldWithBlockTimeTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FA28DCD0249FE12A005B14DF /* RawTransactionFieldWithBlockTimeTableViewCell.xib */; };
+		FA297B3124E00052003CA94E /* RawTransactionConvertCoinCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA297B2F24E00052003CA94E /* RawTransactionConvertCoinCell.swift */; };
+		FA297B3224E00052003CA94E /* RawTransactionConvertCoinCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA297B2F24E00052003CA94E /* RawTransactionConvertCoinCell.swift */; };
+		FA297B3324E00052003CA94E /* RawTransactionConvertCoinCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FA297B3024E00052003CA94E /* RawTransactionConvertCoinCell.xib */; };
+		FA297B3424E00052003CA94E /* RawTransactionConvertCoinCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FA297B3024E00052003CA94E /* RawTransactionConvertCoinCell.xib */; };
 		FA39EA0C2404149F00757020 /* String+Validation.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA39EA0B2404149F00757020 /* String+Validation.swift */; };
 		FA39EA0F2404D20200757020 /* LoadingTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA39EA0D2404D20100757020 /* LoadingTableViewCell.swift */; };
 		FA39EA102404D20200757020 /* LoadingTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FA39EA0E2404D20200757020 /* LoadingTableViewCell.xib */; };
@@ -816,6 +820,8 @@
 		FA28DCCA249CA5F8005B14DF /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		FA28DCCF249FE12A005B14DF /* RawTransactionFieldWithBlockTimeTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RawTransactionFieldWithBlockTimeTableViewCell.swift; sourceTree = "<group>"; };
 		FA28DCD0249FE12A005B14DF /* RawTransactionFieldWithBlockTimeTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = RawTransactionFieldWithBlockTimeTableViewCell.xib; sourceTree = "<group>"; };
+		FA297B2F24E00052003CA94E /* RawTransactionConvertCoinCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RawTransactionConvertCoinCell.swift; sourceTree = "<group>"; };
+		FA297B3024E00052003CA94E /* RawTransactionConvertCoinCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = RawTransactionConvertCoinCell.xib; sourceTree = "<group>"; };
 		FA39EA0B2404149F00757020 /* String+Validation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+Validation.swift"; sourceTree = "<group>"; };
 		FA39EA0D2404D20100757020 /* LoadingTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoadingTableViewCell.swift; sourceTree = "<group>"; };
 		FA39EA0E2404D20200757020 /* LoadingTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LoadingTableViewCell.xib; sourceTree = "<group>"; };
@@ -1639,6 +1645,8 @@
 				FA62231A24517C93006089EC /* RawTransactionFieldTableViewCell.xib */,
 				FA28DCCF249FE12A005B14DF /* RawTransactionFieldWithBlockTimeTableViewCell.swift */,
 				FA28DCD0249FE12A005B14DF /* RawTransactionFieldWithBlockTimeTableViewCell.xib */,
+				FA297B2F24E00052003CA94E /* RawTransactionConvertCoinCell.swift */,
+				FA297B3024E00052003CA94E /* RawTransactionConvertCoinCell.xib */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -2288,6 +2296,7 @@
 				FA91D56C242E0F0100F901AF /* SendHeader.xib in Resources */,
 				FA91D571242E0FD200F901AF /* DefaultHeader.xib in Resources */,
 				FACA65B923F6FF7F00399359 /* SignIn.storyboard in Resources */,
+				FA297B3324E00052003CA94E /* RawTransactionConvertCoinCell.xib in Resources */,
 				FA663D4623FFDF1A0029D5D0 /* Transactions.storyboard in Resources */,
 				FAC14A41247D4A52008D1A45 /* SendSucceedPopup.storyboard in Resources */,
 				FA91D584243209A000F901AF /* ModifyContact.storyboard in Resources */,
@@ -2380,6 +2389,7 @@
 				FAAAD9CA24977B7A00D7F5FE /* SendHeader.xib in Resources */,
 				FAAAD9CB24977B7A00D7F5FE /* DefaultHeader.xib in Resources */,
 				FAAAD9CC24977B7A00D7F5FE /* SignIn.storyboard in Resources */,
+				FA297B3424E00052003CA94E /* RawTransactionConvertCoinCell.xib in Resources */,
 				FAAAD9CD24977B7A00D7F5FE /* Transactions.storyboard in Resources */,
 				FAAAD9CE24977B7A00D7F5FE /* SendSucceedPopup.storyboard in Resources */,
 				FAAAD9CF24977B7A00D7F5FE /* ModifyContact.storyboard in Resources */,
@@ -2704,6 +2714,7 @@
 				3DDB6E9C696EB7BC737B4C6F /* ExchangeCoordinator.swift in Sources */,
 				FA3BDE96242BE9AF0076A7F4 /* SendPopupViewController.swift in Sources */,
 				FA3BDEA7242BED2A0076A7F4 /* DroppableView.swift in Sources */,
+				FA297B3124E00052003CA94E /* RawTransactionConvertCoinCell.swift in Sources */,
 				FA3BDE59242B83C80076A7F4 /* QRCodeReaderViewController.swift in Sources */,
 				FADA6F9E24615E2D00FFBCCF /* SoundHelper.swift in Sources */,
 				FB1474DD9AFFB75F0EA9A397 /* SpendCoinsViewController.swift in Sources */,
@@ -2993,6 +3004,7 @@
 				FAAAD94024977B7A00D7F5FE /* ExchangeCoordinator.swift in Sources */,
 				FAAAD94124977B7A00D7F5FE /* SendPopupViewController.swift in Sources */,
 				FAAAD94224977B7A00D7F5FE /* DroppableView.swift in Sources */,
+				FA297B3224E00052003CA94E /* RawTransactionConvertCoinCell.swift in Sources */,
 				FAAAD94324977B7A00D7F5FE /* QRCodeReaderViewController.swift in Sources */,
 				FAAAD94424977B7A00D7F5FE /* SoundHelper.swift in Sources */,
 				FAAAD94524977B7A00D7F5FE /* SpendCoinsViewController.swift in Sources */,

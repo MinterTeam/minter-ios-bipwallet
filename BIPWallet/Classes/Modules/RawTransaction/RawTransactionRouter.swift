@@ -171,22 +171,37 @@ class RawTransactionCoordinator: BaseCoordinator<Void> {
   let rootViewController: UIViewController
   let url: URL
   let balanceService: BalanceService
+  let transactionService: TransactionService
 
-  init(rootViewController: UIViewController, url: URL, balanceService: BalanceService) {
+  init(rootViewController: UIViewController, url: URL, balanceService: BalanceService, transactionService: TransactionService) {
     self.rootViewController = rootViewController
     self.url = url
     self.balanceService = balanceService
+    self.transactionService = transactionService
   }
 
   override func start() -> Observable<Void> {
     guard let controller = RawTransactionRouter.rawTransactionViewController(with: url,
-                                                                             balanceService: balanceService) else {
+                                                                             balanceService: balanceService) as? UINavigationController else {
       return Observable.empty()
     }
+
+    let rawTransactionViewController = controller.viewControllers.first as? RawTransactionViewController
+
+    rawTransactionViewController?.viewModel.output.showExchange.flatMap {
+      return self.showExchange(controller: controller)
+    }.subscribe().disposed(by: disposeBag)
 
     rootViewController.present(controller, animated: true, completion: nil)
 
     return controller.rx.deallocated
+  }
+
+  func showExchange(controller: UIViewController) -> Observable<Void> {
+    let coordinator = ExchangeCoordinator(rootController: controller,
+                                          balanceService: balanceService,
+                                          transactionService: transactionService)
+    return coordinate(to: coordinator)
   }
 
 }

@@ -8,6 +8,7 @@
 
 import UIKit
 import RxSwift
+import RxCocoa
 import RxDataSources
 import NotificationBannerSwift
 import SafariServices
@@ -117,6 +118,16 @@ class RawTransactionViewController: BaseViewController, Controller, StoryboardIn
 				}
       }).disposed(by: disposeBag)
 
+//    viewModel.output.isLoading.asDriver(onErrorJustReturn: false)
+//      .drive(onNext: { [weak self] (val) in
+//
+//    }).disposed(by: disposeBag)
+
+    //Input
+    self.rx.viewDidAppear.map {_ in}.asDriver(onErrorJustReturn: ())
+      .drive(viewModel.input.viewDidAppear)
+      .disposed(by: disposeBag)
+
 		self.title = "Confirm Transaction".localized()
 	}
 
@@ -205,7 +216,8 @@ extension RawTransactionViewController {
 											 forCellReuseIdentifier: "RawTransactionFieldTableViewCell")
     tableView.register(UINib(nibName: "RawTransactionFieldWithBlockTimeTableViewCell", bundle: nil),
                        forCellReuseIdentifier: "RawTransactionFieldWithBlockTimeTableViewCell")
-
+    tableView.register(UINib(nibName: "RawTransactionConvertCoinCell", bundle: nil),
+                       forCellReuseIdentifier: "RawTransactionConvertCoinCell")
 	}
 }
 

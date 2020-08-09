@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="16097" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="fsb-YM-YKJ">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="16097.2" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="fsb-YM-YKJ">
     <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
@@ -358,10 +358,10 @@
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="AQh-XW-UEA" customClass="DroppableView" customModule="BIPWallet" customModuleProvider="target">
-                                            <rect key="frame" x="0.0" y="144" width="375" height="299"/>
+                                            <rect key="frame" x="0.0" y="172" width="375" height="243"/>
                                             <subviews>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dHe-wr-8vX">
-                                                    <rect key="frame" x="10" y="10" width="355" height="279"/>
+                                                    <rect key="frame" x="10" y="10" width="355" height="223"/>
                                                     <subviews>
                                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="WfP-qk-qrX">
                                                             <rect key="frame" x="0.0" y="0.0" width="355" height="50"/>
@@ -429,19 +429,6 @@
                                                                 <action selector="actionBtnDidTap:" destination="36E-x9-lAM" eventType="touchUpInside" id="yL0-Do-S9d"/>
                                                             </connections>
                                                         </button>
-                                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="mTY-8Y-uEb" customClass="DefaultButton" customModule="BIPWallet" customModuleProvider="target">
-                                                            <rect key="frame" x="16" y="213" width="323" height="50"/>
-                                                            <constraints>
-                                                                <constraint firstAttribute="height" constant="50" id="6Zz-uT-ytZ"/>
-                                                            </constraints>
-                                                            <state key="normal" title="Button"/>
-                                                            <userDefinedRuntimeAttributes>
-                                                                <userDefinedRuntimeAttribute type="string" keyPath="pattern" value="blank_black"/>
-                                                            </userDefinedRuntimeAttributes>
-                                                            <connections>
-                                                                <action selector="secondButtonDidTap:" destination="36E-x9-lAM" eventType="touchUpInside" id="v8P-cK-GfK"/>
-                                                            </connections>
-                                                        </button>
                                                         <activityIndicatorView opaque="NO" alpha="0.0" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="sUa-80-qHf">
                                                             <rect key="frame" x="159" y="153.5" width="37" height="37"/>
                                                         </activityIndicatorView>
@@ -449,22 +436,19 @@
                                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                     <constraints>
                                                         <constraint firstAttribute="trailing" secondItem="WfP-qk-qrX" secondAttribute="trailing" id="2KQ-gN-BZM"/>
-                                                        <constraint firstAttribute="bottom" secondItem="mTY-8Y-uEb" secondAttribute="bottom" constant="16" id="2rM-al-M74"/>
                                                         <constraint firstAttribute="trailing" secondItem="1rQ-qr-gqe" secondAttribute="trailing" constant="10" id="4Wn-qn-k5I"/>
                                                         <constraint firstItem="WfP-qk-qrX" firstAttribute="top" secondItem="dHe-wr-8vX" secondAttribute="top" id="80T-ej-1gk"/>
+                                                        <constraint firstAttribute="bottom" secondItem="1bH-Xm-Zuz" secondAttribute="bottom" constant="26" id="8ko-JW-t8X"/>
                                                         <constraint firstItem="YZt-5O-NjY" firstAttribute="top" secondItem="1rQ-qr-gqe" secondAttribute="bottom" constant="16" id="EdA-eY-RdT"/>
                                                         <constraint firstAttribute="trailing" secondItem="YZt-5O-NjY" secondAttribute="trailing" constant="16" id="GrZ-rS-1AP"/>
                                                         <constraint firstItem="1bH-Xm-Zuz" firstAttribute="leading" secondItem="dHe-wr-8vX" secondAttribute="leading" constant="16" id="Gwu-E5-nyF"/>
                                                         <constraint firstItem="1rQ-qr-gqe" firstAttribute="leading" secondItem="dHe-wr-8vX" secondAttribute="leading" constant="10" id="Iff-3g-k8W"/>
                                                         <constraint firstItem="WfP-qk-qrX" firstAttribute="leading" secondItem="dHe-wr-8vX" secondAttribute="leading" id="Lq8-Yq-8rZ"/>
-                                                        <constraint firstItem="mTY-8Y-uEb" firstAttribute="top" secondItem="1bH-Xm-Zuz" secondAttribute="bottom" constant="16" id="S1w-Az-raL"/>
                                                         <constraint firstAttribute="trailing" secondItem="1bH-Xm-Zuz" secondAttribute="trailing" constant="16" id="VMe-sV-sZE"/>
                                                         <constraint firstItem="1rQ-qr-gqe" firstAttribute="top" secondItem="WfP-qk-qrX" secondAttribute="bottom" id="aDJ-qM-Qpd"/>
                                                         <constraint firstItem="YZt-5O-NjY" firstAttribute="leading" secondItem="dHe-wr-8vX" secondAttribute="leading" constant="16" id="ekl-fo-5B5"/>
-                                                        <constraint firstItem="mTY-8Y-uEb" firstAttribute="leading" secondItem="1bH-Xm-Zuz" secondAttribute="leading" id="fYU-7X-elq"/>
                                                         <constraint firstItem="sUa-80-qHf" firstAttribute="centerX" secondItem="1bH-Xm-Zuz" secondAttribute="centerX" id="gBO-Fu-1yp"/>
                                                         <constraint firstItem="sUa-80-qHf" firstAttribute="centerY" secondItem="1bH-Xm-Zuz" secondAttribute="centerY" id="kFZ-B8-Tbg"/>
-                                                        <constraint firstItem="mTY-8Y-uEb" firstAttribute="trailing" secondItem="1bH-Xm-Zuz" secondAttribute="trailing" id="lSG-AG-wrl"/>
                                                         <constraint firstItem="1bH-Xm-Zuz" firstAttribute="top" secondItem="YZt-5O-NjY" secondAttribute="bottom" constant="16" id="uIK-qm-UoT"/>
                                                     </constraints>
                                                     <userDefinedRuntimeAttributes>
@@ -509,7 +493,6 @@
                         <outlet property="popupHeader" destination="WfP-qk-qrX" id="spo-Ri-iTF"/>
                         <outlet property="popupTitle" destination="zlk-nn-QTK" id="GAL-So-xgL"/>
                         <outlet property="popupView" destination="AQh-XW-UEA" id="YAI-Sq-p4j"/>
-                        <outlet property="secondButton" destination="mTY-8Y-uEb" id="nQh-zc-bzh"/>
                         <outlet property="walletLabel" destination="Gvi-G3-6r2" id="Uz7-Kh-9qX"/>
                         <outlet property="walletView" destination="YZt-5O-NjY" id="B9c-a1-gSA"/>
                     </connections>

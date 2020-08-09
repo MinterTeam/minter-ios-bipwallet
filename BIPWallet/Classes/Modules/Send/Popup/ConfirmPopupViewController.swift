@@ -39,9 +39,7 @@ class ConfirmPopupViewController: PopupViewController, Controller, StoryboardIni
       .drive(walletLabel.rx.text)
       .disposed(by: disposeBag)
 
-		viewModel
-			.output
-			.isActivityIndicatorAnimating
+		viewModel.output.isActivityIndicatorAnimating
 			.asDriver(onErrorJustReturn: false)
 			.drive(onNext: { [weak self] (val) in
 				self?.actionButton.isEnabled = !val
@@ -54,30 +52,25 @@ class ConfirmPopupViewController: PopupViewController, Controller, StoryboardIni
 				}
 			}).disposed(by: disposeBag)
 
-    viewModel
-      .output.activeButtonTitle.asDriver(onErrorJustReturn: nil)
-      .drive(self.actionButton.rx.title(for: .normal))
+    viewModel.output.activeButtonTitle.asDriver(onErrorJustReturn: nil)
+      .drive(actionButton.rx.title(for: .normal))
       .disposed(by: disposeBag)
 
 		//Input
-		actionButton
-			.rx
-			.tap
-			.asDriver(onErrorJustReturn: ())
+		actionButton.rx.tap.asDriver(onErrorJustReturn: ())
 			.drive(viewModel.input.didTapAction)
 			.disposed(by: disposeBag)
 
-		secondButton
-			.rx
-			.tap
-			.asDriver(onErrorJustReturn: ())
-			.drive(viewModel.input.didTapCancel)
-			.disposed(by: disposeBag)
+//		secondButton.rx.tap.asDriver(onErrorJustReturn: ())
+//			.drive(viewModel.input.didTapCancel)
+//			.disposed(by: disposeBag)
 
     self.rx.viewWillAppear.map{_ in}
       .asDriver(onErrorJustReturn: ())
       .drive(viewModel.input.viewWillAppear)
       .disposed(by: disposeBag)
+
+    self.popupView.dismissable = viewModel.output.dismissable()
 	}
 
 	weak var delegate: ConfirmPopupViewControllerDelegate?
@@ -108,7 +101,9 @@ class ConfirmPopupViewController: PopupViewController, Controller, StoryboardIni
 	override func viewDidLoad() {
 		super.viewDidLoad()
 
-    walletView.rx.tapGesture().when(.ended).map {_ in}.subscribe(viewModel.input.didTapWallet).disposed(by: disposeBag)
+    walletView.rx.tapGesture().when(.ended).map { _ in }
+      .subscribe(viewModel.input.didTapWallet)
+      .disposed(by: disposeBag)
 
     configure(with: viewModel)
 
@@ -126,7 +121,7 @@ class ConfirmPopupViewController: PopupViewController, Controller, StoryboardIni
 			return
 		}
 		self.actionButton.setTitle(viewModel.buttonTitle, for: .normal)
-		self.secondButton.setTitle(viewModel.cancelTitle, for: .normal)
+//		self.secondButton.setTitle(viewModel.cancelTitle, for: .normal)
 	}
 
   func showPicker(data: [[String]], completion: (([Int: String]) -> ())?) {
@@ -139,4 +134,7 @@ class ConfirmPopupViewController: PopupViewController, Controller, StoryboardIni
       completion?(selected)
     }
   }
+
+  // MARK: -
+
 }
