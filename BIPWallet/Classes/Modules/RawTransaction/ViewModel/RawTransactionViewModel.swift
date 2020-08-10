@@ -104,16 +104,8 @@ class RawTransactionViewModel: BaseViewModel, ViewModel {// swiftlint:disable:th
 	private var multisendAddressCount = 0
 	private var createCoinSymbolCount = 0
 
-  private var neededCoin: String? {
-    didSet {
-      updateNeededCoinInfo()
-    }
-  }
-  private var neededCoinAmount: Decimal? {
-    didSet {
-      updateNeededCoinInfo()
-    }
-  }
+  private var neededCoin: String?
+  private var neededCoinAmount: Decimal?
 
 	private var fields: [[String: String]] = []
 	private var currentGas = BehaviorSubject<Int>(value: RawTransactionDefaultGasPrice)
@@ -257,20 +249,6 @@ class RawTransactionViewModel: BaseViewModel, ViewModel {// swiftlint:disable:th
       throw RawTransactionViewModelError.noPrivateKey
     }
     return adr
-  }
-
-//  func shouldShowNeededCoin() -> Bool {
-//    let hasNeededCoin = self.neededCoinAmount != nil && self.neededCoin != nil
-////    return self.dependency.balanceService.balances()
-//    return hasNeededCoin
-//  }
-
-  func updateNeededCoinInfo() {
-    guard let neededAmount = self.neededCoinAmount, let neededCoin = self.neededCoin else {
-      return
-    }
-
-    print("showing")
   }
 
 	private func sendTx() {

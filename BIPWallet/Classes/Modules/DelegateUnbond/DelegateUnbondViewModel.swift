@@ -208,9 +208,9 @@ class DelegateUnbondViewModel: BaseViewModel, ViewModel, LastBlockViewable {
                          title: Observable.just((isUnbond ? "Unbond".localized() : "Delegate".localized())),
                          description: {
                           if isUnbond {
-                            return Observable.just("The process will be finalized within ~30 days after the request has been sent.")
+                            return Observable.just("The process will be finalized within ~30 days after the request has been sent")
                           }
-                          return Observable.just("Delegate your coins to validators and receive related regular payments.")
+                          return Observable.just("Delegate your coins to validators and receive related regular payments")
                          }(),
                          errorMessage: errorMessage.asObservable(),
                          fee: self.dependency.gateService.currentGas().map({ (gas) -> String in

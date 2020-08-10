@@ -61,10 +61,6 @@ class ConfirmPopupViewController: PopupViewController, Controller, StoryboardIni
 			.drive(viewModel.input.didTapAction)
 			.disposed(by: disposeBag)
 
-//		secondButton.rx.tap.asDriver(onErrorJustReturn: ())
-//			.drive(viewModel.input.didTapCancel)
-//			.disposed(by: disposeBag)
-
     self.rx.viewWillAppear.map{_ in}
       .asDriver(onErrorJustReturn: ())
       .drive(viewModel.input.viewWillAppear)
@@ -82,19 +78,10 @@ class ConfirmPopupViewController: PopupViewController, Controller, StoryboardIni
 	@IBOutlet weak var descLabel: UILabel!
 	@IBOutlet weak var actionButtonActivityIndicator: UIActivityIndicatorView!
 	@IBOutlet weak var actionButton: DefaultButton!
-	@IBOutlet weak var secondButton: DefaultButton!
 
 	@IBAction func actionBtnDidTap(_ sender: Any) {
 		delegate?.didTapActionButton(viewController: self)
 	}
-
-	@IBAction func secondButtonDidTap(_ sender: Any) {
-		delegate?.didTapSecondButton(viewController: self)
-	}
-
-	// MARK: -
-
-	var shadowLayer = CAShapeLayer()
 
 	// MARK: -
 

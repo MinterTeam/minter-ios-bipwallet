@@ -100,6 +100,7 @@ class RawTransactionRouter {
           }
         }
 			}
+
       return viewController(nonce: nonce,
                             gasPrice: gasPrice,
                             gasCoin: gasCoin,
