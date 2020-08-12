@@ -277,7 +277,6 @@ YOU ARE ABOUT TO SEND SEED PHRASE IN THE MESSAGE ATTACHED TO THIS TRANSACTION.\n
 
     dependency.balanceService.account
       .subscribe(onNext: { [weak self] (_) in
-//        self?.clear()
         self?.amountSubject.accept(nil)
         self?.sections.value = self?.createSections() ?? []
       }).disposed(by: disposeBag)
@@ -319,7 +318,6 @@ YOU ARE ABOUT TO SEND SEED PHRASE IN THE MESSAGE ATTACHED TO THIS TRANSACTION.\n
               self?.isMaxAmount.accept(true)
             }
           }
-
           self?.amountStateSubject.onNext(.default)
         } else {
           self?.amountStateSubject.onNext(.invalid(error: "AMOUNT IS INCORRECT".localized()))
@@ -335,29 +333,21 @@ YOU ARE ABOUT TO SEND SEED PHRASE IN THE MESSAGE ATTACHED TO THIS TRANSACTION.\n
         } else {
           self?.addressSubject.accept(nil)
         }
-      })
-      .filter { [weak self] in
+      }).filter { [weak self] in
         return !(self?.isValidMinterRecipient(recipient: $0 ?? "") ?? false)
-      }
-      .throttle(.seconds(2), scheduler: MainScheduler.instance)
+      }.throttle(.seconds(2), scheduler: MainScheduler.instance)
       .do(onNext: { [weak self] (rec) in
         if !(self?.isToValid(to: rec ?? "") ?? false) && (rec ?? "").count >= 5 {
-          if (rec?.count ?? 0) > 66 {
-            self?.addressStateSubject.onNext(.invalid(error: "TOO MANY SYMBOLS".localized()))
-          } else {
-            self?.addressStateSubject.onNext(.invalid(error: "INVALID VALUE".localized()))
-          }
+          self?.addressStateSubject.onNext(.invalid(error: "INVALID VALUE".localized()))
         } else {
           self?.addressStateSubject.onNext(.default)
         }
         if self?.isValidMinterRecipient(recipient: rec ?? "") ?? false {
           self?.addressSubject.accept(rec)
         }
-      })
-      .filter({ [weak self] (rec) -> Bool in
+      }).filter({ [weak self] (rec) -> Bool in
         return self?.isToValid(to: rec ?? "") ?? false
-      })
-      .flatMap { (rec) -> Observable<Event<ContactItem?>> in
+      }).flatMap { (rec) -> Observable<Event<ContactItem?>> in
         let term = (rec ?? "").lowercased()
         return self.dependency.contactsService.contactBy(name: term).materialize()
       }.do(onNext: { [weak self] (_) in
@@ -592,9 +582,6 @@ YOU ARE ABOUT TO SEND SEED PHRASE IN THE MESSAGE ATTACHED TO THIS TRANSACTION.\n
   }
 
   func isToValid(to: String) -> Bool {
-    if to.count > 66 {
-      return false
-    }
     return to.isValidContactName() || self.isValidMinterRecipient(recipient: to)
   }
 

@@ -52,6 +52,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                                               pinService: pinService
     )
 
+    //If no accounts - remove PIN
+    if authService.accounts().count == 0 && pinService.hasPIN() {
+      pinService.removePIN()
+    }
+
     let transactionService = ExplorerTransactionService()
 
     let appCoordinator = AppCoordinator(window: window!,

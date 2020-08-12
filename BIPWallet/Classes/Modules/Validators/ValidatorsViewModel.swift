@@ -91,7 +91,7 @@ class ValidatorsViewModel: BaseViewModel, ViewModel {
       let items = val.value.map { (item) -> ContactEntryTableViewCellItem in
         let contactItem = ContactEntryTableViewCellItem(reuseIdentifier: "ContactEntryTableViewCell",
                                                         identifier: item.publicKey)
-        contactItem.address = item.publicKey
+        contactItem.address = TransactionTitleHelper.title(from: item.publicKey)
         contactItem.name = item.name
         contactItem.avatarURL = item.iconURL
         return contactItem
