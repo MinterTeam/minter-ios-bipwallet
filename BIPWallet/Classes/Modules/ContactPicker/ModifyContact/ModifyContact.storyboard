@@ -96,7 +96,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="6HZ-wx-LSg" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
                 <view contentMode="scaleToFill" id="Irk-SL-qjF" customClass="HandlerVerticalSnapDraggableView" customModule="BIPWallet" customModuleProvider="target">
-                    <rect key="frame" x="0.0" y="0.0" width="398" height="495"/>
+                    <rect key="frame" x="0.0" y="0.0" width="398" height="297"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <subviews>
                         <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" image="popupHeaderImage" translatesAutoresizingMaskIntoConstraints="NO" id="sO5-FA-AWc">
@@ -116,7 +116,7 @@
                                 </userDefinedRuntimeAttribute>
                             </userDefinedRuntimeAttributes>
                         </label>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" text="Title" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="U9A-7M-CEX" customClass="UHBCustomLabel" customModule="BIPWallet" customModuleProvider="target">
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" text="Title" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="U9A-7M-CEX">
                             <rect key="frame" x="20" y="159" width="358" height="21"/>
                             <fontDescription key="fontDescription" name="Inter_Semi-Bold" family="Inter" pointSize="18"/>
                             <nil key="textColor"/>
@@ -128,7 +128,7 @@
                             </userDefinedRuntimeAttributes>
                         </label>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="QiD-kV-YY7" customClass="DefaultButton" customModule="BIPWallet" customModuleProvider="target">
-                            <rect key="frame" x="16" y="429" width="366" height="50"/>
+                            <rect key="frame" x="16" y="231" width="366" height="50"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="50" id="tPU-03-TS5"/>
                             </constraints>

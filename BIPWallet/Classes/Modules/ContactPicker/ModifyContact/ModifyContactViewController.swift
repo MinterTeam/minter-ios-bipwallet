@@ -112,14 +112,19 @@ class ModifyContactViewController: BaseViewController, Controller, StoryboardIni
 
   func showSuccess(_ title: String?) {
 
-    print(successTitleLabel.frame)
+    self.successView.frame = CGRect(x: self.view.bounds.width,
+                                    y: self.mainView.frame.minY,
+                                    width: self.mainView.bounds.width,
+                                    height: self.mainView.bounds.height
+    )
 
     successTitleLabel.text = title
-    successTitleLabel.setNeedsDisplay()
-    successTitleLabel.setNeedsLayout()
-    successTitleLabel.layoutIfNeeded()
-    print(successTitleLabel.frame)
-
+    let height = title?.height(forConstrainedWidth: successTitleLabel.bounds.width, font: UIFont.semiBoldFont(of: 18.0)) ?? 0.0
+    let newFrame = CGRect(x: successTitleLabel.frame.origin.x,
+                          y: successTitleLabel.frame.origin.y,
+                          width: successTitleLabel.bounds.width,
+                          height: height)
+    successTitleLabel.frame = newFrame
     view.addSubview(self.successView)
 
     self.successView.delegate = self
