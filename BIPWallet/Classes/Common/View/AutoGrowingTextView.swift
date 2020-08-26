@@ -42,13 +42,13 @@ class AutoGrowingTextView: DefaultTextView {
 	@IBInspectable open var attributedPlaceholder: NSAttributedString? {
 		didSet { setNeedsDisplay() }
 	}
-	
+
 	// Initialize
 	override public init(frame: CGRect, textContainer: NSTextContainer?) {
 		super.init(frame: frame, textContainer: textContainer)
 		commonInit()
 	}
-	
+
 	required public init?(coder aDecoder: NSCoder) {
 		super.init(coder: aDecoder)
 		commonInit()
@@ -118,7 +118,7 @@ class AutoGrowingTextView: DefaultTextView {
 			heightConstraint = NSLayoutConstraint(item: self, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1.0, constant: height)
 			addConstraint(heightConstraint!)
 		}
-		
+
 		// Update height constraint if needed
 		if height != heightConstraint!.constant {
 			shouldScrollAfterHeightChanged = true

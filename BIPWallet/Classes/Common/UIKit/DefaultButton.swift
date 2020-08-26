@@ -52,16 +52,14 @@ class DefaultButton: UIButton {
 			self.updateAppearance()
 		}
 	}
-  
+
   @IBInspectable var color: String? {
     didSet {
       self.updateAppearance()
     }
   }
 
-
 	func updateAppearance() {
-
 		if pattern == "blank" {
 			self.backgroundColor = .clear
 			self.layer.borderWidth = 2.0

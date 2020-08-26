@@ -100,6 +100,7 @@ class TransactionsViewModel: BaseViewModel, ViewModel, TransactionViewableViewMo
     Observable.combineLatest(dependency.balanceService.balances(), dependency.balanceService.account).debounce(.seconds(1), scheduler: MainScheduler.instance)
       .withLatestFrom(dependency.balanceService.account).subscribe(onNext: { [weak self] (account) in
       guard let address = account?.address else { return }
+      self?.address = address
       self?.loadTransactions(address: address, withoutLoader: true)
     }).disposed(by: disposeBag)
 

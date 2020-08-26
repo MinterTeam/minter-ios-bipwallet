@@ -60,10 +60,22 @@ class ButtonTableViewCellItem: BaseCellItem {
 
 class ButtonTableViewCell: BaseCell {
 
+  // MARK: - Init
+
+  required init?(coder: NSCoder) {
+    super.init(coder: coder)
+  }
+
 	// MARK: -
 
 	@IBOutlet weak var activityIndicator: UIActivityIndicatorView!
 	@IBOutlet weak var button: DefaultButton!
+
+  // MARK: -
+
+  func customizeUI() {
+    
+  }
 
 	// MARK: - IBActions
 
@@ -123,4 +135,12 @@ class ButtonTableViewCell: BaseCell {
 				.drive(buttonItem.didTapButtonSubject).disposed(by: disposeBag)
 		}
 	}
+  
+  override func prepareForReuse() {
+    super.prepareForReuse()
+
+    self.button.setBackgroundImage(nil, for: .normal)
+    self.button.setBackgroundImage(nil, for: .disabled)
+  }
+
 }

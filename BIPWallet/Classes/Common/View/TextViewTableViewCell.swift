@@ -58,7 +58,7 @@ class TextViewTableViewCell: BaseCell, AutoGrowingTextViewDelegate {
 	override func awakeFromNib() {
 		super.awakeFromNib()
 
-    self.textView.layer.cornerRadius = 8.0
+    textView.layer.cornerRadius = 8.0
     activityIndicator = UIActivityIndicatorView(style: .gray)
 		activityIndicator?.backgroundColor = .clear
 		activityIndicator?.translatesAutoresizingMaskIntoConstraints = false
@@ -83,7 +83,9 @@ class TextViewTableViewCell: BaseCell, AutoGrowingTextViewDelegate {
 			}
 			if let keyboard = item.keybordType {
 				self.textView?.keyboardType = keyboard
-			}
+      } else {
+        self.textView?.keyboardType = .default
+      }
 
 			item.isLoadingObservable?
 				.subscribe(onNext: { [weak self] (val) in
@@ -121,7 +123,7 @@ class TextViewTableViewCell: BaseCell, AutoGrowingTextViewDelegate {
 	func textViewDidChangeHeight(_ textView: AutoGrowingTextView, height: CGFloat) {
 		delegate?.heightDidChange(cell: self)
 	}
-  
+
   func textViewShouldEndEditing(_ textView: UITextView) -> Bool {
     delegate?.editingWillEnd(cell: self)
     return true
@@ -140,21 +142,17 @@ extension TextViewTableViewCell: UITextViewDelegate {
 
 extension TextViewTableViewCell: ValidatableCellProtocol {
 
-	@objc
-	func setValid() {
+	@objc func setValid() {
 		self.errorTitle.text = ""
 	}
 
-	@objc
-	func setInvalid(message: String?) {
-
+	@objc func setInvalid(message: String?) {
 		if nil != message {
 			self.errorTitle.text = message
 		}
 	}
 
-	@objc
-	func setDefault() {
+	@objc func setDefault() {
 		self.errorTitle.text = ""
 	}
 }

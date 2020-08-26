@@ -66,6 +66,10 @@ extension UIColor {
     return UIColor(hex: 0x8E8E8E, alpha: alpha)!
   }
 
+  static func iconGreyColor(alpha: CGFloat = 1) -> UIColor {
+    return UIColor(hex: 0x8E8E8E, alpha: alpha)!
+  }
+
   static func tableViewCellActionRedColor(alpha: CGFloat = 1.0) -> UIColor {
     return UIColor(hex: 0xDC4840, alpha: alpha)!
   }

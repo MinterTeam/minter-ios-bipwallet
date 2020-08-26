@@ -45,7 +45,8 @@ public extension Decimal {
 	}
 
   init?(str: String?) {
-    let string = str?.replacingOccurrences(of: ",", with: ".").trimmingCharacters(in: CharacterSet.whitespacesAndNewlines) ?? ""
+    let string = str?.replacingOccurrences(of: ",", with: ".")
+      .trimmingCharacters(in: CharacterSet.whitespacesAndNewlines) ?? ""
     self.init(string: string)
   }
 

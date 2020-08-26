@@ -55,4 +55,23 @@ class PayloadGrowingTextView: GrowingTextView {
   }
 
 }
- 
+
+class RawTransactionGrowingTextView: GrowingTextView {
+
+  required init?(coder aDecoder: NSCoder) {
+    super.init(coder: aDecoder)
+
+    self.font = UIFont.mediumFont(of: 17.0)
+    self.textContainerInset = UIEdgeInsets(top: 13.0, left: 12.0, bottom: 14.0, right: 32.0)
+  }
+
+  override func canPerformAction(_ action: Selector, withSender sender: Any?) -> Bool {
+    switch action {
+    case #selector(paste(_:)):
+      return true
+    default:
+      return super.canPerformAction(action, withSender: sender)
+    }
+  }
+
+}

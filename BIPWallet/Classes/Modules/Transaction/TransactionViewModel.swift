@@ -75,7 +75,7 @@ class TransactionViewModel: BaseViewModel, ViewModel {
 
   func bind() {
 
-    self.createSections()
+    createSections()
 
     viewDidDisappear.subscribe(didDismiss).disposed(by: disposeBag)
   }
@@ -498,6 +498,7 @@ class TransactionViewModel: BaseViewModel, ViewModel {
       UIPasteboard.general.string = self?.transaction.from
       self?.copied.onNext(())
     }).disposed(by: disposeBag)
+
     cellItems.append(from)
 
     let blank1 = BlankTableViewCellItem(reuseIdentifier: "BlankTableViewCell",

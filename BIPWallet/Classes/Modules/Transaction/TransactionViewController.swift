@@ -38,9 +38,7 @@ class TransactionViewController: BaseViewController, Controller, StoryboardIniti
       .disposed(by: disposeBag)
 
     //Output
-    viewModel
-      .output
-      .sections
+    viewModel.output.sections
       .bind(to: tableView.rx.items(dataSource: rxDataSource!))
       .disposed(by: disposeBag)
 

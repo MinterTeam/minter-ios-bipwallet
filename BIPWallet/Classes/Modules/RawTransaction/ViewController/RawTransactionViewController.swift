@@ -22,11 +22,16 @@ class RawTransactionViewController: BaseViewController, Controller, StoryboardIn
 	@IBOutlet weak var tableView: UITableView! {
 		didSet {
       tableView.rowHeight = UITableView.automaticDimension
-			tableView.estimatedRowHeight = 70.0
+			tableView.estimatedRowHeight = 100.0
 			tableView.tableFooterView = UIView()
 			tableView.contentInset = UIEdgeInsets(top: 10, left: 0, bottom: 0, right: 0)
 		}
 	}
+
+  let editButton = UIBarButtonItem(image: UIImage(named: "EditIcon"),
+                                   style: .plain,
+                                   target: self,
+                                   action: #selector(editButtonTaped))
 
 	// MARK: -
 
@@ -46,13 +51,18 @@ class RawTransactionViewController: BaseViewController, Controller, StoryboardIn
 					assert(true)
 					return UITableViewCell()
 				}
+
+        if let textViewCell = cell as? TextViewTableViewCell {
+          textViewCell.delegate = self
+        }
+
 				cell.configure(item: item)
 				return cell
 		})
 
-		rxDataSource?.animationConfiguration = AnimationConfiguration(insertAnimation: .top,
-																																	reloadAnimation: .automatic,
-																																	deleteAnimation: .automatic)
+		rxDataSource?.animationConfiguration = AnimationConfiguration(insertAnimation: .fade,
+																																	reloadAnimation: .fade,
+																																	deleteAnimation: .fade)
 
 		viewModel.output.sections.asDriver(onErrorJustReturn: [])
 			.drive(tableView.rx.items(dataSource: rxDataSource!))
@@ -61,7 +71,7 @@ class RawTransactionViewController: BaseViewController, Controller, StoryboardIn
 		viewModel.output.shouldClose
 			.subscribe(onNext: { [weak self] (_) in
 				self?.dismiss(animated: true, completion: nil)
-		}).disposed(by: disposeBag)
+      }).disposed(by: disposeBag)
 
 		viewModel.output.errorNotification
 			.asDriver(onErrorJustReturn: nil)
@@ -118,15 +128,24 @@ class RawTransactionViewController: BaseViewController, Controller, StoryboardIn
 				}
       }).disposed(by: disposeBag)
 
-//    viewModel.output.isLoading.asDriver(onErrorJustReturn: false)
-//      .drive(onNext: { [weak self] (val) in
-//
-//    }).disposed(by: disposeBag)
+    viewModel.output.isEditButtonHidden.asDriver(onErrorJustReturn: false)
+      .drive(onNext: { [weak self] (val) in
+        self?.navigationItem.rightBarButtonItem = val ? nil : self?.editButton
+      }).disposed(by: disposeBag)
 
     //Input
     self.rx.viewDidAppear.map {_ in}.asDriver(onErrorJustReturn: ())
       .drive(viewModel.input.viewDidAppear)
       .disposed(by: disposeBag)
+
+    editButton.rx.tap.asDriver()
+      .drive(viewModel.input.didTapEditing)
+      .disposed(by: disposeBag)
+
+    editButton.rx.tap.asDriver().drive(onNext: { (_) in
+      self.tableView.beginUpdates()
+      self.tableView.endUpdates()
+    }).disposed(by: disposeBag)
 
 		self.title = "Confirm Transaction".localized()
 	}
@@ -135,10 +154,16 @@ class RawTransactionViewController: BaseViewController, Controller, StoryboardIn
 
 	override func viewDidLoad() {
 		super.viewDidLoad()
+    editButton.tintColor = UIColor.iconGreyColor()
 
 		configure(with: viewModel)
 		registerCells()
 	}
+
+  @objc func editButtonTaped() {
+    tableView.beginUpdates()
+    tableView.endUpdates()
+  }
 }
 
 extension RawTransactionViewController: SentPopupViewControllerDelegate, ConfirmPopupViewControllerDelegate {
@@ -204,6 +229,8 @@ extension RawTransactionViewController {
 	private func registerCells() {
 		tableView.register(UINib(nibName: "TextFieldTableViewCell", bundle: nil),
 											 forCellReuseIdentifier: "TextFieldTableViewCell")
+    tableView.register(UINib(nibName: "RawTransactionTextViewCell", bundle: nil),
+                       forCellReuseIdentifier: "RawTransactionTextViewCell")
 		tableView.register(UINib(nibName: "TwoTitleTableViewCell", bundle: nil),
 											 forCellReuseIdentifier: "TwoTitleTableViewCell")
 		tableView.register(UINib(nibName: "SeparatorTableViewCell", bundle: nil),
@@ -231,4 +258,30 @@ extension RawTransactionViewController: PopupViewControllerDelegate {
 			}
 		}
 	}
+}
+
+extension RawTransactionViewController: TextViewTableViewCellDelegate {
+
+  func heightDidChange(cell: TextViewTableViewCell) {
+    tableView.beginUpdates()
+    tableView.endUpdates()
+
+    if let textRange = cell.textView.selectedTextRange {
+      let caretRect = cell.textView.caretRect(for: textRange.end)
+      let converted = cell.textView.convert(caretRect, to: self.tableView)
+      DispatchQueue.main.async {
+        self.tableView.scrollRectToVisible(converted, animated: true)
+      }
+    }
+
+  }
+
+  func heightWillChange(cell: TextViewTableViewCell) {
+    
+  }
+
+  func editingWillEnd(cell: TextViewTableViewCell) {
+    
+  }
+
 }

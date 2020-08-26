@@ -29,8 +29,6 @@ class DelegatedViewController: BaseViewController, Controller, StoryboardInitial
                                      target: nil,
                                      action: nil)
 
-  private let didTapUnbondOnCell = PublishSubject<IndexPath?>()
-
   // MARK: - ControllerType
 
   var viewModel: ViewModelType!
@@ -43,12 +41,8 @@ class DelegatedViewController: BaseViewController, Controller, StoryboardInitial
     //Input
     self.rx.viewDidLoad.bind(to: viewModel.input.viewDidLoad).disposed(by: disposeBag)
 
-    didTapUnbondOnCell.asDriver(onErrorJustReturn: nil)
-      .drive(viewModel.input.didTapUnbond)
-      .disposed(by: disposeBag)
-
     rightBarItem.rx.tap.asDriver().drive(viewModel.input.didTapAdd).disposed(by: disposeBag)
-
+ 
     //Output
     viewModel.output.sections
       .do(onNext: { [weak self] (items) in
@@ -71,10 +65,6 @@ class DelegatedViewController: BaseViewController, Controller, StoryboardInitial
   override func viewDidLoad() {
     super.viewDidLoad()
 
-//    rxDataSource?.animationConfiguration = AnimationConfiguration(insertAnimation: .none,
-//                                                                  reloadAnimation: .none,
-//                                                                  deleteAnimation: .none)
-
     rxDataSource = RxTableViewSectionedReloadDataSource<BaseTableSectionItem>(
       configureCell: { dataSource, tableView, indexPath, sm in
 
@@ -84,11 +74,6 @@ class DelegatedViewController: BaseViewController, Controller, StoryboardInitial
         }
         cell.configure(item: item)
         return cell
-      }, canEditRowAtIndexPath: { section, indexPath in
-        if try! section.model(at: indexPath) as? CoinTableViewCellItem != nil {
-          return true
-        }
-        return false
       })
 
     tableView.rx.setDelegate(self).disposed(by: disposeBag)
@@ -125,8 +110,8 @@ class DelegatedViewController: BaseViewController, Controller, StoryboardInitial
   func registerCells() {
     tableView.register(UINib(nibName: "SeparatorTableViewCell", bundle: nil),
                        forCellReuseIdentifier: "SeparatorTableViewCell")
-    tableView.register(UINib(nibName: "CoinTableViewCell", bundle: nil),
-                       forCellReuseIdentifier: "CoinTableViewCell")
+    tableView.register(UINib(nibName: "DelegatedCoinTableViewCell", bundle: nil),
+                       forCellReuseIdentifier: "DelegatedCoinTableViewCell")
   }
 }
 
@@ -141,26 +126,6 @@ extension DelegatedViewController: UITableViewDelegate {
 
   func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
     return 0.1
-  }
-
-  func tableView(_ tableView: UITableView,
-                 trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
-
-    let unbondAction = UIContextualAction(style: .normal, title: "", handler: { [weak self] (ac: UIContextualAction, view: UIView, success: (Bool) -> Void) in
-      self?.didTapUnbondOnCell.onNext(indexPath)
-      success(true)
-    })
-
-    unbondAction.backgroundColor = UIColor.tableViewCellActionRedColor()
-    unbondAction.title = "Unbond".localized()
-
-    return UISwipeActionsConfiguration(actions: [unbondAction])
-  }
-
-  func tableView(_ tableView: UITableView,
-    editingStyleForRowAt indexPath: IndexPath)
-    -> UITableViewCell.EditingStyle {
-      return .none
   }
 
 }
