@@ -193,6 +193,10 @@
 		FA4EDC5324F6F20A00079ACA /* DelegatedCoinTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA4EDC5124F6F20900079ACA /* DelegatedCoinTableViewCell.swift */; };
 		FA4EDC5524F6F2BF00079ACA /* DelegatedCoinTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FA4EDC5424F6F2BF00079ACA /* DelegatedCoinTableViewCell.xib */; };
 		FA4EDC5624F6F2BF00079ACA /* DelegatedCoinTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FA4EDC5424F6F2BF00079ACA /* DelegatedCoinTableViewCell.xib */; };
+		FA4EDC5A24F6FB4D00079ACA /* ValidatorTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA4EDC5824F6FB4D00079ACA /* ValidatorTableViewCell.swift */; };
+		FA4EDC5B24F6FB4D00079ACA /* ValidatorTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA4EDC5824F6FB4D00079ACA /* ValidatorTableViewCell.swift */; };
+		FA4EDC5C24F6FB4D00079ACA /* ValidatorTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FA4EDC5924F6FB4D00079ACA /* ValidatorTableViewCell.xib */; };
+		FA4EDC5D24F6FB4D00079ACA /* ValidatorTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FA4EDC5924F6FB4D00079ACA /* ValidatorTableViewCell.xib */; };
 		FA520BB0241FDC8000146E49 /* TransactionAddressCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA520BAE241FDC8000146E49 /* TransactionAddressCell.swift */; };
 		FA520BB1241FDC8000146E49 /* TransactionAddressCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FA520BAF241FDC8000146E49 /* TransactionAddressCell.xib */; };
 		FA62231024507A92006089EC /* AppSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA62230F24507A92006089EC /* AppSettings.swift */; };
@@ -902,6 +906,8 @@
 		FA46990E2423755400E77373 /* Exchange.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Exchange.storyboard; sourceTree = "<group>"; };
 		FA4EDC5124F6F20900079ACA /* DelegatedCoinTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DelegatedCoinTableViewCell.swift; sourceTree = "<group>"; };
 		FA4EDC5424F6F2BF00079ACA /* DelegatedCoinTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DelegatedCoinTableViewCell.xib; sourceTree = "<group>"; };
+		FA4EDC5824F6FB4D00079ACA /* ValidatorTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ValidatorTableViewCell.swift; sourceTree = "<group>"; };
+		FA4EDC5924F6FB4D00079ACA /* ValidatorTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ValidatorTableViewCell.xib; sourceTree = "<group>"; };
 		FA520BAE241FDC8000146E49 /* TransactionAddressCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionAddressCell.swift; sourceTree = "<group>"; };
 		FA520BAF241FDC8000146E49 /* TransactionAddressCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TransactionAddressCell.xib; sourceTree = "<group>"; };
 		FA62230F24507A92006089EC /* AppSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppSettings.swift; sourceTree = "<group>"; };
@@ -1122,6 +1128,7 @@
 		1BE6262ABA94EDA2B56E67CF /* Validators */ = {
 			isa = PBXGroup;
 			children = (
+				FA4EDC5724F6FB2700079ACA /* View */,
 				1EA3A25F57FF6AC176791A12 /* ValidatorsViewController.swift */,
 				1CBC34F69B509149CC880E13 /* ValidatorsViewModel.swift */,
 				ED9E9C6A024DA544CB668E38 /* ValidatorsCoordinator.swift */,
@@ -1613,6 +1620,15 @@
 				FA3BDEA3242BEA2A0076A7F4 /* CCMPlayNDropView.m */,
 			);
 			path = PlayNDrop;
+			sourceTree = "<group>";
+		};
+		FA4EDC5724F6FB2700079ACA /* View */ = {
+			isa = PBXGroup;
+			children = (
+				FA4EDC5824F6FB4D00079ACA /* ValidatorTableViewCell.swift */,
+				FA4EDC5924F6FB4D00079ACA /* ValidatorTableViewCell.xib */,
+			);
+			path = View;
 			sourceTree = "<group>";
 		};
 		FA520BAD241FDC5200146E49 /* View */ = {
@@ -2299,6 +2315,7 @@
 				FAE5A1BC23FD34D800808B21 /* Balance.storyboard in Resources */,
 				FAD3E02D2462C2DD00446261 /* WalletRemoveConfirmation.storyboard in Resources */,
 				FA28DCD3249FE12A005B14DF /* RawTransactionFieldWithBlockTimeTableViewCell.xib in Resources */,
+				FA4EDC5C24F6FB4D00079ACA /* ValidatorTableViewCell.xib in Resources */,
 				FA3BDE79242BA7540076A7F4 /* TwoTitleTableViewCell.xib in Resources */,
 				FA6223352455DAC5006089EC /* SettingsTableHeaderView.xib in Resources */,
 				FA9E519823ED9972007263B9 /* Main.storyboard in Resources */,
@@ -2394,6 +2411,7 @@
 				FAAAD9BC24977B7A00D7F5FE /* Balance.storyboard in Resources */,
 				FAAAD9BD24977B7A00D7F5FE /* WalletRemoveConfirmation.storyboard in Resources */,
 				FA28DCD4249FE12A005B14DF /* RawTransactionFieldWithBlockTimeTableViewCell.xib in Resources */,
+				FA4EDC5D24F6FB4D00079ACA /* ValidatorTableViewCell.xib in Resources */,
 				FAAAD9BE24977B7A00D7F5FE /* TwoTitleTableViewCell.xib in Resources */,
 				FAAAD9BF24977B7A00D7F5FE /* SettingsTableHeaderView.xib in Resources */,
 				FAAAD9C024977B7A00D7F5FE /* Main.storyboard in Resources */,
@@ -2644,6 +2662,7 @@
 				FAE162F52403E19D007E9CAD /* TransactionTitleHelper.swift in Sources */,
 				FACA65D523FAEC5B00399359 /* AccountDataBaseModel.swift in Sources */,
 				23953FDC1CF7AB2FFA46615D /* BalanceViewController.swift in Sources */,
+				FA4EDC5A24F6FB4D00079ACA /* ValidatorTableViewCell.swift in Sources */,
 				FA3BDE3224251D5F0076A7F4 /* McPickerBarButtonItem.swift in Sources */,
 				FAD1438F245C1B83002C2F1C /* UILabel+Letterspacing.swift in Sources */,
 				FACA65C923FA97B300399359 /* UIView+ShakeError.swift in Sources */,
@@ -2936,6 +2955,7 @@
 				FAAAD8E624977B7A00D7F5FE /* TransactionTitleHelper.swift in Sources */,
 				FAAAD8E724977B7A00D7F5FE /* AccountDataBaseModel.swift in Sources */,
 				FAAAD8E824977B7A00D7F5FE /* BalanceViewController.swift in Sources */,
+				FA4EDC5B24F6FB4D00079ACA /* ValidatorTableViewCell.swift in Sources */,
 				FAAAD8E924977B7A00D7F5FE /* McPickerBarButtonItem.swift in Sources */,
 				FAAAD8EA24977B7A00D7F5FE /* UILabel+Letterspacing.swift in Sources */,
 				FAAAD8EB24977B7A00D7F5FE /* UIView+ShakeError.swift in Sources */,

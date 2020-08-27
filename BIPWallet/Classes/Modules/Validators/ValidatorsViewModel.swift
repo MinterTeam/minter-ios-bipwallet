@@ -8,6 +8,7 @@
 
 import Foundation
 import RxSwift
+import MinterCore
 
 class ValidatorsViewModel: BaseViewModel, ViewModel {
 
@@ -88,12 +89,14 @@ class ValidatorsViewModel: BaseViewModel, ViewModel {
     var newSections = datasource.sorted(by: { (val1, val2) -> Bool in
       return val1.key < val2.key
     }).map { (val) -> BaseTableSectionItem in
-      let items = val.value.map { (item) -> ContactEntryTableViewCellItem in
-        let contactItem = ContactEntryTableViewCellItem(reuseIdentifier: "ContactEntryTableViewCell",
-                                                        identifier: item.publicKey)
-        contactItem.address = TransactionTitleHelper.title(from: item.publicKey)
+      let items = val.value.map { (item) -> ValidatorTableViewCellItem in
+        let contactItem = ValidatorTableViewCellItem(reuseIdentifier: "ValidatorTableViewCell",
+                                                     identifier: item.publicKey)
+        contactItem.publicKey = TransactionTitleHelper.title(from: item.publicKey)
         contactItem.name = item.name
         contactItem.avatarURL = item.iconURL
+        contactItem.commission = "\(item.commission ?? 100) %"
+        contactItem.minStake = "Min. ~\(item.minStake) \(Coin.baseCoin().symbol!)"
         return contactItem
       }
       return BaseTableSectionItem(identifier: "BaseTableSectionItem_\(val.key)", header: val.key, items: items)

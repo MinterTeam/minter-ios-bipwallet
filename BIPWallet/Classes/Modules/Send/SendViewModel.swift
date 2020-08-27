@@ -92,6 +92,7 @@ class SendViewModel: BaseViewModel, ViewModel, WalletSelectableViewModel {// swi
   private let updateTableHeight = PublishSubject<Void>()
   private let coinSubject = BehaviorRelay<String?>(value: "")
   private let recipientSubject = BehaviorRelay<String?>(value: "")
+  private let forceUpdateRecipientHeight = PublishSubject<Void>()
   private let addressSubject = BehaviorRelay<String?>(value: "")
   private let amountSubject = BehaviorRelay<String?>(value: "")
   private let shouldShowAlertSubject = PublishSubject<String>()
@@ -396,6 +397,7 @@ YOU ARE ABOUT TO SEND SEED PHRASE IN THE MESSAGE ATTACHED TO THIS TRANSACTION.\n
 
     contact.subscribe(onNext: { [weak self] (item) in
       self?.recipientSubject.accept(item.name ?? item.address)
+      self?.forceUpdateRecipientHeight.onNext(())
     }).disposed(by: disposeBag)
 
     viewDidAppear.withLatestFrom(GateManager.shared.minGas())
@@ -424,6 +426,7 @@ YOU ARE ABOUT TO SEND SEED PHRASE IN THE MESSAGE ATTACHED TO THIS TRANSACTION.\n
     username.stateObservable = addressStateSubject.asObservable()
     username.keybordType = .emailAddress
     (username.text <-> recipientSubject).disposed(by: disposeBag)
+    forceUpdateRecipientHeight.subscribe(username.forceUpdateHeight).disposed(by: disposeBag)
     username.didTapContacts.subscribe(onNext: { [weak self] _ in
       self?.showContactsPicker.onNext(())
       self?.impact.onNext(.light)

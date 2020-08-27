@@ -103,8 +103,8 @@ extension ValidatorsViewController {
   func registerCells() {
     tableView.register(UINib(nibName: "ContactPickerHeader", bundle: nil),
                        forHeaderFooterViewReuseIdentifier: "ContactPickerHeader")
-    tableView.register(UINib(nibName: "ContactEntryTableViewCell", bundle: nil),
-                       forCellReuseIdentifier: "ContactEntryTableViewCell")
+    tableView.register(UINib(nibName: "ValidatorTableViewCell", bundle: nil),
+                       forCellReuseIdentifier: "ValidatorTableViewCell")
     tableView.register(UINib(nibName: "SeparatorTableViewCell", bundle: nil),
                        forCellReuseIdentifier: "SeparatorTableViewCell")
   }
