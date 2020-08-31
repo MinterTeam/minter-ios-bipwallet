@@ -259,7 +259,7 @@ class RawTransactionViewModel: BaseViewModel, ViewModel {// swiftlint:disable:th
 
       let popup = ConfirmPopupViewController.initFromStoryboard(name: "Popup")
       popup.viewModel = viewModel
-      viewModel.dismissable = false
+      viewModel.dismissable = true
 			self.popupSubject.onNext(popup)
 		}).disposed(by: disposeBag)
 

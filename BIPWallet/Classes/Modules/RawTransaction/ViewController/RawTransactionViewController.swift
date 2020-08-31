@@ -116,6 +116,7 @@ class RawTransactionViewController: BaseViewController, Controller, StoryboardIn
 				if let popupVC = popup as? ConfirmPopupViewController {
 					self?.popupViewController = nil
 					popupVC.delegate = self
+          popupVC.popupViewControllerDelegate = self
 				}
 
 				if self?.popupViewController == nil {
@@ -179,7 +180,9 @@ extension RawTransactionViewController: SentPopupViewControllerDelegate, Confirm
 	func didTapSecondButton(viewController: ConfirmPopupViewController) {
 		SoundHelper.playSoundIfAllowed(type: .cancel)
 		lightImpactFeedbackGenerator.prepare()
-		viewController.dismiss(animated: true, completion: nil)
+    viewController.dismiss(animated: true, completion: {
+      self.dismiss(animated: true, completion: nil)
+    })
 	}
 
 	// MARK: - SentPopupViewControllerDelegate
@@ -252,11 +255,13 @@ extension RawTransactionViewController: PopupViewControllerDelegate {
 	func didDismissPopup(viewController: PopupViewController?) {
 		if let viewController = viewController as? SentPopupViewController {
 			viewController.dismiss(animated: true) { [weak self] in
-				self?.dismiss(animated: true, completion: {
-
-				})
+				self?.dismiss(animated: true, completion: nil)
 			}
-		}
+    } else if let viewController = viewController as? ConfirmPopupViewController {
+      viewController.dismiss(animated: true) { [weak self] in
+        self?.dismiss(animated: true, completion: nil)
+      }
+    }
 	}
 }
 
@@ -276,12 +281,8 @@ extension RawTransactionViewController: TextViewTableViewCellDelegate {
 
   }
 
-  func heightWillChange(cell: TextViewTableViewCell) {
-    
-  }
+  func heightWillChange(cell: TextViewTableViewCell) {}
 
-  func editingWillEnd(cell: TextViewTableViewCell) {
-    
-  }
+  func editingWillEnd(cell: TextViewTableViewCell) {}
 
 }

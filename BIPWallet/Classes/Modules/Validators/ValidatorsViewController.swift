@@ -87,6 +87,7 @@ extension ValidatorsViewController: UITableViewDelegate {
     }
     let view = tableView.dequeueReusableHeaderFooterView(withIdentifier: "ContactPickerHeader") as? ContactPickerHeader
     view?.titleLabel?.text = rxDataSource?.sectionModels[section].header
+    view?.rightTitleLabel?.text = rxDataSource?.sectionModels[section].rightHeader
     return view
   }
 

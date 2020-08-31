@@ -358,10 +358,10 @@
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="AQh-XW-UEA" customClass="DroppableView" customModule="BIPWallet" customModuleProvider="target">
-                                            <rect key="frame" x="0.0" y="172" width="375" height="243"/>
+                                            <rect key="frame" x="0.0" y="144" width="375" height="299"/>
                                             <subviews>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dHe-wr-8vX">
-                                                    <rect key="frame" x="10" y="10" width="355" height="223"/>
+                                                    <rect key="frame" x="10" y="10" width="355" height="279"/>
                                                     <subviews>
                                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="WfP-qk-qrX">
                                                             <rect key="frame" x="0.0" y="0.0" width="355" height="50"/>
@@ -401,12 +401,21 @@
                                                                     <nil key="textColor"/>
                                                                     <nil key="highlightedColor"/>
                                                                 </label>
+                                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="WalletsExpandImage" translatesAutoresizingMaskIntoConstraints="NO" id="z8L-sB-SBd">
+                                                                    <rect key="frame" x="291" y="12" width="24" height="24"/>
+                                                                    <constraints>
+                                                                        <constraint firstAttribute="height" constant="24" id="9GK-Hh-5Bh"/>
+                                                                        <constraint firstAttribute="width" constant="24" id="yw0-zK-kfv"/>
+                                                                    </constraints>
+                                                                </imageView>
                                                             </subviews>
                                                             <color key="backgroundColor" red="0.95686274509803915" green="0.95686274509803915" blue="0.95686274509803915" alpha="1" colorSpace="deviceRGB"/>
                                                             <constraints>
+                                                                <constraint firstAttribute="trailing" secondItem="z8L-sB-SBd" secondAttribute="trailing" constant="8" id="ABY-qe-Pho"/>
                                                                 <constraint firstItem="Gvi-G3-6r2" firstAttribute="leading" secondItem="YZt-5O-NjY" secondAttribute="leading" constant="16" id="Hs7-jG-mru"/>
                                                                 <constraint firstAttribute="trailing" secondItem="Gvi-G3-6r2" secondAttribute="trailing" constant="16" id="Mim-Im-fX4"/>
                                                                 <constraint firstItem="Gvi-G3-6r2" firstAttribute="centerY" secondItem="YZt-5O-NjY" secondAttribute="centerY" id="U8c-8q-xfH"/>
+                                                                <constraint firstItem="z8L-sB-SBd" firstAttribute="centerY" secondItem="YZt-5O-NjY" secondAttribute="centerY" id="fMH-3f-8wt"/>
                                                                 <constraint firstAttribute="height" constant="48" id="i8z-ra-1qE"/>
                                                             </constraints>
                                                             <userDefinedRuntimeAttributes>
@@ -432,23 +441,39 @@
                                                         <activityIndicatorView opaque="NO" alpha="0.0" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="sUa-80-qHf">
                                                             <rect key="frame" x="159" y="153.5" width="37" height="37"/>
                                                         </activityIndicatorView>
+                                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="D1U-ci-SQr" customClass="DefaultButton" customModule="BIPWallet" customModuleProvider="target">
+                                                            <rect key="frame" x="16" y="213" width="323" height="50"/>
+                                                            <constraints>
+                                                                <constraint firstAttribute="height" constant="50" id="HMk-se-a50"/>
+                                                            </constraints>
+                                                            <state key="normal" title="Cancel"/>
+                                                            <userDefinedRuntimeAttributes>
+                                                                <userDefinedRuntimeAttribute type="string" keyPath="pattern" value="blank_black"/>
+                                                            </userDefinedRuntimeAttributes>
+                                                            <connections>
+                                                                <action selector="cancelBtnDidTap:" destination="36E-x9-lAM" eventType="touchUpInside" id="ADr-lf-h6D"/>
+                                                            </connections>
+                                                        </button>
                                                     </subviews>
                                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                     <constraints>
                                                         <constraint firstAttribute="trailing" secondItem="WfP-qk-qrX" secondAttribute="trailing" id="2KQ-gN-BZM"/>
                                                         <constraint firstAttribute="trailing" secondItem="1rQ-qr-gqe" secondAttribute="trailing" constant="10" id="4Wn-qn-k5I"/>
                                                         <constraint firstItem="WfP-qk-qrX" firstAttribute="top" secondItem="dHe-wr-8vX" secondAttribute="top" id="80T-ej-1gk"/>
-                                                        <constraint firstAttribute="bottom" secondItem="1bH-Xm-Zuz" secondAttribute="bottom" constant="26" id="8ko-JW-t8X"/>
                                                         <constraint firstItem="YZt-5O-NjY" firstAttribute="top" secondItem="1rQ-qr-gqe" secondAttribute="bottom" constant="16" id="EdA-eY-RdT"/>
                                                         <constraint firstAttribute="trailing" secondItem="YZt-5O-NjY" secondAttribute="trailing" constant="16" id="GrZ-rS-1AP"/>
                                                         <constraint firstItem="1bH-Xm-Zuz" firstAttribute="leading" secondItem="dHe-wr-8vX" secondAttribute="leading" constant="16" id="Gwu-E5-nyF"/>
                                                         <constraint firstItem="1rQ-qr-gqe" firstAttribute="leading" secondItem="dHe-wr-8vX" secondAttribute="leading" constant="10" id="Iff-3g-k8W"/>
                                                         <constraint firstItem="WfP-qk-qrX" firstAttribute="leading" secondItem="dHe-wr-8vX" secondAttribute="leading" id="Lq8-Yq-8rZ"/>
                                                         <constraint firstAttribute="trailing" secondItem="1bH-Xm-Zuz" secondAttribute="trailing" constant="16" id="VMe-sV-sZE"/>
+                                                        <constraint firstAttribute="bottom" secondItem="D1U-ci-SQr" secondAttribute="bottom" constant="16" id="XOR-MN-any"/>
                                                         <constraint firstItem="1rQ-qr-gqe" firstAttribute="top" secondItem="WfP-qk-qrX" secondAttribute="bottom" id="aDJ-qM-Qpd"/>
                                                         <constraint firstItem="YZt-5O-NjY" firstAttribute="leading" secondItem="dHe-wr-8vX" secondAttribute="leading" constant="16" id="ekl-fo-5B5"/>
+                                                        <constraint firstItem="D1U-ci-SQr" firstAttribute="leading" secondItem="1bH-Xm-Zuz" secondAttribute="leading" id="flL-4u-Dos"/>
                                                         <constraint firstItem="sUa-80-qHf" firstAttribute="centerX" secondItem="1bH-Xm-Zuz" secondAttribute="centerX" id="gBO-Fu-1yp"/>
+                                                        <constraint firstItem="D1U-ci-SQr" firstAttribute="trailing" secondItem="1bH-Xm-Zuz" secondAttribute="trailing" id="gQs-9b-c5Z"/>
                                                         <constraint firstItem="sUa-80-qHf" firstAttribute="centerY" secondItem="1bH-Xm-Zuz" secondAttribute="centerY" id="kFZ-B8-Tbg"/>
+                                                        <constraint firstItem="D1U-ci-SQr" firstAttribute="top" secondItem="1bH-Xm-Zuz" secondAttribute="bottom" constant="16" id="qJg-7p-cgk"/>
                                                         <constraint firstItem="1bH-Xm-Zuz" firstAttribute="top" secondItem="YZt-5O-NjY" secondAttribute="bottom" constant="16" id="uIK-qm-UoT"/>
                                                     </constraints>
                                                     <userDefinedRuntimeAttributes>
@@ -489,6 +514,7 @@
                     <connections>
                         <outlet property="actionButton" destination="1bH-Xm-Zuz" id="DFO-wh-Adi"/>
                         <outlet property="actionButtonActivityIndicator" destination="sUa-80-qHf" id="Odg-eu-k70"/>
+                        <outlet property="cancelButton" destination="D1U-ci-SQr" id="M7M-H0-d1g"/>
                         <outlet property="descLabel" destination="1rQ-qr-gqe" id="atO-3D-bUg"/>
                         <outlet property="popupHeader" destination="WfP-qk-qrX" id="spo-Ri-iTF"/>
                         <outlet property="popupTitle" destination="zlk-nn-QTK" id="GAL-So-xgL"/>
@@ -503,6 +529,7 @@
         </scene>
     </scenes>
     <resources>
+        <image name="WalletsExpandImage" width="10" height="6"/>
         <image name="popupHeaderImage" width="359" height="72"/>
     </resources>
 </document>

@@ -78,10 +78,15 @@ class ConfirmPopupViewController: PopupViewController, Controller, StoryboardIni
 	@IBOutlet weak var descLabel: UILabel!
 	@IBOutlet weak var actionButtonActivityIndicator: UIActivityIndicatorView!
 	@IBOutlet weak var actionButton: DefaultButton!
+  @IBOutlet weak var cancelButton: DefaultButton!
 
 	@IBAction func actionBtnDidTap(_ sender: Any) {
 		delegate?.didTapActionButton(viewController: self)
 	}
+
+  @IBAction func cancelBtnDidTap(_ sender: Any) {
+    delegate?.didTapSecondButton(viewController: self)
+  }
 
 	// MARK: -
 

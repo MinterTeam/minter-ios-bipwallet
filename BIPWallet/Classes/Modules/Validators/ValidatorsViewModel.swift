@@ -54,6 +54,7 @@ class ValidatorsViewModel: BaseViewModel, ViewModel {
 
   // MARK: -
 
+  private var allValidators = [ValidatorItem]()
   private var validators = [ValidatorItem]()
   private var datasource = [String: [ValidatorItem]]()
   private var didSelect = PublishSubject<ValidatorItem?>()
@@ -90,16 +91,17 @@ class ValidatorsViewModel: BaseViewModel, ViewModel {
       return val1.key < val2.key
     }).map { (val) -> BaseTableSectionItem in
       let items = val.value.map { (item) -> ValidatorTableViewCellItem in
-        let contactItem = ValidatorTableViewCellItem(reuseIdentifier: "ValidatorTableViewCell",
-                                                     identifier: item.publicKey)
-        contactItem.publicKey = TransactionTitleHelper.title(from: item.publicKey)
-        contactItem.name = item.name
-        contactItem.avatarURL = item.iconURL
-        contactItem.commission = "\(item.commission ?? 100) %"
-        contactItem.minStake = "Min. ~\(item.minStake) \(Coin.baseCoin().symbol!)"
-        return contactItem
+        return self.validatorCellItem(validator: item)
+//        let contactItem = ValidatorTableViewCellItem(reuseIdentifier: "ValidatorTableViewCell",
+//                                                     identifier: item.publicKey)
+//        contactItem.publicKey = TransactionTitleHelper.title(from: item.publicKey)
+//        contactItem.name = item.name
+//        contactItem.avatarURL = item.iconURL
+//        contactItem.commission = "\(item.commission ?? 100) %"
+//        contactItem.minStake = "Min. ~\(item.minStake) \(Coin.baseCoin().symbol!)"
+//        return contactItem
       }
-      return BaseTableSectionItem(identifier: "BaseTableSectionItem_\(val.key)", header: val.key, items: items)
+      return BaseTableSectionItem(identifier: "BaseTableSection_\(val.key)", header: val.key, rightHeader: "FEE".localized(), items: items)
     }
     if let lastUsedSection = self.lastUsedSection() {
       newSections.insert(lastUsedSection, at: 0)
@@ -126,31 +128,44 @@ class ValidatorsViewModel: BaseViewModel, ViewModel {
   }
 
   func lastUsedSection() -> BaseTableSectionItem? {
-    guard let lastUsed = self.dependency.validatorService.lastUsedPublicKey else {
+    guard
+      let lastUsed = self.dependency.validatorService.lastUsedPublicKey,
+      var validator = self.allValidators.filter({ (item) -> Bool in
+        return item.publicKey == lastUsed
+      }).first ?? ValidatorItem(publicKey: lastUsed, name: TransactionTitleHelper.title(from: lastUsed)) else {
       return nil
     }
+    validator.name = validator.name ?? TransactionTitleHelper.title(from: lastUsed)
     var items: [BaseCellItem] = []
-    let validator = self.validators.filter { (item) -> Bool in
-      return item.publicKey == lastUsed
-    }.first ?? ValidatorItem(publicKey: lastUsed, name: TransactionTitleHelper.title(from: lastUsed))
+    items = [self.validatorCellItem(validator: validator)]
 
-    let item = ContactEntryTableViewCellItem(reuseIdentifier: "ContactEntryTableViewCell", identifier: "LastUsed_\(String.random())")
-    item.address = validator?.publicKey
-    item.name = validator?.name ?? TransactionTitleHelper.title(from: lastUsed)
-    item.avatarURL = validator?.iconURL
-    // self.contactItem(with: contact, identifier: lastUsedCellIdentifier(item: contact))
-    items = [item]
     return BaseTableSectionItem(identifier: "LastUsed", header: "LAST USED", items: items)
   }
 
   func loadData() {
     dependency.validatorService.validators()
       .subscribe(onNext: { [weak self] (items) in
+        self?.allValidators = items
         let valids = items.filter { $0.isOnline }
         self?.validators = valids
         self?.prepreDatasource(with: valids)
         self?.createSections()
       }).disposed(by: disposeBag)
+  }
+
+  // MARK: -
+
+  func validatorCellItem(validator item: ValidatorItem) -> ValidatorTableViewCellItem {
+    let contactItem = ValidatorTableViewCellItem(reuseIdentifier: "ValidatorTableViewCell",
+                                                 identifier: item.publicKey)
+    contactItem.publicKey = TransactionTitleHelper.title(from: item.publicKey)
+    contactItem.name = item.name
+    contactItem.avatarURL = item.iconURL
+    contactItem.commission = "\(item.commission ?? 100) %"
+    var minStake = item.minStake
+    minStake.round(.toNearestOrEven)
+    contactItem.minStake = "Min. ~\(minStake) \(Coin.baseCoin().symbol!)"
+    return contactItem
   }
 
 }

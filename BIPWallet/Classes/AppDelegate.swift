@@ -96,7 +96,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     //Delegate
 //    UIApplication.shared.open(URL(string: "mintertestnet://bip.to/tx/-EYHtvWgFMk4Q8pApiuefQKoJOf_6DtJ4zKa6WOv3X5QAHGrm_yKWk9MT1RPAAAAAIhFY5GCRPQAAICAAYpNTlQAAAAAAAAA")!, options: [:], completionHandler: nil)
     //Unbond
-//    UIApplication.shared.open(URL(string: "mintertestnet://bip.to/tx/-FkMuEj4RgfDAQMF-D-U7oE0chHHJSQzj5aAByr5B0QzMUOU7oE0chHHJSQzj5aAByr5B0QzMUWU7oE0chHHJSQzj5aAByr5B0QzMUSAAQGKTU5UAAAAAAAAAA")!, options: [:], completionHandler: nil)
+    UIApplication.shared.open(URL(string: "mintertestnet://bip.to/tx/-FkMuEj4RgfDAQMF-D-U7oE0chHHJSQzj5aAByr5B0QzMUOU7oE0chHHJSQzj5aAByr5B0QzMUWU7oE0chHHJSQzj5aAByr5B0QzMUSAAQGKTU5UAAAAAAAAAA")!, options: [:], completionHandler: nil)
 
     return true
   }
