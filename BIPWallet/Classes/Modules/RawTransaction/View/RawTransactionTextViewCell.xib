@@ -43,7 +43,7 @@
                         <nil key="highlightedColor"/>
                     </label>
                     <button hidden="YES" opaque="NO" userInteractionEnabled="NO" alpha="0.0" contentMode="scaleToFill" contentHorizontalAlignment="right" contentVerticalAlignment="center" lineBreakMode="middleTruncation" hasAttributedTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="2aZ-U6-bPY">
-                        <rect key="frame" x="628" y="0.0" width="232" height="16"/>
+                        <rect key="frame" x="719" y="0.0" width="141" height="16"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="16" id="TGo-9Y-CMI"/>
                         </constraints>
@@ -59,7 +59,7 @@
                                         <paragraphStyle key="NSParagraphStyle" alignment="left" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0" allowsDefaultTighteningForTruncation="NO"/>
                                     </attributes>
                                 </fragment>
-                                <fragment content="more than a minute">
+                                <fragment content="min">
                                     <attributes>
                                         <color key="NSColor" name="textColor" catalog="System" colorSpace="catalog"/>
                                         <font key="NSFont" size="12" name="Inter_Bold"/>

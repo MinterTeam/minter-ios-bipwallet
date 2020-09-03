@@ -31,11 +31,12 @@ class ConvertSucceedPopupViewModel: BaseViewModel, ViewModel {
     var didTapAction: Observable<Void>
     var didTapCancel: Observable<Void>
     var description: Observable<String?>
+    var shouldHideActionButton: Bool
   }
 
   struct Dependency {}
 
-  init(dependency: Dependency, message: String?) {
+  init(dependency: Dependency, message: String?, shouldHideActionBar: Bool = false) {
     super.init()
 
     self.input = Input(didTapAction: didTapAction.asObserver(),
@@ -44,7 +45,8 @@ class ConvertSucceedPopupViewModel: BaseViewModel, ViewModel {
 
     self.output = Output(didTapAction: didTapAction.asObservable(),
                          didTapCancel: didTapCancel.asObservable(),
-                         description: Observable.just(message)
+                         description: Observable.just(message),
+                         shouldHideActionButton: shouldHideActionBar
     )
 
     self.dependency = dependency

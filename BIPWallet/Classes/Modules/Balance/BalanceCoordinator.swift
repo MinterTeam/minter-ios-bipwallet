@@ -22,13 +22,15 @@ class BalanceCoordinator: BaseCoordinator<Void> {
   let recipientInfoService: RecipientInfoService
   let transactionService: TransactionService
   let validatorService: ValidatorService
+  let coinService: CoinService
 
   init(navigationController: UINavigationController,
        balanceService: BalanceService,
        authService: AuthService,
        recipientInfoService: RecipientInfoService,
        transactionService: TransactionService,
-       validatorService: ValidatorService
+       validatorService: ValidatorService,
+       coinService: CoinService
   ) {
 
     self.navigationController = navigationController
@@ -37,6 +39,7 @@ class BalanceCoordinator: BaseCoordinator<Void> {
     self.recipientInfoService = recipientInfoService
     self.transactionService = transactionService
     self.validatorService = validatorService
+    self.coinService = coinService
 
     validatorService.updateValidators()
 
@@ -93,7 +96,8 @@ class BalanceCoordinator: BaseCoordinator<Void> {
       guard let `self` = self else { return Observable.empty() }
       let excangeCoordinator = ExchangeCoordinator(rootController: controller,
                                                    balanceService: self.balanceService,
-                                                   transactionService: self.transactionService)
+                                                   transactionService: self.transactionService,
+                                                   coinService: self.coinService)
       return self.coordinate(to: excangeCoordinator)
     }).subscribe().disposed(by: self.disposeBag)
 

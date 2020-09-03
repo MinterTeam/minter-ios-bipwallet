@@ -82,6 +82,19 @@ class RawTransactionTextViewCell: TextViewTableViewCell {
         self.setDefault()
       }
     }).disposed(by: disposeBag)
+  }
+
+  override func prepareForReuse() {
+    super.prepareForReuse()
+
+    self.textView.text = nil
+    self.setDefault()
+
+    self.textView.setNeedsLayout()
+    self.textView.layoutIfNeeded()
+    self.textView.setNeedsDisplay()
+
+    self.layoutSubviews()
 
   }
 

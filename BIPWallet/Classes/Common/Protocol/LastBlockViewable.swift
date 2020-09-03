@@ -24,10 +24,10 @@ extension LastBlockViewable {
     if seconds < 5 {
       dateText = "just now".localized()
     } else if seconds > 60 * 60 {
-      dateText = shortened ? " " : "more than ".localized()
+      dateText = ""//shortened ? " " : "more than ".localized()
       dateText += shortened ? "hour" : "an hour"
     } else if seconds > 60 {
-      dateText = shortened ? " " : "more than ".localized()
+      dateText = ""//shortened ? " " : "more than ".localized()
       dateText += shortened ? "min" : "a minute"
     }
     string.append(NSAttributedString(string: dateText,

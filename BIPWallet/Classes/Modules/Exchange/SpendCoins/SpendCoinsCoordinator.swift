@@ -14,10 +14,15 @@ class SpendCoinsCoordinator: BaseCoordinator<Void> {
   private var сontroller = SpendCoinsViewController.initFromStoryboard(name: "Convert")
   private var convertPopupCoordiantor: ConvertPopupCoordinator?
 
-  init(viewController: inout UIViewController?, balanceService: BalanceService, gateService: GateService, transactionService: TransactionService) {
+  init(viewController: inout UIViewController?,
+       balanceService: BalanceService,
+       gateService: GateService,
+       transactionService: TransactionService,
+       coinService: CoinService
+       ) {
     super.init()
 
-    let dependency = SpendCoinsViewModel.Dependency(coinService: ExplorerCoinService(),
+    let dependency = SpendCoinsViewModel.Dependency(coinService: coinService,
                                                     balanceService: balanceService,
                                                     gateService: gateService,
                                                     transactionService: transactionService)

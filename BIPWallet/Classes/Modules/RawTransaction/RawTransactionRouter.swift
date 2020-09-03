@@ -189,19 +189,28 @@ class RawTransactionCoordinator: BaseCoordinator<Void> {
 
     let rawTransactionViewController = controller.viewControllers.first as? RawTransactionViewController
 
-    rawTransactionViewController?.viewModel.output.showExchange.flatMap {
-      return self.showExchange(controller: controller)
-    }.subscribe().disposed(by: disposeBag)
+    rawTransactionViewController?.viewModel.output.showExchange.flatMap({ val -> Observable<Void> in
+      guard val != nil else { return Observable.empty() }
+      return self.showExchange(controller: controller, coin: val?.0, amount: val?.1, neededAmount: val?.2)
+    }).subscribe().disposed(by: disposeBag)
 
     rootViewController.present(controller, animated: true, completion: nil)
 
     return controller.rx.deallocated
   }
 
-  func showExchange(controller: UIViewController) -> Observable<Void> {
+  func showExchange(controller: UIViewController, coin: String?, amount: Decimal?, neededAmount: Decimal?) -> Observable<Void> {
+    let settings = ExchangeCoordinator.Settings(showBuy: true,
+                                                buyCoin: coin,
+                                                buyAmount: amount,
+                                                neededAmount: neededAmount,
+                                                closeAfterTransaction: true)
+
     let coordinator = ExchangeCoordinator(rootController: controller,
                                           balanceService: balanceService,
-                                          transactionService: transactionService)
+                                          transactionService: transactionService,
+                                          coinService: ExplorerCoinService(),
+                                          settings: settings)
     return coordinate(to: coordinator)
   }
 

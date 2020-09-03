@@ -13,6 +13,7 @@ class ConvertSucceedPopupViewController: PopupViewController, Controller, Storyb
 
   // MARK: - IBOutlet
 
+  @IBOutlet weak var actionButtonTopConstraint: NSLayoutConstraint!
   @IBOutlet weak var textLabel: UILabel!
   @IBOutlet weak var actionButton: UIButton!
   @IBOutlet weak var cancelButton: UIButton!
@@ -30,6 +31,11 @@ class ConvertSucceedPopupViewController: PopupViewController, Controller, Storyb
 
     //Output
     viewModel.output.description.asDriver(onErrorJustReturn: nil).drive(textLabel.rx.text).disposed(by: disposeBag)
+
+    if viewModel.output.shouldHideActionButton {
+      actionButtonTopConstraint.constant = -43.0
+      actionButton.isHidden = true
+    }
   }
 
   // MARK: - ViewController

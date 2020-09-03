@@ -43,17 +43,20 @@ class ConvertPopupCoordinator: BaseCoordinator<ConvertPopupCoordinatorResult> {
 
     rootViewController?.showPopup(viewController: controller, inPopupViewController: nil, inTabbar: false)
 
-    let result = Observable.of(viewModel.output.actionDidTap.map {_ in ConvertPopupCoordinatorResult.confirmed }, controller.rx.deallocated.map { _ in ConvertPopupCoordinatorResult.canceled }).merge()
+    let result = Observable.of(viewModel.output.actionDidTap.map {_ in ConvertPopupCoordinatorResult.confirmed },
+                               controller.rx.deallocated.map { _ in ConvertPopupCoordinatorResult.canceled }).merge()
  
     return result
   }
 
-  func showSucceed(_ message: String?, hash: String?) -> Observable<Void> {
+  func showSucceed(_ message: String?, hash: String?, shouldHideActionButton: Bool = false) -> Observable<Void> {
     guard let controller = controller, let rootViewController = rootViewController else { return Observable.just(()) }
+
     let coordiantor = ConvertSucceedPopupCoordinator(rootViewController: rootViewController,
                                                      popupViewController: controller,
                                                      message: message,
-                                                     transactionHash: hash)
+                                                     transactionHash: hash,
+                                                     shouldHideActionButton: shouldHideActionButton)
     return coordinate(to: coordiantor)
   }
 

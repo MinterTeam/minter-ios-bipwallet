@@ -15,18 +15,18 @@ import SafariServices
 
 class RawTransactionViewController: BaseViewController, Controller, StoryboardInitializable {
 
-	var popupViewController: PopupViewController?
+  var popupViewController: PopupViewController?
 
 	// MARK: - IBOutlet
 
-	@IBOutlet weak var tableView: UITableView! {
-		didSet {
+  @IBOutlet weak var tableView: UITableView! {
+    didSet {
       tableView.rowHeight = UITableView.automaticDimension
-			tableView.estimatedRowHeight = 100.0
-			tableView.tableFooterView = UIView()
-			tableView.contentInset = UIEdgeInsets(top: 10, left: 0, bottom: 0, right: 0)
+      tableView.estimatedRowHeight = 100.0
+      tableView.tableFooterView = UIView()
+      tableView.contentInset = UIEdgeInsets(top: 10, left: 0, bottom: 0, right: 0)
 		}
-	}
+  }
 
   let editButton = UIBarButtonItem(image: UIImage(named: "EditIcon"),
                                    style: .plain,
@@ -35,22 +35,22 @@ class RawTransactionViewController: BaseViewController, Controller, StoryboardIn
 
 	// MARK: -
 
-	private var rxDataSource: RxTableViewSectionedAnimatedDataSource<BaseTableSectionItem>?
+  private var rxDataSource: RxTableViewSectionedAnimatedDataSource<BaseTableSectionItem>?
 
 	// MARK: - ControllerType
 
-	typealias ViewModelType = RawTransactionViewModel
+  typealias ViewModelType = RawTransactionViewModel
 
-	var viewModel: ViewModelType!
+  var viewModel: ViewModelType!
 
-	func configure(with viewModel: RawTransactionViewModel) {
-		rxDataSource = RxTableViewSectionedAnimatedDataSource<BaseTableSectionItem>(
-			configureCell: { dataSource, tableView, indexPath, sm in
-				guard let item = try? dataSource.model(at: indexPath) as! BaseCellItem, // swiftlint:disable:this force_cast
-					let cell = tableView.dequeueReusableCell(withIdentifier: item.reuseIdentifier) as? ConfigurableCell else {
-					assert(true)
-					return UITableViewCell()
-				}
+  func configure(with viewModel: RawTransactionViewModel) {
+    rxDataSource = RxTableViewSectionedAnimatedDataSource<BaseTableSectionItem>(
+      configureCell: { dataSource, tableView, indexPath, sm in
+        guard let item = try? dataSource.model(at: indexPath) as! BaseCellItem, // swiftlint:disable:this force_cast
+          let cell = tableView.dequeueReusableCell(withIdentifier: item.reuseIdentifier) as? ConfigurableCell else {
+            assert(true)
+            return UITableViewCell()
+        }
 
         if let textViewCell = cell as? TextViewTableViewCell {
           textViewCell.delegate = self
@@ -162,8 +162,8 @@ class RawTransactionViewController: BaseViewController, Controller, StoryboardIn
 	}
 
   @objc func editButtonTaped() {
-    tableView.beginUpdates()
-    tableView.endUpdates()
+    self.tableView.beginUpdates()
+    self.tableView.endUpdates()
   }
 }
 
@@ -252,17 +252,17 @@ extension RawTransactionViewController {
 }
 
 extension RawTransactionViewController: PopupViewControllerDelegate {
-	func didDismissPopup(viewController: PopupViewController?) {
-		if let viewController = viewController as? SentPopupViewController {
-			viewController.dismiss(animated: true) { [weak self] in
-				self?.dismiss(animated: true, completion: nil)
-			}
+  func didDismissPopup(viewController: PopupViewController?) {
+    if let viewController = viewController as? SentPopupViewController {
+      viewController.dismiss(animated: true) { [weak self] in
+        self?.dismiss(animated: true, completion: nil)
+      }
     } else if let viewController = viewController as? ConfirmPopupViewController {
       viewController.dismiss(animated: true) { [weak self] in
         self?.dismiss(animated: true, completion: nil)
       }
     }
-	}
+  }
 }
 
 extension RawTransactionViewController: TextViewTableViewCellDelegate {
@@ -278,11 +278,9 @@ extension RawTransactionViewController: TextViewTableViewCellDelegate {
         self.tableView.scrollRectToVisible(converted, animated: true)
       }
     }
-
   }
 
   func heightWillChange(cell: TextViewTableViewCell) {}
 
   func editingWillEnd(cell: TextViewTableViewCell) {}
-
 }

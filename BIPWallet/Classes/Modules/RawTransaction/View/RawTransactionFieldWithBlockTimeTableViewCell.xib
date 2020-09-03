@@ -72,10 +72,10 @@
                                         <paragraphStyle key="NSParagraphStyle" alignment="left" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0" allowsDefaultTighteningForTruncation="NO"/>
                                     </attributes>
                                 </fragment>
-                                <fragment content="more than a minute">
+                                <fragment content="min">
                                     <attributes>
                                         <color key="NSColor" name="textColor" catalog="System" colorSpace="catalog"/>
-                                        <font key="NSFont" size="12" name="Inter_Bold"/>
+                                        <font key="NSFont" size="13" name="Inter_Bold"/>
                                         <integer key="NSLigature" value="0"/>
                                         <paragraphStyle key="NSParagraphStyle" alignment="left" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0" allowsDefaultTighteningForTruncation="NO"/>
                                     </attributes>

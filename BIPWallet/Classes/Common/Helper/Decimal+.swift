@@ -36,7 +36,9 @@ public extension Decimal {
 	}
 
 	func decimalFromPIP() -> Decimal {
-		return self * TransactionCoinFactorDecimal
+    var val = (self * TransactionCoinFactorDecimal)
+    val.round(.down)
+    return val
 	}
 
 	init?(bigInt: BigUInt) {

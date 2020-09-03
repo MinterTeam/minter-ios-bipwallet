@@ -75,6 +75,9 @@ class TextViewTableViewCell: BaseCell, AutoGrowingTextViewDelegate {
 
 		if let item = item as? TextViewTableViewCellItem {
 			(textView.rx.text <-> item.text).disposed(by: disposeBag)
+      textView.rx.text.subscribe(onNext: { (_) in
+        self.textView?.layoutSubviews()
+      }).disposed(by: disposeBag)
 
 			self.title.text = item.title
 

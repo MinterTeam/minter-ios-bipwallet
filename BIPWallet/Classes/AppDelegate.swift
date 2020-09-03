@@ -87,7 +87,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     appearance()
 
-//    UIApplication.shared.open(URL(string: "mintertestnet://bip.to/tx/8AGq6YpNTlQAAAAAAAAAlECPt9JfQNA2HuNwz_gSwf4frHSniA3gtrOnZAAAgICAgA")!, options: [:], completionHandler: nil)
+    UIApplication.shared.open(URL(string: "mintertestnet://bip.to/tx/8AGq6YpNTlQAAAAAAAAAlECPt9JfQNA2HuNwz_gSwf4frHSniA3gtrOnZAAAgICAgA")!, options: [:], completionHandler: nil)
 //    UIApplication.shared.open(URL(string: "mintertestnet://bip.to/tx/-DoCqumKWk9MT1RPAAAAAIhFY5GCRPQAAIpNTlQAAAAAAAAAiTY1ya3F3qAAAICAAYpNTlQAAAAAAAAA")!, options: [:], completionHandler: nil)
     //SEll all
 //    UIApplication.shared.open(URL(string: "mintertestnet://bip.to/tx/8AOg34paT0xPVE8AAAAAik1OVAAAAAAAAACIDeC2s6dkAACAgAGKTU5UAAAAAAAAAA")!, options: [:], completionHandler: nil)
@@ -96,7 +96,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     //Delegate
 //    UIApplication.shared.open(URL(string: "mintertestnet://bip.to/tx/-EYHtvWgFMk4Q8pApiuefQKoJOf_6DtJ4zKa6WOv3X5QAHGrm_yKWk9MT1RPAAAAAIhFY5GCRPQAAICAAYpNTlQAAAAAAAAA")!, options: [:], completionHandler: nil)
     //Unbond
-    UIApplication.shared.open(URL(string: "mintertestnet://bip.to/tx/-FkMuEj4RgfDAQMF-D-U7oE0chHHJSQzj5aAByr5B0QzMUOU7oE0chHHJSQzj5aAByr5B0QzMUWU7oE0chHHJSQzj5aAByr5B0QzMUSAAQGKTU5UAAAAAAAAAA")!, options: [:], completionHandler: nil)
+//    UIApplication.shared.open(URL(string: "mintertestnet://bip.to/tx/-FkMuEj4RgfDAQMF-D-U7oE0chHHJSQzj5aAByr5B0QzMUOU7oE0chHHJSQzj5aAByr5B0QzMUWU7oE0chHHJSQzj5aAByr5B0QzMUSAAQGKTU5UAAAAAAAAAA")!, options: [:], completionHandler: nil)
 
     return true
   }

@@ -19,6 +19,7 @@ class WalletCoordinator: BaseCoordinator<Void> {
   let balanceService: BalanceService
   let pinService: PINService
   let transactionService: TransactionService
+  let coinService: CoinService = ExplorerCoinService()
 
   init(window: UIWindow,
        authService: AuthService,
@@ -72,7 +73,8 @@ class WalletCoordinator: BaseCoordinator<Void> {
                                                 authService: authService,
                                                 recipientInfoService: recipientInfoService,
                                                 transactionService: transactionService,
-                                                validatorService: validatorService
+                                                validatorService: validatorService,
+                                                coinService: coinService
                                                 )
     coordinate(to: balanceCoordiantor).subscribe().disposed(by: disposeBag)
 

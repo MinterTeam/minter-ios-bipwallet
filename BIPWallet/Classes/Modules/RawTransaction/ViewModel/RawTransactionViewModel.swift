@@ -16,6 +16,9 @@ import RxCocoa
 
 class RawTransactionViewModel: BaseViewModel, ViewModel {// swiftlint:disable:this type_body_length cyclomatic_complexity
 
+  //(Coin Name, Amount to buy, Total amount needed for tx)
+  typealias NeededCoinAndAmount = (String, Decimal, Decimal)
+
 	// MARK: -
 
 	enum RawTransactionViewModelError: Error {
@@ -48,7 +51,7 @@ class RawTransactionViewModel: BaseViewModel, ViewModel {// swiftlint:disable:th
 		var popup: Observable<PopupViewController?>
 		var lastTransactionExplorerURL: () -> (URL?)
     var isLoading: Observable<Bool>
-    var showExchange: Observable<Void>
+    var showExchange: Observable<NeededCoinAndAmount?>
     var isButtonEnabled: Observable<Bool>
     var isEditButtonHidden: Observable<Bool>
 	}
@@ -98,7 +101,7 @@ class RawTransactionViewModel: BaseViewModel, ViewModel {// swiftlint:disable:th
 	private let vibrateSubject = PublishSubject<Void>()
   private let isLoading = BehaviorSubject<Bool>(value: false)
   private let buttonTitle = PublishSubject<String?>()
-  private let showExchange = PublishSubject<Void>()
+  private let showExchange = PublishSubject<NeededCoinAndAmount?>()
   private let shouldShowNeededCoin = BehaviorRelay<Bool>(value: false)
   private let didTapEdit = PublishSubject<Void>()
   private let isEditing = BehaviorRelay<Bool>(value: false)
@@ -237,9 +240,9 @@ class RawTransactionViewModel: BaseViewModel, ViewModel {// swiftlint:disable:th
 			self.vibrateSubject.onNext(())
 
 			let viewModel = ConfirmPopupViewModel(desc: "You’re about to perform a transaction.\nChoose your active wallet.".localized(),
-                                            buttonTitle: "Confirm".localized(),
+                                            buttonTitle: "Continue".localized(),
                                             dependency: ConfirmPopupViewModel.Dependency(authService: self.dependency.authService))
-			viewModel.buttonTitle = "Confirm".localized()
+			viewModel.buttonTitle = "Continue".localized()
 			viewModel.cancelTitle = "Cancel".localized()
 			viewModel.output.didTapActionButton
         .subscribe(onNext: { [weak self] (item) in
@@ -267,12 +270,14 @@ class RawTransactionViewModel: BaseViewModel, ViewModel {// swiftlint:disable:th
 
     dependency.gate.minGas().subscribe(currentGas).disposed(by: disposeBag)
 
-    Observable.of(isEditing.map {_ in}, dependency.balanceService.balances().map {_ in}).merge().withLatestFrom(dependency.balanceService.balances()).map({ (val) -> Bool in
-      guard let neededCoin = self.neededCoin, let neededAmount = self.neededCoinAmount else { return false }
-      return (val.balances[neededCoin]?.0 ?? 0.0) < neededAmount
-    }).subscribe(onNext: { val in
-      self.shouldShowNeededCoin.accept(val)
-    }).disposed(by: disposeBag)
+    Observable.of(isEditing.map {_ in}, dependency.balanceService.balances().map {_ in}).merge()
+      .debounce(.microseconds(100), scheduler: MainScheduler.instance)
+      .withLatestFrom(dependency.balanceService.balances()).map({ (val) -> Bool in
+        guard let neededCoin = self.neededCoin, let neededAmount = self.neededCoinAmount else { return false }
+        return (val.balances[neededCoin]?.0 ?? 0.0) < neededAmount
+      }).subscribe(onNext: { val in
+        self.shouldShowNeededCoin.accept(val)
+      }).disposed(by: disposeBag)
 
     shouldShowNeededCoin.debounce(.seconds(1), scheduler: MainScheduler.instance).subscribe(onNext: { (val) in
       self.sectionsSubject.onNext(self.createSections())
@@ -480,13 +485,20 @@ class RawTransactionViewModel: BaseViewModel, ViewModel {// swiftlint:disable:th
       let exchangeCoins = RawTransactionConvertCoinCellItem(reuseIdentifier: "RawTransactionConvertCoinCell",
                                                             identifier: "RawTransactionConvertCoinCell")
 
-      exchangeCoins.exchange.subscribe(showExchange).disposed(by: disposeBag)
+      exchangeCoins.exchange.withLatestFrom(dependency.balanceService.balances()).map({ balances in
+        guard let coin = self.neededCoin, let amount = self.neededCoinAmount else {
+          return nil
+        }
+        let newAmount = max(0.0, amount - (balances.balances[coin]?.0 ?? 0.0))
+        return (coin, newAmount, self.neededCoinAmount ?? 0.0)
+      }).subscribe(showExchange).disposed(by: disposeBag)
       exchangeCoins.title = dependency.balanceService.balances().map({ (val) -> String in
         guard let neededCoin = self.neededCoin, let neededAmount = self.neededCoinAmount else { return "" }
 
         let additionalAmount = max(0.0, neededAmount - (val.balances[neededCoin]?.0 ?? 0.0))
         let totalAmount = CurrencyNumberFormatter.formattedDecimal(with: additionalAmount,
-                                                              formatter: self.coinFormatter)
+                                                                   formatter: self.decimalFormatter,
+                                                                   maxPlaces: 18)
         return "Not enough coins. Please buy \(totalAmount) \(neededCoin) to finish transaction."
       })
       let blank4 = BlankTableViewCellItem(reuseIdentifier: "BlankTableViewCell",
@@ -564,16 +576,24 @@ extension RawTransactionViewModel {
 
       var payloadField = Field(key: "Payload Message".localized(), value: payload ?? "", isEditable: true)
       payloadField.modify = { val in
-        payloadField.value = val
-        return val
+        var value = val
+        while value?.data(using: .utf8)?.count ?? 0 > RawTransaction.maxPayloadSize {
+          value?.removeLast()
+        }
+        payloadField.value = value
+        return value
       }
 
       payloadField.onChanged = { [weak self] in
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.01) {
+
           self?.payload = payloadField.value
           self?.commissionTextForceUpdate.onNext(())
         }
         self?.commissionTextForceUpdate.onNext(())
+      }
+      payloadField.validateWithError = { val in
+        return (val?.data(using: .utf8) ?? Data()).count > RawTransaction.maxPayloadSize ? "Too Many Symbols".localized() : nil
       }
 
         switch content {
@@ -592,7 +612,9 @@ extension RawTransactionViewModel {
             let value = BigUInt(valueData)
             let amount = (Decimal(bigInt: value) ?? 0).PIPToDecimal()
             let amountString = CurrencyNumberFormatter.formattedDecimal(with: amount,
-                                                                        formatter: decimalFormatter)
+                                                                        formatter: decimalFormatter,
+                                                                        maxPlaces: 18
+                                                                        )
 
             self.neededCoin = coin
             self.neededCoinAmount = (Decimal(bigInt: value) ?? 0).PIPToDecimal()
@@ -620,8 +642,8 @@ extension RawTransactionViewModel {
             }
 
             //Amount
-            field1.modify = { val in
-              let retValue = val?.replacingOccurrences(of: " ", with: "")
+            field1.modify = { [weak self] val in
+              let retValue = self?.fieldModifyAmount(val)
               field1.value = retValue
               return retValue
             }
@@ -681,10 +703,12 @@ extension RawTransactionViewModel {
             let minimumValueToBuy = BigUInt(minimumValueToBuyData)
             let value = BigUInt(valueData)
             let amountString = CurrencyNumberFormatter.formattedDecimal(with: (Decimal(bigInt: value) ?? 0).PIPToDecimal(),
-                                                                        formatter: decimalFormatter)
+                                                                        formatter: decimalFormatter,
+                                                                        maxPlaces: 18)
 
             let minimumValueToBuyString = CurrencyNumberFormatter.formattedDecimal(with: (Decimal(bigInt: minimumValueToBuy) ?? 0).PIPToDecimal(),
-                                                                                   formatter: coinFormatter)
+                                                                                   formatter: coinFormatter,
+                                                                                   maxPlaces: 18)
 
             self.neededCoin = coinFrom
             self.neededCoinAmount = (Decimal(bigInt: value) ?? 0).PIPToDecimal()
@@ -792,7 +816,8 @@ extension RawTransactionViewModel {
 
             let minimumValueToBuy = BigUInt(minimumValueToBuyData)
             let minimumValueToBuyString = CurrencyNumberFormatter.formattedDecimal(with: (Decimal(bigInt: minimumValueToBuy) ?? 0).PIPToDecimal(),
-                                                                                   formatter: decimalFormatter)
+                                                                                   formatter: decimalFormatter,
+                                                                                   maxPlaces: 18)
 
             var coinFromField = Field(key: "Coin From".localized(), value: coinFrom, isEditable: true)
             coinFromField.modify = { [weak self] val in
@@ -876,10 +901,12 @@ extension RawTransactionViewModel {
             let maximumValueToSpend = BigUInt(maximumValueToSpendData)
             let value = BigUInt(valueData)
             let amountString = CurrencyNumberFormatter.formattedDecimal(with: (Decimal(bigInt: value) ?? 0).PIPToDecimal(),
-                                                                        formatter: coinFormatter)
+                                                                        formatter: coinFormatter,
+                                                                        maxPlaces: 18)
 
             let maximumValueToSpendString = CurrencyNumberFormatter.formattedDecimal(with: (Decimal(bigInt: maximumValueToSpend) ?? 0).PIPToDecimal(),
-                                                                                   formatter: coinFormatter)
+                                                                                   formatter: coinFormatter,
+                                                                                   maxPlaces: 18)
             
             var coinToField = Field(key: "Coin To Buy".localized(), value: coinTo, isEditable: true)
             coinToField.modify = { [weak self] val in
@@ -986,9 +1013,13 @@ extension RawTransactionViewModel {
             let initialReserve = BigUInt(initialReserveData)
             let crr = BigUInt(constantReserveRatioData)
             let initialAmountString = CurrencyNumberFormatter.formattedDecimal(with: (Decimal(bigInt: initialAmount) ?? 0).PIPToDecimal(),
-                                                                               formatter: coinFormatter)
+                                                                               formatter: coinFormatter,
+                                                                               maxPlaces: 18)
+
             let initialReserveString = CurrencyNumberFormatter.formattedDecimal(with: (Decimal(bigInt: initialReserve) ?? 0).PIPToDecimal(),
-                                                                                formatter: coinFormatter)
+                                                                                formatter: coinFormatter,
+                                                                                maxPlaces: 18)
+
             let crrString = CurrencyNumberFormatter.formattedDecimal(with: (Decimal(bigInt: crr) ?? 0),
                                                                      formatter: noMantissaFormatter)
             let coinNameField = Field(key: "Coin Name".localized(), value: coinName, isEditable: false)
@@ -1009,7 +1040,9 @@ extension RawTransactionViewModel {
             if let maxSupplyData = items[safe: 5]?.data {
               let maxSupply = BigUInt(maxSupplyData)
               let maxSupplyString = CurrencyNumberFormatter.formattedDecimal(with: (Decimal(bigInt: maxSupply) ?? 0).PIPToDecimal(),
-                                                                             formatter: coinFormatter)
+                                                                             formatter: coinFormatter,
+                                                                             maxPlaces: 18)
+
               let maxSupplyField = Field(key: "Max Supply".localized(), value: BigUInt.compare(maxSupply, BigUInt(decimal: Decimal(pow(10.0, 18.0+15.0)))!) == .orderedSame ? "10¹⁵ (max)" : maxSupplyString, isEditable: false)
               fields.append(maxSupplyField)
             } else {
@@ -1066,7 +1099,8 @@ extension RawTransactionViewModel {
             }
             let stake = BigUInt(stakeData)
             let amountString = CurrencyNumberFormatter.formattedDecimal(with: (Decimal(bigInt: stake) ?? 0).PIPToDecimal(),
-                                                                        formatter: coinFormatter)
+                                                                        formatter: coinFormatter,
+                                                                        maxPlaces: 18)
 
             self.neededCoin = coin
             self.neededCoinAmount = (Decimal(bigInt: stake) ?? 0).PIPToDecimal()
@@ -1150,7 +1184,8 @@ extension RawTransactionViewModel {
             }
             let stake = BigUInt(stakeData)
             let amountString = CurrencyNumberFormatter.formattedDecimal(with: (Decimal(bigInt: stake) ?? 0).PIPToDecimal(),
-                                                                        formatter: coinFormatter)
+                                                                        formatter: coinFormatter,
+                                                                        maxPlaces: 18)
 
             var pkField = Field(key: "Public Key".localized(), value: "Mp" + publicKeyData.toHexString(), isEditable: true)
 
@@ -1324,7 +1359,8 @@ extension RawTransactionViewModel {
                   let value = BigUInt(valueData)
                   let amount = (Decimal(bigInt: value) ?? 0).PIPToDecimal()
                   let amountString = CurrencyNumberFormatter.formattedDecimal(with: amount,
-                                                                              formatter: coinFormatter)
+                                                                              formatter: coinFormatter,
+                                                                              maxPlaces: 18)
                   let sendingValue = amountString + " " + coin
 
                   let sendingField = Field(key: "You are Sending".localized(), value: sendingValue, isEditable: false)
