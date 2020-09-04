@@ -32,9 +32,11 @@ class ExplorerValidatorService: ValidatorService {
         return response.publicKey != nil && response.publicKey?.stringValue.isValidPublicKey() ?? false
       }).map { (response) -> ValidatorItem in
         var item = ValidatorItem(publicKey: response.publicKey!.stringValue, name: response.name)
-        item!.iconURL = response.iconURL
-        item!.isOnline = response.status == .ready
-        item!.stake = response.stake ?? 0.0
+        item?.iconURL = response.iconURL
+        item?.isOnline = response.status == .ready
+        item?.stake = response.stake ?? 0.0
+        item?.minStake = response.minStake ?? 0.0
+        item?.commission = response.commission
         return item!
       }
     }).subscribe(validatorsSubject).disposed(by: disposeBag)

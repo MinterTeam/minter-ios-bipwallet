@@ -40,6 +40,7 @@ class BalanceViewModel: BaseViewModel, ViewModel, WalletSelectableViewModel {
   private let didTapScanQR = PublishSubject<Void>()
   private let openAppSettingsSubject = PublishSubject<Void>()
   private let balanceTitle = PublishSubject<String?>()
+  let didRefresh = PublishSubject<Void>()
   lazy var balanceTitleObservable = Observable.of(Observable<Int>.timer(0, period: 0.5, scheduler: MainScheduler.instance).map {_ in}, self.changedBalanceTypeSubject.map {_ in}).merge()
 
   // MARK: - ViewModel
@@ -56,6 +57,7 @@ class BalanceViewModel: BaseViewModel, ViewModel, WalletSelectableViewModel {
     var didTapShare: AnyObserver<Void>
     var didScanQR: AnyObserver<String?>
     var didTapScanQR: AnyObserver<Void>
+    var didRefresh: AnyObserver<Void>
   }
 
   struct Output {
@@ -86,7 +88,8 @@ class BalanceViewModel: BaseViewModel, ViewModel, WalletSelectableViewModel {
                        didTapBalance: didTapBalance.asObserver(),
                        didTapShare: didTapShare.asObserver(),
                        didScanQR: didScanQR.asObserver(),
-                       didTapScanQR: didTapScanQR.asObserver()
+                       didTapScanQR: didTapScanQR.asObserver(),
+                       didRefresh: didRefresh.asObserver()
     )
 
     self.output = Output(availabaleBalance: availableBalance.asObservable(),

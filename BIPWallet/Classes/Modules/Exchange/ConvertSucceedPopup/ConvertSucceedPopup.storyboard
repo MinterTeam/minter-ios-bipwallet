@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="16097" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="16097.2" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
@@ -135,6 +135,7 @@
                     </view>
                     <connections>
                         <outlet property="actionButton" destination="Itg-tA-cXB" id="ELm-UD-afW"/>
+                        <outlet property="actionButtonTopConstraint" destination="Aql-ZQ-Gx4" id="haG-BP-uaL"/>
                         <outlet property="cancelButton" destination="8Wl-yN-8Hu" id="6bB-fz-5oY"/>
                         <outlet property="popupView" destination="j92-bP-jum" id="tFq-rB-bJz"/>
                         <outlet property="textLabel" destination="Ppp-Kl-qjh" id="D8c-cI-KpK"/>

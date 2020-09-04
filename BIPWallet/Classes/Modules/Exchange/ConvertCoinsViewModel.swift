@@ -109,11 +109,9 @@ class ConvertCoinsViewModel: BaseViewModel {
         return term?.transformToCoinName() ?? ""
       }).filter({ (term) -> Bool in
         return CoinValidator.isValid(coin: term)
-      })
-      .flatMap { (term) -> Observable<Event<Bool>> in
+      }).flatMap { (term) -> Observable<Event<Bool>> in
         return self.coinService.coinExists(name: term).materialize()
-      }
-      .subscribe(onNext: { [weak self] (event) in
+      }.subscribe(onNext: { [weak self] (event) in
         switch event {
         case .completed:
           break
@@ -125,8 +123,7 @@ class ConvertCoinsViewModel: BaseViewModel {
         case .error(_):
           break
         }
-      })
-      .disposed(by: disposeBag)
+      }).disposed(by: disposeBag)
 
 	}
 

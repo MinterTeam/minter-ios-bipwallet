@@ -37,7 +37,7 @@ class SettingsCoordinator: BaseCoordinator<SettingsCoordinatorResult> {
     let controller = SettingsViewController.initFromStoryboard(name: "Settings")
     controller.viewModel = viewModel
 
-    viewModel.output.showPIN.flatMap { (_) -> Observable<PINCoordinatorResult> in
+    Observable.of(viewModel.output.changePIN, viewModel.output.showPIN).merge().debug().flatMap { (_) -> Observable<PINCoordinatorResult> in
       return self.showPIN()
     }.subscribe(onNext: { [weak self] result in
       switch result {
@@ -52,11 +52,6 @@ class SettingsCoordinator: BaseCoordinator<SettingsCoordinatorResult> {
         break
       }
     }).disposed(by: disposeBag)
-
-    viewModel.output.changePIN.flatMap { [weak self] (_) -> Observable<PINCoordinatorResult> in
-      guard let `self` = self else { return Observable.empty() }
-      return self.changePIN()
-    }.subscribe().disposed(by: disposeBag)
 
     viewModel.output.didTapLogout.subscribe(onNext: { [weak self] (_) in
       self?.logout()

@@ -92,7 +92,7 @@ class ModifyContactViewController: BaseViewController, Controller, StoryboardIni
         guard let keyboardSize = not.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue else { return }
         let keyboardFrame = keyboardSize.cgRectValue
         let keyboardHeight = keyboardFrame.height
-        `self`.bottomConstraint?.constant = `self`.view.bounds.height - (`self`.view.bounds.height - keyboardHeight) + 8.0
+        self.bottomConstraint?.constant = self.view.bounds.height - (self.view.bounds.height - keyboardHeight) + 8.0
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) { [weak self] in
           UIView.animate(withDuration: 0.5, delay: 0.0, options: [.allowUserInteraction], animations: {
             self?.view.layoutIfNeeded()
@@ -111,14 +111,36 @@ class ModifyContactViewController: BaseViewController, Controller, StoryboardIni
   }
 
   func showSuccess(_ title: String?) {
+
+    self.successView.frame = CGRect(x: self.view.bounds.width,
+                                    y: self.mainView.frame.minY,
+                                    width: self.mainView.bounds.width,
+                                    height: self.mainView.bounds.height
+    )
+
     successTitleLabel.text = title
+    let height = title?.height(forConstrainedWidth: successTitleLabel.bounds.width, font: UIFont.semiBoldFont(of: 18.0)) ?? 0.0
+    let newFrame = CGRect(x: successTitleLabel.frame.origin.x,
+                          y: successTitleLabel.frame.origin.y,
+                          width: successTitleLabel.bounds.width,
+                          height: height)
+    successTitleLabel.frame = newFrame
     view.addSubview(self.successView)
+
     self.successView.delegate = self
-    self.successView.frame = CGRect(x: self.view.bounds.width, y: self.mainView.frame.minY, width: self.mainView.bounds.width, height: self.successView.bounds.height)
+    self.successView.frame = CGRect(x: self.view.bounds.width,
+                                    y: self.mainView.frame.minY,
+                                    width: self.mainView.bounds.width,
+                                    height: successTitleLabel.frame.maxY + 89.0
+    )
+
     UIView.animate(withDuration: 0.25, animations: { [weak self] in
       guard let `self` = self else { return }
+
       self.successView.frame = CGRect(x: self.mainView.frame.minX, y: self.mainView.frame.minY, width: self.successView.bounds.width, height: self.successView.bounds.height)
+
       self.mainView.frame = CGRect(x: -self.mainView.bounds.width, y: self.mainView.frame.minY, width: self.mainView.bounds.width, height: self.mainView.bounds.height)
+
       self.mainView.alpha = 0.0
     }) { [weak self] completed in
       self?.mainView.removeFromSuperview()

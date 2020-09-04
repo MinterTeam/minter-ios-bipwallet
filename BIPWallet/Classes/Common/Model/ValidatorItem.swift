@@ -14,6 +14,8 @@ struct ValidatorItem {
   var name: String?
   var isOnline: Bool = false
   var stake: Decimal = 0
+  var minStake: Decimal = 0
+  var commission: Int?
 
   init?(publicKey: String, name: String? = nil) {
     guard publicKey.isValidPublicKey() else {

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="16097" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="16097.2" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
@@ -21,160 +21,180 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="808"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ldP-DO-4kv">
-                                <rect key="frame" x="0.0" y="0.0" width="414" height="164"/>
-                                <color key="backgroundColor" red="0.1843137255" green="0.1137254902" blue="0.41176470590000003" alpha="1" colorSpace="deviceRGB"/>
-                            </view>
-                            <view multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Jcw-bC-189" customClass="PassthroughView" customModule="BIPWallet" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="0.0" width="414" height="164"/>
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NlE-9E-UKy">
+                                <rect key="frame" x="0.0" y="0.0" width="414" height="774"/>
                                 <subviews>
-                                    <label opaque="NO" multipleTouchEnabled="YES" alpha="0.69999999999999996" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Available Balance" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LZU-RC-aW4" customClass="UHBCustomLabel" customModule="BIPWallet" customModuleProvider="target">
-                                        <rect key="frame" x="48" y="16" width="350" height="16"/>
-                                        <fontDescription key="fontDescription" name="Inter_Semi-Bold" family="Inter" pointSize="13"/>
-                                        <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                        <nil key="highlightedColor"/>
-                                        <userDefinedRuntimeAttributes>
-                                            <userDefinedRuntimeAttribute type="number" keyPath="characterSpacing">
-                                                <real key="value" value="0.40000000000000002"/>
-                                            </userDefinedRuntimeAttribute>
-                                        </userDefinedRuntimeAttributes>
-                                    </label>
-                                    <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1jl-Ro-hiQ">
-                                        <rect key="frame" x="48" y="38" width="350" height="36.5"/>
-                                        <attributedString key="attributedText">
-                                            <fragment content="0.">
-                                                <attributes>
-                                                    <color key="NSColor" red="1" green="1" blue="1" alpha="1" colorSpace="deviceRGB"/>
-                                                    <font key="NSFont" size="30" name="Inter_Semi-Bold"/>
-                                                </attributes>
-                                            </fragment>
-                                            <fragment content="0000 BIP">
-                                                <attributes>
-                                                    <color key="NSColor" red="1" green="1" blue="1" alpha="1" colorSpace="deviceRGB"/>
-                                                    <font key="NSFont" size="16" name="Inter_Semi-Bold"/>
-                                                </attributes>
-                                            </fragment>
-                                        </attributedString>
-                                        <nil key="highlightedColor"/>
-                                    </label>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hRj-4M-g3L" customClass="UHBCustomLabel" customModule="BIPWallet" customModuleProvider="target">
-                                        <rect key="frame" x="48" y="76.5" width="0.0" height="0.0"/>
-                                        <fontDescription key="fontDescription" name="Inter_Semi-Bold" family="Inter" pointSize="13"/>
-                                        <color key="textColor" red="0.20392156862745098" green="0.7803921568627451" blue="0.34901960784313724" alpha="1" colorSpace="deviceRGB"/>
-                                        <nil key="highlightedColor"/>
-                                        <userDefinedRuntimeAttributes>
-                                            <userDefinedRuntimeAttribute type="number" keyPath="characterSpacing">
-                                                <real key="value" value="0.40000000000000002"/>
-                                            </userDefinedRuntimeAttribute>
-                                        </userDefinedRuntimeAttributes>
-                                    </label>
-                                    <label opaque="NO" multipleTouchEnabled="YES" alpha="0.69999999999999996" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Delegated Balance" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ecJ-97-sxu" customClass="UHBCustomLabel" customModule="BIPWallet" customModuleProvider="target">
-                                        <rect key="frame" x="48" y="100.5" width="366" height="16"/>
-                                        <fontDescription key="fontDescription" name="Inter_Semi-Bold" family="Inter" pointSize="13"/>
-                                        <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                        <nil key="highlightedColor"/>
-                                        <userDefinedRuntimeAttributes>
-                                            <userDefinedRuntimeAttribute type="number" keyPath="characterSpacing">
-                                                <real key="value" value="0.40000000000000002"/>
-                                            </userDefinedRuntimeAttribute>
-                                        </userDefinedRuntimeAttributes>
-                                    </label>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0.0000 BIP" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0vM-Ic-kBX" customClass="UHBCustomLabel" customModule="BIPWallet" customModuleProvider="target">
-                                        <rect key="frame" x="48" y="119.5" width="366" height="19.5"/>
-                                        <fontDescription key="fontDescription" name="Inter_Semi-Bold" family="Inter" pointSize="16"/>
-                                        <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                        <nil key="highlightedColor"/>
-                                        <userDefinedRuntimeAttributes>
-                                            <userDefinedRuntimeAttribute type="number" keyPath="characterSpacing">
-                                                <real key="value" value="0.40000000000000002"/>
-                                            </userDefinedRuntimeAttribute>
-                                        </userDefinedRuntimeAttributes>
-                                    </label>
-                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="BalanceDelegatedDisclosureImage" translatesAutoresizingMaskIntoConstraints="NO" id="1hC-UY-7sX">
-                                        <rect key="frame" x="379" y="108" width="24" height="24"/>
+                                    <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ldP-DO-4kv">
+                                        <rect key="frame" x="0.0" y="0.0" width="414" height="232.5"/>
+                                        <color key="backgroundColor" red="0.1843137255" green="0.1137254902" blue="0.41176470590000003" alpha="1" colorSpace="deviceRGB"/>
+                                    </view>
+                                    <view multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Jcw-bC-189">
+                                        <rect key="frame" x="0.0" y="0.0" width="414" height="164"/>
+                                        <subviews>
+                                            <label opaque="NO" multipleTouchEnabled="YES" alpha="0.69999999999999996" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Available Balance" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LZU-RC-aW4" customClass="UHBCustomLabel" customModule="BIPWallet" customModuleProvider="target">
+                                                <rect key="frame" x="48" y="16" width="350" height="0.0"/>
+                                                <fontDescription key="fontDescription" name="Inter_Semi-Bold" family="Inter" pointSize="13"/>
+                                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <nil key="highlightedColor"/>
+                                                <userDefinedRuntimeAttributes>
+                                                    <userDefinedRuntimeAttribute type="number" keyPath="characterSpacing">
+                                                        <real key="value" value="0.40000000000000002"/>
+                                                    </userDefinedRuntimeAttribute>
+                                                </userDefinedRuntimeAttributes>
+                                            </label>
+                                            <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1jl-Ro-hiQ">
+                                                <rect key="frame" x="48" y="22" width="350" height="0.0"/>
+                                                <attributedString key="attributedText">
+                                                    <fragment content="0.">
+                                                        <attributes>
+                                                            <color key="NSColor" red="1" green="1" blue="1" alpha="1" colorSpace="deviceRGB"/>
+                                                            <font key="NSFont" size="30" name="Inter_Semi-Bold"/>
+                                                        </attributes>
+                                                    </fragment>
+                                                    <fragment content="0000 BIP">
+                                                        <attributes>
+                                                            <color key="NSColor" red="1" green="1" blue="1" alpha="1" colorSpace="deviceRGB"/>
+                                                            <font key="NSFont" size="16" name="Inter_Semi-Bold"/>
+                                                        </attributes>
+                                                    </fragment>
+                                                </attributedString>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hRj-4M-g3L" customClass="UHBCustomLabel" customModule="BIPWallet" customModuleProvider="target">
+                                                <rect key="frame" x="48" y="24" width="0.0" height="0.0"/>
+                                                <fontDescription key="fontDescription" name="Inter_Semi-Bold" family="Inter" pointSize="13"/>
+                                                <color key="textColor" red="0.20392156862745098" green="0.7803921568627451" blue="0.34901960784313724" alpha="1" colorSpace="deviceRGB"/>
+                                                <nil key="highlightedColor"/>
+                                                <userDefinedRuntimeAttributes>
+                                                    <userDefinedRuntimeAttribute type="number" keyPath="characterSpacing">
+                                                        <real key="value" value="0.40000000000000002"/>
+                                                    </userDefinedRuntimeAttribute>
+                                                </userDefinedRuntimeAttributes>
+                                            </label>
+                                            <label opaque="NO" multipleTouchEnabled="YES" alpha="0.69999999999999996" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Delegated Balance" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ecJ-97-sxu" customClass="UHBCustomLabel" customModule="BIPWallet" customModuleProvider="target">
+                                                <rect key="frame" x="48" y="101" width="366" height="16"/>
+                                                <fontDescription key="fontDescription" name="Inter_Semi-Bold" family="Inter" pointSize="13"/>
+                                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <nil key="highlightedColor"/>
+                                                <userDefinedRuntimeAttributes>
+                                                    <userDefinedRuntimeAttribute type="number" keyPath="characterSpacing">
+                                                        <real key="value" value="0.40000000000000002"/>
+                                                    </userDefinedRuntimeAttribute>
+                                                </userDefinedRuntimeAttributes>
+                                            </label>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="0.0000 BIP" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0vM-Ic-kBX" customClass="UHBCustomLabel" customModule="BIPWallet" customModuleProvider="target">
+                                                <rect key="frame" x="48" y="120" width="366" height="19"/>
+                                                <fontDescription key="fontDescription" name="Inter_Semi-Bold" family="Inter" pointSize="16"/>
+                                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <nil key="highlightedColor"/>
+                                                <userDefinedRuntimeAttributes>
+                                                    <userDefinedRuntimeAttribute type="number" keyPath="characterSpacing">
+                                                        <real key="value" value="0.40000000000000002"/>
+                                                    </userDefinedRuntimeAttribute>
+                                                </userDefinedRuntimeAttributes>
+                                            </label>
+                                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" image="BalanceDelegatedDisclosureImage" translatesAutoresizingMaskIntoConstraints="NO" id="1hC-UY-7sX">
+                                                <rect key="frame" x="379" y="108" width="24" height="24"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="width" constant="24" id="zb6-Xi-gjT"/>
+                                                    <constraint firstAttribute="height" constant="24" id="zz8-5M-i9v"/>
+                                                </constraints>
+                                            </imageView>
+                                            <button hidden="YES" opaque="NO" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ZpQ-ES-i6q">
+                                                <rect key="frame" x="0.0" y="101" width="414" height="38"/>
+                                            </button>
+                                        </subviews>
+                                        <color key="backgroundColor" red="0.18431372549019609" green="0.11372549019607843" blue="0.41176470588235292" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <constraints>
-                                            <constraint firstAttribute="width" constant="24" id="zb6-Xi-gjT"/>
-                                            <constraint firstAttribute="height" constant="24" id="zz8-5M-i9v"/>
+                                            <constraint firstAttribute="trailing" secondItem="LZU-RC-aW4" secondAttribute="trailing" constant="16" id="5sU-yp-F1b"/>
+                                            <constraint firstAttribute="trailing" secondItem="1jl-Ro-hiQ" secondAttribute="trailing" constant="16" id="CMN-Ej-Ytq"/>
+                                            <constraint firstAttribute="bottom" secondItem="1hC-UY-7sX" secondAttribute="bottom" constant="32" id="DkF-NQ-T6P"/>
+                                            <constraint firstItem="ZpQ-ES-i6q" firstAttribute="top" secondItem="ecJ-97-sxu" secondAttribute="top" id="KpG-DL-Gv2"/>
+                                            <constraint firstItem="LZU-RC-aW4" firstAttribute="top" secondItem="Jcw-bC-189" secondAttribute="top" constant="16" id="NNM-dd-MLa"/>
+                                            <constraint firstAttribute="trailing" secondItem="ecJ-97-sxu" secondAttribute="trailing" id="QSh-gR-C4T"/>
+                                            <constraint firstItem="LZU-RC-aW4" firstAttribute="leading" secondItem="Jcw-bC-189" secondAttribute="leading" constant="48" id="TM5-HU-Yxk"/>
+                                            <constraint firstItem="ZpQ-ES-i6q" firstAttribute="bottom" secondItem="0vM-Ic-kBX" secondAttribute="bottom" id="TwF-9h-2kf"/>
+                                            <constraint firstItem="ecJ-97-sxu" firstAttribute="leading" secondItem="LZU-RC-aW4" secondAttribute="leading" id="XYh-UO-3DA"/>
+                                            <constraint firstAttribute="trailing" secondItem="1hC-UY-7sX" secondAttribute="trailing" constant="11" id="YhT-Vb-ofh"/>
+                                            <constraint firstAttribute="trailing" secondItem="ZpQ-ES-i6q" secondAttribute="trailing" id="duF-IH-N0J"/>
+                                            <constraint firstItem="hRj-4M-g3L" firstAttribute="leading" secondItem="1jl-Ro-hiQ" secondAttribute="leading" id="gFP-De-CGP"/>
+                                            <constraint firstAttribute="trailing" secondItem="0vM-Ic-kBX" secondAttribute="trailing" id="i4R-Mr-6PC"/>
+                                            <constraint firstItem="0vM-Ic-kBX" firstAttribute="top" secondItem="ecJ-97-sxu" secondAttribute="bottom" constant="3" id="jPT-pS-RcI"/>
+                                            <constraint firstItem="ZpQ-ES-i6q" firstAttribute="leading" secondItem="Jcw-bC-189" secondAttribute="leading" id="m9v-M4-q2F"/>
+                                            <constraint firstItem="0vM-Ic-kBX" firstAttribute="leading" secondItem="ecJ-97-sxu" secondAttribute="leading" id="nEl-hK-LCe"/>
+                                            <constraint firstItem="ecJ-97-sxu" firstAttribute="top" secondItem="hRj-4M-g3L" secondAttribute="bottom" constant="24" id="neL-ga-peC"/>
+                                            <constraint firstAttribute="bottom" secondItem="0vM-Ic-kBX" secondAttribute="bottom" constant="25" id="o6a-aE-XkE"/>
+                                            <constraint firstItem="1jl-Ro-hiQ" firstAttribute="top" secondItem="LZU-RC-aW4" secondAttribute="bottom" constant="6" id="pNj-Tu-P3O"/>
+                                            <constraint firstItem="1jl-Ro-hiQ" firstAttribute="leading" secondItem="LZU-RC-aW4" secondAttribute="leading" id="qnL-G7-HmV"/>
+                                            <constraint firstItem="hRj-4M-g3L" firstAttribute="top" secondItem="1jl-Ro-hiQ" secondAttribute="bottom" constant="2" id="uLz-BC-e6K"/>
                                         </constraints>
-                                    </imageView>
-                                    <button opaque="NO" multipleTouchEnabled="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ZpQ-ES-i6q">
-                                        <rect key="frame" x="0.0" y="100.5" width="414" height="38.5"/>
-                                    </button>
+                                    </view>
+                                    <view multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ZBL-0Z-dM2">
+                                        <rect key="frame" x="2" y="163" width="419" height="69"/>
+                                        <subviews>
+                                            <segmentedControl opaque="NO" multipleTouchEnabled="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="bordered" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="8vz-1R-ytc" customClass="DefaultSegmentedControl" customModule="BIPWallet" customModuleProvider="target">
+                                                <rect key="frame" x="16" y="16" width="382" height="31"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="30" id="hUg-Hu-OVX"/>
+                                                </constraints>
+                                                <segments>
+                                                    <segment title="First"/>
+                                                    <segment title="Second"/>
+                                                </segments>
+                                            </segmentedControl>
+                                        </subviews>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <constraints>
+                                            <constraint firstAttribute="trailing" secondItem="8vz-1R-ytc" secondAttribute="trailing" constant="16" id="Pbd-jy-h22"/>
+                                            <constraint firstItem="8vz-1R-ytc" firstAttribute="leading" secondItem="ZBL-0Z-dM2" secondAttribute="leading" constant="16" id="WxV-p9-6h3"/>
+                                            <constraint firstAttribute="bottom" secondItem="8vz-1R-ytc" secondAttribute="bottom" constant="23" id="azh-6w-q2m"/>
+                                            <constraint firstItem="8vz-1R-ytc" firstAttribute="top" secondItem="ZBL-0Z-dM2" secondAttribute="top" constant="16" id="ilV-Bj-cp2"/>
+                                            <constraint firstAttribute="height" constant="69" id="lox-5u-WAG"/>
+                                        </constraints>
+                                    </view>
+                                    <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" alwaysBounceVertical="YES" alwaysBounceHorizontal="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uTW-SA-zQg">
+                                        <rect key="frame" x="0.0" y="233" width="414" height="575"/>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="1200" id="6Lc-Mz-X0C"/>
+                                        </constraints>
+                                        <viewLayoutGuide key="contentLayoutGuide" id="GSX-FM-Nby"/>
+                                        <viewLayoutGuide key="frameLayoutGuide" id="atV-gB-uFj"/>
+                                        <connections>
+                                            <outlet property="delegate" destination="b1B-CA-8a6" id="uEA-jS-8Iq"/>
+                                        </connections>
+                                    </scrollView>
                                 </subviews>
-                                <color key="backgroundColor" red="0.18431372549019609" green="0.11372549019607843" blue="0.41176470588235292" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
-                                    <constraint firstAttribute="trailing" secondItem="LZU-RC-aW4" secondAttribute="trailing" constant="16" id="5sU-yp-F1b"/>
-                                    <constraint firstAttribute="trailing" secondItem="1jl-Ro-hiQ" secondAttribute="trailing" constant="16" id="CMN-Ej-Ytq"/>
-                                    <constraint firstAttribute="bottom" secondItem="1hC-UY-7sX" secondAttribute="bottom" constant="32" id="DkF-NQ-T6P"/>
-                                    <constraint firstItem="ZpQ-ES-i6q" firstAttribute="top" secondItem="ecJ-97-sxu" secondAttribute="top" id="KpG-DL-Gv2"/>
-                                    <constraint firstItem="LZU-RC-aW4" firstAttribute="top" secondItem="Jcw-bC-189" secondAttribute="top" constant="16" id="NNM-dd-MLa"/>
-                                    <constraint firstAttribute="trailing" secondItem="ecJ-97-sxu" secondAttribute="trailing" id="QSh-gR-C4T"/>
-                                    <constraint firstItem="LZU-RC-aW4" firstAttribute="leading" secondItem="Jcw-bC-189" secondAttribute="leading" constant="48" id="TM5-HU-Yxk"/>
-                                    <constraint firstItem="ZpQ-ES-i6q" firstAttribute="bottom" secondItem="0vM-Ic-kBX" secondAttribute="bottom" id="TwF-9h-2kf"/>
-                                    <constraint firstItem="ecJ-97-sxu" firstAttribute="leading" secondItem="LZU-RC-aW4" secondAttribute="leading" id="XYh-UO-3DA"/>
-                                    <constraint firstAttribute="trailing" secondItem="1hC-UY-7sX" secondAttribute="trailing" constant="11" id="YhT-Vb-ofh"/>
-                                    <constraint firstAttribute="trailing" secondItem="ZpQ-ES-i6q" secondAttribute="trailing" id="duF-IH-N0J"/>
-                                    <constraint firstItem="hRj-4M-g3L" firstAttribute="leading" secondItem="1jl-Ro-hiQ" secondAttribute="leading" id="gFP-De-CGP"/>
-                                    <constraint firstAttribute="trailing" secondItem="0vM-Ic-kBX" secondAttribute="trailing" id="i4R-Mr-6PC"/>
-                                    <constraint firstItem="0vM-Ic-kBX" firstAttribute="top" secondItem="ecJ-97-sxu" secondAttribute="bottom" constant="3" id="jPT-pS-RcI"/>
-                                    <constraint firstItem="ZpQ-ES-i6q" firstAttribute="leading" secondItem="Jcw-bC-189" secondAttribute="leading" id="m9v-M4-q2F"/>
-                                    <constraint firstItem="0vM-Ic-kBX" firstAttribute="leading" secondItem="ecJ-97-sxu" secondAttribute="leading" id="nEl-hK-LCe"/>
-                                    <constraint firstItem="ecJ-97-sxu" firstAttribute="top" secondItem="hRj-4M-g3L" secondAttribute="bottom" constant="24" id="neL-ga-peC"/>
-                                    <constraint firstAttribute="bottom" secondItem="0vM-Ic-kBX" secondAttribute="bottom" constant="25" id="o6a-aE-XkE"/>
-                                    <constraint firstItem="1jl-Ro-hiQ" firstAttribute="top" secondItem="LZU-RC-aW4" secondAttribute="bottom" constant="6" id="pNj-Tu-P3O"/>
-                                    <constraint firstItem="1jl-Ro-hiQ" firstAttribute="leading" secondItem="LZU-RC-aW4" secondAttribute="leading" id="qnL-G7-HmV"/>
-                                    <constraint firstItem="hRj-4M-g3L" firstAttribute="top" secondItem="1jl-Ro-hiQ" secondAttribute="bottom" constant="2" id="uLz-BC-e6K"/>
+                                    <constraint firstItem="uTW-SA-zQg" firstAttribute="leading" secondItem="NlE-9E-UKy" secondAttribute="leading" id="5JZ-B9-zha"/>
+                                    <constraint firstItem="Jcw-bC-189" firstAttribute="top" secondItem="NlE-9E-UKy" secondAttribute="top" id="AEJ-3c-tWo"/>
+                                    <constraint firstItem="uTW-SA-zQg" firstAttribute="top" secondItem="ZBL-0Z-dM2" secondAttribute="bottom" id="Dyn-ca-KLE"/>
+                                    <constraint firstItem="Jcw-bC-189" firstAttribute="leading" secondItem="NlE-9E-UKy" secondAttribute="leading" id="EO6-yP-c7r"/>
+                                    <constraint firstAttribute="trailing" secondItem="uTW-SA-zQg" secondAttribute="trailing" id="GPi-4q-7j4"/>
+                                    <constraint firstItem="ZBL-0Z-dM2" firstAttribute="top" secondItem="Jcw-bC-189" secondAttribute="bottom" id="NOO-bJ-iMW"/>
+                                    <constraint firstItem="ZBL-0Z-dM2" firstAttribute="leading" secondItem="NlE-9E-UKy" secondAttribute="leading" id="Qtl-Ix-54H"/>
+                                    <constraint firstItem="uTW-SA-zQg" firstAttribute="top" secondItem="ldP-DO-4kv" secondAttribute="bottom" id="Yc1-yJ-pyz"/>
+                                    <constraint firstAttribute="trailing" secondItem="Jcw-bC-189" secondAttribute="trailing" id="dK9-mT-qHp"/>
+                                    <constraint firstAttribute="trailing" secondItem="ldP-DO-4kv" secondAttribute="trailing" id="lz6-xv-50C"/>
+                                    <constraint firstAttribute="bottom" secondItem="uTW-SA-zQg" secondAttribute="bottom" id="paf-BB-eE6"/>
+                                    <constraint firstAttribute="trailing" secondItem="ZBL-0Z-dM2" secondAttribute="trailing" id="pj1-Xi-iaW"/>
+                                    <constraint firstItem="ldP-DO-4kv" firstAttribute="leading" secondItem="NlE-9E-UKy" secondAttribute="leading" id="qlz-CO-wB8"/>
                                 </constraints>
-                            </view>
-                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" alwaysBounceVertical="YES" alwaysBounceHorizontal="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uTW-SA-zQg">
-                                <rect key="frame" x="0.0" y="0.0" width="414" height="808"/>
-                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <viewLayoutGuide key="contentLayoutGuide" id="GSX-FM-Nby"/>
-                                <viewLayoutGuide key="frameLayoutGuide" id="atV-gB-uFj"/>
-                                <connections>
-                                    <outlet property="delegate" destination="b1B-CA-8a6" id="uEA-jS-8Iq"/>
-                                </connections>
+                                <viewLayoutGuide key="contentLayoutGuide" id="Qxf-00-Xhb"/>
+                                <viewLayoutGuide key="frameLayoutGuide" id="ltf-Lo-4ec"/>
                             </scrollView>
-                            <view multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ZBL-0Z-dM2">
-                                <rect key="frame" x="0.0" y="164" width="414" height="69"/>
-                                <subviews>
-                                    <segmentedControl opaque="NO" multipleTouchEnabled="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="bordered" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="8vz-1R-ytc" customClass="DefaultSegmentedControl" customModule="BIPWallet" customModuleProvider="target">
-                                        <rect key="frame" x="16" y="16" width="382" height="31"/>
-                                        <constraints>
-                                            <constraint firstAttribute="height" constant="30" id="hUg-Hu-OVX"/>
-                                        </constraints>
-                                        <segments>
-                                            <segment title="First"/>
-                                            <segment title="Second"/>
-                                        </segments>
-                                    </segmentedControl>
-                                </subviews>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <constraints>
-                                    <constraint firstAttribute="trailing" secondItem="8vz-1R-ytc" secondAttribute="trailing" constant="16" id="Pbd-jy-h22"/>
-                                    <constraint firstItem="8vz-1R-ytc" firstAttribute="leading" secondItem="ZBL-0Z-dM2" secondAttribute="leading" constant="16" id="WxV-p9-6h3"/>
-                                    <constraint firstAttribute="bottom" secondItem="8vz-1R-ytc" secondAttribute="bottom" constant="23" id="azh-6w-q2m"/>
-                                    <constraint firstItem="8vz-1R-ytc" firstAttribute="top" secondItem="ZBL-0Z-dM2" secondAttribute="top" constant="16" id="ilV-Bj-cp2"/>
-                                    <constraint firstAttribute="height" constant="69" id="lox-5u-WAG"/>
-                                </constraints>
-                            </view>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
-                            <constraint firstItem="ZBL-0Z-dM2" firstAttribute="trailing" secondItem="Jcw-bC-189" secondAttribute="trailing" id="3ky-Ea-QxJ"/>
-                            <constraint firstItem="Jcw-bC-189" firstAttribute="trailing" secondItem="gS7-dX-vnJ" secondAttribute="trailing" id="753-mS-G0Q"/>
-                            <constraint firstItem="ldP-DO-4kv" firstAttribute="top" secondItem="gS7-dX-vnJ" secondAttribute="top" id="8Qt-cj-8Ab"/>
-                            <constraint firstItem="Jcw-bC-189" firstAttribute="leading" secondItem="gS7-dX-vnJ" secondAttribute="leading" id="9rY-Ak-ymC"/>
-                            <constraint firstItem="ZBL-0Z-dM2" firstAttribute="leading" secondItem="Jcw-bC-189" secondAttribute="leading" id="HQy-H0-glL"/>
-                            <constraint firstItem="uTW-SA-zQg" firstAttribute="trailing" secondItem="gS7-dX-vnJ" secondAttribute="trailing" id="Hha-uq-SAv"/>
-                            <constraint firstItem="gS7-dX-vnJ" firstAttribute="bottom" secondItem="uTW-SA-zQg" secondAttribute="bottom" id="OYG-lG-YuK"/>
-                            <constraint firstItem="ldP-DO-4kv" firstAttribute="leading" secondItem="gS7-dX-vnJ" secondAttribute="leading" id="P6y-b1-NmJ"/>
-                            <constraint firstItem="ldP-DO-4kv" firstAttribute="bottom" secondItem="Jcw-bC-189" secondAttribute="bottom" id="SDq-yT-PMx"/>
-                            <constraint firstItem="uTW-SA-zQg" firstAttribute="leading" secondItem="gS7-dX-vnJ" secondAttribute="leading" id="ZGv-45-thZ"/>
-                            <constraint firstItem="uTW-SA-zQg" firstAttribute="top" secondItem="gS7-dX-vnJ" secondAttribute="top" id="aq0-mZ-FxY"/>
-                            <constraint firstItem="ZBL-0Z-dM2" firstAttribute="top" secondItem="Jcw-bC-189" secondAttribute="bottom" id="bf9-wk-V6h"/>
-                            <constraint firstItem="gS7-dX-vnJ" firstAttribute="trailing" secondItem="ldP-DO-4kv" secondAttribute="trailing" id="ngU-Mn-dw5"/>
-                            <constraint firstItem="Jcw-bC-189" firstAttribute="top" secondItem="gS7-dX-vnJ" secondAttribute="top" id="uCx-0C-5jB"/>
+                            <constraint firstItem="NlE-9E-UKy" firstAttribute="leading" secondItem="gS7-dX-vnJ" secondAttribute="leading" id="8v1-WR-VOB"/>
+                            <constraint firstItem="gS7-dX-vnJ" firstAttribute="trailing" secondItem="NlE-9E-UKy" secondAttribute="trailing" id="Aw1-ea-ENU"/>
+                            <constraint firstItem="NlE-9E-UKy" firstAttribute="top" secondItem="gS7-dX-vnJ" secondAttribute="top" id="bwB-tO-4HX"/>
+                            <constraint firstItem="ldP-DO-4kv" firstAttribute="top" relation="lessThanOrEqual" secondItem="gS7-dX-vnJ" secondAttribute="top" id="cVC-kY-zBV"/>
+                            <constraint firstItem="gS7-dX-vnJ" firstAttribute="trailing" secondItem="Jcw-bC-189" secondAttribute="trailing" id="cXU-Tc-pyi"/>
+                            <constraint firstItem="uTW-SA-zQg" firstAttribute="leading" secondItem="gS7-dX-vnJ" secondAttribute="leading" id="eZI-SO-hRP"/>
+                            <constraint firstItem="gS7-dX-vnJ" firstAttribute="trailing" secondItem="uTW-SA-zQg" secondAttribute="trailing" id="muY-nt-nfR"/>
+                            <constraint firstItem="uTW-SA-zQg" firstAttribute="bottom" secondItem="gS7-dX-vnJ" secondAttribute="bottom" placeholder="YES" id="oTl-Yn-BnJ"/>
+                            <constraint firstItem="NlE-9E-UKy" firstAttribute="bottom" secondItem="gS7-dX-vnJ" secondAttribute="bottom" id="rrg-wP-AYu"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="gS7-dX-vnJ"/>
                     </view>
@@ -185,10 +205,11 @@
                         <outlet property="balanceTitle" destination="LZU-RC-aW4" id="Psl-ch-bhC"/>
                         <outlet property="balanceView" destination="Jcw-bC-189" id="hjR-vx-XhR"/>
                         <outlet property="containerView" destination="uTW-SA-zQg" id="atq-Rw-5gR"/>
-                        <outlet property="containerViewHeightConstraint" destination="uCx-0C-5jB" id="SOp-Lw-B7G"/>
                         <outlet property="delegatedBalance" destination="0vM-Ic-kBX" id="BuU-Jr-v2M"/>
                         <outlet property="delegatedBalanceButton" destination="ZpQ-ES-i6q" id="qzS-pq-paS"/>
                         <outlet property="delegatedBalanceTitle" destination="ecJ-97-sxu" id="NMG-J4-ba0"/>
+                        <outlet property="scrollView" destination="NlE-9E-UKy" id="Peo-j6-fdH"/>
+                        <outlet property="scrollViewHeightConstraint" destination="6Lc-Mz-X0C" id="ezF-Dq-ZIu"/>
                         <outlet property="segmentedControl" destination="8vz-1R-ytc" id="xd2-3s-jhE"/>
                         <outlet property="segmentedControlView" destination="ZBL-0Z-dM2" id="TWK-UQ-kYl"/>
                     </connections>

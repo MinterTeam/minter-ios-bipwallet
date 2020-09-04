@@ -11,6 +11,7 @@ import RxSwift
 
 class UsernameTableViewCellItem: TextViewTableViewCellItem {
   var didTapContacts = PublishSubject<Void>()
+  var forceUpdateHeight = PublishSubject<Void>()
 }
 
 class UsernameTableViewCell: TextViewTableViewCell {
@@ -63,6 +64,11 @@ class UsernameTableViewCell: TextViewTableViewCell {
     guard let item = item as? UsernameTableViewCellItem else {
       return
     }
+
+    item.forceUpdateHeight.asDriver(onErrorJustReturn: ()).drive(onNext: { (val) in
+      self.textView.setNeedsDisplay()
+      self.textView.layoutSubviews()
+    }).disposed(by: disposeBag)
 
     contactsButton.rx.tap.asDriver().drive(item.didTapContacts).disposed(by: disposeBag)
   }

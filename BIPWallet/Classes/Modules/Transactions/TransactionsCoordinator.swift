@@ -14,8 +14,8 @@ import RxAppState
 class TransactionsCoordinator: BaseCoordinator<Void> {
 
   private var сontroller = TransactionsViewController.initFromStoryboard(name: "Transactions")
-  var balanceService: BalanceService
-  var recipientInfoService: RecipientInfoService
+  private let balanceService: BalanceService
+  private let recipientInfoService: RecipientInfoService
 
   init(viewController: inout UIViewController?,
        balanceService: BalanceService,
@@ -28,8 +28,6 @@ class TransactionsCoordinator: BaseCoordinator<Void> {
 
     viewController = self.сontroller
   }
-
-  var didScrollToPoint: Observable<CGPoint>?
 
   override func start() -> Observable<Void> {
 
@@ -56,18 +54,16 @@ class TransactionsCoordinator: BaseCoordinator<Void> {
 
     сontroller.viewModel = viewModel
 
-    self.didScrollToPoint = сontroller.rx.viewDidLoad.flatMap({ [weak self] (_) -> Observable<CGPoint> in
-      guard let `self` = self else { return Observable.empty() }
-      return self.сontroller.tableView.rx.didScroll.map { (_) -> CGPoint in
-        return self.сontroller.tableView.contentOffset
-      }
-    })
-    return Observable.never()
+    return сontroller.rx.deallocated
   }
 
   func showAllTransactions(navigationController: UINavigationController, recipientInfoService: RecipientInfoService) -> Observable<Void> {
     let coordinator = AllTransactionsCoordinator(navigationController: navigationController, balanceService: self.balanceService, recipientInfoService: recipientInfoService)
     return coordinate(to: coordinator)
+  }
+
+  func refresh() {
+    сontroller.viewModel?.input.didRefresh.onNext(())
   }
 
 }

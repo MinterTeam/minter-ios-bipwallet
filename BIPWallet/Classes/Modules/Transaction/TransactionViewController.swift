@@ -15,6 +15,7 @@ class TransactionViewController: BaseViewController, Controller, StoryboardIniti
   // MARK: - IBOutlet
 
   @IBOutlet weak var tableView: UITableView!
+  @IBOutlet weak var tableViewHeightConstraint: NSLayoutConstraint!
 
   // MARK: - ControllerProtocol
 
@@ -37,9 +38,7 @@ class TransactionViewController: BaseViewController, Controller, StoryboardIniti
       .disposed(by: disposeBag)
 
     //Output
-    viewModel
-      .output
-      .sections
+    viewModel.output.sections
       .bind(to: tableView.rx.items(dataSource: rxDataSource!))
       .disposed(by: disposeBag)
 
@@ -100,4 +99,5 @@ extension TransactionViewController {
     tableView.register(UINib(nibName: "TransactionTwoColumnCell", bundle: nil),
                        forCellReuseIdentifier: "TransactionTwoColumnCell")
   }
+
 }

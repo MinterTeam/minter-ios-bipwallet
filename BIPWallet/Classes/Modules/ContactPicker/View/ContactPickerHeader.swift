@@ -11,5 +11,6 @@ import UIKit
 class ContactPickerHeader: UITableViewHeaderFooterView {
 
 	@IBOutlet weak var titleLabel: UILabel!
+  @IBOutlet weak var rightTitleLabel: UILabel!
 
 }

@@ -17,17 +17,28 @@ class ConvertSucceedPopupCoordinator: BaseCoordinator<Void> {
   private weak var popupViewController: PopupViewController?
   private let message: String?
   private let transactionHash: String?
+  private let shouldHideActionButton: Bool
 
-  init(rootViewController: UIViewController, popupViewController: PopupViewController, message: String?, transactionHash: String?) {
+  init(rootViewController: UIViewController,
+       popupViewController: PopupViewController,
+       message: String?,
+       transactionHash: String?,
+       shouldHideActionButton: Bool = false
+     ) {
+
     self.rootViewController = rootViewController
     self.popupViewController = popupViewController
     self.message = message
     self.transactionHash = transactionHash
+    self.shouldHideActionButton = shouldHideActionButton
   }
 
   override func start() -> Observable<Void> {
     let dependency = ConvertSucceedPopupViewModel.Dependency()
-    let viewModel = ConvertSucceedPopupViewModel(dependency: dependency, message: self.message)
+    let viewModel = ConvertSucceedPopupViewModel(dependency: dependency,
+                                                 message: self.message,
+                                                 shouldHideActionBar: self.shouldHideActionButton)
+
     let controller = ConvertSucceedPopupViewController.initFromStoryboard(name: "ConvertSucceedPopup")
     controller.viewModel = viewModel
 

@@ -30,6 +30,7 @@ class ConfirmPopupViewModel: PopupViewModel, ViewModel {
     var showWallets: Observable<[[String]]>
     var selectedWallet: Observable<String?>
     var activeButtonTitle: Observable<String?>
+    var dismissable: () -> (Bool)
 	}
 
 	struct Dependency {
@@ -47,6 +48,7 @@ class ConfirmPopupViewModel: PopupViewModel, ViewModel {
 	var desc: String?
 	var buttonTitle: String?
 	var cancelTitle: String?
+  var dismissable: Bool = true
 
 	// MARK: -
 
@@ -78,7 +80,8 @@ class ConfirmPopupViewModel: PopupViewModel, ViewModel {
                     didTapCancel: didTapCancelSubject.asObservable(),
                     showWallets: showWalletsObservable(),
                     selectedWallet: selectedWallet.asObservable(),
-                    activeButtonTitle: activityIndicatorSubject.map { $0 ? "" : "Proceed".localized() }
+                    activeButtonTitle: activityIndicatorSubject.map { $0 ? "" : "Proceed".localized() },
+                    dismissable: { return self.dismissable }
     )
 
     bind()
@@ -96,9 +99,9 @@ class ConfirmPopupViewModel: PopupViewModel, ViewModel {
       }
     }).disposed(by: disposeBag)
 
-    viewWillAppear.subscribe(onNext: { (_) in
-      if let firstWallet = self.dependency.authService.accounts().first {
-        self.selectedWallet.onNext(self.pickerTitle(from: firstWallet))
+    viewWillAppear.subscribe(onNext: { [weak self] (_) in
+      if let firstWallet = self?.dependency.authService.accounts().first {
+        self?.selectedWallet.onNext(self?.pickerTitle(from: firstWallet))
       }
     }).disposed(by: disposeBag)
   }
@@ -110,7 +113,7 @@ class ConfirmPopupViewModel: PopupViewModel, ViewModel {
       }]
     })
   }
-  
+
   func itemFor(title: String) -> AccountItem? {
     return self.dependency.authService.accounts().filter { (item) -> Bool in
       return self.pickerTitle(from: item) == title
@@ -119,7 +122,7 @@ class ConfirmPopupViewModel: PopupViewModel, ViewModel {
 
   func pickerTitle(from item: AccountItem) -> String {
     let address = TransactionTitleHelper.title(from: item.address)
-    var accountTitle = item.address
+    var accountTitle = address//item.address
     if let name = item.title {
       accountTitle = name + " (" + address + ")"
     }

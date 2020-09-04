@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="16096" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="16097.2" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16087"/>
-        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -12,23 +11,32 @@
         <scene sceneID="xRP-xC-IJ2">
             <objects>
                 <viewController storyboardIdentifier="CoinsViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="w5k-SK-uEK" customClass="CoinsViewController" customModule="BIPWallet" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="npv-66-AUw">
+                    <view key="view" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="npv-66-AUw">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" style="grouped" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="18" sectionFooterHeight="18" translatesAutoresizingMaskIntoConstraints="NO" id="Q6f-kv-hWe">
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" style="grouped" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="18" sectionFooterHeight="18" translatesAutoresizingMaskIntoConstraints="NO" id="Q6f-kv-hWe">
                                 <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="1200" id="HdQ-i0-vhc"/>
+                                    <constraint firstAttribute="height" constant="896" id="nkU-pC-W6v"/>
+                                </constraints>
+                                <variation key="default">
+                                    <mask key="constraints">
+                                        <exclude reference="HdQ-i0-vhc"/>
+                                        <exclude reference="nkU-pC-W6v"/>
+                                    </mask>
+                                </variation>
                             </tableView>
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
-                            <constraint firstItem="Q6f-kv-hWe" firstAttribute="leading" secondItem="2BB-GS-Lug" secondAttribute="leading" id="CgI-2a-Tw4"/>
-                            <constraint firstItem="Q6f-kv-hWe" firstAttribute="trailing" secondItem="2BB-GS-Lug" secondAttribute="trailing" id="MPq-Bq-5Zo"/>
+                            <constraint firstItem="Q6f-kv-hWe" firstAttribute="leading" secondItem="npv-66-AUw" secondAttribute="leading" id="CgI-2a-Tw4"/>
+                            <constraint firstItem="Q6f-kv-hWe" firstAttribute="trailing" secondItem="npv-66-AUw" secondAttribute="trailing" id="MPq-Bq-5Zo"/>
                             <constraint firstItem="Q6f-kv-hWe" firstAttribute="top" secondItem="npv-66-AUw" secondAttribute="top" id="MeU-Zb-zoG"/>
-                            <constraint firstAttribute="bottom" secondItem="Q6f-kv-hWe" secondAttribute="bottom" id="b22-w4-tfY"/>
+                            <constraint firstAttribute="bottom" secondItem="Q6f-kv-hWe" secondAttribute="bottom" priority="999" id="Ta5-P8-fu9"/>
                         </constraints>
-                        <viewLayoutGuide key="safeArea" id="2BB-GS-Lug"/>
                     </view>
                     <connections>
                         <outlet property="tableView" destination="Q6f-kv-hWe" id="jsZ-Yo-oLl"/>

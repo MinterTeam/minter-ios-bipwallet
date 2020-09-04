@@ -8,6 +8,7 @@
 
 import UIKit
 import RxSwift
+import RxCocoa
 
 protocol ButtonTableViewCellDelegate: class {
 	func buttonTableViewCellDidTap(_ cell: ButtonTableViewCell)
@@ -20,6 +21,7 @@ class ButtonTableViewCellItem: BaseCellItem {
 	struct Input {
 		var didTapButton: AnyObserver<Void>
 	}
+
 	struct Output {
 		var didTapButton: Observable<Void>
 	}
@@ -29,7 +31,8 @@ class ButtonTableViewCellItem: BaseCellItem {
 
 	// MARK: - Subjects
 
-	var didTapButtonSubject = PublishSubject<Void>()
+	let didTapButtonSubject = PublishSubject<Void>()
+//  var buttonTitleObservable = PublishSubject<String?>()
 
 	// MARK: -
 
@@ -39,21 +42,40 @@ class ButtonTableViewCellItem: BaseCellItem {
 	var isButtonEnabled = true
 	var isButtonEnabledObservable: Observable<Bool>?
 	var isLoadingObserver: Observable<Bool>?
+  var buttonTitleObservable: Observable<String?>?
 
 	override init(reuseIdentifier: String, identifier: String) {
 		super.init(reuseIdentifier: reuseIdentifier, identifier: identifier)
 
-		input = Input(didTapButton: didTapButtonSubject.asObserver())
-		output = Output(didTapButton: didTapButtonSubject.asObservable())
+    input = Input(didTapButton: didTapButtonSubject.asObserver()
+//                  buttonTitle: buttonTitleObservable.asObserver()
+    )
+
+		output = Output(didTapButton: didTapButtonSubject.asObservable()
+//                    buttonTitle: buttonTitleObservable.asObservable()
+    )
+
 	}
 }
 
 class ButtonTableViewCell: BaseCell {
 
+  // MARK: - Init
+
+  required init?(coder: NSCoder) {
+    super.init(coder: coder)
+  }
+
 	// MARK: -
 
 	@IBOutlet weak var activityIndicator: UIActivityIndicatorView!
 	@IBOutlet weak var button: DefaultButton!
+
+  // MARK: -
+
+  func customizeUI() {
+    
+  }
 
 	// MARK: - IBActions
 
@@ -106,8 +128,19 @@ class ButtonTableViewCell: BaseCell {
 				}
 			}).disposed(by: disposeBag)
 
+      buttonItem.buttonTitleObservable?.asDriver(onErrorJustReturn: nil)
+        .drive(button.rx.title(for: .normal)).disposed(by: disposeBag)
+
 			button?.rx.tap.asDriver(onErrorJustReturn: ())
 				.drive(buttonItem.didTapButtonSubject).disposed(by: disposeBag)
 		}
 	}
+  
+  override func prepareForReuse() {
+    super.prepareForReuse()
+
+    self.button.setBackgroundImage(nil, for: .normal)
+    self.button.setBackgroundImage(nil, for: .disabled)
+  }
+
 }

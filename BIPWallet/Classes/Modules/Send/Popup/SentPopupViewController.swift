@@ -11,7 +11,6 @@ import AlamofireImage
 
 protocol SentPopupViewControllerDelegate: class {
 	func didTapActionButton(viewController: SentPopupViewController)
-//	func didTapSecondActionButton(viewController: SentPopupViewController)
 	func didTapSecondButton(viewController: SentPopupViewController)
 }
 
@@ -32,7 +31,6 @@ class SentPopupViewController: PopupViewController, Controller, StoryboardInitia
 	@IBOutlet weak var descTitle: UILabel!
 	@IBOutlet weak var receiverLabel: UILabel!
 	@IBOutlet weak var actionButton: DefaultButton!
-//	@IBOutlet weak var seconActionButton: DefaultButton!
 	@IBOutlet weak var secondButton: DefaultButton!
 
 	@IBAction func actionBtnDidTap(_ sender: Any) {
@@ -42,14 +40,6 @@ class SentPopupViewController: PopupViewController, Controller, StoryboardInitia
 	@IBAction func secondButtonDidTap(_ sender: Any) {
 		delegate?.didTapSecondButton(viewController: self)
 	}
-
-//	@IBAction func secondActionButtonDidTap(_ sender: Any) {
-//		delegate?.didTapSecondActionButton(viewController: self)
-//	}
-
-	// MARK: -
-
-	var shadowLayer = CAShapeLayer()
 
 	// MARK: -
 

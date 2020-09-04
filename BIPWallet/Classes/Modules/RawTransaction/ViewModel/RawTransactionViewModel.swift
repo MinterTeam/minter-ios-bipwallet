@@ -12,8 +12,12 @@ import MinterExplorer
 import MinterMy
 import BigInt
 import RxSwift
+import RxCocoa
 
 class RawTransactionViewModel: BaseViewModel, ViewModel {// swiftlint:disable:this type_body_length cyclomatic_complexity
+
+  //(Coin Name, Amount to buy, Total amount needed for tx)
+  typealias NeededCoinAndAmount = (String, Decimal, Decimal)
 
 	// MARK: -
 
@@ -33,7 +37,10 @@ class RawTransactionViewModel: BaseViewModel, ViewModel {// swiftlint:disable:th
 
 	// MARK: - ViewModelProtocol
 
-	struct Input {}
+	struct Input {
+    var viewDidAppear: AnyObserver<Void>
+    var didTapEditing: AnyObserver<Void>
+  }
 
 	struct Output {
 		var sections: Observable<[BaseTableSectionItem]>
@@ -43,6 +50,10 @@ class RawTransactionViewModel: BaseViewModel, ViewModel {// swiftlint:disable:th
 		var vibrate: Observable<Void>
 		var popup: Observable<PopupViewController?>
 		var lastTransactionExplorerURL: () -> (URL?)
+    var isLoading: Observable<Bool>
+    var showExchange: Observable<NeededCoinAndAmount?>
+    var isButtonEnabled: Observable<Bool>
+    var isEditButtonHidden: Observable<Bool>
 	}
 
 	struct Dependency {
@@ -56,6 +67,20 @@ class RawTransactionViewModel: BaseViewModel, ViewModel {// swiftlint:disable:th
 	var output: RawTransactionViewModel.Output!
 	var dependency: RawTransactionViewModel.Dependency!
 
+  struct Field {
+    var key: String?
+    var value: String? {
+      didSet {
+        onChanged?()
+      }
+    }
+    var isEditable: Bool = false
+    var validateWithError: ((String?) -> (String?))?
+    var modify: ((String?) -> (String?))?
+    var keyboardType: UIKeyboardType?
+    var onChanged: (() -> ())?
+  }
+
 	// MARK: -
 
   lazy var lastBlockString = Observable<Int>.timer(0, period: 1, scheduler: MainScheduler.instance)
@@ -63,34 +88,57 @@ class RawTransactionViewModel: BaseViewModel, ViewModel {// swiftlint:disable:th
       self.headerViewLastUpdatedTitleText(seconds: Date().timeIntervalSince1970 - ($0 ?? 0), shortened: true)
   }
 
-	private var cancelButtonDidTapSubject = PublishSubject<Void>()
-	private var errorNotificationSubject = PublishSubject<NotifiableError?>()
-	private var successNotificationSubject = PublishSubject<NotifiableSuccess?>()
-	private var proceedButtonDidTapSubject = PublishSubject<Void>()
-	private var sendButtonDidTapSubject = PublishSubject<Void>()
-	private var sectionsSubject = ReplaySubject<[BaseTableSectionItem]>.create(bufferSize: 1)
-	private var sendingTxSubject = PublishSubject<Bool>()
-	private var popupSubject = PublishSubject<PopupViewController?>()
-	private var vibrateSubject = PublishSubject<Void>()
+  private let viewDidAppearSubject = PublishSubject<Void>()
+	private let cancelButtonDidTapSubject = PublishSubject<Void>()
+	private let errorNotificationSubject = PublishSubject<NotifiableError?>()
+	private let successNotificationSubject = PublishSubject<NotifiableSuccess?>()
+	private let proceedButtonDidTapSubject = PublishSubject<Void>()
+  private let showSelectWalletSubject = PublishSubject<Void>()
+	private let sendButtonDidTapSubject = PublishSubject<Void>()
+	private let sectionsSubject = ReplaySubject<[BaseTableSectionItem]>.create(bufferSize: 1)
+	private let sendingTxSubject = PublishSubject<Bool>()
+	private let popupSubject = PublishSubject<PopupViewController?>()
+	private let vibrateSubject = PublishSubject<Void>()
+  private let isLoading = BehaviorSubject<Bool>(value: false)
+  private let buttonTitle = PublishSubject<String?>()
+  private let showExchange = PublishSubject<NeededCoinAndAmount?>()
+  private let shouldShowNeededCoin = BehaviorRelay<Bool>(value: false)
+  private let didTapEdit = PublishSubject<Void>()
+  private let isEditing = BehaviorRelay<Bool>(value: false)
+  private let isButtonEnabled = BehaviorRelay<Bool>(value: true)
 
 	// MARK: -
 
-  private var account: AccountItem?
+  private var account: AccountItem? {
+    didSet {
+      if let account = account {
+        try? self.dependency.balanceService.changeAddress(account.address)
+      }
+    }
+  }
 	private var nonce: BigUInt?
 	private var payload: String?
-	private var type: RawTransactionType
+  private var type: RawTransactionType
 	private var gasPrice: BigUInt?
 	private var gasCoin: String
-	private var data: Data?
+  private var data: Data? {
+    didSet {
+      self.isButtonEnabled.accept(data != nil)
+    }
+  }
 	private var userData: [String: Any]?
 
 	private var multisendAddressCount = 0
 	private var createCoinSymbolCount = 0
 
-	private var fields: [[String: String]] = []
+  private var neededCoin: String?
+  private var neededCoinAmount: Decimal?
+
+	private var fields: [Field] = []
 	private var currentGas = BehaviorSubject<Int>(value: RawTransactionDefaultGasPrice)
-	private var gasObservable: Observable<String> {
-		return currentGas.asObservable()
+  private let commissionTextForceUpdate = PublishSubject<Void>()
+	private var commissionTextObservable: Observable<String> {
+    return Observable.of(commissionTextForceUpdate, sectionsSubject.map{_ in}, currentGas.map{_ in}).merge().withLatestFrom(currentGas)
 			.map({ [weak self] (obj) -> String in
 				let payloadData = self?.payload?.data(using: .utf8)
 				return self?.commissionText(for: obj, payloadData: payloadData) ?? ""
@@ -122,6 +170,7 @@ class RawTransactionViewModel: BaseViewModel, ViewModel {// swiftlint:disable:th
 		self.dependency = dependency
 
 		self.type = type
+
 		self.gasPrice = gasPrice
 		self.gasCoin = gasCoin ?? Coin.baseCoin().symbol!
 		self.nonce = nonce
@@ -151,41 +200,61 @@ class RawTransactionViewModel: BaseViewModel, ViewModel {// swiftlint:disable:th
       }
     }
 
-		self.input = Input()
+    self.input = Input(viewDidAppear: viewDidAppearSubject.asObserver(),
+                       didTapEditing: didTapEdit.asObserver()
+    )
+
 		self.output = Output(sections: sectionsSubject.asObservable(),
 												 shouldClose: cancelButtonDidTapSubject.asObservable(),
 												 errorNotification: errorNotificationSubject.asObservable(),
 												 successNotification: successNotificationSubject.asObservable(),
 												 vibrate: vibrateSubject.asObservable(),
 												 popup: popupSubject.asObservable(),
-												 lastTransactionExplorerURL: self.lastTransactionExplorerURL)
+												 lastTransactionExplorerURL: self.lastTransactionExplorerURL,
+                         isLoading: isLoading.asObservable(),
+                         showExchange: showExchange.asObservable(),
+                         isButtonEnabled: isButtonEnabled.asObservable(),
+                         isEditButtonHidden: Observable.of({
+                          switch type {
+                          case .sendCoin, .sellCoin, .sellAllCoins, .buyCoin, .delegate, .unbond:
+                            return false
+                          default:
+                            return true
+                          }
+                         }())
+    )
 
 		sendButtonDidTapSubject.subscribe(onNext: { [weak self] (_) in
 			self?.sendTx()
 		}).disposed(by: disposeBag)
 
-		proceedButtonDidTapSubject.subscribe(onNext: { [weak self] (_) in
+		viewDidAppearSubject.subscribe(onNext: { [weak self] (_) in
       guard let `self` = self else { return }
+      let accs = self.dependency.authService.accounts()
+      //If there are multiple accounts - show picker
+      guard self.account == nil, accs.count > 1 else {
+        self.account = accs.first
+        return
+      }
+
 			self.vibrateSubject.onNext(())
 
 			let viewModel = ConfirmPopupViewModel(desc: "You’re about to perform a transaction.\nChoose your active wallet.".localized(),
-                                            buttonTitle: "Confirm".localized(),
+                                            buttonTitle: "Continue".localized(),
                                             dependency: ConfirmPopupViewModel.Dependency(authService: self.dependency.authService))
-			viewModel.buttonTitle = "Confirm".localized()
+			viewModel.buttonTitle = "Continue".localized()
 			viewModel.cancelTitle = "Cancel".localized()
 			viewModel.output.didTapActionButton
         .subscribe(onNext: { [weak self] (item) in
           self?.account = item
-          self?.sendButtonDidTapSubject.onNext(())
-        })
-				.disposed(by: self.disposeBag)
+          self?.popupSubject.onNext(nil)
+        }).disposed(by: self.disposeBag)
 
 			viewModel.output.didTapCancel
 				.asDriver(onErrorJustReturn: ())
 				.drive(onNext: { _ in
 					self.popupSubject.onNext(nil)
-				})
-				.disposed(by: self.disposeBag)
+				}).disposed(by: self.disposeBag)
 
 			self.sendingTxSubject.asDriver(onErrorJustReturn: false)
 				.drive(viewModel.input.activityIndicator)
@@ -193,12 +262,42 @@ class RawTransactionViewModel: BaseViewModel, ViewModel {// swiftlint:disable:th
 
       let popup = ConfirmPopupViewController.initFromStoryboard(name: "Popup")
       popup.viewModel = viewModel
+      viewModel.dismissable = true
 			self.popupSubject.onNext(popup)
 		}).disposed(by: disposeBag)
 
-    self.dependency.gate.minGas().subscribe(currentGas).disposed(by: disposeBag)
+    proceedButtonDidTapSubject.subscribe(sendButtonDidTapSubject).disposed(by: disposeBag)
 
-		self.sectionsSubject.onNext(self.createSections())
+    dependency.gate.minGas().subscribe(currentGas).disposed(by: disposeBag)
+
+    Observable.of(isEditing.map {_ in}, dependency.balanceService.balances().map {_ in}).merge()
+      .debounce(.microseconds(100), scheduler: MainScheduler.instance)
+      .withLatestFrom(dependency.balanceService.balances()).map({ (val) -> Bool in
+        guard let neededCoin = self.neededCoin, let neededAmount = self.neededCoinAmount else { return false }
+        return (val.balances[neededCoin]?.0 ?? 0.0) < neededAmount
+      }).subscribe(onNext: { val in
+        self.shouldShowNeededCoin.accept(val)
+      }).disposed(by: disposeBag)
+
+    shouldShowNeededCoin.debounce(.seconds(1), scheduler: MainScheduler.instance).subscribe(onNext: { (val) in
+      self.sectionsSubject.onNext(self.createSections())
+    }).disposed(by: disposeBag)
+
+    didTapEdit.withLatestFrom(isEditing).map({ (val) -> Bool in
+      return !val
+    }).subscribe(onNext: { [weak self] val in
+      guard let `self` = self else { return }
+
+      if self.data == nil { return }
+
+      self.isEditing.accept(val)
+
+      self.fields = []
+      try? self.makeFields(data: self.data)
+      self.sectionsSubject.onNext(self.createSections())
+    }).disposed(by: disposeBag)
+
+		sectionsSubject.onNext(createSections())
 	}
 
   func address() throws -> String {
@@ -217,6 +316,7 @@ class RawTransactionViewModel: BaseViewModel, ViewModel {// swiftlint:disable:th
 														 self.dependency.gate.minGas())
 			.do(onSubscribe: { [weak self] in
 				self?.sendingTxSubject.onNext(true)
+        self?.isLoading.onNext(true)
 			}).flatMap({ [weak self] (result) -> Observable<String?> in
 				let (nonce, _) = result
 				guard let nnnc = BigUInt(decimal: Decimal(nonce+1)),
@@ -246,6 +346,7 @@ class RawTransactionViewModel: BaseViewModel, ViewModel {// swiftlint:disable:th
 				let signedTx = RawTransactionSigner.sign(rawTx: tx, privateKey: privateKey)
         return self?.dependency.gate.send(rawTx: signedTx).map {$0.0} ?? Observable<String?>.empty()
 			}).subscribe(onNext: { [weak self] (result) in
+        self?.isLoading.onNext(false)
 				self?.lastSentTransactionHash = result
 				if let sentViewModel = self?.sentViewModel() {
           let sentViewController = SentPopupViewController.initFromStoryboard(name: "Popup")
@@ -255,6 +356,7 @@ class RawTransactionViewModel: BaseViewModel, ViewModel {// swiftlint:disable:th
 
 				self?.sendingTxSubject.onNext(false)
 			}, onError: { [weak self] (error) in
+        self?.isLoading.onNext(false)
 				self?.sendingTxSubject.onNext(false)
 				self?.handle(error: error)
 				self?.popupSubject.onNext(nil)
@@ -263,22 +365,71 @@ class RawTransactionViewModel: BaseViewModel, ViewModel {// swiftlint:disable:th
 
 	// MARK: - Sections
 
-	private func createSections() -> [BaseTableSectionItem] {
-		var items = [RawTransactionFieldTableViewCellItem]()
+  private func createSections() -> [BaseTableSectionItem] {
+    var items = [BaseCellItem]()
     for elem in fields.enumerated() {
       let field = elem.element
 
-      var item: RawTransactionFieldTableViewCellItem
+      var item: BaseCellItem
       if elem.offset == 0 {
-        item = RawTransactionFieldWithBlockTimeTableViewCellItem(reuseIdentifier: "RawTransactionFieldWithBlockTimeTableViewCell",
-                                                                 identifier: "RawTransactionFieldTableViewCell_" + String.random())
-        (item as? RawTransactionFieldWithBlockTimeTableViewCellItem)?.lastBlockText = self.lastBlockString
+        if isEditing.value {
+          guard field.isEditable else { continue }
+          item = RawTransactionTextViewCellItem(reuseIdentifier: "RawTransactionTextViewCell",
+                                            identifier: "RawTransactionTextViewCell_" + (field.key ?? String.random()))
+          (item as? RawTransactionTextViewCellItem)?.title = field.key ?? ""
+          (item as? RawTransactionTextViewCellItem)?.value = field.value
+          (item as? RawTransactionTextViewCellItem)?.lastBlockText = self.lastBlockString
+          (item as? RawTransactionTextViewCellItem)?.text.distinctUntilChanged()
+            .debounce(.milliseconds(100), scheduler: MainScheduler.asyncInstance)
+            .filter { $0 != nil }
+            .map({ (val) -> String? in
+              return field.modify?(val) ?? val
+            }).subscribe(onNext: { val in
+              (item as? RawTransactionTextViewCellItem)?.text.accept(val)
+              if let error = field.validateWithError?(val) {
+                (item as? RawTransactionTextViewCellItem)?.state.onNext(.invalid(error: error))
+              } else {
+                (item as? RawTransactionTextViewCellItem)?.state.onNext(.default)
+              }
+            }).disposed(by: disposeBag)
+          (item as? RawTransactionTextViewCellItem)?.keybordType = field.keyboardType
+        } else {
+          item = RawTransactionFieldWithBlockTimeTableViewCellItem(reuseIdentifier: "RawTransactionFieldWithBlockTimeTableViewCell",
+                                                                   identifier: "RawTransactionFieldTableViewCell_" + (field.key ?? String.random()))
+          (item as? RawTransactionFieldWithBlockTimeTableViewCellItem)?.lastBlockText = self.lastBlockString
+          (item as? RawTransactionFieldTableViewCellItem)?.title = field.key
+          (item as? RawTransactionFieldTableViewCellItem)?.value = field.value
+        }
       } else {
-        item = RawTransactionFieldTableViewCellItem(reuseIdentifier: "RawTransactionFieldTableViewCell",
-                                                    identifier: "RawTransactionFieldTableViewCell_" + String.random())
+        if isEditing.value {
+          guard field.isEditable else { continue }
+          item = RawTransactionTextViewCellItem(reuseIdentifier: "RawTransactionTextViewCell",
+                                            identifier: "RawTransactionTextViewCell_\(elem.offset)" + (field.key ?? String.random()))
+          (item as? RawTransactionTextViewCellItem)?.title = field.key ?? ""
+          (item as? RawTransactionTextViewCellItem)?.value = field.value
+          (item as? RawTransactionTextViewCellItem)?.lastBlockText = Observable.just(NSAttributedString())
+          (item as? RawTransactionTextViewCellItem)?.text.distinctUntilChanged()
+            .debounce(.milliseconds(100), scheduler: MainScheduler.asyncInstance)
+            .filter { $0 != nil }
+            .map({ (val) -> String? in
+              return field.modify?(val) ?? val
+            }).subscribe(onNext: { val in
+              (item as? RawTransactionTextViewCellItem)?.text.accept(val)
+              if let error = field.validateWithError?(val) {
+                (item as? RawTransactionTextViewCellItem)?.state.onNext(.invalid(error: error))
+              } else {
+                (item as? RawTransactionTextViewCellItem)?.state.onNext(.default)
+              }
+            }).disposed(by: disposeBag)
+          (item as? RawTransactionTextViewCellItem)?.keybordType = field.keyboardType
+        } else {
+          item = RawTransactionFieldTableViewCellItem(reuseIdentifier: "RawTransactionFieldTableViewCell",
+                                                      identifier: "RawTransactionFieldTableViewCell_\(elem.offset)" + (field.key ?? String.random()))
+          (item as? RawTransactionFieldTableViewCellItem)?.title = field.key
+          (item as? RawTransactionFieldTableViewCellItem)?.value = field.value
+        }
       }
-			item.title = field["key"]
-			item.value = field["value"]
+
 			items.append(item)
 		}
 
@@ -287,7 +438,7 @@ class RawTransactionViewModel: BaseViewModel, ViewModel {// swiftlint:disable:th
 		fee.title = "Transaction Fee".localized()
 		let payloadData = payload?.data(using: .utf8)
 		fee.subtitle = self.commissionText(for: 1, payloadData: payloadData)
-		fee.subtitleObservable = self.gasObservable
+		fee.subtitleObservable = self.commissionTextObservable
 
 		let blank = BlankTableViewCellItem(reuseIdentifier: "BlankTableViewCell",
 																			 identifier: CellIdentifierPrefix.blank.rawValue)
@@ -297,9 +448,16 @@ class RawTransactionViewModel: BaseViewModel, ViewModel {// swiftlint:disable:th
 
 		let button = ButtonTableViewCellItem(reuseIdentifier: "ButtonTableViewCell",
 																				 identifier: CellIdentifierPrefix.button.rawValue)
-		button.title = "Continue".localized()
-		button.buttonPattern = "filled"
+		button.title = "Confirm and Send".localized()
+		button.buttonPattern = "purple"
     button.buttonColor = "purple"
+    button.isLoadingObserver = isLoading
+    button.isButtonEnabled = true
+    button.isButtonEnabledObservable = Observable.combineLatest(self.isButtonEnabled, isLoading).map {
+      return $0 && !$1
+    }
+    button.buttonTitleObservable = isLoading.map { $0 ? "" : "Confirm and Send" }
+
 		button.output?.didTapButton
 			.asDriver(onErrorJustReturn: ())
 			.drive(proceedButtonDidTapSubject.asObserver())
@@ -318,9 +476,39 @@ class RawTransactionViewModel: BaseViewModel, ViewModel {// swiftlint:disable:th
 																				identifier: CellIdentifierPrefix.blank.rawValue + "_2")
 		let blank3 = BlankTableViewCellItem(reuseIdentifier: "BlankTableViewCell",
 																				identifier: CellIdentifierPrefix.blank.rawValue + "_3")
+    blank3.height = 3
 
-    var section = BaseTableSectionItem(identifier: String.random(), header: "")
-		section.items = items + [blank0, fee, blank, blank2, blank3, button, cancelButton]
+    var section = BaseTableSectionItem(identifier: "RawTransactionSections", header: "")
+		section.items = items + [blank0, fee, blank, blank2, blank3]
+
+    if shouldShowNeededCoin.value && !isEditing.value {
+      let exchangeCoins = RawTransactionConvertCoinCellItem(reuseIdentifier: "RawTransactionConvertCoinCell",
+                                                            identifier: "RawTransactionConvertCoinCell")
+
+      exchangeCoins.exchange.withLatestFrom(dependency.balanceService.balances()).map({ balances in
+        guard let coin = self.neededCoin, let amount = self.neededCoinAmount else {
+          return nil
+        }
+        let newAmount = max(0.0, amount - (balances.balances[coin]?.0 ?? 0.0))
+        return (coin, newAmount, self.neededCoinAmount ?? 0.0)
+      }).subscribe(showExchange).disposed(by: disposeBag)
+      exchangeCoins.title = dependency.balanceService.balances().map({ (val) -> String in
+        guard let neededCoin = self.neededCoin, let neededAmount = self.neededCoinAmount else { return "" }
+
+        let additionalAmount = max(0.0, neededAmount - (val.balances[neededCoin]?.0 ?? 0.0))
+        let totalAmount = CurrencyNumberFormatter.formattedDecimal(with: additionalAmount,
+                                                                   formatter: self.decimalFormatter,
+                                                                   maxPlaces: 18)
+        return "Not enough coins. Please buy \(totalAmount) \(neededCoin) to finish transaction."
+      })
+      let blank4 = BlankTableViewCellItem(reuseIdentifier: "BlankTableViewCell",
+                                          identifier: CellIdentifierPrefix.blank.rawValue + "_4")
+      blank4.height = 8
+
+      section.items += [exchangeCoins, blank4]
+    }
+
+    section.items += [button, cancelButton]
 		return [section]
 	}
 
@@ -385,310 +573,853 @@ extension RawTransactionViewModel {
 			let data = data,
 			let txData = RLP.decode(data),
 			let content = txData[0]?.content {
-					switch content {
-					case .list(let items, _, _):
-						switch type {
-						case .sendCoin:
-						guard let coinData = items[0].data,
-							let coin = String(coinData: coinData),
-							let addressData = items[1].data,
-							let valueData = items[2].data,
-							addressData.toHexString().isValidAddress() else {
-								throw RawTransactionViewModelError.incorrectTxData
-						}
-						let value = BigUInt(valueData)
-						let amount = (Decimal(bigInt: value) ?? 0).PIPToDecimal()
-						let amountString = CurrencyNumberFormatter.formattedDecimal(with: amount,
-																																				formatter: decimalFormatter)
-						let sendingValue = amountString + " " + coin
-						fields.append(["key": "You are Sending".localized(), "value": sendingValue])
-						fields.append(["key": "To".localized(), "value": "Mx" + addressData.toHexString()])
 
-						case .sellCoin:
-							fields.append(["key": "Type".localized(), "value": "Sell Coin"])
-							guard
-								let coinFromData = items[0].data,
-								let coinFrom = String(coinData: coinFromData),
-								let valueData = items[1].data,
-								let coinToData = items[2].data,
-								let coinTo = String(coinData: coinToData),
-								let minimumValueToBuyData = items[3].data,
-								coinTo.isValidCoin(),
-								coinFrom.isValidCoin() else {
-									throw RawTransactionViewModelError.incorrectTxData
-							}
-							let minimumValueToBuy = BigUInt(minimumValueToBuyData)
-							let value = BigUInt(valueData)
-							let amountString = CurrencyNumberFormatter.formattedDecimal(with: (Decimal(bigInt: value) ?? 0).PIPToDecimal(),
-																																					formatter: decimalFormatter)
+      var payloadField = Field(key: "Payload Message".localized(), value: payload ?? "", isEditable: true)
+      payloadField.modify = { val in
+        var value = val
+        while value?.data(using: .utf8)?.count ?? 0 > RawTransaction.maxPayloadSize {
+          value?.removeLast()
+        }
+        payloadField.value = value
+        return value
+      }
 
-              let minimumValueToBuyString = CurrencyNumberFormatter.formattedDecimal(with: (Decimal(bigInt: minimumValueToBuy) ?? 0).PIPToDecimal(),
-                                                                                     formatter: coinFormatter)
+      payloadField.onChanged = { [weak self] in
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.01) {
 
-							fields.append(["key": "Coin From".localized(), "value": coinFrom])
-							fields.append(["key": "Amount".localized(), "value": amountString])
-							fields.append(["key": "Coin To".localized(), "value": coinTo])
-              fields.append(["key": "Minimum Value To Buy", "value": minimumValueToBuyString])
+          self?.payload = payloadField.value
+          self?.commissionTextForceUpdate.onNext(())
+        }
+        self?.commissionTextForceUpdate.onNext(())
+      }
+      payloadField.validateWithError = { val in
+        return (val?.data(using: .utf8) ?? Data()).count > RawTransaction.maxPayloadSize ? "Too Many Symbols".localized() : nil
+      }
 
-						case .sellAllCoins:
-							fields.append(["key": "Type".localized(), "value": "Sell All"])
-							guard let coinFromData = items[0].data,
-								let coinFrom = String(coinData: coinFromData),
-								let coinToData = items[1].data,
-								let coinTo = String(coinData: coinToData),
-								let minimumValueToBuyData = items[2].data,
-								coinTo.isValidCoin(),
-								coinFrom.isValidCoin() else {
-									throw RawTransactionViewModelError.incorrectTxData
-							}
+        switch content {
+        case .list(let items, _, _):
+          switch type {
 
-              let minimumValueToBuy = BigUInt(minimumValueToBuyData)
-              let minimumValueToBuyString = CurrencyNumberFormatter.formattedDecimal(with: (Decimal(bigInt: minimumValueToBuy) ?? 0).PIPToDecimal(),
-                                                                                     formatter: decimalFormatter)
-							fields.append(["key": "Coin From".localized(), "value": coinFrom])
-							fields.append(["key": "Coin To".localized(), "value": coinTo])
-              fields.append(["key": "Minimum Value To Buy", "value": minimumValueToBuyString])
-
-						case .buyCoin:
-							fields.append(["key": "Type".localized(), "value": "Buy Coin"])
-							guard let coinFromData = items[0].data,
-								let coinFrom = String(coinData: coinFromData),
-								let valueData = items[1].data,
-								let coinToData = items[2].data,
-								let coinTo = String(coinData: coinToData),
-								let maximumValueToSpendData = items[3].data,
-								coinTo.isValidCoin(),
-								coinFrom.isValidCoin() else {
-									throw RawTransactionViewModelError.incorrectTxData
-							}
-							let maximumValueToSpend = BigUInt(maximumValueToSpendData)
-							let value = BigUInt(valueData)
-							let amountString = CurrencyNumberFormatter.formattedDecimal(with: (Decimal(bigInt: value) ?? 0).PIPToDecimal(),
-																																					formatter: coinFormatter)
-
-              let maximumValueToSpendString = CurrencyNumberFormatter.formattedDecimal(with: (Decimal(bigInt: maximumValueToSpend) ?? 0).PIPToDecimal(),
-                                                                                     formatter: coinFormatter)
-							fields.append(["key": "Coin From".localized(), "value": coinFrom])
-							fields.append(["key": "Amount".localized(), "value": amountString])
-							fields.append(["key": "Coin To".localized(), "value": coinTo])
-              fields.append(["key": "Maximum Value To Spend".localized(), "value": maximumValueToSpendString])
-
-						case .createCoin:
-							fields.append(["key": "Type".localized(), "value": "Create Coin"])
-							guard let coinNameData = items[0].data,
-								let coinName = String(data: coinNameData, encoding: .utf8),
-								let coinSymbolData = items[1].data,
-								let coinSymbol = String(coinData: coinSymbolData),
-								let initialAmountData = items[2].data,
-								let initialReserveData = items[3].data,
-								let constantReserveRatioData = items[4].data,
-								coinSymbol.isValidCoin() else {
-									throw RawTransactionViewModelError.incorrectTxData
-							}
-							self.createCoinSymbolCount = coinSymbol.count
-							let initialAmount = BigUInt(initialAmountData)
-							let initialReserve = BigUInt(initialReserveData)
-							let crr = BigUInt(constantReserveRatioData)
-							let initialAmountString = CurrencyNumberFormatter.formattedDecimal(with: (Decimal(bigInt: initialAmount) ?? 0).PIPToDecimal(),
-																																								 formatter: coinFormatter)
-							let initialReserveString = CurrencyNumberFormatter.formattedDecimal(with: (Decimal(bigInt: initialReserve) ?? 0).PIPToDecimal(),
-																																									formatter: coinFormatter)
-							let crrString = CurrencyNumberFormatter.formattedDecimal(with: (Decimal(bigInt: crr) ?? 0),
-																																			 formatter: noMantissaFormatter)
-							fields.append(["key": "Coin Name".localized(), "value": coinName])
-							fields.append(["key": "Coin Symbol".localized(), "value": coinSymbol])
-							fields.append(["key": "Initial Amount".localized(), "value": initialAmountString])
-							fields.append(["key": "Initial Reserve".localized(), "value": initialReserveString])
-							fields.append(["key": "Constant Reserve Ration".localized(), "value": crrString])
-              if let maxSupplyData = items[safe: 5]?.data {
-                let maxSupply = BigUInt(maxSupplyData)
-                let maxSupplyString = CurrencyNumberFormatter.formattedDecimal(with: (Decimal(bigInt: maxSupply) ?? 0).PIPToDecimal(),
-                                                                               formatter: coinFormatter)
-                fields.append(["key": "Max Supply".localized(), "value": BigUInt.compare(maxSupply, BigUInt(decimal: Decimal(pow(10.0, 18.0+15.0)))!) == .orderedSame ? "10¹⁵ (max)" : maxSupplyString])
-              } else {
-                fields.append(["key": "Max Supply".localized(), "value": "10¹⁵ (max)"])
-              }
-
-						case .declareCandidacy:
-							fields.append(["key": "Type".localized(), "value": "DECLARE CANDIDACY".localized()])
-							guard
-								let addressData = items[0].data,
-								let publicKeyData = items[1].data,
-								let commissionData = items[2].data,
-								let coinData = items[3].data,
-								let coin = String(coinData: coinData),
-								let stakeData = items[4].data else {
-									throw RawTransactionViewModelError.incorrectTxData
-							}
-							let commission = BigUInt(commissionData)
-							let commissionString = CurrencyNumberFormatter.formattedDecimal(with: (Decimal(bigInt: commission) ?? 0),
-																																							formatter: noMantissaFormatter)
-
-							let stake = BigUInt(stakeData)
-							let amountString = CurrencyNumberFormatter.formattedDecimal(with: (Decimal(bigInt: stake) ?? 0).PIPToDecimal(),
-																																					formatter: coinFormatter)
-							fields.append(["key": "Address".localized(), "value": "Mx" + addressData.toHexString()])
-							fields.append(["key": "Public Key".localized(), "value": "Mp" + publicKeyData.toHexString()])
-							fields.append(["key": "Commission".localized(), "value": commissionString])
-							fields.append(["key": "Coin".localized(), "value": coin])
-							fields.append(["key": "Stake".localized(), "value": amountString])
-
-						case .delegate:
-							fields.append(["key": "Type".localized(), "value": "Delegate".localized()])
-							guard
-								let publicKeyData = items[0].data,
-								let coinData = items[1].data,
-								let coin = String(coinData: coinData),
-								let stakeData = items[2].data,
-								coin.isValidCoin() else {
-									throw RawTransactionViewModelError.incorrectTxData
-							}
-							let stake = BigUInt(stakeData)
-							let amountString = CurrencyNumberFormatter.formattedDecimal(with: (Decimal(bigInt: stake) ?? 0).PIPToDecimal(),
-																																					formatter: coinFormatter)
-							fields.append(["key": "Public Key".localized(), "value": "Mp" + publicKeyData.toHexString()])
-							fields.append(["key": "Coin".localized(), "value": coin])
-							fields.append(["key": "Amount".localized(), "value": amountString])
-
-						case .unbond:
-							fields.append(["key": "Type".localized(), "value": "Unbond".localized()])
-							guard
-								let publicKeyData = items[0].data,
-								let coinData = items[1].data,
-								let coin = String(coinData: coinData),
-								let stakeData = items[2].data else {
-									throw RawTransactionViewModelError.incorrectTxData
-							}
-							let stake = BigUInt(stakeData)
-							let amountString = CurrencyNumberFormatter.formattedDecimal(with: (Decimal(bigInt: stake) ?? 0).PIPToDecimal(),
-																																					formatter: coinFormatter)
-							fields.append(["key": "Public Key".localized(), "value": "Mp" + publicKeyData.toHexString()])
-							fields.append(["key": "Coin".localized(), "value": coin])
-							fields.append(["key": "Amount".localized(), "value": amountString])
-
-						case .redeemCheck:
-							fields.append(["key": "Type".localized(), "value": "Redeem Check".localized()])
-							guard
-								let checkData = items[0].data else {
-									throw RawTransactionViewModelError.incorrectTxData
-							}
-							if let checkPayload = RLP.decode(checkData)?[0]?.content {
-								switch checkPayload {
-								case .list(let checkPayloadItems, _, _):
-									if
-										let checkCoinData = checkPayloadItems[safe: 3]?.data,
-										let checkAmount = checkPayloadItems[safe: 4]?.data {
-										let value = BigUInt(checkAmount)
-										let amount = (Decimal(bigInt: value) ?? 0).PIPToDecimal()
-										let amountString = decimalFormatter.formattedDecimal(with: amount)
-										let checkValue = amountString + " " + (String(coinData: checkCoinData) ?? "")
-										fields.append(["key": "Amount".localized(), "value": checkValue])
-									}
-								case .noItem:
-									break
-								case .data(_):
-									break
-								}
-							}
-
-							fields.append(["key": "Check".localized(), "value": "Mc" + checkData.toHexString()])
-              if let passwordString = userData?["p"] as? String {
-                fields.append(["key": "Password".localized(), "value": passwordString])
-              } else if let proofData = items[1].data, proofData.count > 0 {
-                fields.append(["key": "Proof".localized(), "value": proofData.toHexString()])
-							} else {
+          case .sendCoin:
+            guard let coinData = items[0].data,
+              let coin = String(coinData: coinData),
+              let addressData = items[1].data,
+              let valueData = items[2].data,
+              addressData.toHexString().isValidAddress() else {
                 throw RawTransactionViewModelError.incorrectTxData
-							}
+            }
 
-						case .setCandidateOnline:
-							fields.append(["key": "Type".localized(), "value": "Set Candidate On".localized()])
-							guard let publicKeyData = items[0].data else {
-								throw RawTransactionViewModelError.incorrectTxData
-							}
-							fields.append(["key": "Public Key".localized(), "value": "Mp" + publicKeyData.toHexString()])
+            let value = BigUInt(valueData)
+            let amount = (Decimal(bigInt: value) ?? 0).PIPToDecimal()
+            let amountString = CurrencyNumberFormatter.formattedDecimal(with: amount,
+                                                                        formatter: decimalFormatter,
+                                                                        maxPlaces: 18
+                                                                        )
 
-						case .setCandidateOffline:
-							fields.append(["key": "Type".localized(), "value": "Set Candidate Off".localized()])
-							guard let publicKeyData = items[0].data else {
-								throw RawTransactionViewModelError.incorrectTxData
-							}
-							fields.append(["key": "Public Key".localized(), "value": "Mp" + publicKeyData.toHexString()])
+            self.neededCoin = coin
+            self.neededCoinAmount = (Decimal(bigInt: value) ?? 0).PIPToDecimal()
 
-						case .createMultisigAddress:
-              fields.append(["key": "Type".localized(), "value": "Create Multisig Address".localized()])
+            var field1 = Field(key: "You are Sending".localized(), value: amountString, isEditable: true)
+            field1.keyboardType = .decimalPad
+            var coinField = Field(key: "Coin".localized(), value: coin, isEditable: true)
+            var field3 = Field(key: "To".localized(), value: "Mx" + addressData.toHexString(), isEditable: true)
+
+            func makeSendCoinTransactionData() {
               guard
-                let thresholdData = items[0].data,
-                let weightData = items[1].data,
-                let weightArray = RLP.decode(weightData),
-                let addressData = items[2].data,
-                let addressArray = RLP.decode(addressData)
+                let address = field3.value,
+                address.isValidAddress(),
+                let coin = coinField.value,
+                coin.isValidCoin(),
+                let amount = field1.value,
+                let decimalAmount = Decimal(str: amount),
+                let value = BigUInt(decimal: decimalAmount.decimalFromPIP()) else {
+                self.data = nil
+                return
+              }
+              let sendData = MinterCore.SendCoinRawTransactionData(to: address, value: value, coin: coin)
+              self.payload = payloadField.value
+              self.data = sendData.encode()
+            }
+
+            //Amount
+            field1.modify = { [weak self] val in
+              let retValue = self?.fieldModifyAmount(val)
+              field1.value = retValue
+              return retValue
+            }
+            field1.validateWithError = { val in
+              return (Decimal(str: val) != nil || val?.count == 0) ? nil : "Invalid value".localized()
+            }
+            field1.onChanged = {
+              DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                makeSendCoinTransactionData()
+              }
+            }
+
+            coinField.modify = { [weak self] val in
+              let retValue = self?.fieldModifyCoin(val)
+              coinField.value = retValue
+              return retValue
+            }
+            coinField.validateWithError = { val in
+              return (val?.count == 0 || val?.isValidCoin() ?? false) ? nil : "Invalid coin name".localized()
+            }
+            coinField.onChanged = {
+              DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                makeSendCoinTransactionData()
+              }
+            }
+
+            field3.modify = { val in
+              let retValue = val?.replacingOccurrences(of: " ", with: "")
+              field3.value = retValue
+              return retValue
+            }
+            field3.validateWithError = { val in
+              return (val?.count == 0 || val?.isValidAddress() ?? false) ? nil : "Invalid address".localized()
+            }
+            field3.onChanged = {
+              DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                makeSendCoinTransactionData()
+              }
+            }
+
+            fields.append(contentsOf: [field1, coinField, field3])
+
+          case .sellCoin:
+            let typeField = Field(key: "Type".localized(), value: "Sell Coin".localized(), isEditable: false)
+            fields.append(typeField)
+            guard
+              let coinFromData = items[0].data,
+              let coinFrom = String(coinData: coinFromData),
+              let valueData = items[1].data,
+              let coinToData = items[2].data,
+              let coinTo = String(coinData: coinToData),
+              let minimumValueToBuyData = items[3].data,
+              coinTo.isValidCoin(),
+              coinFrom.isValidCoin() else {
+                throw RawTransactionViewModelError.incorrectTxData
+            }
+            let minimumValueToBuy = BigUInt(minimumValueToBuyData)
+            let value = BigUInt(valueData)
+            let amountString = CurrencyNumberFormatter.formattedDecimal(with: (Decimal(bigInt: value) ?? 0).PIPToDecimal(),
+                                                                        formatter: decimalFormatter,
+                                                                        maxPlaces: 18)
+
+            let minimumValueToBuyString = CurrencyNumberFormatter.formattedDecimal(with: (Decimal(bigInt: minimumValueToBuy) ?? 0).PIPToDecimal(),
+                                                                                   formatter: decimalFormatter,
+                                                                                   maxPlaces: 18)
+
+            self.neededCoin = coinFrom
+            self.neededCoinAmount = (Decimal(bigInt: value) ?? 0).PIPToDecimal()
+
+            var coinFromField = Field(key: "Coin From".localized(), value: coinFrom, isEditable: true)
+            coinFromField.modify = { [weak self] val in
+              let retValue = self?.fieldModifyCoin(val)
+              coinFromField.value = retValue
+              return retValue
+            }
+            coinFromField.validateWithError = { val in
+              return (val?.count == 0 || val?.isValidCoin() ?? false) ? nil : "Invalid coin name".localized()
+            }
+            fields.append(coinFromField)
+
+            var coinToField = Field(key: "Coin To".localized(), value: coinTo, isEditable: true)
+            coinToField.modify = { [weak self] val in
+              let retValue = self?.fieldModifyCoin(val)
+              coinToField.value = retValue
+              return retValue
+            }
+            coinToField.validateWithError = { val in
+              return (val?.count == 0 || val?.isValidCoin() ?? false) ? nil : "Invalid coin name".localized()
+            }
+            fields.append(coinToField)
+
+            var amountField = Field(key: "Amount".localized(), value: amountString, isEditable: true)
+            amountField.keyboardType = .decimalPad
+
+            var minimumValueToBuyField = Field(key: "Minimum Value To Buy".localized(), value: minimumValueToBuyString, isEditable: true)
+            minimumValueToBuyField.keyboardType = .decimalPad
+
+            func makeSellCoinTransactionData() {
+              guard
+                let coinFrom = coinFromField.value, coinFrom.isValidCoin(),
+                let coinTo = coinToField.value, coinTo.isValidCoin(),
+                let amount = amountField.value, let decimalAmount = Decimal(str: amount),
+                let value = BigUInt(decimal: decimalAmount.decimalFromPIP()),
+                let minimumValueToBuy = minimumValueToBuyField.value, let minimumValueToBuyAmount = Decimal(str: minimumValueToBuy),
+                let minimumValueToBuyValue = BigUInt(decimal: minimumValueToBuyAmount.decimalFromPIP())
               else {
-                  throw RawTransactionViewModelError.incorrectTxData
+                self.data = nil
+                return
               }
-              for idx in 0..<(weightArray.count ?? 0) {
-                let address = "Mx" + (addressArray[idx]?.data?.toHexString() ?? "")
 
-                let weight = BigUInt(weightArray[idx]?.data ?? Data())
-                let weightString = CurrencyNumberFormatter.formattedDecimal(with: (Decimal(bigInt: weight) ?? 0),
-                                                                            formatter: noMantissaFormatter)
-                fields.append(["key": "Address : Weight".localized(),
-                               "value": TransactionTitleHelper.title(from: address) + " : " + weightString])
+              let data = SellCoinRawTransactionData(coinFrom: coinFrom, coinTo: coinTo, value: value, minimumValueToBuy: minimumValueToBuyValue)
+              self.data = data.encode()
+            }
+
+            coinFromField.onChanged = {
+              DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                makeSellCoinTransactionData()
               }
-              let threshold = BigUInt(thresholdData)
-              let thresholdString = CurrencyNumberFormatter.formattedDecimal(with: (Decimal(bigInt: threshold) ?? 0),
-                                                                             formatter: noMantissaFormatter)
-              fields.append(["key": "Threshold".localized(), "value": thresholdString])
+            }
 
-						case .multisend:
-							guard
-								let arrayData = items[0].data,
-								let array = RLP.decode(arrayData) else {
-									throw RawTransactionViewModelError.incorrectTxData
-							}
-							multisendAddressCount = array.count ?? 0
-							for idx in 0..<(array.count ?? 0) {
-								if
-									let addressDictData = array[idx]?.data,
-									let addressDict = RLP.decode(addressDictData),
-									let coinData = addressDict[0]?.data,
-										let coin = String(coinData: coinData),
-										let addressData = addressDict[1]?.data,
-										let valueData = addressDict[2]?.data {
-											let address = addressData.toHexString()
-											let value = BigUInt(valueData)
-											let amount = (Decimal(bigInt: value) ?? 0).PIPToDecimal()
-											let amountString = CurrencyNumberFormatter.formattedDecimal(with: amount,
-																																									formatter: coinFormatter)
-											let sendingValue = amountString + " " + coin
-											fields.append(["key": "You are Sending".localized(), "value": sendingValue])
-											fields.append(["key": "To".localized(), "value": "Mx" + address])
-									}
-							}
+            coinToField.onChanged = {
+              DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                makeSellCoinTransactionData()
+              }
+            }
 
-						case .editCandidate:
-							fields.append(["key": "Type".localized(), "value": "Edit Candidate".localized()])
-							guard let publicKeyData = items[0].data,
-								let rewardAddressData = items[1].data,
-								let ownerAddressData = items[2].data else {
-									throw RawTransactionViewModelError.incorrectTxData
-							}
-							fields.append(["key": "Public Key".localized(), "value": "Mp" + publicKeyData.toHexString()])
-							fields.append(["key": "Reward Address".localized(), "value": "Mx" + rewardAddressData.toHexString()])
-							fields.append(["key": "Owner Address".localized(), "value": "Mx" + ownerAddressData.toHexString()])
-						}
-						break
+            amountField.modify = { [weak self] val in
+              let retValue = self?.fieldModifyAmount(val)
+              amountField.value = retValue
+              return retValue
+            }
+            amountField.validateWithError = { val in
+              return (Decimal(str: val) != nil || val?.count == 0) ? nil : "Invalid value".localized()
+            }
+            amountField.onChanged = {
+              DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                makeSellCoinTransactionData()
+              }
+            }
+            fields.append(amountField)
+
+            minimumValueToBuyField.modify = { [weak self] val in
+              let retValue = self?.fieldModifyAmount(val)
+              minimumValueToBuyField.value = retValue
+              return retValue
+            }
+            minimumValueToBuyField.onChanged = {
+              DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                makeSellCoinTransactionData()
+              }
+            }
+            minimumValueToBuyField.validateWithError = { val in
+              return (Decimal(str: val) != nil || val?.count == 0) ? nil : "Invalid value".localized()
+            }
+            fields.append(minimumValueToBuyField)
+
+          case .sellAllCoins:
+            let typeField = Field(key: "Type".localized(), value: "Sell All".localized(), isEditable: false)
+            fields.append(typeField)
             
-					case .noItem: break
-					case .data(_): break
-					}
-					if gasCoin.isValidCoin() {
-						fields.append(["key": "Gas Coin".localized(), "value": gasCoin])
-					}
-					if let payload = payload, payload.count > 0 {
-						fields.append(["key": "Payload Message".localized(), "value": payload])
-					}
-			}
+            guard let coinFromData = items[0].data,
+              let coinFrom = String(coinData: coinFromData),
+              let coinToData = items[1].data,
+              let coinTo = String(coinData: coinToData),
+              let minimumValueToBuyData = items[2].data,
+              coinTo.isValidCoin(),
+              coinFrom.isValidCoin() else {
+                throw RawTransactionViewModelError.incorrectTxData
+            }
+
+            let minimumValueToBuy = BigUInt(minimumValueToBuyData)
+            let minimumValueToBuyString = CurrencyNumberFormatter.formattedDecimal(with: (Decimal(bigInt: minimumValueToBuy) ?? 0).PIPToDecimal(),
+                                                                                   formatter: decimalFormatter,
+                                                                                   maxPlaces: 18)
+
+            var coinFromField = Field(key: "Coin From".localized(), value: coinFrom, isEditable: true)
+            coinFromField.modify = { [weak self] val in
+              let retValue = self?.fieldModifyCoin(val)
+              coinFromField.value = retValue
+              return retValue
+            }
+            coinFromField.validateWithError = { val in
+              return (val?.count == 0 || val?.isValidCoin() ?? false) ? nil : "Invalid coin name".localized()
+            }
+            fields.append(coinFromField)
+
+            var coinToField = Field(key: "Coin To".localized(), value: coinTo, isEditable: true)
+            coinToField.modify = { [weak self] val in
+              let retValue = self?.fieldModifyCoin(val)
+              coinToField.value = retValue
+              return retValue
+            }
+            coinFromField.validateWithError = { val in
+              return (val?.count == 0 || val?.isValidCoin() ?? false) ? nil : "Invalid coin name".localized()
+            }
+            fields.append(coinToField)
+
+            var minimumValueToBuyField = Field(key: "Minimum Value To Buy".localized(), value: minimumValueToBuyString, isEditable: true)
+            minimumValueToBuyField.keyboardType = .decimalPad
+
+            func makeSellAllTransactionData() {
+              guard let coinFrom = coinFromField.value, coinFrom.isValidCoin(),
+                let coinTo = coinToField.value, coinTo.isValidCoin(),
+                let minimumValueToBuy = minimumValueToBuyField.value, let minimumValueToBuyAmount = Decimal(str: minimumValueToBuy),
+                let minimumValueToBuyValue = BigUInt(decimal: minimumValueToBuyAmount.decimalFromPIP())
+              else {
+                self.data = nil
+                return
+              }
+              let sellAllData = SellAllCoinsRawTransactionData(coinFrom: coinFrom, coinTo: coinTo, minimumValueToBuy: minimumValueToBuyValue)
+              self.data = sellAllData.encode()
+            }
+
+            coinFromField.onChanged = {
+              DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                makeSellAllTransactionData()
+              }
+            }
+
+            coinToField.onChanged = {
+              DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                makeSellAllTransactionData()
+              }
+            }
+
+            minimumValueToBuyField.modify = { [weak self] val in
+              let retValue = self?.fieldModifyAmount(val)
+              minimumValueToBuyField.value = retValue
+              return retValue
+            }
+            minimumValueToBuyField.onChanged = {
+              DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                makeSellAllTransactionData()
+              }
+            }
+            minimumValueToBuyField.validateWithError = { val in
+              return (Decimal(str: val) != nil || val?.count == 0) ? nil : "Invalid value".localized()
+            }
+            fields.append(minimumValueToBuyField)
+
+          case .buyCoin:
+            let typeField = Field(key: "Type".localized(), value: "Buy Coin".localized(), isEditable: false)
+            fields.append(typeField)
+
+            guard let coinFromData = items[2].data,
+              let coinFrom = String(coinData: coinFromData),
+              let valueData = items[1].data,
+              let coinToData = items[0].data,
+              let coinTo = String(coinData: coinToData),
+              let maximumValueToSpendData = items[3].data,
+              coinTo.isValidCoin(),
+              coinFrom.isValidCoin() else {
+                throw RawTransactionViewModelError.incorrectTxData
+            }
+            let maximumValueToSpend = BigUInt(maximumValueToSpendData)
+            let value = BigUInt(valueData)
+            let amountString = CurrencyNumberFormatter.formattedDecimal(with: (Decimal(bigInt: value) ?? 0).PIPToDecimal(),
+                                                                        formatter: decimalFormatter,
+                                                                        maxPlaces: 18)
+
+            let maximumValueToSpendString = CurrencyNumberFormatter.formattedDecimal(with: (Decimal(bigInt: maximumValueToSpend) ?? 0).PIPToDecimal(),
+                                                                                   formatter: decimalFormatter,
+                                                                                   maxPlaces: 18)
+            
+            var coinToField = Field(key: "Coin To Buy".localized(), value: coinTo, isEditable: true)
+            coinToField.modify = { [weak self] val in
+              let retValue = self?.fieldModifyCoin(val)
+              coinToField.value = retValue
+              return retValue
+            }
+            coinToField.validateWithError = { val in
+              return (val?.count == 0 || val?.isValidCoin() ?? false) ? nil : "Invalid coin name".localized()
+            }
+
+            var amountField = Field(key: "Amount".localized(), value: amountString, isEditable: true)
+            amountField.keyboardType = .decimalPad
+
+            var coinFromField = Field(key: "Coin To Sell".localized(), value: coinFrom, isEditable: true)
+            coinFromField.modify = { [weak self] val in
+              let retValue = self?.fieldModifyCoin(val)
+              coinFromField.value = retValue
+              return retValue
+            }
+            coinFromField.validateWithError = { val in
+              return (val?.count == 0 || val?.isValidCoin() ?? false) ? nil : "Invalid coin name".localized()
+            }
+
+            var maximumValueToSpendField = Field(key: "Maximum Value To Spend".localized(), value: maximumValueToSpendString, isEditable: true)
+            maximumValueToSpendField.keyboardType = .decimalPad
+
+            func makeBuyCoinTransactionData() {
+              guard
+                let coinFrom = coinFromField.value, coinFrom.isValidCoin(),
+                let coinTo = coinToField.value, coinTo.isValidCoin(),
+                let amount = amountField.value, let decimalAmount = Decimal(str: amount),
+                let value = BigUInt(decimal: decimalAmount.decimalFromPIP()),
+                let maximumValueToSpend = maximumValueToSpendField.value, let maximumValueToSpendAmount = Decimal(str: maximumValueToSpend),
+                let maximumValueToSpendValue = BigUInt(decimal: maximumValueToSpendAmount.decimalFromPIP())
+              else {
+                self.data = nil
+                return
+              }
+
+              let data = BuyCoinRawTransactionData(coinFrom: coinFrom, coinTo: coinTo, value: value, maximumValueToSell: maximumValueToSpendValue)
+              self.data = data.encode()
+            }
+
+            coinFromField.onChanged = {
+              DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                makeBuyCoinTransactionData()
+              }
+            }
+            fields.append(coinFromField)
+
+            coinToField.onChanged = {
+              DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                makeBuyCoinTransactionData()
+              }
+            }
+            fields.append(coinToField)
+
+            amountField.modify = { [weak self] val in
+              let retValue = self?.fieldModifyAmount(val)
+              amountField.value = retValue
+              return retValue
+            }
+            amountField.validateWithError = { val in
+              return (Decimal(str: val) != nil || val?.count == 0) ? nil : "Invalid value".localized()
+            }
+            amountField.onChanged = {
+              DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                makeBuyCoinTransactionData()
+              }
+            }
+            fields.append(amountField)
+
+            maximumValueToSpendField.modify = { [weak self] val in
+              let retValue = self?.fieldModifyAmount(val)
+              maximumValueToSpendField.value = retValue
+              return retValue
+            }
+            maximumValueToSpendField.onChanged = {
+              DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                makeBuyCoinTransactionData()
+              }
+            }
+            maximumValueToSpendField.validateWithError = { val in
+              return (Decimal(str: val) != nil || val?.count == 0) ? nil : "Invalid value".localized()
+            }
+            fields.append(maximumValueToSpendField)
+
+          case .createCoin:
+            let typeField = Field(key: "Type".localized(), value: "Create Coin".localized(), isEditable: false)
+            fields.append(typeField)
+            guard let coinNameData = items[0].data,
+              let coinName = String(data: coinNameData, encoding: .utf8),
+              let coinSymbolData = items[1].data,
+              let coinSymbol = String(coinData: coinSymbolData),
+              let initialAmountData = items[2].data,
+              let initialReserveData = items[3].data,
+              let constantReserveRatioData = items[4].data,
+              coinSymbol.isValidCoin() else {
+                throw RawTransactionViewModelError.incorrectTxData
+            }
+            self.createCoinSymbolCount = coinSymbol.count
+            let initialAmount = BigUInt(initialAmountData)
+            let initialReserve = BigUInt(initialReserveData)
+            let crr = BigUInt(constantReserveRatioData)
+            let initialAmountString = CurrencyNumberFormatter.formattedDecimal(with: (Decimal(bigInt: initialAmount) ?? 0).PIPToDecimal(),
+                                                                               formatter: decimalFormatter,
+                                                                               maxPlaces: 18)
+
+            let initialReserveString = CurrencyNumberFormatter.formattedDecimal(with: (Decimal(bigInt: initialReserve) ?? 0).PIPToDecimal(),
+                                                                                formatter: decimalFormatter,
+                                                                                maxPlaces: 18)
+
+            let crrString = CurrencyNumberFormatter.formattedDecimal(with: (Decimal(bigInt: crr) ?? 0),
+                                                                     formatter: noMantissaFormatter)
+            let coinNameField = Field(key: "Coin Name".localized(), value: coinName, isEditable: false)
+            fields.append(coinNameField)
+
+            let coinSymbolField = Field(key: "Coin Symbol".localized(), value: coinSymbol, isEditable: false)
+            fields.append(coinSymbolField)
+
+            let initialAmountField = Field(key: "Coin Symbol".localized(), value: initialAmountString, isEditable: false)
+            fields.append(initialAmountField)
+
+            let initialReserveField = Field(key: "Initial Reserve".localized(), value: initialReserveString, isEditable: false)
+            fields.append(initialReserveField)
+
+            let crrField = Field(key: "Constant Reserve Ratio".localized(), value: crrString, isEditable: false)
+            fields.append(crrField)
+
+            if let maxSupplyData = items[safe: 5]?.data {
+              let maxSupply = BigUInt(maxSupplyData)
+              let maxSupplyString = CurrencyNumberFormatter.formattedDecimal(with: (Decimal(bigInt: maxSupply) ?? 0).PIPToDecimal(),
+                                                                             formatter: decimalFormatter,
+                                                                             maxPlaces: 18)
+
+              let maxSupplyField = Field(key: "Max Supply".localized(), value: BigUInt.compare(maxSupply, BigUInt(decimal: Decimal(pow(10.0, 18.0+15.0)))!) == .orderedSame ? "10¹⁵ (max)" : maxSupplyString, isEditable: false)
+              fields.append(maxSupplyField)
+            } else {
+              let maxSupplyField = Field(key: "Max Supply".localized(), value: "10¹⁵ (max)", isEditable: false)
+              fields.append(maxSupplyField)
+            }
+
+          case .declareCandidacy:
+            let typeField = Field(key: "Type".localized(), value: "Declare Candidacy".localized(), isEditable: false)
+            fields.append(typeField)
+
+            guard
+              let addressData = items[0].data,
+              let publicKeyData = items[1].data,
+              let commissionData = items[2].data,
+              let coinData = items[3].data,
+              let coin = String(coinData: coinData),
+              let stakeData = items[4].data else {
+                throw RawTransactionViewModelError.incorrectTxData
+            }
+            let commission = BigUInt(commissionData)
+            let commissionString = CurrencyNumberFormatter.formattedDecimal(with: (Decimal(bigInt: commission) ?? 0),
+                                                                            formatter: noMantissaFormatter)
+
+            let stake = BigUInt(stakeData)
+            let amountString = CurrencyNumberFormatter.formattedDecimal(with: (Decimal(bigInt: stake) ?? 0).PIPToDecimal(),
+                                                                        formatter: decimalFormatter)
+            let addressField = Field(key: "Address".localized(), value: "Mx" + addressData.toHexString(), isEditable: false)
+            fields.append(addressField)
+
+            let pkField = Field(key: "Public Key".localized(), value:  "Mp" + publicKeyData.toHexString(), isEditable: false)
+            fields.append(pkField)
+
+            let commissionField = Field(key: "Commission".localized(), value:  commissionString, isEditable: false)
+            fields.append(commissionField)
+
+            let coinField = Field(key: "Coin".localized(), value: coin, isEditable: false)
+            fields.append(coinField)
+
+            let stakeField = Field(key: "Stake".localized(), value: amountString, isEditable: false)
+            fields.append(stakeField)
+
+          case .delegate:
+            let typeField = Field(key: "Type".localized(), value: "Delegate".localized(), isEditable: false)
+            fields.append(typeField)
+
+            guard
+              let publicKeyData = items[0].data,
+              let coinData = items[1].data,
+              let coin = String(coinData: coinData),
+              let stakeData = items[2].data,
+              coin.isValidCoin() else {
+                throw RawTransactionViewModelError.incorrectTxData
+            }
+            let stake = BigUInt(stakeData)
+            let amountString = CurrencyNumberFormatter.formattedDecimal(with: (Decimal(bigInt: stake) ?? 0).PIPToDecimal(),
+                                                                        formatter: decimalFormatter,
+                                                                        maxPlaces: 18)
+
+            self.neededCoin = coin
+            self.neededCoinAmount = (Decimal(bigInt: stake) ?? 0).PIPToDecimal()
+
+            var pkField = Field(key: "Public Key".localized(), value: "Mp" + publicKeyData.toHexString(), isEditable: true)
+
+            var coinField = Field(key: "Coin".localized(), value: coin, isEditable: true)
+
+            var amountField = Field(key: "Amount".localized(), value: amountString, isEditable: true)
+            amountField.keyboardType = .decimalPad
+
+            func makeDelegateTransactionData() {
+              guard
+                let publicKey = pkField.value, publicKey.isValidPublicKey(),
+                let coin = coinField.value, coin.isValidCoin(),
+                let amount = amountField.value, let decimalAmount = Decimal(str: amount),
+                let value = BigUInt(decimal: decimalAmount.decimalFromPIP())
+              else {
+                self.data = nil
+                return
+              }
+
+              let data = DelegateRawTransactionData(publicKey: publicKey, coin: coin, value: value)
+              self.data = data.encode()
+            }
+
+            coinField.modify = { [weak self] val in
+              let retValue = self?.fieldModifyCoin(val)
+              coinField.value = retValue
+              return retValue
+            }
+            coinField.validateWithError = { val in
+              return (val?.count == 0 || val?.isValidCoin() ?? false) ? nil : "Invalid coin name".localized()
+            }
+            coinField.onChanged = {
+              DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                makeDelegateTransactionData()
+              }
+            }
+
+            amountField.modify = { [weak self] val in
+              let retValue = self?.fieldModifyAmount(val)
+              amountField.value = retValue
+              return retValue
+            }
+            amountField.validateWithError = { val in
+              return (Decimal(str: val) != nil || val?.count == 0) ? nil : "Invalid value".localized()
+            }
+            amountField.onChanged = {
+              DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                makeDelegateTransactionData()
+              }
+            }
+
+            pkField.modify = { val in
+              let retValue = val
+              pkField.value = retValue
+              return retValue
+            }
+            pkField.validateWithError = { val in
+              return (val?.count == 0 || val?.isValidPublicKey() ?? false) ? nil : "Invalid Public Key".localized()
+            }
+            pkField.onChanged = {
+              DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                makeDelegateTransactionData()
+              }
+            }
+            fields.append(pkField)
+            fields.append(coinField)
+            fields.append(amountField)
+
+          case .unbond:
+            let typeField = Field(key: "Type".localized(), value: "Unbond".localized(), isEditable: false)
+            fields.append(typeField)
+            guard
+              let publicKeyData = items[0].data,
+              let coinData = items[1].data,
+              let coin = String(coinData: coinData),
+              let stakeData = items[2].data else {
+                throw RawTransactionViewModelError.incorrectTxData
+            }
+            let stake = BigUInt(stakeData)
+            let amountString = CurrencyNumberFormatter.formattedDecimal(with: (Decimal(bigInt: stake) ?? 0).PIPToDecimal(),
+                                                                        formatter: decimalFormatter,
+                                                                        maxPlaces: 18)
+
+            var pkField = Field(key: "Public Key".localized(), value: "Mp" + publicKeyData.toHexString(), isEditable: true)
+
+            var coinField = Field(key: "Coin".localized(), value: coin, isEditable: true)
+
+            var amountField = Field(key: "Amount".localized(), value: amountString, isEditable: true)
+            amountField.keyboardType = .decimalPad
+
+            func makeUnbondTransactionData() {
+              guard
+                let publicKey = pkField.value, publicKey.isValidPublicKey(),
+                let coin = coinField.value, coin.isValidCoin(),
+                let amount = amountField.value, let decimalAmount = Decimal(str: amount),
+                let value = BigUInt(decimal: decimalAmount.decimalFromPIP())
+              else {
+                self.data = nil
+                return
+              }
+
+              let data = UnbondRawTransactionData(publicKey: publicKey, coin: coin, value: value)
+              self.data = data.encode()
+            }
+
+            coinField.modify = { [weak self] val in
+              let retValue = self?.fieldModifyCoin(val)
+              coinField.value = retValue
+              return retValue
+            }
+            coinField.validateWithError = { val in
+              return (val?.count == 0 || val?.isValidCoin() ?? false) ? nil : "Invalid coin name".localized()
+            }
+            coinField.onChanged = {
+              DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                makeUnbondTransactionData()
+              }
+            }
+
+            amountField.modify = { [weak self] val in
+              let retValue = self?.fieldModifyAmount(val)
+              amountField.value = retValue
+              return retValue
+            }
+            amountField.validateWithError = { val in
+              return (Decimal(str: val) != nil || val?.count == 0) ? nil : "Invalid value".localized()
+            }
+            amountField.onChanged = {
+              DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                makeUnbondTransactionData()
+              }
+            }
+
+            pkField.modify = { val in
+              let retValue = val
+              pkField.value = retValue
+              return retValue
+            }
+            pkField.validateWithError = { val in
+              return (val?.count == 0 || val?.isValidPublicKey() ?? false) ? nil : "Invalid Public Key".localized()
+            }
+            pkField.onChanged = {
+              DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                makeUnbondTransactionData()
+              }
+            }
+
+            fields.append(pkField)
+            fields.append(coinField)
+            fields.append(amountField)
+
+          case .redeemCheck:
+            let typeField = Field(key: "Type".localized(), value: "Redeem Check".localized(), isEditable: false)
+            fields.append(typeField)
+            guard
+              let checkData = items[0].data else {
+                throw RawTransactionViewModelError.incorrectTxData
+            }
+            if let checkPayload = RLP.decode(checkData)?[0]?.content {
+              switch checkPayload {
+              case .list(let checkPayloadItems, _, _):
+                if
+                  let checkCoinData = checkPayloadItems[safe: 3]?.data,
+                  let checkAmount = checkPayloadItems[safe: 4]?.data {
+                  let value = BigUInt(checkAmount)
+                  let amount = (Decimal(bigInt: value) ?? 0).PIPToDecimal()
+                  let amountString = decimalFormatter.formattedDecimal(with: amount)
+                  let checkValue = amountString + " " + (String(coinData: checkCoinData) ?? "")
+                  let amountField = Field(key: "Amount".localized(), value: checkValue, isEditable: false)
+                  fields.append(amountField)
+                }
+              case .noItem:
+                break
+              case .data(_):
+                break
+              }
+            }
+
+            let checkField = Field(key: "Check".localized(), value: "Mc" + checkData.toHexString(), isEditable: false)
+            fields.append(checkField)
+            if let passwordString = userData?["p"] as? String {
+              let passwordField = Field(key: "Password".localized(), value: passwordString, isEditable: false)
+              fields.append(passwordField)
+            } else if let proofData = items[1].data, proofData.count > 0 {
+              let proofField = Field(key: "Proof".localized(), value: proofData.toHexString(), isEditable: false)
+              fields.append(proofField)
+            } else {
+              throw RawTransactionViewModelError.incorrectTxData
+            }
+
+          case .setCandidateOnline:
+            let typeField = Field(key: "Type".localized(), value: "Set Candidate On".localized(), isEditable: false)
+            fields.append(typeField)
+            guard let publicKeyData = items[0].data else {
+              throw RawTransactionViewModelError.incorrectTxData
+            }
+            let pkField = Field(key: "Public Key".localized(), value: "Mp" + publicKeyData.toHexString(), isEditable: false)
+            fields.append(pkField)
+
+          case .setCandidateOffline:
+            let typeField = Field(key: "Type".localized(), value: "Set Candidate Off".localized(), isEditable: false)
+            fields.append(typeField)
+            guard let publicKeyData = items[0].data else {
+              throw RawTransactionViewModelError.incorrectTxData
+            }
+            let pkField = Field(key: "Public Key".localized(), value: "Mp" + publicKeyData.toHexString(), isEditable: false)
+            fields.append(pkField)
+
+          case .createMultisigAddress:
+            let typeField = Field(key: "Type".localized(), value: "Create Multisig Address".localized(), isEditable: false)
+            fields.append(typeField)
+            guard
+              let thresholdData = items[0].data,
+              let weightData = items[1].data,
+              let weightArray = RLP.decode(weightData),
+              let addressData = items[2].data,
+              let addressArray = RLP.decode(addressData)
+            else {
+                throw RawTransactionViewModelError.incorrectTxData
+            }
+            for idx in 0..<(weightArray.count ?? 0) {
+              let address = "Mx" + (addressArray[idx]?.data?.toHexString() ?? "")
+
+              let weight = BigUInt(weightArray[idx]?.data ?? Data())
+              let weightString = CurrencyNumberFormatter.formattedDecimal(with: (Decimal(bigInt: weight) ?? 0),
+                                                                          formatter: noMantissaFormatter)
+
+              let field = Field(key: "Address : Weight".localized(),
+                                value: TransactionTitleHelper.title(from: address) + " : " + weightString,
+                                isEditable: false)
+              fields.append(field)
+            }
+            let threshold = BigUInt(thresholdData)
+            let thresholdString = CurrencyNumberFormatter.formattedDecimal(with: (Decimal(bigInt: threshold) ?? 0),
+                                                                           formatter: noMantissaFormatter)
+            let thresholdField = Field(key: "Threshold".localized(), value: thresholdString, isEditable: false)
+            fields.append(thresholdField)
+
+          case .multisend:
+            guard let arrayData = items[0].data, let array = RLP.decode(arrayData) else {
+              throw RawTransactionViewModelError.incorrectTxData
+            }
+            multisendAddressCount = array.count ?? 0
+            for idx in 0..<(array.count ?? 0) {
+              if
+                let addressDictData = array[idx]?.data,
+                let addressDict = RLP.decode(addressDictData),
+                let coinData = addressDict[0]?.data,
+                let coin = String(coinData: coinData),
+                let addressData = addressDict[1]?.data,
+                let valueData = addressDict[2]?.data {
+                  let address = addressData.toHexString()
+                  let value = BigUInt(valueData)
+                  let amount = (Decimal(bigInt: value) ?? 0).PIPToDecimal()
+                  let amountString = CurrencyNumberFormatter.formattedDecimal(with: amount,
+                                                                              formatter: decimalFormatter,
+                                                                              maxPlaces: 18)
+                  let sendingValue = amountString + " " + coin
+
+                  let sendingField = Field(key: "You are Sending".localized(), value: sendingValue, isEditable: false)
+                  fields.append(sendingField)
+
+                  let toField = Field(key: "To".localized(), value: "Mx" + address, isEditable: false)
+                  fields.append(toField)
+              }
+            }
+
+          case .editCandidate:
+            let typeField = Field(key: "Type".localized(), value: "Edit Candidate".localized(), isEditable: false)
+            fields.append(typeField)
+
+            guard let publicKeyData = items[0].data,
+              let rewardAddressData = items[1].data,
+              let ownerAddressData = items[2].data else {
+                throw RawTransactionViewModelError.incorrectTxData
+            }
+            let pkField = Field(key: "Public Key".localized(), value: "Mp" + publicKeyData.toHexString(), isEditable: false)
+            fields.append(pkField)
+
+            let rewardField = Field(key: "Reward Address".localized(), value: "Mx" + rewardAddressData.toHexString(), isEditable: false)
+            fields.append(rewardField)
+
+            let ownerField = Field(key: "Owner Address".localized(), value: "Mx" + ownerAddressData.toHexString(), isEditable: false)
+            fields.append(ownerField)
+          }
+          break
+
+        case .noItem: break
+        case .data(_): break
+        }
+
+        if gasCoin.isValidCoin() {
+          let gasField = Field(key: "Gas Coin".localized(), value: gasCoin, isEditable: false)
+          fields.append(gasField)
+        }
+      if let payload = payload, payload.count > 0 {
+        fields.append(payloadField)
+      } else if isEditing.value {
+        fields.append(payloadField)
+      }
+    }
 	}
 }
 
 extension RawTransactionViewModel: LastBlockViewable {}
+
+extension RawTransactionViewModel {
+
+  func fieldModifyCoin(_ val: String?) -> String? {
+    return val?.replacingOccurrences(of: " ", with: "").uppercased()
+  }
+
+  func fieldModifyAmount(_ val: String?) -> String? {
+    return val?
+      .replacingOccurrences(of: " ", with: "")
+      .replacingOccurrences(of: ",", with: ".")
+  }
+
+}

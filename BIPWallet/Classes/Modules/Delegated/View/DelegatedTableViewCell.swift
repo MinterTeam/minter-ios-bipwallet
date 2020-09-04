@@ -67,7 +67,6 @@ class DelegatedTableViewCell: BaseCell {
 
     addButton.rx.tap.asDriver().drive(item.didTapAdd).disposed(by: disposeBag)
     copyButton.rx.tap.asDriver().drive(item.didTapCopy).disposed(by: disposeBag)
-    
   }
 
   override func prepareForReuse() {

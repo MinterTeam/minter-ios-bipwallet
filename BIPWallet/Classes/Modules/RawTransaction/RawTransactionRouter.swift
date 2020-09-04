@@ -100,6 +100,7 @@ class RawTransactionRouter {
           }
         }
 			}
+
       return viewController(nonce: nonce,
                             gasPrice: gasPrice,
                             gasCoin: gasCoin,
@@ -171,22 +172,46 @@ class RawTransactionCoordinator: BaseCoordinator<Void> {
   let rootViewController: UIViewController
   let url: URL
   let balanceService: BalanceService
+  let transactionService: TransactionService
 
-  init(rootViewController: UIViewController, url: URL, balanceService: BalanceService) {
+  init(rootViewController: UIViewController, url: URL, balanceService: BalanceService, transactionService: TransactionService) {
     self.rootViewController = rootViewController
     self.url = url
     self.balanceService = balanceService
+    self.transactionService = transactionService
   }
 
   override func start() -> Observable<Void> {
     guard let controller = RawTransactionRouter.rawTransactionViewController(with: url,
-                                                                             balanceService: balanceService) else {
+                                                                             balanceService: balanceService) as? UINavigationController else {
       return Observable.empty()
     }
+
+    let rawTransactionViewController = controller.viewControllers.first as? RawTransactionViewController
+
+    rawTransactionViewController?.viewModel.output.showExchange.flatMap({ val -> Observable<Void> in
+      guard val != nil else { return Observable.empty() }
+      return self.showExchange(controller: controller, coin: val?.0, amount: val?.1, neededAmount: val?.2)
+    }).subscribe().disposed(by: disposeBag)
 
     rootViewController.present(controller, animated: true, completion: nil)
 
     return controller.rx.deallocated
+  }
+
+  func showExchange(controller: UIViewController, coin: String?, amount: Decimal?, neededAmount: Decimal?) -> Observable<Void> {
+    let settings = ExchangeCoordinator.Settings(showBuy: true,
+                                                buyCoin: coin,
+                                                buyAmount: amount,
+                                                neededAmount: neededAmount,
+                                                closeAfterTransaction: true)
+
+    let coordinator = ExchangeCoordinator(rootController: controller,
+                                          balanceService: balanceService,
+                                          transactionService: transactionService,
+                                          coinService: ExplorerCoinService(),
+                                          settings: settings)
+    return coordinate(to: coordinator)
   }
 
 }

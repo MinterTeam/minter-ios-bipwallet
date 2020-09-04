@@ -17,6 +17,8 @@ class DelegatedViewModel: BaseViewModel, ViewModel {
 
   // MARK: -
 
+  //Key - PublicKey
+  //Value- [CoinSymbol: AddressDelegation]
   var datasource = [String: [String: AddressDelegation]]()
 
   private let coinFormatter = CurrencyNumberFormatter.coinFormatter
@@ -89,28 +91,6 @@ class DelegatedViewModel: BaseViewModel, ViewModel {
       self?.impact.onNext(.light)
       self?.sound.onNext(.click)
     }).subscribe(showDelegate).disposed(by: disposeBag)
-
-    //TODO: look if can migrate to 'model selected'
-    didTapUnbond.map { (indexPath) -> (ValidatorItem?, String?, [String: Decimal]?) in
-      guard let indexPath = indexPath else { return (nil, nil, nil) }
-
-      let section = indexPath.section
-      let row = indexPath.row/2 - 1
-
-      let coin = self.sectionData()[safe: section]?.value.sorted(by: { (delegation1, delegation2) -> Bool in
-        return (delegation1.value.bipValue ?? 0 > delegation2.value.bipValue ?? 0)
-      })[safe: row]
-
-      if let item = coin?.value, let publicKey = item.publicKey, let amount = self.datasource[publicKey] {
-        return (ValidatorItem(publicKey: publicKey, name: item.validatorName), coin?.key, amount.mapValues({ (delegation) -> Decimal in
-          return delegation.value ?? 0.0
-        }))
-      }
-      return (nil, nil, nil)
-    }.do(onNext: { [weak self] (_) in
-      self?.impact.onNext(.light)
-      self?.sound.onNext(.click)
-    }).subscribe(showUnbond).disposed(by: disposeBag)
   }
 
   //Sorting keys according to overall bipValue delegated
@@ -143,8 +123,8 @@ class DelegatedViewModel: BaseViewModel, ViewModel {
         let separator = SeparatorTableViewCellItem(reuseIdentifier: "SeparatorTableViewCell",
                                                    identifier: "SeparatorTableViewCell_\(id)")
 
-        let coinCell = CoinTableViewCellItem(reuseIdentifier: "CoinTableViewCell",
-                                             identifier: "CoinTableViewCell_\(id)")
+        let coinCell = DelegatedCoinTableViewCellItem(reuseIdentifier: "DelegatedCoinTableViewCell",
+                                                      identifier: "DelegatedCoinTableViewCell_\(id)")
         coinCell.title = coin
         coinCell.image = UIImage(named: "AvatarPlaceholderImage")
         if let coin = coin {
@@ -155,6 +135,15 @@ class DelegatedViewModel: BaseViewModel, ViewModel {
         if let coin = coin, coin != Coin.baseCoin().symbol! {
           coinCell.bipAmount = bipValue
         }
+        coinCell.didTapMinus.map {
+          let validatorsPK = delegation.value.publicKey ?? ""
+          let validator = ValidatorItem(publicKey: validatorsPK, name: delegation.value.validatorName)
+          let validatorsDelegations = self.datasource[validatorsPK]?.mapValues {$0.value ?? 0.0} ?? [:]
+          return (validator, delegation.key, validatorsDelegations)
+        }.do(onNext: { [weak self] (_) in
+          self?.impact.onNext(.light)
+          self?.sound.onNext(.click)
+        }).subscribe(showUnbond).disposed(by: disposeBag)
 
         return [coinCell, separator]
       }
@@ -174,8 +163,7 @@ class DelegatedViewModel: BaseViewModel, ViewModel {
         .subscribe(onNext: { [weak self] val in
           UIPasteboard.general.string = val?.publicKey
           self?.showNotifyMessage.onNext("Copied!")
-        })
-        .disposed(by: disposeBag)
+        }).disposed(by: disposeBag)
 
       let separator = SeparatorTableViewCellItem(reuseIdentifier: "SeparatorTableViewCell",
                                                  identifier: "SeparatorTableViewCell_\(val.key)")

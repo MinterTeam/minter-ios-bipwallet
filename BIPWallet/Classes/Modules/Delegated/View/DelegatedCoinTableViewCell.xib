@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="16097.2" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16087"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <array key="Inter.otf">
+            <string>Inter_Semi-Bold</string>
+        </array>
+    </customFonts>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="DelegatedCoinTableViewCell" rowHeight="55" id="HZe-fo-DA8" customClass="DelegatedCoinTableViewCell" customModule="BIPWallet" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="55"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="HZe-fo-DA8" id="jw8-vb-Juy">
+                <rect key="frame" x="0.0" y="0.0" width="320" height="55"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="1OG-Gp-NuM">
+                        <rect key="frame" x="12" y="12" width="24" height="18.5"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="x5K-3w-Jfo">
+                                <rect key="frame" x="0.0" y="0.0" width="24" height="24"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="24" id="3I5-tL-Ilg"/>
+                                    <constraint firstAttribute="height" constant="24" id="Jct-BN-oaW"/>
+                                </constraints>
+                            </imageView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="x5K-3w-Jfo" firstAttribute="top" secondItem="1OG-Gp-NuM" secondAttribute="top" id="7qu-zb-2pD"/>
+                            <constraint firstAttribute="trailing" secondItem="x5K-3w-Jfo" secondAttribute="trailing" id="Af6-sD-Hsu"/>
+                            <constraint firstItem="x5K-3w-Jfo" firstAttribute="leading" secondItem="1OG-Gp-NuM" secondAttribute="leading" id="FY6-xu-0Zh"/>
+                            <constraint firstAttribute="bottom" secondItem="x5K-3w-Jfo" secondAttribute="bottom" id="c1r-Hc-Gvh"/>
+                        </constraints>
+                    </view>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="AHW-xF-qlv" customClass="SlashedZeroesLabel" customModule="BIPWallet" customModuleProvider="target">
+                        <rect key="frame" x="48" y="13" width="169" height="22"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="22" id="1Z0-ee-GzG"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" name="Inter_Semi-Bold" family="Inter" pointSize="14"/>
+                        <nil key="textColor"/>
+                        <nil key="highlightedColor"/>
+                        <userDefinedRuntimeAttributes>
+                            <userDefinedRuntimeAttribute type="number" keyPath="characterSpacing">
+                                <real key="value" value="-0.40999999999999998"/>
+                            </userDefinedRuntimeAttribute>
+                        </userDefinedRuntimeAttributes>
+                    </label>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="1000" text="" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="oAZ-ha-TYC" customClass="SlashedZeroesLabel" customModule="BIPWallet" customModuleProvider="target">
+                        <rect key="frame" x="272" y="33.5" width="0.0" height="0.0"/>
+                        <fontDescription key="fontDescription" name="Inter_Semi-Bold" family="Inter" pointSize="11"/>
+                        <color key="textColor" red="0.57254901960000004" green="0.57254901960000004" blue="0.57254901960000004" alpha="1" colorSpace="deviceRGB"/>
+                        <nil key="highlightedColor"/>
+                        <userDefinedRuntimeAttributes>
+                            <userDefinedRuntimeAttribute type="number" keyPath="characterSpacing">
+                                <real key="value" value="0.40000000000000002"/>
+                            </userDefinedRuntimeAttribute>
+                        </userDefinedRuntimeAttributes>
+                    </label>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="topRight" horizontalHuggingPriority="251" verticalHuggingPriority="249" horizontalCompressionResistancePriority="749" verticalCompressionResistancePriority="1000" text="0.0000" textAlignment="right" lineBreakMode="middleTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5ut-sZ-m2o" customClass="SlashedZeroesLabel" customModule="BIPWallet" customModuleProvider="target">
+                        <rect key="frame" x="222" y="15.5" width="50" height="17"/>
+                        <fontDescription key="fontDescription" name="Inter_Semi-Bold" family="Inter" pointSize="14"/>
+                        <nil key="textColor"/>
+                        <nil key="highlightedColor"/>
+                        <userDefinedRuntimeAttributes>
+                            <userDefinedRuntimeAttribute type="number" keyPath="characterSpacing">
+                                <real key="value" value="0.40000000000000002"/>
+                            </userDefinedRuntimeAttribute>
+                        </userDefinedRuntimeAttributes>
+                    </label>
+                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="mUG-Gs-Iab">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="41.5"/>
+                        <connections>
+                            <action selector="didTapCell:" destination="HZe-fo-DA8" eventType="touchUpInside" id="5ai-M6-mEF"/>
+                        </connections>
+                    </button>
+                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6qr-04-YYo">
+                        <rect key="frame" x="288" y="9" width="24" height="24"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="24" id="Dmj-bz-RCU"/>
+                            <constraint firstAttribute="height" constant="24" id="Gs8-JU-Lrf"/>
+                        </constraints>
+                        <state key="normal" image="DelegationMinusButtonIcon"/>
+                    </button>
+                </subviews>
+                <constraints>
+                    <constraint firstItem="5ut-sZ-m2o" firstAttribute="top" secondItem="jw8-vb-Juy" secondAttribute="top" constant="8" id="72T-uQ-ZTb"/>
+                    <constraint firstItem="oAZ-ha-TYC" firstAttribute="top" secondItem="5ut-sZ-m2o" secondAttribute="bottom" constant="1" id="8Pp-se-HB1"/>
+                    <constraint firstItem="AHW-xF-qlv" firstAttribute="leading" secondItem="1OG-Gp-NuM" secondAttribute="trailing" constant="12" id="9Ze-e7-Tf6"/>
+                    <constraint firstItem="1OG-Gp-NuM" firstAttribute="leading" secondItem="jw8-vb-Juy" secondAttribute="leading" constant="12" id="Ery-8x-JFP"/>
+                    <constraint firstItem="mUG-Gs-Iab" firstAttribute="top" secondItem="jw8-vb-Juy" secondAttribute="top" id="FEF-p6-dp8"/>
+                    <constraint firstItem="6qr-04-YYo" firstAttribute="centerY" secondItem="jw8-vb-Juy" secondAttribute="centerY" id="G11-ap-Q1Q"/>
+                    <constraint firstItem="mUG-Gs-Iab" firstAttribute="leading" secondItem="jw8-vb-Juy" secondAttribute="leading" id="GFJ-4m-rIa"/>
+                    <constraint firstItem="5ut-sZ-m2o" firstAttribute="leading" secondItem="AHW-xF-qlv" secondAttribute="trailing" constant="5" id="JWY-DA-6N1"/>
+                    <constraint firstAttribute="trailing" secondItem="6qr-04-YYo" secondAttribute="trailing" constant="8" id="JXA-Oh-y7N"/>
+                    <constraint firstAttribute="bottom" secondItem="oAZ-ha-TYC" secondAttribute="bottom" constant="8" id="QHF-Wf-fnK"/>
+                    <constraint firstAttribute="trailing" secondItem="oAZ-ha-TYC" secondAttribute="trailing" constant="48" id="QM0-oL-igQ"/>
+                    <constraint firstAttribute="bottom" secondItem="mUG-Gs-Iab" secondAttribute="bottom" id="Rlj-7x-9hg"/>
+                    <constraint firstAttribute="trailing" secondItem="mUG-Gs-Iab" secondAttribute="trailing" id="VV8-vk-nxd"/>
+                    <constraint firstAttribute="trailing" secondItem="5ut-sZ-m2o" secondAttribute="trailing" constant="48" id="a9b-Sf-bc9"/>
+                    <constraint firstItem="AHW-xF-qlv" firstAttribute="centerY" secondItem="x5K-3w-Jfo" secondAttribute="centerY" id="cDi-KS-ZhZ"/>
+                    <constraint firstAttribute="bottom" secondItem="1OG-Gp-NuM" secondAttribute="bottom" constant="11" id="j2M-Xg-cEc"/>
+                    <constraint firstItem="5ut-sZ-m2o" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="1OG-Gp-NuM" secondAttribute="trailing" constant="5" id="jhs-kA-FHz"/>
+                    <constraint firstItem="1OG-Gp-NuM" firstAttribute="top" secondItem="jw8-vb-Juy" secondAttribute="top" constant="12" id="x7b-a7-0HS"/>
+                    <constraint firstItem="5ut-sZ-m2o" firstAttribute="centerY" secondItem="AHW-xF-qlv" secondAttribute="centerY" priority="999" id="xlH-HL-dMR"/>
+                </constraints>
+                <variation key="default">
+                    <mask key="constraints">
+                        <exclude reference="72T-uQ-ZTb"/>
+                    </mask>
+                </variation>
+            </tableViewCellContentView>
+            <viewLayoutGuide key="safeArea" id="Qpv-oL-MX9"/>
+            <connections>
+                <outlet property="amount" destination="5ut-sZ-m2o" id="a9d-oa-86Q"/>
+                <outlet property="amountLeadingConstraint" destination="JWY-DA-6N1" id="WYv-oJ-YAu"/>
+                <outlet property="coin" destination="oAZ-ha-TYC" id="DbL-Mj-OP5"/>
+                <outlet property="coinImage" destination="x5K-3w-Jfo" id="xdN-2B-yHy"/>
+                <outlet property="coinImageWrapper" destination="1OG-Gp-NuM" id="12P-aS-Wwn"/>
+                <outlet property="minusButton" destination="6qr-04-YYo" id="DCq-9c-H9h"/>
+                <outlet property="title" destination="AHW-xF-qlv" id="wGZ-sB-hTf"/>
+            </connections>
+            <point key="canvasLocation" x="25.600000000000001" y="-261.31934032983509"/>
+        </tableViewCell>
+    </objects>
+    <resources>
+        <image name="DelegationMinusButtonIcon" width="20" height="20"/>
+    </resources>
+</document>

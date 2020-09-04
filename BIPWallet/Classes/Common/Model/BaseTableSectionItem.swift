@@ -18,12 +18,14 @@ struct BaseTableSectionItem: AnimatableSectionModelType, IdentifiableType, Equat
   var identifier: String
 
 	var header: String? = ""
+  var rightHeader: String?
 
 	var items: [BaseCellItem]
 
-  init(identifier: String, header: String? = "", items: [BaseCellItem] = []) {
+  init(identifier: String, header: String? = "", rightHeader: String? = nil, items: [BaseCellItem] = []) {
     self.identifier = identifier
 		self.header = header
+    self.rightHeader = rightHeader
 		self.items = items
 	}
 
