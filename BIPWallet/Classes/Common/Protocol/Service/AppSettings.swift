@@ -11,4 +11,5 @@ import Foundation
 protocol AppSettings {
   var isSoundEnabled: Bool { get set }
   var balanceType: String { get set }
+  var showStories: Bool { get set }
 }

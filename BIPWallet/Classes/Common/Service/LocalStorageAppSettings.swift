@@ -15,4 +15,7 @@ class LocalStorageAppSettings: AppSettings {
 
   @LocalStorage("balanceType", defaultValue: "balanceBIP")
   var balanceType: String
+
+  @LocalStorage("showStories", defaultValue: true)
+  var showStories: Bool
 }
