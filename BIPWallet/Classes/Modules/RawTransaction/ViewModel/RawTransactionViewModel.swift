@@ -707,7 +707,7 @@ extension RawTransactionViewModel {
                                                                         maxPlaces: 18)
 
             let minimumValueToBuyString = CurrencyNumberFormatter.formattedDecimal(with: (Decimal(bigInt: minimumValueToBuy) ?? 0).PIPToDecimal(),
-                                                                                   formatter: coinFormatter,
+                                                                                   formatter: decimalFormatter,
                                                                                    maxPlaces: 18)
 
             self.neededCoin = coinFrom
@@ -901,11 +901,11 @@ extension RawTransactionViewModel {
             let maximumValueToSpend = BigUInt(maximumValueToSpendData)
             let value = BigUInt(valueData)
             let amountString = CurrencyNumberFormatter.formattedDecimal(with: (Decimal(bigInt: value) ?? 0).PIPToDecimal(),
-                                                                        formatter: coinFormatter,
+                                                                        formatter: decimalFormatter,
                                                                         maxPlaces: 18)
 
             let maximumValueToSpendString = CurrencyNumberFormatter.formattedDecimal(with: (Decimal(bigInt: maximumValueToSpend) ?? 0).PIPToDecimal(),
-                                                                                   formatter: coinFormatter,
+                                                                                   formatter: decimalFormatter,
                                                                                    maxPlaces: 18)
             
             var coinToField = Field(key: "Coin To Buy".localized(), value: coinTo, isEditable: true)
@@ -917,11 +917,9 @@ extension RawTransactionViewModel {
             coinToField.validateWithError = { val in
               return (val?.count == 0 || val?.isValidCoin() ?? false) ? nil : "Invalid coin name".localized()
             }
-            fields.append(coinToField)
 
             var amountField = Field(key: "Amount".localized(), value: amountString, isEditable: true)
             amountField.keyboardType = .decimalPad
-            fields.append(amountField)
 
             var coinFromField = Field(key: "Coin To Sell".localized(), value: coinFrom, isEditable: true)
             coinFromField.modify = { [weak self] val in
@@ -932,7 +930,6 @@ extension RawTransactionViewModel {
             coinFromField.validateWithError = { val in
               return (val?.count == 0 || val?.isValidCoin() ?? false) ? nil : "Invalid coin name".localized()
             }
-            fields.append(coinFromField)
 
             var maximumValueToSpendField = Field(key: "Maximum Value To Spend".localized(), value: maximumValueToSpendString, isEditable: true)
             maximumValueToSpendField.keyboardType = .decimalPad
@@ -959,12 +956,14 @@ extension RawTransactionViewModel {
                 makeBuyCoinTransactionData()
               }
             }
+            fields.append(coinFromField)
 
             coinToField.onChanged = {
               DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
                 makeBuyCoinTransactionData()
               }
             }
+            fields.append(coinToField)
 
             amountField.modify = { [weak self] val in
               let retValue = self?.fieldModifyAmount(val)
@@ -979,6 +978,7 @@ extension RawTransactionViewModel {
                 makeBuyCoinTransactionData()
               }
             }
+            fields.append(amountField)
 
             maximumValueToSpendField.modify = { [weak self] val in
               let retValue = self?.fieldModifyAmount(val)
@@ -1013,11 +1013,11 @@ extension RawTransactionViewModel {
             let initialReserve = BigUInt(initialReserveData)
             let crr = BigUInt(constantReserveRatioData)
             let initialAmountString = CurrencyNumberFormatter.formattedDecimal(with: (Decimal(bigInt: initialAmount) ?? 0).PIPToDecimal(),
-                                                                               formatter: coinFormatter,
+                                                                               formatter: decimalFormatter,
                                                                                maxPlaces: 18)
 
             let initialReserveString = CurrencyNumberFormatter.formattedDecimal(with: (Decimal(bigInt: initialReserve) ?? 0).PIPToDecimal(),
-                                                                                formatter: coinFormatter,
+                                                                                formatter: decimalFormatter,
                                                                                 maxPlaces: 18)
 
             let crrString = CurrencyNumberFormatter.formattedDecimal(with: (Decimal(bigInt: crr) ?? 0),
@@ -1040,7 +1040,7 @@ extension RawTransactionViewModel {
             if let maxSupplyData = items[safe: 5]?.data {
               let maxSupply = BigUInt(maxSupplyData)
               let maxSupplyString = CurrencyNumberFormatter.formattedDecimal(with: (Decimal(bigInt: maxSupply) ?? 0).PIPToDecimal(),
-                                                                             formatter: coinFormatter,
+                                                                             formatter: decimalFormatter,
                                                                              maxPlaces: 18)
 
               let maxSupplyField = Field(key: "Max Supply".localized(), value: BigUInt.compare(maxSupply, BigUInt(decimal: Decimal(pow(10.0, 18.0+15.0)))!) == .orderedSame ? "10¹⁵ (max)" : maxSupplyString, isEditable: false)
@@ -1069,7 +1069,7 @@ extension RawTransactionViewModel {
 
             let stake = BigUInt(stakeData)
             let amountString = CurrencyNumberFormatter.formattedDecimal(with: (Decimal(bigInt: stake) ?? 0).PIPToDecimal(),
-                                                                        formatter: coinFormatter)
+                                                                        formatter: decimalFormatter)
             let addressField = Field(key: "Address".localized(), value: "Mx" + addressData.toHexString(), isEditable: false)
             fields.append(addressField)
 
@@ -1099,7 +1099,7 @@ extension RawTransactionViewModel {
             }
             let stake = BigUInt(stakeData)
             let amountString = CurrencyNumberFormatter.formattedDecimal(with: (Decimal(bigInt: stake) ?? 0).PIPToDecimal(),
-                                                                        formatter: coinFormatter,
+                                                                        formatter: decimalFormatter,
                                                                         maxPlaces: 18)
 
             self.neededCoin = coin
@@ -1184,7 +1184,7 @@ extension RawTransactionViewModel {
             }
             let stake = BigUInt(stakeData)
             let amountString = CurrencyNumberFormatter.formattedDecimal(with: (Decimal(bigInt: stake) ?? 0).PIPToDecimal(),
-                                                                        formatter: coinFormatter,
+                                                                        formatter: decimalFormatter,
                                                                         maxPlaces: 18)
 
             var pkField = Field(key: "Public Key".localized(), value: "Mp" + publicKeyData.toHexString(), isEditable: true)
@@ -1359,7 +1359,7 @@ extension RawTransactionViewModel {
                   let value = BigUInt(valueData)
                   let amount = (Decimal(bigInt: value) ?? 0).PIPToDecimal()
                   let amountString = CurrencyNumberFormatter.formattedDecimal(with: amount,
-                                                                              formatter: coinFormatter,
+                                                                              formatter: decimalFormatter,
                                                                               maxPlaces: 18)
                   let sendingValue = amountString + " " + coin
 
