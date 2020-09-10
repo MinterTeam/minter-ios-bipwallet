@@ -161,8 +161,7 @@ class SettingsViewModel: BaseViewModel, ViewModel {
                                              identifier: "SwitchTableViewCell_Stories")
     storiesItem.title = "Show Stories".localized()
     storiesItem.isOn = self.dependency.appSettings.showStories
-    storiesItem.isOnSubject.subscribe(onNext: { [weak self] (val) in
-      guard let `self` = self else { return }
+    storiesItem.isOnSubject.subscribe(onNext: { [unowned self] (val) in
       self.dependency.appSettings.showStories = val
       self.sound.onNext(.click)
     }).disposed(by: disposeBag)
