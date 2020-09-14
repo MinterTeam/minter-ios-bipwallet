@@ -49,13 +49,14 @@ class BalanceCoordinator: BaseCoordinator<Void> {
   override func start() -> Observable<Void> {
     let controller = BalanceViewController.initFromStoryboard(name: "Balance")
     let dependency = BalanceViewModel.Dependency(balanceService: balanceService,
-                                                 appSettingsSerivce: LocalStorageAppSettings())
+                                                 appSettingsSerivce: LocalStorageAppSettings(),
+                                                 coinService: coinService)
     let viewModel = BalanceViewModel(dependency: dependency)
     controller.viewModel = viewModel
 
     viewModel.output.didTapShare
       .withLatestFrom(balanceService.account).filter{$0 != nil}.map{$0!}
-      .flatMap{ account in self.showShare(in: controller, account: account) }
+      .flatMap{ [unowned self] account in self.showShare(in: controller, account: account) }
       .subscribe()
       .disposed(by: disposeBag)
 
@@ -136,7 +137,8 @@ extension BalanceCoordinator {
   func showDelegateUnbond(rootViewController: UIViewController, validatorItem: ValidatorItem) -> Observable<Void> {
     let coordiantor = DelegateUnbondCoordinator(rootViewController: rootViewController,
                                                 balanceService: self.balanceService,
-                                                validatorService: self.validatorService)
+                                                validatorService: self.validatorService,
+                                                coinService: coinService)
     coordiantor.validatorItem = validatorItem
     return coordinate(to: coordiantor)
   }
@@ -144,7 +146,8 @@ extension BalanceCoordinator {
   func showDelegated(inViewController: UINavigationController, balanceService: BalanceService) -> Observable<Void> {
     let delegatedCoordinator = DelegatedCoordinator(rootViewController: inViewController,
                                                     balanceService: balanceService,
-                                                    validatorService: self.validatorService)
+                                                    validatorService: self.validatorService,
+                                                    coinService: self.coinService)
     return coordinate(to: delegatedCoordinator)
   }
 
@@ -174,7 +177,11 @@ extension BalanceCoordinator {
   }
 
   func showRawTransaction(rootViewController: UIViewController, url: URL) -> Observable<Void> {
-    let coordinator = RawTransactionCoordinator(rootViewController: rootViewController, url: url, balanceService: self.balanceService, transactionService: self.transactionService)
+    let coordinator = RawTransactionCoordinator(rootViewController: rootViewController,
+                                                url: url,
+                                                balanceService: self.balanceService,
+                                                transactionService: self.transactionService,
+                                                coinService: self.coinService)
     return coordinate(to: coordinator)
   }
 

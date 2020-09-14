@@ -256,7 +256,7 @@ class TransactionViewModel: BaseViewModel, ViewModel {
     amountCoin.value1 = CurrencyNumberFormatter.formattedDecimal(with: data.value ?? 0.0,
                                                                  formatter: coinFormatter)
     amountCoin.key2 = "Coin".localized()
-    amountCoin.value2 = data.coin
+    amountCoin.value2 = data.coin?.symbol
     cellItems.append(amountCoin)
 
     let blank3 = BlankTableViewCellItem(reuseIdentifier: "BlankTableViewCell",
@@ -340,9 +340,9 @@ class TransactionViewModel: BaseViewModel, ViewModel {
     let coins = TransactionTwoColumnCellItem(reuseIdentifier: "TransactionTwoColumnCell",
                                              identifier: "TransactionTwoColumnCell_Coins")
     coins.key1 = "From Coin".localized()
-    coins.value1 = data.fromCoin
+    coins.value1 = data.fromCoin?.symbol
     coins.key2 = "To Coin".localized()
-    coins.value2 = data.toCoin
+    coins.value2 = data.toCoin?.symbol
     cellItems.append(coins)
 
     let blank2 = BlankTableViewCellItem(reuseIdentifier: "BlankTableViewCell",
@@ -442,9 +442,9 @@ class TransactionViewModel: BaseViewModel, ViewModel {
     let coins = TransactionTwoColumnCellItem(reuseIdentifier: "TransactionTwoColumnCell",
                                              identifier: "TransactionTwoColumnCell_Coins")
     coins.key1 = "From Coin".localized()
-    coins.value1 = data.fromCoin
+    coins.value1 = data.fromCoin?.symbol
     coins.key2 = "To Coin".localized()
-    coins.value2 = data.toCoin
+    coins.value2 = data.toCoin?.symbol
     cellItems.append(coins)
 
     let blank2 = BlankTableViewCellItem(reuseIdentifier: "BlankTableViewCell",
@@ -569,7 +569,7 @@ class TransactionViewModel: BaseViewModel, ViewModel {
     amountCoin.value1 = CurrencyNumberFormatter.formattedDecimal(with: data.amount ?? 0.0,
                                                                  formatter: coinFormatter)
     amountCoin.key2 = "Coin".localized()
-    amountCoin.value2 = data.coin
+    amountCoin.value2 = data.coin?.symbol
     cellItems.append(amountCoin)
 
     let blank3 = BlankTableViewCellItem(reuseIdentifier: "BlankTableViewCell",
@@ -678,7 +678,7 @@ class TransactionViewModel: BaseViewModel, ViewModel {
     amountCoin.value1 = CurrencyNumberFormatter.formattedDecimal(with: data.value ?? 0.0,
                                                                  formatter: coinFormatter)
     amountCoin.key2 = "Coin".localized()
-    amountCoin.value2 = data.coin
+    amountCoin.value2 = data.coin?.symbol
     cellItems.append(amountCoin)
 
     let blank3 = BlankTableViewCellItem(reuseIdentifier: "BlankTableViewCell",
@@ -755,7 +755,7 @@ class TransactionViewModel: BaseViewModel, ViewModel {
       }
     }
 
-    if Set(values.map{$0.coin}).count == 1 {
+    if Set(values.map{$0.coin.symbol}).count == 1 {
       let amount = values.reduce(0) { $0 + $1.value}
 
       let amountCoin = TransactionTwoColumnCellItem(reuseIdentifier: "TransactionTwoColumnCell",
@@ -764,7 +764,7 @@ class TransactionViewModel: BaseViewModel, ViewModel {
       amountCoin.value1 = CurrencyNumberFormatter.formattedDecimal(with: amount,
                                                                    formatter: coinFormatter)
       amountCoin.key2 = "Coin".localized()
-      amountCoin.value2 = values.first?.coin
+      amountCoin.value2 = values.first?.coin.symbol
       cellItems.append(amountCoin)
     }
 
@@ -952,7 +952,7 @@ class TransactionViewModel: BaseViewModel, ViewModel {
     coin.key1 = "Commission".localized()
     coin.value1 = "\(Int(NSDecimalNumber(decimal: data.commission ?? 0)))%"
     coin.key2 = "Coin".localized()
-    coin.value2 = data.coin
+    coin.value2 = data.coin?.symbol
     cellItems.append(coin)
 
     let stake = TransactionTwoColumnCellItem(reuseIdentifier: "TransactionTwoColumnCell",
@@ -1110,9 +1110,9 @@ class TransactionViewModel: BaseViewModel, ViewModel {
     let feeBlock = TransactionTwoColumnCellItem(reuseIdentifier: "TransactionTwoColumnCell",
                                                 identifier: "TransactionTwoColumnCell_FeeBlock")
     feeBlock.key1 = "Fee".localized()
-    if transaction.feeCoin != Coin.baseCoin().symbol! {
+    if transaction.feeCoin?.symbol != Coin.baseCoin().symbol! {
       var feeString = ""
-      feeString = (transaction.feeCoin ?? "")
+      feeString = (transaction.feeCoin?.symbol ?? "")
       feeString += " ("
       feeString += CurrencyNumberFormatter.formattedDecimal(with: transaction.fee ?? 0.0,
                                                             formatter: coinFormatter)

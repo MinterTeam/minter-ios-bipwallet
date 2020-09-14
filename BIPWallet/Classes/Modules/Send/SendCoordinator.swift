@@ -21,13 +21,15 @@ class SendCoordinator: BaseCoordinator<Void> {
   let contactsService: ContactsService
   let recipientInfoService: RecipientInfoService
   let validatorService: ValidatorService
+  let coinService: CoinService
 
   init(navigationController: UINavigationController,
        balanceService: BalanceService,
        authService: AuthService,
        contactsService: ContactsService,
        recipientInfoService: RecipientInfoService,
-       validatorService: ValidatorService
+       validatorService: ValidatorService,
+       coinService: CoinService
   ) {
 
     self.navigationController = navigationController
@@ -36,6 +38,7 @@ class SendCoordinator: BaseCoordinator<Void> {
     self.contactsService = contactsService
     self.recipientInfoService = recipientInfoService
     self.validatorService = validatorService
+    self.coinService = coinService
 
     super.init()
 
@@ -46,7 +49,8 @@ class SendCoordinator: BaseCoordinator<Void> {
     let controller = SendViewController.initFromStoryboard(name: "Send")
     let dependency = SendViewModel.Dependency(balanceService: balanceService,
                                               contactsService: contactsService,
-                                              recipientInfoService: recipientInfoService
+                                              recipientInfoService: recipientInfoService,
+                                              coinService: coinService
     )
     let viewModel = SendViewModel(dependency: dependency)
     controller.viewModel = viewModel
@@ -111,7 +115,8 @@ extension SendCoordinator {
   func showDelegateUnbond(rootViewController: UIViewController, validatorItem: ValidatorItem) -> Observable<Void> {
     let coordiantor = DelegateUnbondCoordinator(rootViewController: rootViewController,
                                                 balanceService: self.balanceService,
-                                                validatorService: self.validatorService)
+                                                validatorService: self.validatorService,
+                                                coinService: self.coinService)
     coordiantor.validatorItem = validatorItem
     return coordinate(to: coordiantor)
   }

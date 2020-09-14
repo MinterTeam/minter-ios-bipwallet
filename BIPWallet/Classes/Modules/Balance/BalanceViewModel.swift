@@ -75,6 +75,7 @@ class BalanceViewModel: BaseViewModel, ViewModel, WalletSelectableViewModel {
   struct Dependency {
     var balanceService: BalanceService
     var appSettingsSerivce: AppSettings
+    var coinService: CoinService
   }
 
   init(dependency: Dependency) {
@@ -128,7 +129,6 @@ class BalanceViewModel: BaseViewModel, ViewModel, WalletSelectableViewModel {
 
     dependency.balanceService.account.withLatestFrom(changedBalanceTypeSubject).subscribe(onNext: { (type) in
       let val = self.balanceHeaderItem(balanceType: .balanceBIP, balance: 0.0, isUSD: type == .totalBalanceUSD)
-//      self.balanceTitle.onNext("")
       self.availableBalance.onNext(val.text ?? NSAttributedString())
     }).disposed(by: disposeBag)
     
@@ -196,7 +196,9 @@ class BalanceViewModel: BaseViewModel, ViewModel, WalletSelectableViewModel {
           return
         } else if true == val?.isValidPublicKey() {
           return
-        } else if let url = url, let rawViewController = RawTransactionRouter.rawTransactionViewController(with: url, balanceService: self.dependency.balanceService) {
+        } else if let url = url, let rawViewController = RawTransactionRouter.rawTransactionViewController(with: url,
+                                                                                                           balanceService: self.dependency.balanceService,
+                                                                                                           coinService: self.dependency.coinService) {
           return
         }
         self.showErrorMessage.onNext("Invalid transaction data".localized())

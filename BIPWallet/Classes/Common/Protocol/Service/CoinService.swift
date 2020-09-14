@@ -14,4 +14,5 @@ protocol CoinService: class {
   func updateCoins()
   func coins(by term: String) -> Observable<[Coin]>
   func coinExists(name: String) -> Observable<Bool>
+  func coinId(symbol: String) -> Int?
 }

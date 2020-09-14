@@ -16,16 +16,22 @@ class DelegateUnbondCoordinator: BaseCoordinator<Void> {
   let balanceService: BalanceService
   var validatorItem: ValidatorItem?
   let validatorService: ValidatorService
+  let coinService: CoinService
+
   var isUnbond = false
   var maxUnbondAmounts: [String: Decimal]?
   var coin: String?
   var confirmPopupCoordiantor: DelegateUnbondConfirmPopupCoordinator?
   let controller = DelegateUnbondViewController.initFromStoryboard(name: "DelegateUnbond")
 
-  init(rootViewController: UIViewController, balanceService: BalanceService, validatorService: ValidatorService) {
+  init(rootViewController: UIViewController,
+       balanceService: BalanceService,
+       validatorService: ValidatorService,
+       coinService: CoinService) {
     self.rootViewController = rootViewController
     self.balanceService = balanceService
     self.validatorService = validatorService
+    self.coinService = coinService
   }
 
   override func start() -> Observable<Void> {
@@ -38,7 +44,8 @@ class DelegateUnbondCoordinator: BaseCoordinator<Void> {
     let dependency = DelegateUnbondViewModel.Dependency(validatorService: validatorService,
                                                         balanceService: balanceService,
                                                         gateService: gateService,
-                                                        accountService: accountService)
+                                                        accountService: accountService,
+                                                        coinService: coinService)
 
     let viewModel = DelegateUnbondViewModel(validator: validatorItem,
                                             coinName: coin,

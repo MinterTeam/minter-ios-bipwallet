@@ -14,11 +14,16 @@ class DelegatedCoordinator: BaseCoordinator<Void> {
   let rootViewController: UINavigationController
   let balanceService: BalanceService
   let validatorService: ValidatorService
+  let coinService: CoinService
 
-  init(rootViewController: UINavigationController, balanceService: BalanceService, validatorService: ValidatorService) {
+  init(rootViewController: UINavigationController,
+       balanceService: BalanceService,
+       validatorService: ValidatorService,
+       coinService: CoinService) {
     self.rootViewController = rootViewController
     self.balanceService = balanceService
     self.validatorService = validatorService
+    self.coinService = coinService
 
     validatorService.updateValidators()
 
@@ -52,7 +57,8 @@ class DelegatedCoordinator: BaseCoordinator<Void> {
   func showUnbond(validator: ValidatorItem? = nil, coin: String, maxUnbondAmounts: [String: Decimal]? = nil, rootViewController: UIViewController) -> Observable<Void> {
     let coordinator = DelegateUnbondCoordinator(rootViewController: rootViewController,
                                                 balanceService: self.balanceService,
-                                                validatorService: self.validatorService)
+                                                validatorService: self.validatorService,
+                                                coinService: self.coinService)
     coordinator.validatorItem = validator
     coordinator.isUnbond = true
     coordinator.coin = coin
@@ -63,7 +69,8 @@ class DelegatedCoordinator: BaseCoordinator<Void> {
   func showDelegate(validator: ValidatorItem? = nil, rootViewController: UIViewController) -> Observable<Void> {
     let coordinator = DelegateUnbondCoordinator(rootViewController: rootViewController,
                                                 balanceService: self.balanceService,
-                                                validatorService: self.validatorService)
+                                                validatorService: self.validatorService,
+                                                coinService: self.coinService)
     coordinator.validatorItem = validator
     return coordinate(to: coordinator)
   }

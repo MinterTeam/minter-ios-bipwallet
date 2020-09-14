@@ -100,9 +100,6 @@ class SettingsViewModel: BaseViewModel, ViewModel {
   func createSections() {
     var sctns = [BaseTableSectionItem]()
 
-    let separator = SeparatorTableViewCellItem(reuseIdentifier: "SeparatorTableViewCell",
-                                               identifier: "SeparatorTableViewCell")
-
     let switchItem = SwitchTableViewCellItem(reuseIdentifier: "SwitchTableViewCell",
                                              identifier: "SwitchTableViewCell_Sound")
     switchItem.title = "Enable sounds".localized()

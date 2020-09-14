@@ -33,7 +33,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
       if !isTestnet {
         MinterGateBaseURLString = "https://gate.apps.minter.network"
       } else {
-        MinterGateBaseURLString = "https://gate-api.testnet.minter.network"
+        MinterGateBaseURLString = "https://gate-api.chilinet.minter.network"
       }
     }
 
@@ -62,7 +62,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     let appCoordinator = AppCoordinator(window: window!,
                                         authService: authService,
                                         pinService: pinService,
-                                        transactionService: transactionService)
+                                        transactionService: transactionService,
+                                        coinService: ExplorerCoinService())
 
     appCoordinator.start().subscribe().disposed(by: disposeBag)
 

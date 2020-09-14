@@ -242,8 +242,11 @@ class GetCoinsViewModel: ConvertCoinsViewModel, ViewModel {
     var approximatelySumRoundedVal = ((try? self.approximatelySum.value()) ?? 0) * 1.1 * TransactionCoinFactorDecimal
     approximatelySumRoundedVal.round(.up)
 
-    guard let coinFrom = self.selectedCoin?.transformToCoinName(),
+    guard
+      let coinFrom = self.selectedCoin?.transformToCoinName(),
+      let coinFromId = self.dependency.coinService.coinId(symbol: coinFrom),
       let coinTo = try? self.getCoin.value()?.transformToCoinName() ?? "",
+      let coinToId = self.dependency.coinService.coinId(symbol: coinTo),
       let amntString = self.getAmount.value, let amount = Decimal(str: amntString),
       let maximumValueToSell = BigUInt(decimal: approximatelySumRoundedVal)
       else {
@@ -288,16 +291,19 @@ class GetCoinsViewModel: ConvertCoinsViewModel, ViewModel {
 
           let nonce = nnce + 1
 
-          let coin = (self?.canPayComissionWithBaseCoin() ?? false) ? Coin.baseCoin().symbol : coinFrom
-          let coinData = coin?.data(using: .utf8)?.setLengthRight(10) ?? Data(repeating: 0, count: 10)
+          let coin = (self?.canPayComissionWithBaseCoin() ?? false) ? Coin.baseCoin().id : coinFromId
+          guard let coinId = coin else {
+            self?.errorNotification.onNext("Can't find coin \(coin)")
+            return
+          }
           //TODO: remove after https://github.com/MinterTeam/minter-go-node/issues/224
           let maxValueToSell = BigUInt(decimal: (self?.selectedBalance ?? 0) * TransactionCoinFactorDecimal) ?? BigUInt(0)//maximumValueToSell
 
           let rawTx = BuyCoinRawTransaction(nonce: BigUInt(decimal: nonce)!,
                                             gasPrice: gas,
-                                            gasCoin: coinData,
-                                            coinFrom: coinFrom,
-                                            coinTo: coinTo,
+                                            gasCoinId: coinId,
+                                            coinFromId: coinFromId,
+                                            coinToId: coinToId,
                                             value: value,
                                             maximumValueToSell: maxValueToSell)
           let signedTx = RawTransactionSigner.sign(rawTx: rawTx, privateKey: privateKey)
@@ -326,7 +332,7 @@ class GetCoinsViewModel: ConvertCoinsViewModel, ViewModel {
                 .subscribe(onNext: { [weak self] (transaction) in
                   guard let `self` = self else { return }
                   if let transactionData = transaction?.data as? MinterExplorer.ConvertTransactionData,
-                    let coin = transactionData.toCoin,
+                    let coin = transactionData.toCoin?.symbol,
                     let amount = transactionData.valueToBuy {
                     let string = CurrencyNumberFormatter.formattedDecimal(with: amount, formatter: self.formatter) + " " + coin
                       self.exchangeSucceeded.onNext((message: string, transactionHash: transaction?.hash))

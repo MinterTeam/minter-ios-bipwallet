@@ -61,6 +61,7 @@ class RawTransactionViewModel: BaseViewModel, ViewModel {// swiftlint:disable:th
 		var gate: RawTransactionViewModelGateProtocol
     var authService: AuthService
     var balanceService: BalanceService
+    var coinService: CoinService
 	}
 
 	var input: RawTransactionViewModel.Input!
@@ -320,7 +321,7 @@ class RawTransactionViewModel: BaseViewModel, ViewModel {// swiftlint:disable:th
 			}).flatMap({ [weak self] (result) -> Observable<String?> in
 				let (nonce, _) = result
 				guard let nnnc = BigUInt(decimal: Decimal(nonce+1)),
-					let gasCoin = self?.gasCoin,
+          let gasCoin = self?.dependency.coinService.coinId(symbol: self?.gasCoin ?? ""),
 					let type = self?.type,
           let privateKey = try self?.dependency.account.privatekey(for: address)
 					else {
@@ -338,7 +339,7 @@ class RawTransactionViewModel: BaseViewModel, ViewModel {// swiftlint:disable:th
 
 				let tx = RawTransaction(nonce: resultNonce,
 																gasPrice: gasPrice,
-																gasCoin: gasCoin,
+                                gasCoinId: gasCoin,
 																type: BigUInt(type.rawValue),
 																data: self?.data ?? Data(),
 																payload: self?.payload?.data(using: .utf8) ?? Data())
@@ -630,13 +631,14 @@ extension RawTransactionViewModel {
                 address.isValidAddress(),
                 let coin = coinField.value,
                 coin.isValidCoin(),
+                let coinId = self.dependency.coinService.coinId(symbol: coin),
                 let amount = field1.value,
                 let decimalAmount = Decimal(str: amount),
                 let value = BigUInt(decimal: decimalAmount.decimalFromPIP()) else {
                 self.data = nil
                 return
               }
-              let sendData = MinterCore.SendCoinRawTransactionData(to: address, value: value, coin: coin)
+              let sendData = MinterCore.SendCoinRawTransactionData(to: address, value: value, coinId: coinId)
               self.payload = payloadField.value
               self.data = sendData.encode()
             }
@@ -744,7 +746,9 @@ extension RawTransactionViewModel {
             func makeSellCoinTransactionData() {
               guard
                 let coinFrom = coinFromField.value, coinFrom.isValidCoin(),
+                let coinFromId = self.dependency.coinService.coinId(symbol: coinFrom),
                 let coinTo = coinToField.value, coinTo.isValidCoin(),
+                let coinToId = self.dependency.coinService.coinId(symbol: coinTo),
                 let amount = amountField.value, let decimalAmount = Decimal(str: amount),
                 let value = BigUInt(decimal: decimalAmount.decimalFromPIP()),
                 let minimumValueToBuy = minimumValueToBuyField.value, let minimumValueToBuyAmount = Decimal(str: minimumValueToBuy),
@@ -754,7 +758,10 @@ extension RawTransactionViewModel {
                 return
               }
 
-              let data = SellCoinRawTransactionData(coinFrom: coinFrom, coinTo: coinTo, value: value, minimumValueToBuy: minimumValueToBuyValue)
+              let data = SellCoinRawTransactionData(coinFromId: coinFromId,
+                                                    coinToId: coinToId,
+                                                    value: value,
+                                                    minimumValueToBuy: minimumValueToBuyValue)
               self.data = data.encode()
             }
 
@@ -845,15 +852,20 @@ extension RawTransactionViewModel {
             minimumValueToBuyField.keyboardType = .decimalPad
 
             func makeSellAllTransactionData() {
-              guard let coinFrom = coinFromField.value, coinFrom.isValidCoin(),
+              guard
+                let coinFrom = coinFromField.value, coinFrom.isValidCoin(),
+                let coinFromId = self.dependency.coinService.coinId(symbol: coinFrom),
                 let coinTo = coinToField.value, coinTo.isValidCoin(),
+                let coinToId = self.dependency.coinService.coinId(symbol: coinTo),
                 let minimumValueToBuy = minimumValueToBuyField.value, let minimumValueToBuyAmount = Decimal(str: minimumValueToBuy),
                 let minimumValueToBuyValue = BigUInt(decimal: minimumValueToBuyAmount.decimalFromPIP())
               else {
                 self.data = nil
                 return
               }
-              let sellAllData = SellAllCoinsRawTransactionData(coinFrom: coinFrom, coinTo: coinTo, minimumValueToBuy: minimumValueToBuyValue)
+              let sellAllData = SellAllCoinsRawTransactionData(coinFromId: coinFromId,
+                                                               coinToId: coinToId,
+                                                               minimumValueToBuy: minimumValueToBuyValue)
               self.data = sellAllData.encode()
             }
 
@@ -937,7 +949,9 @@ extension RawTransactionViewModel {
             func makeBuyCoinTransactionData() {
               guard
                 let coinFrom = coinFromField.value, coinFrom.isValidCoin(),
+                let coinFromId = self.dependency.coinService.coinId(symbol: coinFrom),
                 let coinTo = coinToField.value, coinTo.isValidCoin(),
+                let coinToId = self.dependency.coinService.coinId(symbol: coinTo),
                 let amount = amountField.value, let decimalAmount = Decimal(str: amount),
                 let value = BigUInt(decimal: decimalAmount.decimalFromPIP()),
                 let maximumValueToSpend = maximumValueToSpendField.value, let maximumValueToSpendAmount = Decimal(str: maximumValueToSpend),
@@ -947,7 +961,10 @@ extension RawTransactionViewModel {
                 return
               }
 
-              let data = BuyCoinRawTransactionData(coinFrom: coinFrom, coinTo: coinTo, value: value, maximumValueToSell: maximumValueToSpendValue)
+              let data = BuyCoinRawTransactionData(coinFromId: coinFromId,
+                                                   coinToId: coinToId,
+                                                   value: value,
+                                                   maximumValueToSell: maximumValueToSpendValue)
               self.data = data.encode()
             }
 
@@ -1116,6 +1133,7 @@ extension RawTransactionViewModel {
               guard
                 let publicKey = pkField.value, publicKey.isValidPublicKey(),
                 let coin = coinField.value, coin.isValidCoin(),
+                let coinId = self.dependency.coinService.coinId(symbol: coin),
                 let amount = amountField.value, let decimalAmount = Decimal(str: amount),
                 let value = BigUInt(decimal: decimalAmount.decimalFromPIP())
               else {
@@ -1123,7 +1141,9 @@ extension RawTransactionViewModel {
                 return
               }
 
-              let data = DelegateRawTransactionData(publicKey: publicKey, coin: coin, value: value)
+              let data = DelegateRawTransactionData(publicKey: publicKey,
+                                                    coinId: coinId,
+                                                    value: value)
               self.data = data.encode()
             }
 
@@ -1198,6 +1218,7 @@ extension RawTransactionViewModel {
               guard
                 let publicKey = pkField.value, publicKey.isValidPublicKey(),
                 let coin = coinField.value, coin.isValidCoin(),
+                let coinId = self.dependency.coinService.coinId(symbol: coin),
                 let amount = amountField.value, let decimalAmount = Decimal(str: amount),
                 let value = BigUInt(decimal: decimalAmount.decimalFromPIP())
               else {
@@ -1205,7 +1226,9 @@ extension RawTransactionViewModel {
                 return
               }
 
-              let data = UnbondRawTransactionData(publicKey: publicKey, coin: coin, value: value)
+              let data = UnbondRawTransactionData(publicKey: publicKey,
+                                                  coinId: coinId,
+                                                  value: value)
               self.data = data.encode()
             }
 
@@ -1388,6 +1411,16 @@ extension RawTransactionViewModel {
 
             let ownerField = Field(key: "Owner Address".localized(), value: "Mx" + ownerAddressData.toHexString(), isEditable: false)
             fields.append(ownerField)
+          case .setHaltBlock:
+            fatalError()
+          case .recreateCoin:
+            fatalError()
+          case .changeCoinOwner:
+            fatalError()
+          case .editMultisigOwner:
+            fatalError()
+          case .priceVote:
+            fatalError()
           }
           break
 

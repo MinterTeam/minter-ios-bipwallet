@@ -300,8 +300,11 @@ class SpendCoinsViewModel: ConvertCoinsViewModel, ViewModel {
 
   func exchange() {
 
-    guard let coinFrom = self.selectedCoin?.transformToCoinName(),
+    guard
+      let coinFrom = self.selectedCoin?.transformToCoinName(),
+      let coinFromId = self.dependency.coinService.coinId(symbol: coinFrom),
       let coinTo = try? self.getCoin.value()?.transformToCoinName() ?? "",
+      let coinToId = self.dependency.coinService.coinId(symbol: coinTo),
       let amount = self.spendAmount.value,
       let minimumBuyValue = self.minimumValueToBuy.value
     else {
@@ -313,15 +316,13 @@ class SpendCoinsViewModel: ConvertCoinsViewModel, ViewModel {
         return account != nil && (account?.address.isValidAddress() ?? false)
     }).map({ (item) -> String in
       return item?.address ?? ""
-    })
-    .flatMap { selectedAddress in
-      return self.processExchange(coinFrom: coinFrom,
-                                  coinTo: coinTo,
+    }).flatMap { selectedAddress in
+      return self.processExchange(coinFromId: coinFromId,
+                                  coinToId: coinToId,
                                   amount: amount,
                                   selectedAddress: selectedAddress,
                                   minimumBuyValue: minimumBuyValue)
-    }
-    .delay(.seconds(1), scheduler: MainScheduler.instance)
+    }.delay(.seconds(1), scheduler: MainScheduler.instance)
     .flatMap({ [weak self] (hash) -> Observable<MinterExplorer.Transaction?> in
       guard let `self` = self, let hash = hash else { return Observable.error(SpendCoindsViewModelError.incorrectParams) }
       return self.dependency.transactionService.transaction(hash: hash)
@@ -332,11 +333,10 @@ class SpendCoinsViewModel: ConvertCoinsViewModel, ViewModel {
           self?.shouldClearForm.value = true
           self?.dependency.balanceService.updateBalance()
         })
-      })
-    .subscribe(onNext: { [weak self] (transaction) in
+    }).subscribe(onNext: { [weak self] (transaction) in
       guard let `self` = self else { return }
       if let transactionData = transaction?.data as? MinterExplorer.ConvertTransactionData,
-        let coin = transactionData.toCoin,
+        let coin = transactionData.toCoin?.symbol,
         let amount = transactionData.valueToBuy {
         let string = CurrencyNumberFormatter.formattedDecimal(with: amount, formatter: CurrencyNumberFormatter.coinFormatter) + " " + coin
           self.exchangeSucceeded.onNext((message: string, transactionHash: transaction?.hash))
@@ -390,37 +390,31 @@ class SpendCoinsViewModel: ConvertCoinsViewModel, ViewModel {
     self.errorNotification.onNext(title)
   }
 
-  func processExchange(coinFrom: String,
-                       coinTo: String,
+  func processExchange(coinFromId: Int,
+                       coinToId: Int,
                        amount: String,
                        selectedAddress: String,
                        minimumBuyValue: Decimal) -> Observable<String?> {
-    return Observable<String?>.create { [weak self] observer -> Disposable in
-      guard let _self = self else { return Disposables.create() } //swiftlint:disable:this identifier_name
+    return Observable<String?>.create { [unowned self] observer -> Disposable in
 
       guard let amnt = Decimal(string: amount),
         let convertVal = BigUInt(decimal: amnt, fromPIP: true),
-//        let maxComparableSelectedBalance = Decimal.PIPComparableBalance(from: _self.selectedBalance),
         convertVal > 0 else {
           observer.onError(SpendCoindsViewModelError.incorrectParams)
           return Disposables.create()
       }
 
-      //Getting comparable value, since we are comparing not exact numbers, but it's shortened representations
-//      let maxComparableBalanceString = _self.decimalsNoMantissaFormatter.string(from: maxComparableSelectedBalance as NSNumber) ?? ""
-//      let isMax = (convertVal > 0 && convertVal == (BigUInt(maxComparableBalanceString) ?? BigUInt(0)))
-
-      let isMax = CurrencyNumberFormatter.formattedDecimal(with: _self.selectedBalance,
-                                                           formatter: _self.decimalFormatter, maxPlaces: 18) == amount
+      let isMax = CurrencyNumberFormatter.formattedDecimal(with: self.selectedBalance,
+                                                           formatter: self.decimalFormatter, maxPlaces: 18) == amount
 
       var realAmount = convertVal
       //If is max value - get real value
       if isMax {
-         realAmount = BigUInt(decimal: _self.selectedBalance, fromPIP: true) ?? convertVal
+         realAmount = BigUInt(decimal: self.selectedBalance, fromPIP: true) ?? convertVal
       }
 
       DispatchQueue.global(qos: .userInitiated).async {
-        guard let pk = _self.accountManager.privateKey(for: selectedAddress.stripMinterHexPrefix()) else {
+        guard let pk = self.accountManager.privateKey(for: selectedAddress.stripMinterHexPrefix()) else {
           observer.onError(SpendCoindsViewModelError.noPrivateKey)
           return
         }
@@ -430,26 +424,26 @@ class SpendCoinsViewModel: ConvertCoinsViewModel, ViewModel {
           let nonce = Decimal(val.0 + 1)
 
           var tx: RawTransaction!
-          let coin = _self.canPayComissionWithBaseCoin() ? Coin.baseCoin().symbol! : coinFrom
-          let isBaseCoin = Coin.baseCoin().symbol! == coinFrom
+          let coinId = self.canPayComissionWithBaseCoin() ? Coin.baseCoin().id! : coinFromId
+          let isBaseCoin = Coin.baseCoin().id! == coinFromId
 
           //TODO: remove after https://github.com/MinterTeam/minter-go-node/issues/224
           let minValBuy = /*minimumBuyVal*/BigUInt(0)
 
           //Using SellAll TX in case we're using maximum amount or there is no base coin (MNT, BIP) to pay commission
-          if isMax && (isBaseCoin || !_self.canPayComissionWithBaseCoin()) {
+          if isMax && (isBaseCoin || !self.canPayComissionWithBaseCoin()) {
             tx = SellAllCoinsRawTransaction(nonce: BigUInt(decimal: nonce)!,
                                             gasPrice: val.1,
-                                            gasCoin: coin,
-                                            coinFrom: coinFrom,
-                                            coinTo: coinTo,
+                                            gasCoinId: coinId,
+                                            coinFromId: coinFromId,
+                                            coinToId: coinToId,
                                             minimumValueToBuy: minValBuy)
           } else {
             tx = SellCoinRawTransaction(nonce: BigUInt(decimal: nonce)!,
                                         gasPrice: val.1,
-                                        gasCoin: coin,
-                                        coinFrom: coinFrom,
-                                        coinTo: coinTo,
+                                        gasCoinId: coinId,
+                                        coinFromId: coinFromId,
+                                        coinToId: coinToId,
                                         value: realAmount,
                                         minimumValueToBuy: minValBuy)
           }
@@ -460,7 +454,7 @@ class SpendCoinsViewModel: ConvertCoinsViewModel, ViewModel {
           observer.onCompleted()
         }, onError: { [observer] err in
           observer.onError(err)
-        }).disposed(by: _self.disposeBag)
+        }).disposed(by: self.disposeBag)
       }
       return Disposables.create()
     }.do(onCompleted: { [weak self] in

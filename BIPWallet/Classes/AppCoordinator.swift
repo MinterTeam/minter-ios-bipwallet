@@ -16,15 +16,19 @@ final class AppCoordinator: BaseCoordinator<Void> {
   private let pinService: PINService
   private let transactionService: TransactionService
   private let balanceService: BalanceService
+  private let coinService: CoinService
 
-  init(window: UIWindow, authService: AuthService, pinService: PINService, transactionService: TransactionService) {
+  init(window: UIWindow,
+       authService: AuthService,
+       pinService: PINService,
+       transactionService: TransactionService,
+       coinService: CoinService) {
+
     self.window = window
     self.authService = authService
     self.pinService = pinService
     self.transactionService = transactionService
-
-//    let address = self.authService.selectedAccount()?.address
-
+    self.coinService = coinService
     self.balanceService = ExplorerBalanceService()
   }
 
@@ -73,7 +77,11 @@ final class AppCoordinator: BaseCoordinator<Void> {
 
       case .hasAccount:
         return self.start().do(onSubscribed: {
-          let rawCoordinator = RawTransactionCoordinator(rootViewController: self.window.rootViewController!, url: url, balanceService: self.balanceService, transactionService: self.transactionService)
+          let rawCoordinator = RawTransactionCoordinator(rootViewController: self.window.rootViewController!,
+                                                         url: url,
+                                                         balanceService: self.balanceService,
+                                                         transactionService: self.transactionService,
+                                                         coinService: self.coinService)
           self.coordinate(to: rawCoordinator).timeout(.seconds(3), scheduler: MainScheduler.instance).subscribe().disposed(by: self.disposeBag)
         })
 

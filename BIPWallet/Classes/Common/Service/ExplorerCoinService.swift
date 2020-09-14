@@ -67,20 +67,21 @@ class ExplorerCoinService: CoinService {
         return (coin.symbol ?? "").lowercased() == name.lowercased()
       }))
       observer.onCompleted()
-//      self.manager.coins(term: name) { (coins, error) in
-//        guard error == nil else {
-//          observer.onError(error!)
-//          return
-//        }
-//        if let coin = coins?.first, (coin.symbol ?? "") == name {
-//          observer.onNext(true)
-//        } else {
-//          observer.onNext(false)
-//        }
-//        observer.onCompleted()
-//      }
       return Disposables.create()
     }
+  }
+
+  func coinId(symbol: String) -> Int? {
+    guard symbol != Coin.baseCoin().symbol! else {
+      return Coin.baseCoin().id
+    }
+
+    let coins = self.allCoins.filter { (coin) -> Bool in
+      return (coin.symbol ?? "").lowercased() == symbol.lowercased()
+    }
+    guard coins.count <= 1 else { return nil }
+
+    return coins.first?.id
   }
 
 }

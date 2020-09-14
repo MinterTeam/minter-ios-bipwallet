@@ -148,52 +148,49 @@ class ExplorerBalanceService: BalanceService {
         return Disposables.create()
       }
 
-      self.addressManager.address(address: address, withSum: true) { (response, err) in
-
+      self.addressManager.address(address: address, withSum: true) { (response) in
         var totalMainCoinBalance: Decimal = 0
         var totalUSDBalance: Decimal = 0
         var baseCoinBalance: Decimal = 0
         //Second decimal to be used for BIP equivalent
         var allBalances = [String: (Decimal, Decimal)]()
 
-        guard nil == err else {
-          observer.onError(err!)
+        var addr: ExplorerAddressManager.BalanceResponse?
+        switch response {
+        case .error(let error):
+          observer.onError(error)
+          return
+        case .response(let balanceResponse):
+          addr = balanceResponse
+        }
+
+        guard let ads = addr?.address.stripMinterHexPrefix(), let balances = addr?.balances else {
+          observer.onError(ExplorerBalanceServiceError.noAddress)
           return
         }
 
-        let addr = response ?? [:]
-        guard let ads = (addr["address"] as? String)?.stripMinterHexPrefix(),
-          let coins = addr["balances"] as? [[String: Any]] else {
-            observer.onError(ExplorerBalanceServiceError.noAddress)
-          return
+        if let totalBalanceBaseCoin = addr?.totalBalanceSum {
+          totalMainCoinBalance = totalBalanceBaseCoin
         }
 
-        if let totalBalanceBaseCoin = addr["total_balance_sum"] as? String,
-          let totalBalance = Decimal(string: totalBalanceBaseCoin) {
-          totalMainCoinBalance = totalBalance
+        if let totalBalanceUSD = addr?.totalBalanceSumUSD {
+          totalUSDBalance = totalBalanceUSD
         }
 
-        if let totalBalanceUSD = addr["total_balance_sum_usd"] as? String,
-          let totalBalance = Decimal(string: totalBalanceUSD) {
-          totalUSDBalance = totalBalance
-        }
-
-        baseCoinBalance = coins.filter({ (dict) -> Bool in
-          return ((dict["coin"] as? String) ?? "").uppercased() == Coin.baseCoin().symbol!.uppercased()
-        }).map({ (dict) -> Decimal in
-          return Decimal(string: (dict["amount"] as? String) ?? "0.0") ?? 0.0
-        }).reduce(0, +)
+        //Total base coin amount
+        baseCoinBalance = balances.first(where: { (val) -> Bool in
+          val.coin.id == Coin.baseCoin().id!
+        })?.amount ?? 0.0
 
         if let defaultCoin = Coin.baseCoin().symbol {
           allBalances[defaultCoin] = (0.0, 0.0)
         }
-        coins.forEach({ (dict) in
-          if let key = dict["coin"] as? String {
-            let amnt = Decimal(string: (dict["amount"] as? String) ?? "0.0") ?? 0.0
-            let bipAmount = Decimal(string: (dict["bip_amount"] as? String) ?? "0.0") ?? 0.0
-            allBalances[key.uppercased()] = (amnt, bipAmount)
+
+        balances.forEach { (val) in
+          if let key = val.coin.symbol?.uppercased() {
+            allBalances[key] = (val.amount, val.bipAmount)
           }
-        })
+        }
 
         let resp = BalancesResponse(address: address, totalMainCoinBalance, totalUSDBalance, baseCoinBalance, allBalances)
         observer.onNext(resp)

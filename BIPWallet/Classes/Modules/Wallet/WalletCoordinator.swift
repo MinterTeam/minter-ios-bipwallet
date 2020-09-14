@@ -90,7 +90,8 @@ class WalletCoordinator: BaseCoordinator<Void> {
                                           authService: authService,
                                           contactsService: contactsService,
                                           recipientInfoService: recipientInfoService,
-                                          validatorService: validatorService
+                                          validatorService: validatorService,
+                                          coinService: coinService
                                           )
     coordinate(to: sendCoordinator).subscribe().disposed(by: disposeBag)
 

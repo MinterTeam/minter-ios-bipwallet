@@ -50,7 +50,7 @@ extension TransactionViewableViewModel {
     }
 
     if let data = transaction.data as? MinterExplorer.SendCoinTransactionData {
-      transactionCellItem.coin = data.coin
+      transactionCellItem.coin = data.coin?.symbol
       let amount = (data.amount ?? 0) * Decimal(signMultiplier)
       transactionCellItem.amount = CurrencyNumberFormatter.formattedDecimal(with: amount,
                                                                             formatter: CurrencyNumberFormatter.transactionFormatter)
@@ -65,7 +65,6 @@ extension TransactionViewableViewModel {
 
     var signMultiplier = Decimal(1.0)
     let hasAddress = address?.stripMinterHexPrefix() == (transaction.from ?? "").stripMinterHexPrefix()
-    let isSelf = address?.stripMinterHexPrefix() == (transaction.from ?? "").stripMinterHexPrefix() && address?.stripMinterHexPrefix() == (transaction.data?.to ?? "").stripMinterHexPrefix()
 
     var title = ""
     if hasAddress {
@@ -94,12 +93,12 @@ extension TransactionViewableViewModel {
         values = data.values ?? []
       }
     }
-
-    if Set(values.map{$0.coin}).count == 1 {
+    
+    if Set(values.map{$0.coin.symbol}).count == 1 {
       let amount = values.reduce(0) { $0 + $1.value}
       transactionCellItem.amount = CurrencyNumberFormatter.formattedDecimal(with: signMultiplier * amount,
                                                                             formatter: CurrencyNumberFormatter.transactionFormatter)
-      transactionCellItem.coin = values.first?.coin
+      transactionCellItem.coin = values.first?.coin.symbol
     } else {
       transactionCellItem.amount = ""
       transactionCellItem.coin = "Multiple Coins"
@@ -140,13 +139,13 @@ extension TransactionViewableViewModel {
 
     var amount: Decimal = 0.0
     if let data = transaction.data as? MinterExplorer.ConvertTransactionData {
-      transactionCellItem.title = (data.fromCoin ?? "") + arrowSign + (data.toCoin ?? "")
+      transactionCellItem.title = (data.fromCoin?.symbol ?? "") + arrowSign + (data.toCoin?.symbol ?? "")
       amount = (data.valueToBuy ?? 0)
-      transactionCellItem.coin = data.toCoin
+      transactionCellItem.coin = data.toCoin?.symbol
     } else if let data = transaction.data as? MinterExplorer.SellAllCoinsTransactionData {
-      transactionCellItem.title = (data.fromCoin ?? "") + arrowSign + (data.toCoin ?? "")
+      transactionCellItem.title = (data.fromCoin?.symbol ?? "") + arrowSign + (data.toCoin?.symbol ?? "")
       amount = (data.valueToBuy ?? 0)
-      transactionCellItem.coin = data.toCoin
+      transactionCellItem.coin = data.toCoin?.symbol
     }
     transactionCellItem.amount = CurrencyNumberFormatter.formattedDecimal(with: amount,
                                                                           formatter: CurrencyNumberFormatter.transactionFormatter)
@@ -165,7 +164,7 @@ extension TransactionViewableViewModel {
 
     let signMultiplier = transaction.type == .unbond ? 1.0 : -1.0
     if let data = transaction.data as? DelegatableUnbondableTransactionData {
-      transactionCellItem.coin = data.coin
+      transactionCellItem.coin = data.coin?.symbol
       let amount = Decimal(signMultiplier) * (data.value ?? 0)
       transactionCellItem.amount = CurrencyNumberFormatter.formattedDecimal(with: amount,
                                                                             formatter: CurrencyNumberFormatter.transactionFormatter)
@@ -174,7 +173,7 @@ extension TransactionViewableViewModel {
         transactionCellItem.title = self.titleFor(recipient: publicKey) ?? publicKey
         transactionCellItem.imageURL = self.avatarURLFor(recipient: publicKey)
       } else {
-        transactionCellItem.title = data.coin ?? ""
+        transactionCellItem.title = data.coin?.symbol ?? ""
       }
       transactionCellItem.type = transaction.type == .unbond ? "Unbond".localized() : "Delegate".localized()
       transactionCellItem.image = transaction.type == .unbond ? UIImage(named: "UnbondIcon") : UIImage(named: "DelegateIcon")
@@ -203,7 +202,7 @@ extension TransactionViewableViewModel {
       if !hasAddress {
         signMultiplier = -1.0
       }
-      transactionCellItem.coin = data.coin
+      transactionCellItem.coin = data.coin?.symbol
       let amount = (data.value ?? 0) * Decimal(signMultiplier)
       transactionCellItem.amount = CurrencyNumberFormatter.formattedDecimal(with: amount,
                                                                             formatter: CurrencyNumberFormatter.transactionFormatter)
@@ -247,7 +246,7 @@ extension TransactionViewableViewModel {
         transactionCellItem.image = UIImage(named: "SystemIcon")
         transactionCellItem.amount = CurrencyNumberFormatter.formattedDecimal(with: -(data.stake ?? 0.0),
                                                                               formatter: CurrencyNumberFormatter.transactionFormatter)
-        transactionCellItem.coin = data.coin
+        transactionCellItem.coin = data.coin?.symbol
       }
     case .editCandidate:
       transactionCellItem.type = "Edit Candidate"

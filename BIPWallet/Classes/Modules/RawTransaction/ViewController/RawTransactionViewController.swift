@@ -46,7 +46,7 @@ class RawTransactionViewController: BaseViewController, Controller, StoryboardIn
   func configure(with viewModel: RawTransactionViewModel) {
     rxDataSource = RxTableViewSectionedAnimatedDataSource<BaseTableSectionItem>(
       configureCell: { dataSource, tableView, indexPath, sm in
-        guard let item = try? dataSource.model(at: indexPath) as! BaseCellItem, // swiftlint:disable:this force_cast
+        guard let item = try? dataSource.model(at: indexPath) as? BaseCellItem, // swiftlint:disable:this force_cast
           let cell = tableView.dequeueReusableCell(withIdentifier: item.reuseIdentifier) as? ConfigurableCell else {
             assert(true)
             return UITableViewCell()

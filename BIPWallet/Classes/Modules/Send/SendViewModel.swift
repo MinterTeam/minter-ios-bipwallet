@@ -70,6 +70,7 @@ class SendViewModel: BaseViewModel, ViewModel, WalletSelectableViewModel {// swi
     var balanceService: BalanceService
     var contactsService: ContactsService
     var recipientInfoService: RecipientInfoService
+    var coinService: CoinService
   }
 
   var balanceService: BalanceService! {
@@ -292,7 +293,9 @@ YOU ARE ABOUT TO SEND SEED PHRASE IN THE MESSAGE ATTACHED TO THIS TRANSACTION.\n
         } else if true == val?.isValidPublicKey() {
           return
         } else if let url = url,
-          let rawViewController = RawTransactionRouter.rawTransactionViewController(with: url, balanceService: self.dependency.balanceService) {
+          let rawViewController = RawTransactionRouter.rawTransactionViewController(with: url,
+                                                                                    balanceService: self.dependency.balanceService,
+                                                                                    coinService: self.dependency.coinService) {
             self.showViewControllerSubject.onNext(rawViewController)
             return
         }
@@ -690,12 +693,13 @@ YOU ARE ABOUT TO SEND SEED PHRASE IN THE MESSAGE ATTACHED TO THIS TRANSACTION.\n
       }).flatMapLatest({ (val) -> Observable<String?> in
         let nonce = BigUInt(val.0.0)
         let amount = (Decimal(string: val.1.2 ?? "") ?? Decimal(0))
-        let coin = val.1.0 ?? Coin.baseCoin().symbol!
+        let coinSymbol = val.1.0 ?? ""
+        let coinId = self.dependency.coinService.coinId(symbol: coinSymbol) ?? Coin.baseCoin().id!
         let recipient = val.1.1 ?? ""
         let payload = val.1.3 ?? ""
         let selectedAddress = val.1.4
         let baseCoinBalance = val.2.baseCoinBalance
-        let selectedAddressBalance = val.2.balances[coin]?.0 ?? 0.0
+        let selectedAddressBalance = val.2.balances[coinSymbol]?.0 ?? 0.0
 
         guard selectedAddress.isValidAddress() else { return Observable.error(SendViewModelError.noPrivateKey) }
 
@@ -703,7 +707,7 @@ YOU ARE ABOUT TO SEND SEED PHRASE IN THE MESSAGE ATTACHED TO THIS TRANSACTION.\n
                               amount: amount,
                               selectedCoinBalance: selectedAddressBalance,
                               recipient: recipient,
-                              coin: coin,
+                              coinId: coinId,
                               payload: payload,
                               selectedAddress: selectedAddress,
                               canPayCommissionWithBaseCoin: self.canPayCommissionWithBaseCoin(baseCoinBalance: baseCoinBalance))
@@ -748,20 +752,25 @@ YOU ARE ABOUT TO SEND SEED PHRASE IN THE MESSAGE ATTACHED TO THIS TRANSACTION.\n
   // MARK: -
 
   func rawTransaction(nonce: BigUInt,
-                      gasCoin: String,
+                      gasCoinId: Int,
                       recipient: String,
                       value: BigUInt,
-                      coin: String,
+                      coinId: Int,
                       payload: String) -> RawTransaction? {
+//
+//    guard let coinId = self.dependency.coinService.coinId(symbol: coin) else {
+//      return nil
+//    }
+
     var rawTx: RawTransaction?
     let gasPrice = (try? currentGas.value()) ?? 1
     if recipient.isValidAddress() {
       rawTx = SendCoinRawTransaction(nonce: nonce,
                                      gasPrice: gasPrice,
-                                     gasCoin: gasCoin,
+                                     gasCoinId: gasCoinId,
                                      to: recipient,
                                      value: value,
-                                     coin: coin.uppercased())
+                                     coinId: coinId)
     }
     rawTx?.payload = payload.data(using: .utf8) ?? Data()
     return rawTx
@@ -772,7 +781,7 @@ YOU ARE ABOUT TO SEND SEED PHRASE IN THE MESSAGE ATTACHED TO THIS TRANSACTION.\n
     amount: Decimal,
     selectedCoinBalance: Decimal,
     recipient: String,
-    coin: String,
+    coinId: Int,
     payload: String,
     selectedAddress: String,
     canPayCommissionWithBaseCoin: Bool
@@ -781,7 +790,7 @@ YOU ARE ABOUT TO SEND SEED PHRASE IN THE MESSAGE ATTACHED TO THIS TRANSACTION.\n
 
         let isMax = self.isMaxAmount.value
 
-        let isBaseCoin = coin == Coin.baseCoin().symbol!
+        let isBaseCoin = coinId == Coin.baseCoin().id!
         let preparedAmount = amount.decimalFromPIP()
         let commission = self.commission()
         if
@@ -789,7 +798,7 @@ YOU ARE ABOUT TO SEND SEED PHRASE IN THE MESSAGE ATTACHED TO THIS TRANSACTION.\n
           let seed = self.accountManager.seed(mnemonic: mnemonic),
           let newPk = try? self.accountManager.privateKey(from: seed) {
 
-          var gasCoin: String = Coin.baseCoin().symbol!
+          var gasCoinId: Int = Coin.baseCoin().id!
           var value: BigUInt = BigUInt(0)
 
           if isMax {
@@ -803,10 +812,10 @@ YOU ARE ABOUT TO SEND SEED PHRASE IN THE MESSAGE ATTACHED TO THIS TRANSACTION.\n
             } else if !canPayCommissionWithBaseCoin {
               let preparedAmountBigInt = BigUInt(decimal: preparedAmount)!
               let fakeTx = self.rawTransaction(nonce: nonce,
-                                               gasCoin: coin,
+                                               gasCoinId: coinId,
                                                recipient: recipient,
                                                value: preparedAmountBigInt,
-                                               coin: coin,
+                                               coinId: coinId,
                                                payload: payload)
 
               guard let comissionTx = fakeTx else {
@@ -825,10 +834,10 @@ YOU ARE ABOUT TO SEND SEED PHRASE IN THE MESSAGE ATTACHED TO THIS TRANSACTION.\n
                 let normalizedCommission = commission!.PIPToDecimal()
                 let normalizedAmount = BigUInt(decimal: (amount - normalizedCommission).decimalFromPIP()) ?? BigUInt(0)
                 if let rawTx: RawTransaction = self.rawTransaction(nonce: nonce,
-                                                                gasCoin: coin,
+                                                                gasCoinId: coinId,
                                                                 recipient: recipient,
                                                                 value: normalizedAmount,
-                                                                coin: coin,
+                                                                coinId: coinId,
                                                                 payload: payload) {
                   let signedTx = RawTransactionSigner.sign(rawTx: rawTx,
                                                            privateKey: newPk.raw.toHexString())
@@ -840,19 +849,19 @@ YOU ARE ABOUT TO SEND SEED PHRASE IN THE MESSAGE ATTACHED TO THIS TRANSACTION.\n
               }
               return Disposables.create()
             } else {
-              gasCoin = (canPayCommissionWithBaseCoin) ? Coin.baseCoin().symbol! : coin
+              gasCoinId = (canPayCommissionWithBaseCoin) ? Coin.baseCoin().id! : coinId
               value = BigUInt(decimal: amount.decimalFromPIP()) ?? BigUInt(0)
             }
           } else {
-            gasCoin = (canPayCommissionWithBaseCoin) ? Coin.baseCoin().symbol! : coin
+            gasCoinId = (canPayCommissionWithBaseCoin) ? Coin.baseCoin().id! : coinId
             value = BigUInt(decimal: amount.decimalFromPIP()) ?? BigUInt(0)
           }
           if let rawTx: RawTransaction = self.rawTransaction(nonce: nonce,
-                                                          gasCoin: gasCoin,
-                                                          recipient: recipient,
-                                                          value: value,
-                                                          coin: coin,
-                                                          payload: payload) {
+                                                             gasCoinId: gasCoinId,
+                                                             recipient: recipient,
+                                                             value: value,
+                                                             coinId: coinId,
+                                                             payload: payload) {
 
             let pkString = newPk.raw.toHexString()
             let signedTx = RawTransactionSigner.sign(rawTx: rawTx, privateKey: pkString)

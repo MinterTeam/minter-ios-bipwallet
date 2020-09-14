@@ -157,6 +157,7 @@ class DelegateUnbondViewModel: BaseViewModel, ViewModel, LastBlockViewable {
     var balanceService: BalanceService
     var gateService: GateService
     var accountService: AccountService
+    var coinService: CoinService
   }
 
   init(validator: ValidatorItem? = nil,
@@ -360,14 +361,15 @@ class DelegateUnbondViewModel: BaseViewModel, ViewModel, LastBlockViewable {
   func performSend() -> Observable<Event<(String?, Decimal?)>> {
     return Observable.just(())
       .withLatestFrom(self.isValidForm).filter { $0 == true }
-      .do(onNext: { [weak self] (_) in
-        self?.impact.onNext(.hard)
-        self?.sound.onNext(.bip)
+      .do(onNext: { [unowned self] (_) in
+        self.impact.onNext(.hard)
+        self.sound.onNext(.bip)
       })
       .withLatestFrom(Observable.combineLatest(form, dependency.balanceService.account))
       .flatMap { [weak self] (val) -> Observable<RawTransaction> in
         guard let `self` = self,
           let coin = val.0.0,
+          let coinId = self.dependency.coinService.coinId(symbol: coin),
           let validator = self.validator,
           let amount = val.0.2,
           let aPublicKey = PublicKey(validator.publicKey),
@@ -376,16 +378,20 @@ class DelegateUnbondViewModel: BaseViewModel, ViewModel, LastBlockViewable {
         let baseCoinBalance = (self.balances[Coin.baseCoin().symbol!] ?? 0.0)
         //Update amount if needed
         var newAmount = amount
-        var gasCoin = coin
+        var gasCoinId = coinId
 
         //In unbond - send tx as is
         if self.isUnbond {
           //Gas coin here - MNT
-          gasCoin = Coin.baseCoin().symbol!
-          return self.makeTransaction(account: account, gasCoin: gasCoin, publicKey: aPublicKey, coin: coin, amount: newAmount)
+          gasCoinId = Coin.baseCoin().id!
+          return self.makeTransaction(account: account,
+                                      gasCoinId: gasCoinId,
+                                      publicKey: aPublicKey,
+                                      coinId: coinId,
+                                      amount: newAmount)
         }
 
-        if coin == Coin.baseCoin().symbol! {
+        if coinId == Coin.baseCoin().id! {
           //check if can pay comission
           let amountWithCommission = amount + self.currentCommission()
           if baseCoinBalance >= amountWithCommission {
@@ -402,30 +408,28 @@ class DelegateUnbondViewModel: BaseViewModel, ViewModel, LastBlockViewable {
           //check if can pay with baseCoin
           if baseCoinBalance >= self.currentCommission() {
             //all good - send tx
-            gasCoin = Coin.baseCoin().symbol!
+            gasCoinId = Coin.baseCoin().id!
           } else {
             //else - is isMax send estimate request and subtract commission from amount
             if self.amount.isMax.value {
               return self.makeTransactionWithCommission(account: account,
-                                                        gasCoin: gasCoin,
+                                                        gasCoinId: gasCoinId,
                                                         publicKey: aPublicKey,
-                                                        coin: coin,
+                                                        coinId: coinId,
                                                         amount: amount)
             }
           }
         }
 
         return self.makeTransaction(account: account,
-                                    gasCoin: gasCoin,
+                                    gasCoinId: gasCoinId,
                                     publicKey: aPublicKey,
-                                    coin: coin,
+                                    coinId: coinId,
                                     amount: newAmount)
 
-      }.flatMap { [weak self] (transaction) -> Observable<Event<String>> in
-        guard let `self` = self else { return Observable.empty() }
+      }.flatMap { [unowned self] (transaction) -> Observable<Event<String>> in
         return self.signTransaction(rawTransaction: transaction).materialize()
-      }.flatMap({ [weak self] (transaction) -> Observable<Event<(String?, Decimal?)>> in
-        guard let `self` = self else { return Observable.empty() }
+      }.flatMap({ [unowned self] (transaction) -> Observable<Event<(String?, Decimal?)>> in
         switch transaction {
         case .error(let error):
           return Observable.error(error).materialize()
@@ -436,14 +440,14 @@ class DelegateUnbondViewModel: BaseViewModel, ViewModel, LastBlockViewable {
         case .next(let signedTx):
           return self.dependency.gateService.send(rawTx: signedTx).materialize()
         }
-      }).do(onNext: { [weak self] (val) in
+      }).do(onNext: { [unowned self] (val) in
         switch val {
         case .next(_):
-          self?.dependency.validatorService.lastUsedPublicKey = self?.validator?.publicKey
-          self?.clearForm()
+          self.dependency.validatorService.lastUsedPublicKey = self.validator?.publicKey
+          self.clearForm()
 
         case .error(let error):
-          self?.handleError(error)
+          self.handleError(error)
 
         case .completed:
           return
@@ -494,26 +498,30 @@ class DelegateUnbondViewModel: BaseViewModel, ViewModel, LastBlockViewable {
 extension DelegateUnbondViewModel {
 
   func makeTransactionWithCommission(account: AccountItem,
-                                     gasCoin: String,
+                                     gasCoinId: Int,
                                      publicKey: PublicKey,
-                                     coin: String,
+                                     coinId: Int,
                                      amount: Decimal) -> Observable<RawTransaction> {
 
     return self.makeTransaction(account: account,
-                                gasCoin: gasCoin,
+                                gasCoinId: gasCoinId,
                                 publicKey: publicKey,
-                                coin: coin,
+                                coinId: coinId,
                                 amount: amount)
       .flatMap { transaction -> Observable<Event<Decimal>> in
         let rawTx = transaction.encode()?.toHexString() ?? ""
         return self.dependency.gateService.estimateComission(rawTx: rawTx).materialize()
-      }.flatMap { (event) -> Observable<RawTransaction> in
+      }.flatMap { [unowned self] (event) -> Observable<RawTransaction> in
         switch event {
         case .next(let commission):
           //TODO: remove PIPToDecimal and migrate to a newer gateService
           let newAmount = amount - commission.PIPToDecimal()
           if newAmount > 0 {
-            return self.makeTransaction(account: account, gasCoin: coin, publicKey: publicKey, coin: coin, amount: newAmount)
+            return self.makeTransaction(account: account,
+                                        gasCoinId: coinId,
+                                        publicKey: publicKey,
+                                        coinId: coinId,
+                                        amount: newAmount)
           }
           return Observable.error(DelegateUnbondViewModelError.insufficientFunds)
         case .completed:
@@ -525,28 +533,28 @@ extension DelegateUnbondViewModel {
       }
   }
 
-  func makeTransaction(account: AccountItem, gasCoin: String, publicKey: PublicKey, coin: String, amount: Decimal) -> Observable<RawTransaction> {
+  func makeTransaction(account: AccountItem, gasCoinId: Int, publicKey: PublicKey, coinId: Int, amount: Decimal) -> Observable<RawTransaction> {
     return Observable.combineLatest(
       self.dependency.gateService.nonce(address: account.address),
       self.dependency.gateService.currentGas()
-    ).flatMap { val -> Observable<RawTransaction> in
+    ).flatMap { [unowned self] val -> Observable<RawTransaction> in
       let nonce = val.0
       let gas = val.1
       return Observable.create { (observer) -> Disposable in
         if self.isUnbond {
           let transaction = UnbondRawTransaction(nonce: BigUInt(nonce+1),
                                                  gasPrice: gas,
-                                                 gasCoin: gasCoin,
+                                                 gasCoinId: gasCoinId,
                                                  publicKey: publicKey.stringValue,
-                                                 coin: coin,
+                                                 coinId: coinId,
                                                  value: BigUInt(decimal: amount, fromPIP: true) ?? BigUInt(0))
           observer.onNext(transaction)
         } else {
           let transaction = DelegateRawTransaction(nonce: BigUInt(nonce+1),
                                                    gasPrice: gas,
-                                                   gasCoin: gasCoin,
+                                                   gasCoinId: gasCoinId,
                                                    publicKey: publicKey.stringValue,
-                                                   coin: coin,
+                                                   coinId: coinId,
                                                    value: BigUInt(decimal: amount, fromPIP: true) ?? BigUInt(0))
           observer.onNext(transaction)
         }

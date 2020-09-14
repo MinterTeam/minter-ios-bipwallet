@@ -54,6 +54,7 @@ class ValidatorsViewModel: BaseViewModel, ViewModel {
 
   // MARK: -
 
+  private let lastUsedIdentifierPrefix = "LastUsed_"
   private var allValidators = [ValidatorItem]()
   private var validators = [ValidatorItem]()
   private var datasource = [String: [ValidatorItem]]()
@@ -64,19 +65,18 @@ class ValidatorsViewModel: BaseViewModel, ViewModel {
 
   func bind() {
 
-    modelSelected
-      .map({ [weak self] (model) -> ValidatorItem? in
-        if let item = self?.validators.filter { (item) -> Bool in
+    modelSelected.map({ [weak self] (model) -> ValidatorItem? in
+      if let item = self?.validators.filter { (item) -> Bool in
         return item.publicKey == model.identifier
-        }.first {
-          return item
-        } else if let lastUsed = self?.dependency.validatorService.lastUsedPublicKey {
-          let item = self?.validators.filter {$0.publicKey == lastUsed }.first ?? ValidatorItem(publicKey: lastUsed)
-          if model.identifier.starts(with: "LastUsed_") {
-           return item
-          }
+      }.first {
+        return item
+      } else if let lastUsed = self?.dependency.validatorService.lastUsedPublicKey {
+        let item = self?.validators.filter { $0.publicKey == lastUsed }.first ?? ValidatorItem(publicKey: lastUsed)
+        if model.identifier.starts(with: lastUsedIdentifierPrefix) {
+         return item
         }
-        return nil
+      }
+      return nil
     }).filter({ (item) -> Bool in
       return item != nil
     }).do(onNext: { [weak self] (_) in
@@ -92,14 +92,6 @@ class ValidatorsViewModel: BaseViewModel, ViewModel {
     }).map { (val) -> BaseTableSectionItem in
       let items = val.value.map { (item) -> ValidatorTableViewCellItem in
         return self.validatorCellItem(validator: item)
-//        let contactItem = ValidatorTableViewCellItem(reuseIdentifier: "ValidatorTableViewCell",
-//                                                     identifier: item.publicKey)
-//        contactItem.publicKey = TransactionTitleHelper.title(from: item.publicKey)
-//        contactItem.name = item.name
-//        contactItem.avatarURL = item.iconURL
-//        contactItem.commission = "\(item.commission ?? 100) %"
-//        contactItem.minStake = "Min. ~\(item.minStake) \(Coin.baseCoin().symbol!)"
-//        return contactItem
       }
       return BaseTableSectionItem(identifier: "BaseTableSection_\(val.key)", header: val.key, rightHeader: "FEE".localized(), items: items)
     }
@@ -137,7 +129,7 @@ class ValidatorsViewModel: BaseViewModel, ViewModel {
     }
     validator.name = validator.name ?? TransactionTitleHelper.title(from: lastUsed)
     var items: [BaseCellItem] = []
-    items = [self.validatorCellItem(validator: validator)]
+    items = [self.validatorCellItem(validator: validator, identifierPrefix: lastUsedIdentifierPrefix)]
 
     return BaseTableSectionItem(identifier: "LastUsed", header: "LAST USED", items: items)
   }
@@ -155,9 +147,9 @@ class ValidatorsViewModel: BaseViewModel, ViewModel {
 
   // MARK: -
 
-  func validatorCellItem(validator item: ValidatorItem) -> ValidatorTableViewCellItem {
+  func validatorCellItem(validator item: ValidatorItem, identifierPrefix: String = "") -> ValidatorTableViewCellItem {
     let contactItem = ValidatorTableViewCellItem(reuseIdentifier: "ValidatorTableViewCell",
-                                                 identifier: item.publicKey)
+                                                 identifier: identifierPrefix + item.publicKey)
     contactItem.publicKey = TransactionTitleHelper.title(from: item.publicKey)
     contactItem.name = item.name
     contactItem.avatarURL = item.iconURL

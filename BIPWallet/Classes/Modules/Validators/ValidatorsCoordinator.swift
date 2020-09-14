@@ -40,7 +40,6 @@ class ValidatorsCoordinator: BaseCoordinator<ValidatorsCoordinatorResult> {
       controller.dismiss(animated: true, completion: nil)
     })
 
-//    rootViewController.present(controller, animated: true) {}
     var cardConfig = CardConfiguration()
     cardConfig.horizontalInset = 0.0
     cardConfig.verticalInset = 0.0
