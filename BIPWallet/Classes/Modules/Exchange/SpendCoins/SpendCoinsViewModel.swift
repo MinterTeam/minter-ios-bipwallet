@@ -410,7 +410,7 @@ class SpendCoinsViewModel: ConvertCoinsViewModel, ViewModel {
       var realAmount = convertVal
       //If is max value - get real value
       if isMax {
-         realAmount = BigUInt(decimal: self.selectedBalance, fromPIP: true) ?? convertVal
+        realAmount = BigUInt(decimal: self.selectedBalance, fromPIP: true) ?? convertVal
       }
 
       DispatchQueue.global(qos: .userInitiated).async {

@@ -65,14 +65,14 @@ class ValidatorsViewModel: BaseViewModel, ViewModel {
 
   func bind() {
 
-    modelSelected.map({ [weak self] (model) -> ValidatorItem? in
-      if let item = self?.validators.filter { (item) -> Bool in
+    modelSelected.map({ [unowned self] (model) -> ValidatorItem? in
+      if let item = self.validators.filter { (item) -> Bool in
         return item.publicKey == model.identifier
       }.first {
         return item
-      } else if let lastUsed = self?.dependency.validatorService.lastUsedPublicKey {
-        let item = self?.validators.filter { $0.publicKey == lastUsed }.first ?? ValidatorItem(publicKey: lastUsed)
-        if model.identifier.starts(with: lastUsedIdentifierPrefix) {
+      } else if let lastUsed = self.dependency.validatorService.lastUsedPublicKey {
+        let item = self.validators.filter { $0.publicKey == lastUsed }.first ?? ValidatorItem(publicKey: lastUsed)
+        if model.identifier.starts(with: self.lastUsedIdentifierPrefix) {
          return item
         }
       }
@@ -89,7 +89,7 @@ class ValidatorsViewModel: BaseViewModel, ViewModel {
 
     var newSections = datasource.sorted(by: { (val1, val2) -> Bool in
       return val1.key < val2.key
-    }).map { (val) -> BaseTableSectionItem in
+    }).map { [unowned self] (val) -> BaseTableSectionItem in
       let items = val.value.map { (item) -> ValidatorTableViewCellItem in
         return self.validatorCellItem(validator: item)
       }
