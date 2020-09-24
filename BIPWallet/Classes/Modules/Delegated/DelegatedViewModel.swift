@@ -40,6 +40,7 @@ class DelegatedViewModel: BaseViewModel, ViewModel {
     var sections: Observable<[BaseTableSectionItem]>
     var showDelegate: Observable<ValidatorItem?>
     var showUnbond: Observable<(ValidatorItem?, String?, [String: Decimal]?)>
+    var showKickedWarning: Observable<Bool>
   }
 
   struct Dependency {
@@ -59,6 +60,7 @@ class DelegatedViewModel: BaseViewModel, ViewModel {
   private let showDelegate = PublishSubject<ValidatorItem?>()
   private let showUnbond = PublishSubject<(ValidatorItem?, String?, [String: Decimal]?)>()
   private let didTapAdd = PublishSubject<Void>()
+  private let showKickedWarning = ReplaySubject<Bool>.create(bufferSize: 1)
 
   init(dependency: Dependency) {
     super.init()
@@ -71,7 +73,8 @@ class DelegatedViewModel: BaseViewModel, ViewModel {
 
     self.output = Output(sections: sections.asObservable(),
                          showDelegate: showDelegate.asObservable(),
-                         showUnbond: showUnbond.asObservable()
+                         showUnbond: showUnbond.asObservable(),
+                         showKickedWarning: showKickedWarning.asObservable()
     )
 
     self.dependency = dependency
@@ -107,16 +110,17 @@ class DelegatedViewModel: BaseViewModel, ViewModel {
 
     let sctns = sectionData().map { (val) -> BaseTableSectionItem in
       let items = val.value.sorted(by: { (delegation1, delegation2) -> Bool in
-
         let value1 = delegation1.value.bipValue ?? 0.0
         let value2 = delegation2.value.bipValue ?? 0.0
-
         return (value1 > value2)
+      }).sorted(by: { (delegation1, delegation2) -> Bool in
+        return !((delegation1.value.isKicked ?? false) && !(delegation2.value.isKicked ?? false))
       }).map { (delegation) -> [BaseCellItem] in
-        let coin = delegation.value.coin
+        let coin = delegation.value.coin?.symbol
         let publicKey = delegation.value.publicKey
         let value = delegation.value.value
         let bipValue = delegation.value.bipValue
+        let isKicked = delegation.value.isKicked ?? false
 
         let id = "\(publicKey ?? "")_\(coin ?? "")"
 
@@ -126,15 +130,22 @@ class DelegatedViewModel: BaseViewModel, ViewModel {
         let coinCell = DelegatedCoinTableViewCellItem(reuseIdentifier: "DelegatedCoinTableViewCell",
                                                       identifier: "DelegatedCoinTableViewCell_\(id)")
         coinCell.title = coin
+
         coinCell.image = UIImage(named: "AvatarPlaceholderImage")
         if let coin = coin {
-          coinCell.imageURL = MinterMyAPIURL.avatarByCoin(coin: coin).url()
+          if isKicked {
+            coinCell.image = UIImage(named: "WarningIcon")
+          } else {
+            coinCell.imageURL = MinterMyAPIURL.avatarByCoin(coin: coin).url()
+          }
         }
+
         coinCell.coin = coin
         coinCell.amount = value
         if let coin = coin, coin != Coin.baseCoin().symbol! {
           coinCell.bipAmount = bipValue
         }
+
         coinCell.didTapMinus.map {
           let validatorsPK = delegation.value.publicKey ?? ""
           let validator = ValidatorItem(publicKey: validatorsPK, name: delegation.value.validatorName)
@@ -187,10 +198,16 @@ class DelegatedViewModel: BaseViewModel, ViewModel {
             self?.datasource[key] = [:]
           }
 
-          guard let coin = delegation.coin else { return }
-
+          guard let coin = delegation.coin?.symbol else { return }
           self?.datasource[key]?[coin] = delegation
         })
+        if val.1?.first(where: { (deleg) -> Bool in
+          return deleg.isKicked ?? false
+        }) != nil {
+          self?.showKickedWarning.onNext(true)
+        } else {
+          self?.showKickedWarning.onNext(false)
+        }
       }).disposed(by: disposeBag)
   }
 }

@@ -33,7 +33,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
       if !isTestnet {
         MinterGateBaseURLString = "https://gate.apps.minter.network"
       } else {
-        MinterGateBaseURLString = "https://gate-api.chilinet.minter.network"
+        MinterGateBaseURLString = "https://gate-api.testnet.minter.network"
       }
     }
 
@@ -87,6 +87,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }.subscribe().disposed(by: disposeBag)
 
     appearance()
+
+//    UIApplication.shared.open(URL(string: "mintertestnet://bip.to/tx/5xGh4IpCQU5BTkFURVNUlJmZmZmZmZmZmZmZmZmZmZmZmZmZgIABgA")!, options: [:], completionHandler: nil)
 
     return true
   }

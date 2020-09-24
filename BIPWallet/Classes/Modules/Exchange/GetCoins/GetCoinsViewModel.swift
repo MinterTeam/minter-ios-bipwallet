@@ -96,17 +96,16 @@ class GetCoinsViewModel: ConvertCoinsViewModel, ViewModel {
         }
       }).disposed(by: disposeBag)
 
-    Observable.combineLatest(getCoin.asObservable(),
-                             getAmount.asObservable(),
-                             spendCoin.asObservable())
-    .debounce(.milliseconds(500), scheduler: MainScheduler.instance)
+    let formObservable = Observable.combineLatest(getCoin.asObservable(),
+                                                  getAmount.asObservable(),
+                                                  spendCoin.asObservable())
+
+    formObservable.debounce(.milliseconds(500), scheduler: MainScheduler.instance)
     .filter({ (val) -> Bool in
       return CoinValidator.isValid(coin: val.2)
-    })
-    .distinctUntilChanged({ (val1, val2) -> Bool in
+    }).distinctUntilChanged({ (val1, val2) -> Bool in
       return (val1.0 ?? "") == (val2.0 ?? "") && (val1.1 ?? "") == (val2.1 ?? "") && (val1.2 ?? "") == (val2.2 ?? "")
-    })
-    .subscribe(onNext: { [weak self] (val) in
+    }).subscribe(onNext: { [weak self] (val) in
       self?.approximatelySum.onNext(nil)
       self?.approximately.onNext("")
       self?.calculateApproximately()
@@ -358,8 +357,7 @@ class GetCoinsViewModel: ConvertCoinsViewModel, ViewModel {
       let apiError = err as? HTTPClientError,
       let errorCode = apiError.userData?["code"] as? Int {
       if errorCode == 107 {
-        self.errorNotification
-          .onNext("Not enough coins to spend".localized())
+        self.errorNotification.onNext("Not enough coins to spend".localized())
       } else if errorCode == 103 {
         self.errorNotification.onNext("Coin reserve balance is not sufficient for transaction".localized())
       } else {

@@ -41,8 +41,6 @@ class BalanceCoordinator: BaseCoordinator<Void> {
     self.validatorService = validatorService
     self.coinService = coinService
 
-    validatorService.updateValidators()
-
     super.init()
   }
 

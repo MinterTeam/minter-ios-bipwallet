@@ -447,20 +447,7 @@ extension SendViewController {
           self.tableView.scrollRectToVisible(converted, animated: true)
         }
       }
-//      DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-//        let textView = cell.textView
-//        if let startIndex = textView?.selectedTextRange?.start,
-//          let caretRect = textView?.caretRect(for: startIndex) {
-//          let newPosition = cell.textView.convert(caretRect, to: self.tableView).origin
-//          self.tableView.scrollRectToVisible(CGRect(x: 0,
-//                                                    y: newPosition.y,
-//                                                    width: self.tableView.bounds.width,
-//                                                    height: textView?.bounds.height ?? 0),
-//                                             animated: true)
-//        }
-//      }
     }
-    
   }
 
   func heightWillChange(cell: TextViewTableViewCell) {}

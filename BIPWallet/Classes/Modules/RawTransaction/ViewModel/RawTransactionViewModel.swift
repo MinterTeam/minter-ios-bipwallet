@@ -570,10 +570,7 @@ class RawTransactionViewModel: BaseViewModel, ViewModel {// swiftlint:disable:th
 extension RawTransactionViewModel {
 
 	func makeFields(data: Data?) throws { // swiftlint:disable:this type_body_length cyclomatic_complexity function_body_length
-		if
-			let data = data,
-			let txData = RLP.decode(data),
-			let content = txData[0]?.content {
+		if let data = data, let txData = RLP.decode(data), let content = txData[0]?.content {
 
       var payloadField = Field(key: "Payload Message".localized(), value: payload ?? "", isEditable: true)
       payloadField.modify = { val in
@@ -1012,9 +1009,14 @@ extension RawTransactionViewModel {
             }
             fields.append(maximumValueToSpendField)
 
-          case .createCoin:
-            let typeField = Field(key: "Type".localized(), value: "Create Coin".localized(), isEditable: false)
-            fields.append(typeField)
+          case .createCoin, .recreateCoin:
+            if type == .recreateCoin {
+              let typeField = Field(key: "Type".localized(), value: "Recreate Coin".localized(), isEditable: false)
+              fields.append(typeField)
+            } else {
+              let typeField = Field(key: "Type".localized(), value: "Create Coin".localized(), isEditable: false)
+              fields.append(typeField)
+            }
             guard let coinNameData = items[0].data,
               let coinName = String(data: coinNameData, encoding: .utf8),
               let coinSymbolData = items[1].data,
@@ -1060,7 +1062,9 @@ extension RawTransactionViewModel {
                                                                              formatter: decimalFormatter,
                                                                              maxPlaces: 18)
 
-              let maxSupplyField = Field(key: "Max Supply".localized(), value: BigUInt.compare(maxSupply, BigUInt(decimal: Decimal(pow(10.0, 18.0+15.0)))!) == .orderedSame ? "10¹⁵ (max)" : maxSupplyString, isEditable: false)
+              let maxSupplyField = Field(key: "Max Supply".localized(),
+                                         value: BigUInt.compare(maxSupply, BigUInt(decimal: Decimal(pow(10.0, 18.0+15.0)))!) == .orderedSame ? "10¹⁵ (max)" : maxSupplyString,
+                                         isEditable: false)
               fields.append(maxSupplyField)
             } else {
               let maxSupplyField = Field(key: "Max Supply".localized(), value: "10¹⁵ (max)", isEditable: false)
@@ -1317,27 +1321,29 @@ extension RawTransactionViewModel {
               throw RawTransactionViewModelError.incorrectTxData
             }
 
-          case .setCandidateOnline:
-            let typeField = Field(key: "Type".localized(), value: "Set Candidate On".localized(), isEditable: false)
-            fields.append(typeField)
+          case .setCandidateOnline, .setCandidateOffline:
+            if type == .setCandidateOnline {
+              let typeField = Field(key: "Type".localized(), value: "Set Candidate On".localized(), isEditable: false)
+              fields.append(typeField)
+            } else {
+              let typeField = Field(key: "Type".localized(), value: "Set Candidate Off".localized(), isEditable: false)
+              fields.append(typeField)
+            }
+
             guard let publicKeyData = items[0].data else {
               throw RawTransactionViewModelError.incorrectTxData
             }
             let pkField = Field(key: "Public Key".localized(), value: "Mp" + publicKeyData.toHexString(), isEditable: false)
             fields.append(pkField)
 
-          case .setCandidateOffline:
-            let typeField = Field(key: "Type".localized(), value: "Set Candidate Off".localized(), isEditable: false)
-            fields.append(typeField)
-            guard let publicKeyData = items[0].data else {
-              throw RawTransactionViewModelError.incorrectTxData
+          case .createMultisigAddress, .editMultisigOwner:
+            if type == .editMultisigOwner {
+              let typeField = Field(key: "Type".localized(), value: "Edit Multisig Address".localized(), isEditable: false)
+              fields.append(typeField)
+            } else {
+              let typeField = Field(key: "Type".localized(), value: "Create Multisig Address".localized(), isEditable: false)
+              fields.append(typeField)
             }
-            let pkField = Field(key: "Public Key".localized(), value: "Mp" + publicKeyData.toHexString(), isEditable: false)
-            fields.append(pkField)
-
-          case .createMultisigAddress:
-            let typeField = Field(key: "Type".localized(), value: "Create Multisig Address".localized(), isEditable: false)
-            fields.append(typeField)
             guard
               let thresholdData = items[0].data,
               let weightData = items[1].data,
@@ -1411,27 +1417,60 @@ extension RawTransactionViewModel {
 
             let ownerField = Field(key: "Owner Address".localized(), value: "Mx" + ownerAddressData.toHexString(), isEditable: false)
             fields.append(ownerField)
+
           case .setHaltBlock:
-            fatalError()
-          case .recreateCoin:
-            fatalError()
+            let typeField = Field(key: "Type".localized(), value: "Set Halt Block".localized(), isEditable: false)
+            fields.append(typeField)
+
+            guard let publicKeyData = items[0].data,
+              let heightData = items[1].data else {
+                throw RawTransactionViewModelError.incorrectTxData
+            }
+
+            let pkField = Field(key: "Public Key".localized(), value: "Mp" + publicKeyData.toHexString(), isEditable: false)
+            fields.append(pkField)
+
+            let height = "\(BigUInt(heightData))"
+            let heightField = Field(key: "Height".localized(), value: height, isEditable: false)
+            fields.append(heightField)
+
           case .changeCoinOwner:
-            fatalError()
-          case .editMultisigOwner:
-            fatalError()
+            let typeField = Field(key: "Type".localized(), value: "Change Coin Owner".localized(), isEditable: false)
+            fields.append(typeField)
+
+            guard
+              let coinData = items[0].data,
+              let coin = String(coinData: coinData),
+              let addressData = items[1].data else {
+                throw RawTransactionViewModelError.incorrectTxData
+            }
+            let coinField = Field(key: "Coin".localized(), value: coin, isEditable: false)
+            fields.append(coinField)
+
+            let addressField = Field(key: "To".localized(), value: "Mx" + addressData.toHexString(), isEditable: false)
+            fields.append(addressField)
+
           case .priceVote:
-            fatalError()
+            let typeField = Field(key: "Type".localized(), value: "Price Vote".localized(), isEditable: false)
+            fields.append(typeField)
+
+            guard let price = items[0].data else {
+              throw RawTransactionViewModelError.incorrectTxData
+            }
+
+            let priceField = Field(key: "Price".localized(), value: "\(BigUInt(price))".localized(), isEditable: false)
+            fields.append(priceField)
           }
           break
 
         case .noItem: break
         case .data(_): break
-        }
+      }
 
-        if gasCoin.isValidCoin() {
-          let gasField = Field(key: "Gas Coin".localized(), value: gasCoin, isEditable: false)
-          fields.append(gasField)
-        }
+      if gasCoin.isValidCoin() {
+        let gasField = Field(key: "Gas Coin".localized(), value: gasCoin, isEditable: false)
+        fields.append(gasField)
+      }
       if let payload = payload, payload.count > 0 {
         fields.append(payloadField)
       } else if isEditing.value {

@@ -670,13 +670,11 @@ YOU ARE ABOUT TO SEND SEED PHRASE IN THE MESSAGE ATTACHED TO THIS TRANSACTION.\n
         return (item?.address ?? "").isValidAddress()
       }).map({ (account) -> String in
         return account?.address ?? ""
-      })
-      .flatMap({ (address) -> Observable<(Int, Int)> in
+      }).flatMap({ (address) -> Observable<(Int, Int)> in
         return Observable.combineLatest(
           GateManager.shared.nonce(address: address),
-          GateManager.shared.minGas())
-      })
-      .do(onError: { [weak self] (error) in
+          GateManager.shared.minGas()).take(1)
+      }).do(onError: { [weak self] (error) in
         self?.errorNotificationSubject.onNext(NotifiableError(title: "Can't get nonce"))
       }, onCompleted: { [weak self] in
         self?.isLoadingNonceSubject.onNext(false)
@@ -757,10 +755,6 @@ YOU ARE ABOUT TO SEND SEED PHRASE IN THE MESSAGE ATTACHED TO THIS TRANSACTION.\n
                       value: BigUInt,
                       coinId: Int,
                       payload: String) -> RawTransaction? {
-//
-//    guard let coinId = self.dependency.coinService.coinId(symbol: coin) else {
-//      return nil
-//    }
 
     var rawTx: RawTransaction?
     let gasPrice = (try? currentGas.value()) ?? 1

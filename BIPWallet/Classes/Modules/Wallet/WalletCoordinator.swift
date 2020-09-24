@@ -41,7 +41,7 @@ class WalletCoordinator: BaseCoordinator<Void> {
   override func start() -> Observable<Void> {
     let contactsService = LocalStorageContactsService()
     let validatorService = ExplorerValidatorService()
-    validatorService.updateValidators()
+//    validatorService.updateValidators()
 
     let recipientInfoService = ExplorerRecipientInfoService(contactsService: contactsService)
 

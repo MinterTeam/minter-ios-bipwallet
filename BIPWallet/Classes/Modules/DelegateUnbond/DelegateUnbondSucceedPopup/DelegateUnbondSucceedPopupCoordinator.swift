@@ -38,7 +38,7 @@ class DelegateUnbondSucceedPopupCoordinator: BaseCoordinator<Void> {
     viewModel.output.didTapAction.map({ [weak self] (_) -> URL? in
       guard let transactionHash = self?.transactionHash else { return nil }
       return self?.explorerURL(hash: transactionHash)
-    }).subscribe(onNext: { [weak controller, weak self, weak rootViewController] (url) in
+    }).subscribe(onNext: { [weak controller, weak rootViewController] (url) in
       guard let url = url else { return }
       controller?.dismiss(animated: true, completion: {
         let safari = SFSafariViewController(url: url)

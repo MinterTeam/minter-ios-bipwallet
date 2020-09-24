@@ -26,7 +26,12 @@ extension RawTransactionType {
 																					 .setCandidateOffline,
 																					 .createMultisigAddress,
 																					 .multisend,
-																					 .editCandidate]
+                                           .editCandidate,
+                                           .setHaltBlock,
+                                           .recreateCoin,
+                                           .changeCoinOwner,
+                                           .editMultisigOwner,
+                                           .priceVote]
 
 		for type in supported {
 			if value == BigUInt(type.rawValue) {

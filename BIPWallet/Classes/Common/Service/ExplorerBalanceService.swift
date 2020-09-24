@@ -48,15 +48,47 @@ class ExplorerBalanceService: BalanceService {
       self?.unsubscribeAccountBalanceChange()
       self?.websocketDisconnect()
     }).disposed(by: disposeBag)
+
+    forceUpdateBalance
+      .debounce(.milliseconds(300), scheduler: MainScheduler.instance)
+      .withLatestFrom(account)
+      .filter{ $0 != nil }.flatMapLatest ({ [weak self] (account) -> Observable<Event<BalancesResponse>> in
+        guard let `self` = self else { return Observable.empty() }
+        return self.balances(address: account!.address).materialize()
+      }).subscribe(onNext: { event in
+        switch event {
+        case .completed:
+          break
+        case .error(_):
+          return
+        case .next(let val):
+          self.balancesSubject.onNext(val)
+        }
+      }).disposed(by: disposeBag)
+
+    forceUpdateDelegated
+      .debounce(.milliseconds(300), scheduler: MainScheduler.instance)
+      .withLatestFrom(account)
+      .flatMapLatest { (account) -> Observable<([AddressDelegation]?, Decimal?)> in
+        guard let address = account?.address, address.isValidAddress() else { return Observable.empty() }
+        return self.addressManager.delegations(address: address)
+      }.withLatestFrom(account) {
+        ($1?.address, $0.0, $0.1)
+      }
+      .asDriver(onErrorJustReturn: (nil, nil, nil))
+      .drive(delegatedSubject)
+      .disposed(by: disposeBag)
   }
 
-  private var balancesSubject = ReplaySubject<BalancesResponse>.create(bufferSize: 1)
-  private var delegatedSubject = ReplaySubject<(String?, [AddressDelegation]?, Decimal?)>.create(bufferSize: 1)
-  private var lastBlockAgoSubject = ReplaySubject<TimeInterval?>.create(bufferSize: 1)
+  private let balancesSubject = ReplaySubject<BalancesResponse>.create(bufferSize: 1)
+  private let delegatedSubject = ReplaySubject<(String?, [AddressDelegation]?, Decimal?)>.create(bufferSize: 1)
+  private let lastBlockAgoSubject = ReplaySubject<TimeInterval?>.create(bufferSize: 1)
+  private let forceUpdateBalance = PublishSubject<Void>()
+  private let forceUpdateDelegated = PublishSubject<Void>()
 
-  var disposeBag = DisposeBag()
+  private let disposeBag = DisposeBag()
 
-  var accountSubject = BehaviorSubject<AccountItem?>(value: nil)
+  private let accountSubject = BehaviorSubject<AccountItem?>(value: nil)
 
   var account: Observable<AccountItem?> {
     return accountSubject.asObservable()
@@ -87,19 +119,7 @@ class ExplorerBalanceService: BalanceService {
   }
 
   func updateBalance() {
-
-    account.filter{$0 != nil}.flatMapLatest { (account) -> Observable<Event<BalancesResponse>> in
-      return self.balances(address: account!.address).materialize()
-    }.subscribe(onNext: { event in
-      switch event {
-      case .completed:
-        break
-      case .error(let error):
-        return
-      case .next(let val):
-        self.balancesSubject.onNext(val)
-      }
-    }).disposed(by: disposeBag)
+    forceUpdateBalance.onNext(())
   }
 
   func delegatedBalance() -> Observable<(String?, [AddressDelegation]?, Decimal?)> {
@@ -107,15 +127,7 @@ class ExplorerBalanceService: BalanceService {
   }
 
   func updateDelegated() {
-    account.flatMapLatest { (account) -> Observable<([AddressDelegation]?, Decimal?)> in
-      guard let address = account?.address, address.isValidAddress() else { return Observable.empty() }
-      return self.addressManager.delegations(address: address)
-    }.withLatestFrom(account) {
-      ($1?.address, $0.0, $0.1)
-    }
-    .asDriver(onErrorJustReturn: (nil, nil, nil))
-    .drive(delegatedSubject)
-    .disposed(by: disposeBag)
+    forceUpdateDelegated.onNext(())
   }
 
   enum ExplorerBalanceServiceError: Error {

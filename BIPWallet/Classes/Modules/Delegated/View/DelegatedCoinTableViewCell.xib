@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="16097.2" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="16097.3" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
@@ -77,12 +77,6 @@
                             </userDefinedRuntimeAttribute>
                         </userDefinedRuntimeAttributes>
                     </label>
-                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="mUG-Gs-Iab">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="41.5"/>
-                        <connections>
-                            <action selector="didTapCell:" destination="HZe-fo-DA8" eventType="touchUpInside" id="5ai-M6-mEF"/>
-                        </connections>
-                    </button>
                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6qr-04-YYo">
                         <rect key="frame" x="288" y="9" width="24" height="24"/>
                         <constraints>
@@ -97,15 +91,11 @@
                     <constraint firstItem="oAZ-ha-TYC" firstAttribute="top" secondItem="5ut-sZ-m2o" secondAttribute="bottom" constant="1" id="8Pp-se-HB1"/>
                     <constraint firstItem="AHW-xF-qlv" firstAttribute="leading" secondItem="1OG-Gp-NuM" secondAttribute="trailing" constant="12" id="9Ze-e7-Tf6"/>
                     <constraint firstItem="1OG-Gp-NuM" firstAttribute="leading" secondItem="jw8-vb-Juy" secondAttribute="leading" constant="12" id="Ery-8x-JFP"/>
-                    <constraint firstItem="mUG-Gs-Iab" firstAttribute="top" secondItem="jw8-vb-Juy" secondAttribute="top" id="FEF-p6-dp8"/>
                     <constraint firstItem="6qr-04-YYo" firstAttribute="centerY" secondItem="jw8-vb-Juy" secondAttribute="centerY" id="G11-ap-Q1Q"/>
-                    <constraint firstItem="mUG-Gs-Iab" firstAttribute="leading" secondItem="jw8-vb-Juy" secondAttribute="leading" id="GFJ-4m-rIa"/>
                     <constraint firstItem="5ut-sZ-m2o" firstAttribute="leading" secondItem="AHW-xF-qlv" secondAttribute="trailing" constant="5" id="JWY-DA-6N1"/>
                     <constraint firstAttribute="trailing" secondItem="6qr-04-YYo" secondAttribute="trailing" constant="8" id="JXA-Oh-y7N"/>
                     <constraint firstAttribute="bottom" secondItem="oAZ-ha-TYC" secondAttribute="bottom" constant="8" id="QHF-Wf-fnK"/>
                     <constraint firstAttribute="trailing" secondItem="oAZ-ha-TYC" secondAttribute="trailing" constant="48" id="QM0-oL-igQ"/>
-                    <constraint firstAttribute="bottom" secondItem="mUG-Gs-Iab" secondAttribute="bottom" id="Rlj-7x-9hg"/>
-                    <constraint firstAttribute="trailing" secondItem="mUG-Gs-Iab" secondAttribute="trailing" id="VV8-vk-nxd"/>
                     <constraint firstAttribute="trailing" secondItem="5ut-sZ-m2o" secondAttribute="trailing" constant="48" id="a9b-Sf-bc9"/>
                     <constraint firstItem="AHW-xF-qlv" firstAttribute="centerY" secondItem="x5K-3w-Jfo" secondAttribute="centerY" id="cDi-KS-ZhZ"/>
                     <constraint firstAttribute="bottom" secondItem="1OG-Gp-NuM" secondAttribute="bottom" constant="11" id="j2M-Xg-cEc"/>
@@ -122,7 +112,6 @@
             <viewLayoutGuide key="safeArea" id="Qpv-oL-MX9"/>
             <connections>
                 <outlet property="amount" destination="5ut-sZ-m2o" id="a9d-oa-86Q"/>
-                <outlet property="amountLeadingConstraint" destination="JWY-DA-6N1" id="WYv-oJ-YAu"/>
                 <outlet property="coin" destination="oAZ-ha-TYC" id="DbL-Mj-OP5"/>
                 <outlet property="coinImage" destination="x5K-3w-Jfo" id="xdN-2B-yHy"/>
                 <outlet property="coinImageWrapper" destination="1OG-Gp-NuM" id="12P-aS-Wwn"/>

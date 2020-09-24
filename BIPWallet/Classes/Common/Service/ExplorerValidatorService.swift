@@ -31,7 +31,8 @@ class ExplorerValidatorService: ValidatorService {
       return resp.filter({ (response) -> Bool in
         return response.publicKey != nil && response.publicKey?.stringValue.isValidPublicKey() ?? false
       }).map { (response) -> ValidatorItem in
-        var item = ValidatorItem(publicKey: response.publicKey!.stringValue, name: response.name)
+        var item = ValidatorItem(publicKey: response.publicKey!.stringValue,
+                                 name: response.name)
         item?.iconURL = response.iconURL
         item?.isOnline = response.status == .ready
         item?.stake = response.stake ?? 0.0

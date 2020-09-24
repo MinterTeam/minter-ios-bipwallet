@@ -124,24 +124,22 @@ class SpendCoinsViewModel: ConvertCoinsViewModel, ViewModel {
         self?.spendCoinField.onNext(item.title)
       }).disposed(by: disposeBag)
 
-    Observable.combineLatest(spendCoin.asObservable(),
-                             spendAmount.asObservable(),
-                             getCoin.asObservable())
-      .distinctUntilChanged({ (val1, val2) -> Bool in
-        return val1.0 == val2.0 && val1.1 == val2.1 && val1.2 == val2.2
-      }).throttle(.seconds(1), scheduler: MainScheduler.instance)
-      .subscribe(onNext: { [weak self] (val) in
-        self?.minimumValueToBuy.value = nil
-        self?.approximately.onNext("")
-        self?.validateErrors()
+    let formObservable = Observable.combineLatest(spendCoin.asObservable(), spendAmount.asObservable(), getCoin.asObservable())
+    formObservable.distinctUntilChanged({ (val1, val2) -> Bool in
+      return val1.0 == val2.0 && val1.1 == val2.1 && val1.2 == val2.2
+    }).throttle(.seconds(1), scheduler: MainScheduler.instance)
+    .subscribe(onNext: { [weak self] (val) in
+      self?.minimumValueToBuy.value = nil
+      self?.approximately.onNext("")
+      self?.validateErrors()
 
-        if let from = self?.selectedCoin?.transformToCoinName(),
-          let to = val.2?.transformToCoinName(),
-          let amountString = val.1?.replacingOccurrences(of: " ", with: ""),
-          let amnt = Decimal(string: amountString), amnt > 0 {
-            self?.calculateApproximately(fromCoin: from, amount: amnt, getCoin: to)
-        }
-      }).disposed(by: disposeBag)
+      if let from = self?.selectedCoin?.transformToCoinName(),
+        let to = val.2?.transformToCoinName(),
+        let amountString = val.1?.replacingOccurrences(of: " ", with: ""),
+        let amnt = Decimal(string: amountString), amnt > 0 {
+          self?.calculateApproximately(fromCoin: from, amount: amnt, getCoin: to)
+      }
+    }).disposed(by: disposeBag)
 
     approximatelyReady.asObservable().subscribe(onNext: { [weak self] (_) in
       self?.validateErrors()

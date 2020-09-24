@@ -8,7 +8,9 @@
 
 import UIKit
 import RxSwift
+import RxCocoa
 import RxDataSources
+import SnapKit
 
 class DelegatedViewController: BaseViewController, Controller, StoryboardInitializable {
 
@@ -22,6 +24,7 @@ class DelegatedViewController: BaseViewController, Controller, StoryboardInitial
 
   @IBOutlet weak var noContactsLabel: UILabel!
   @IBOutlet weak var tableView: UITableView!
+  @IBOutlet var warningView: UIView!
 
   let rightBarItem = UIBarButtonItem(image: UIImage(named: "ContactsAddButtonIcon"),
                                      landscapeImagePhone: nil,
@@ -55,6 +58,10 @@ class DelegatedViewController: BaseViewController, Controller, StoryboardInitial
       .subscribe(viewModel.input.willDisplayCell)
       .disposed(by: disposeBag)
 
+    viewModel.output.showKickedWarning.asDriver(onErrorJustReturn: false).drive(onNext: { val in
+      self.toggleTableFooterView(show: val)
+    }).disposed(by: disposeBag)
+
     viewModel.input.viewDidLoad.onNext(())
   }
 
@@ -81,7 +88,7 @@ class DelegatedViewController: BaseViewController, Controller, StoryboardInitial
     configure(with: viewModel)
 
     rightBarItem.tintColor = .mainPurpleColor()
-    self.navigationItem.rightBarButtonItem = rightBarItem
+    navigationItem.rightBarButtonItem = rightBarItem
 
     registerCells()
   }
@@ -113,6 +120,15 @@ class DelegatedViewController: BaseViewController, Controller, StoryboardInitial
     tableView.register(UINib(nibName: "DelegatedCoinTableViewCell", bundle: nil),
                        forCellReuseIdentifier: "DelegatedCoinTableViewCell")
   }
+
+  func toggleTableFooterView(show: Bool) {
+    if show {
+      tableView.tableFooterView = self.warningView
+    } else {
+      tableView.tableFooterView = nil
+    }
+  }
+
 }
 
 extension DelegatedViewController: UITableViewDelegate {

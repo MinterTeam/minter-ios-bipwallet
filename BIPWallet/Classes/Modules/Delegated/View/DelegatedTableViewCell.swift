@@ -13,6 +13,7 @@ import AlamofireImage
 class DelegatedTableViewCellItem: BaseCellItem {
   var title: String?
   var iconURL: URL?
+  var iconImage: UIImage?
   var publicKey: String?
 
   var didTapAdd = PublishSubject<Void>()
@@ -63,6 +64,10 @@ class DelegatedTableViewCell: BaseCell {
                                      progressQueue: DispatchQueue.main,
                                      imageTransition: UIImageView.ImageTransition.crossDissolve(0.1),
                                      runImageTransitionIfCached: false) { (image) in }
+    }
+
+    if let image = item.iconImage {
+      self.validatorIcon.image = image
     }
 
     addButton.rx.tap.asDriver().drive(item.didTapAdd).disposed(by: disposeBag)

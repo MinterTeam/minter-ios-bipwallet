@@ -35,9 +35,9 @@ class DelegatedCoinTableViewCell: BaseCell {
   @IBOutlet weak var title: UILabel!
   @IBOutlet weak var coinImage: UIImageView! {
     didSet {
-      coinImage.makeBorderWithCornerRadius(radius: 16,
-                                           borderColor: .clear,
-                                           borderWidth: 0)
+//      coinImage.makeBorderWithCornerRadius(radius: 16,
+//                                           borderColor: .clear,
+//                                           borderWidth: 0)
     }
   }
   @IBOutlet weak var amount: UILabel! {
@@ -46,48 +46,16 @@ class DelegatedCoinTableViewCell: BaseCell {
     }
   }
   @IBOutlet weak var coin: UILabel!
-  @IBOutlet weak var amountLeadingConstraint: NSLayoutConstraint! {
-    didSet {
-      amountLeadingConstraints = amountLeadingConstraint
-    }
-  }
+//  @IBOutlet weak var amountLeadingConstraint: NSLayoutConstraint! {
+//    didSet {
+//      amountLeadingConstraints = amountLeadingConstraint
+//    }
+//  }
   @IBOutlet weak var minusButton: UIButton!
-  var amountLeadingConstraints: NSLayoutConstraint?
-//  @IBOutlet weak var amountBottomConstraint: NSLayoutConstraint!
+//  var amountLeadingConstraints: NSLayoutConstraint?
   @IBOutlet weak var coinImageWrapper: UIView! {
     didSet {
       coinImageWrapper.backgroundColor = .clear
-    }
-  }
-
-  private var isShowingCoin = false
-
-  @IBAction func didTapCell(_ sender: Any) {
-
-    if self.title.frame.width > self.amount.frame.width {
-      return
-    }
-
-    if !isShowingCoin {
-      self.amountLeadingConstraint?.isActive = false
-      self.amountLeadingConstraints?.isActive = false
-      amount.adjustsFontSizeToFitWidth = true
-
-      UIView.animate(withDuration: 0.2, animations: { [weak self] in
-        self?.title.alpha = 0.0
-        self?.layoutIfNeeded()
-      }) { [weak self] (finished) in
-        self?.isShowingCoin = true
-      }
-    } else {
-      amount.adjustsFontSizeToFitWidth = false
-      self.amountLeadingConstraint?.isActive = true
-      UIView.animate(withDuration: 0.2, animations: { [weak self] in
-        self?.title.alpha = 1.0
-        self?.layoutIfNeeded()
-      }) { [weak self] (finished) in
-        self?.isShowingCoin = false
-      }
     }
   }
 
@@ -141,10 +109,6 @@ class DelegatedCoinTableViewCell: BaseCell {
   }
 
   // MARK: -
-
-  override func layoutSubviews() {
-    super.layoutSubviews()
-  }
 
   override func prepareForReuse() {
     super.prepareForReuse()

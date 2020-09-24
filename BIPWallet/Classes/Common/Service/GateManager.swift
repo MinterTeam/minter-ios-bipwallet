@@ -166,7 +166,9 @@ class GateManager: BaseManager {
 
 		let url = MinterGateAPIURL.estimateCoinSell.url()
 
-		self.httpClient.getRequest(url, parameters: ["coinToBuy" : coinTo, "coinToSell" : coinFrom, "valueToSell" : value]) { (response, error) in
+		self.httpClient.getRequest(url, parameters: ["coinToBuy": coinTo,
+                                                 "coinToSell": coinFrom,
+                                                 "valueToSell": value]) { (response, error) in
 
 			var willGet: Decimal?
 			var com: Decimal?
@@ -248,7 +250,7 @@ class GateManager: BaseManager {
 
 		let url = MinterGateAPIURL.estimateTXComission.url()
 
-		self.httpClient.getRequest(url, parameters: ["transaction" : rawTx]) { (response, error) in
+		self.httpClient.getRequest(url, parameters: ["transaction": rawTx]) { (response, error) in
 
 			var com: Decimal?
 			var err: Error?
