@@ -188,7 +188,7 @@ class DelegatedViewModel: BaseViewModel, ViewModel {
   }
 
   func loadData() {
-    self.dependency.balanceService.delegatedBalance()
+    dependency.balanceService.delegatedBalance()
       .do(afterNext: { [weak self] (val) in
         self?.createSections()
       }).subscribe(onNext: { [weak self] (val) in
@@ -197,10 +197,10 @@ class DelegatedViewModel: BaseViewModel, ViewModel {
           if self?.datasource[key] == nil {
             self?.datasource[key] = [:]
           }
-
           guard let coin = delegation.coin?.symbol else { return }
           self?.datasource[key]?[coin] = delegation
         })
+
         if val.1?.first(where: { (deleg) -> Bool in
           return deleg.isKicked ?? false
         }) != nil {
