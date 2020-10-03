@@ -171,6 +171,12 @@ class DelegateUnbondViewModel: BaseViewModel, ViewModel, LastBlockViewable {
     self.isUnbond = isUnbond
     self.validator = validator
 
+    if let validator = validator {
+      self.validatorPublicKey.onNext(TransactionTitleHelper.title(from: validator.publicKey))
+      self.validatorName.onNext(validator.name ?? TransactionTitleHelper.title(from: validator.publicKey))
+      self.validatorSubject.accept(validator.publicKey)
+    }
+
     if let coinName = coinName, let balance = maxUnbondAmounts?[coinName] {
       let item = SpendCoinPickerItem(coin: coinName, balance: balance)
       self.coin.accept(item.title ?? "")
@@ -203,7 +209,7 @@ class DelegateUnbondViewModel: BaseViewModel, ViewModel, LastBlockViewable {
 
     self.output = Output(validatorName: validatorName.asObservable(),
                          validatorPublicKey: validatorPublicKey.asObservable(),
-                         showInput: shouldClear.asObservable(),//showInput(),
+                         showInput: shouldClear.asObservable(),
                          showCoins: showCoinsObservable(),
                          isButtonEnabled: isButtonEnabled,
                          title: Observable.just((isUnbond ? "Unbond".localized() : "Delegate".localized())),

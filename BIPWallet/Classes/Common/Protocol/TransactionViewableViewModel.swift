@@ -169,7 +169,7 @@ extension TransactionViewableViewModel {
       transactionCellItem.amount = CurrencyNumberFormatter.formattedDecimal(with: amount,
                                                                             formatter: CurrencyNumberFormatter.transactionFormatter)
       
-      if let transactionData = transactionItem.data as? DelegateTransactionData, let publicKey = transactionData.pubKey {
+      if let transactionData = transactionItem.data as? DelegateTransactionData, let publicKey = transactionData.publicKey {
         transactionCellItem.title = self.titleFor(recipient: publicKey) ?? publicKey
         transactionCellItem.imageURL = self.avatarURLFor(recipient: publicKey)
       } else {
@@ -223,49 +223,84 @@ extension TransactionViewableViewModel {
     transactionCellItem.image = UIImage(named: "systemTransactionImage")
 
     switch txType {
-    case .createCoin:
-      transactionCellItem.type = "Create Coin"
-      if let data = transaction.data as? CreateCoinTransactionData {
-        transactionCellItem.title = data.name ?? data.symbol ?? ""
-        transactionCellItem.coin = data.symbol ?? ""
-        transactionCellItem.amount = CurrencyNumberFormatter.formattedDecimal(with: data.initialAmount ?? 0.0,
+    case .createCoin, .recreateCoin:
+      transactionCellItem.type = txType == .createCoin ? "Create Coin".localized() : "Recreate coin".localized()
+
+      func fillCoinData(title: String, coin: String, amount: Decimal) {
+        transactionCellItem.title = title
+        transactionCellItem.coin = coin
+        transactionCellItem.amount = CurrencyNumberFormatter.formattedDecimal(with: amount,
                                                                               formatter: CurrencyNumberFormatter.transactionFormatter)
-        transactionCellItem.image = UIImage(named: "CreateCoin")
       }
 
-    case .createMultisig:
-      transactionCellItem.type = "Create Multisig Address"
+      if let data = transaction.data as? CreateCoinTransactionData {
+        fillCoinData(title: data.name ?? data.symbol ?? "", coin: data.symbol ?? "", amount: data.initialAmount ?? 0.0)
+      }
+      transactionCellItem.image = UIImage(named: "CreateCoin")
+
+    case .createMultisigAddress:
+      transactionCellItem.type = "Create Multisig Address".localized()
       if let data = transaction.data as? CreateMultisigAddressTransactionData {
         transactionCellItem.title = TransactionTitleHelper.title(from: data.multisigAddress ?? "")
         transactionCellItem.image = UIImage(named: "MultisigIcon")
       }
-    case .declare:
-      transactionCellItem.type = "Declare Candidacy"
+
+    case .declareCandidacy:
+      transactionCellItem.type = "Declare Candidacy".localized()
       if let data = transaction.data as? DeclareCandidacyTransactionData {
-        transactionCellItem.title = TransactionTitleHelper.title(from: data.pubKey ?? "")
+        transactionCellItem.title = TransactionTitleHelper.title(from: data.publicKey ?? "")
         transactionCellItem.image = UIImage(named: "SystemIcon")
         transactionCellItem.amount = CurrencyNumberFormatter.formattedDecimal(with: -(data.stake ?? 0.0),
                                                                               formatter: CurrencyNumberFormatter.transactionFormatter)
         transactionCellItem.coin = data.coin?.symbol
       }
+
     case .editCandidate:
-      transactionCellItem.type = "Edit Candidate"
+      transactionCellItem.type = "Edit Candidate".localized()
       if let data = transaction.data as? EditCandidateTransactionData {
-        transactionCellItem.title = TransactionTitleHelper.title(from: data.pubKey ?? "")
+        transactionCellItem.title = TransactionTitleHelper.title(from: data.publicKey ?? "")
         transactionCellItem.image = UIImage(named: "SystemIcon")
       }
+
     case .setCandidateOffline:
-      transactionCellItem.type = "Set Candidate Offline"
+      transactionCellItem.type = "Set Candidate Offline".localized()
       if let data = transaction.data as? SetCandidateBaseTransactionData {
-        transactionCellItem.title = TransactionTitleHelper.title(from: data.pubKey ?? "")
+        transactionCellItem.title = TransactionTitleHelper.title(from: data.publicKey ?? "")
         transactionCellItem.image = UIImage(named: "SystemIcon")
       }
+
     case .setCandidateOnline:
-      transactionCellItem.type = "Set Candidate Online"
+      transactionCellItem.type = "Set Candidate Online".localized()
       if let data = transaction.data as? SetCandidateBaseTransactionData {
-        transactionCellItem.title = TransactionTitleHelper.title(from: data.pubKey ?? "")
+        transactionCellItem.title = TransactionTitleHelper.title(from: data.publicKey ?? "")
         transactionCellItem.image = UIImage(named: "SystemIcon")
       }
+
+    case .setHaltBlock:
+      transactionCellItem.type = "Set Halt Block".localized()
+      if let data = transaction.data as? SetHaltBlockTransactionData {
+        transactionCellItem.title = TransactionTitleHelper.title(from: data.publicKey ?? "")
+        transactionCellItem.image = UIImage(named: "SystemIcon")
+      }
+
+    case .priceVote:
+      transactionCellItem.type = "Price Vote".localized()
+      transactionCellItem.image = UIImage(named: "SystemIcon")
+      if let data = transaction.data as? PriceVoteTransactionData {
+        transactionCellItem.amount = CurrencyNumberFormatter.formattedDecimal(with: data.price ?? 0.0,
+                                                                              formatter: CurrencyNumberFormatter.transactionFormatter)
+      }
+
+    case .changeCoinOwner:
+      transactionCellItem.type = "Change Coin Owner".localized()
+      transactionCellItem.image = UIImage(named: "SystemIcon")
+      if let data = transaction.data as? ChangeCoinOwnerTransactionData {
+        transactionCellItem.title = data.coinSymbol
+      }
+
+    case .editMultisigOwner:
+      transactionCellItem.type = "Edit Multisig Owner".localized()
+      transactionCellItem.image = UIImage(named: "MultisigIcon")
 
     default:
       break

@@ -103,12 +103,20 @@ class TransactionViewModel: BaseViewModel, ViewModel {
       cellItems = createMultisigAddressItems(data: txData)
     } else if let txData = transaction.data as? MinterExplorer.CreateCoinTransactionData {
       cellItems = createCoinItems(data: txData)
+    } else if let txData = transaction.data as? MinterExplorer.CreateCoinTransactionData {
+      cellItems = createCoinItems(data: txData)
     } else if let txData = transaction.data as? MinterExplorer.DeclareCandidacyTransactionData {
       cellItems = declareCandidacyItems(data: txData)
     } else if let txData = transaction.data as? MinterExplorer.EditCandidateTransactionData {
       cellItems = editCandidateItems(data: txData)
     } else if let txData = transaction.data as? MinterExplorer.SetCandidateBaseTransactionData {
       cellItems = setCandidateOnlineOfflineItems(data: txData)
+    } else if let txData = transaction.data as? MinterExplorer.SetHaltBlockTransactionData {
+      cellItems = setHaltBlockItems(data: txData)
+    } else if let txData = transaction.data as? MinterExplorer.PriceVoteTransactionData {
+      cellItems = priceVoteItems(data: txData)
+    } else if let txData = transaction.data as? MinterExplorer.ChangeCoinOwnerTransactionData {
+      cellItems = changeCoinOwnerItems(data: txData)
     } else {
       cellItems = systemTransactionItems(data: transaction.data)
     }
@@ -619,15 +627,15 @@ class TransactionViewModel: BaseViewModel, ViewModel {
                                         identifier: "TransactionAddressCell_To")
     to.address = transaction.data?.to
     to.name = ""
-    to.name = self.dependency.recipientInfoService.title(for: data.pubKey ?? "") ?? ""
+    to.name = self.dependency.recipientInfoService.title(for: data.publicKey ?? "") ?? ""
     to.title = "To"
-    to.address = data.pubKey
+    to.address = data.publicKey
     to.didTapAddress.subscribe(onNext: { [weak self] (_) in
-      UIPasteboard.general.string = data.pubKey
+      UIPasteboard.general.string = data.publicKey
       self?.copied.onNext(())
     }).disposed(by: disposeBag)
     to.avatar = transaction.type == .unbond ? UIImage(named: "UnbondIcon") : UIImage(named: "DelegateIcon")
-    if let publicKey = data.pubKey {
+    if let publicKey = data.publicKey {
       to.avatarURL = self.dependency.recipientInfoService.avatarURL(for: publicKey)
     }
     cellItems.append(to)
@@ -921,11 +929,11 @@ class TransactionViewModel: BaseViewModel, ViewModel {
     let to = TransactionAddressCellItem(reuseIdentifier: "TransactionAddressCell",
                                         identifier: "TransactionAddressCell_To")
     to.address = transaction.data?.to
-    to.name = self.dependency.recipientInfoService.title(for: data.pubKey ?? "") ?? ""
+    to.name = self.dependency.recipientInfoService.title(for: data.publicKey ?? "") ?? ""
     to.title = "To"
-    to.address = data.pubKey
+    to.address = data.publicKey
     to.didTapAddress.subscribe(onNext: { [weak self] (_) in
-      UIPasteboard.general.string = data.pubKey
+      UIPasteboard.general.string = data.publicKey
       self?.copied.onNext(())
     }).disposed(by: disposeBag)
     to.avatar = UIImage(named: "SystemIcon")
@@ -996,11 +1004,11 @@ class TransactionViewModel: BaseViewModel, ViewModel {
     let to = TransactionAddressCellItem(reuseIdentifier: "TransactionAddressCell",
                                         identifier: "TransactionAddressCell_To")
     to.address = transaction.data?.to
-    to.name = self.dependency.recipientInfoService.title(for: data.pubKey ?? "") ?? ""
+    to.name = self.dependency.recipientInfoService.title(for: data.publicKey ?? "") ?? ""
     to.title = "To"
-    to.address = data.pubKey
+    to.address = data.publicKey
     to.didTapAddress.subscribe(onNext: { [weak self] (_) in
-      UIPasteboard.general.string = data.pubKey
+      UIPasteboard.general.string = data.publicKey
       self?.copied.onNext(())
     }).disposed(by: disposeBag)
     to.avatar = UIImage(named: "SystemIcon")
@@ -1063,11 +1071,11 @@ class TransactionViewModel: BaseViewModel, ViewModel {
     let to = TransactionAddressCellItem(reuseIdentifier: "TransactionAddressCell",
                                         identifier: "TransactionAddressCell_To")
     to.address = transaction.data?.to
-    to.name = self.dependency.recipientInfoService.title(for: data.pubKey ?? "") ?? ""
+    to.name = self.dependency.recipientInfoService.title(for: data.publicKey ?? "") ?? ""
     to.title = "To"
-    to.address = data.pubKey
+    to.address = data.publicKey
     to.didTapAddress.subscribe(onNext: { [weak self] (_) in
-      UIPasteboard.general.string = data.pubKey
+      UIPasteboard.general.string = data.publicKey
       self?.copied.onNext(())
     }).disposed(by: disposeBag)
     to.avatar = UIImage(named: "SystemIcon")
@@ -1077,7 +1085,133 @@ class TransactionViewModel: BaseViewModel, ViewModel {
 
     cellItems.append(contentsOf: payloadBlock())
 
-    if let date = transaction.date {
+    if transaction.date != nil {
+      let separator1 = SeparatorTableViewCellItem(reuseIdentifier: "SeparatorTableViewCell",
+                                                  identifier: "SeparatorTableViewCell_\(String.random())")
+      cellItems.append(separator1)
+
+      cellItems.append(contentsOf: dateBlock())
+      cellItems.append(blankItem(height: 5.0))
+    }
+
+    cellItems.append(feeBlock())
+
+    cellItems.append(blankItem(height: 10))
+
+    cellItems.append(shareTransaction())
+
+    return cellItems
+  }
+  
+  func setHaltBlockItems(data: SetHaltBlockTransactionData) -> [BaseCellItem] {
+    var cellItems = [BaseCellItem]()
+
+    cellItems.append(fromBlock())
+
+    let to = TransactionAddressCellItem(reuseIdentifier: "TransactionAddressCell",
+                                        identifier: "TransactionAddressCell_To")
+    to.address = transaction.data?.to
+    to.name = self.dependency.recipientInfoService.title(for: data.publicKey ?? "") ?? ""
+    to.title = "To"
+    to.address = data.publicKey
+    to.didTapAddress.subscribe(onNext: { [weak self] (_) in
+      UIPasteboard.general.string = data.publicKey
+      self?.copied.onNext(())
+    }).disposed(by: disposeBag)
+    to.avatar = UIImage(named: "SystemIcon")
+    cellItems.append(to)
+
+    cellItems.append(blankItem(height: 16))
+
+    let haltBlock = TransactionTwoColumnCellItem(reuseIdentifier: "TransactionTwoColumnCell",
+                                            identifier: "TransactionTwoColumnCell_\(String.random())")
+    haltBlock.key1 = "Height".localized()
+    haltBlock.value1 = "\(data.height ?? 0)"
+    cellItems.append(haltBlock)
+
+    cellItems.append(contentsOf: payloadBlock())
+
+    if transaction.date != nil {
+      let separator1 = SeparatorTableViewCellItem(reuseIdentifier: "SeparatorTableViewCell",
+                                                  identifier: "SeparatorTableViewCell_\(String.random())")
+      cellItems.append(separator1)
+
+      cellItems.append(contentsOf: dateBlock())
+      cellItems.append(blankItem(height: 5.0))
+    }
+
+    cellItems.append(feeBlock())
+
+    cellItems.append(blankItem(height: 10))
+
+    cellItems.append(shareTransaction())
+
+    return cellItems
+  }
+
+  func priceVoteItems(data: PriceVoteTransactionData) -> [BaseCellItem] {
+    var cellItems = [BaseCellItem]()
+
+    cellItems.append(fromBlock())
+
+    cellItems.append(blankItem(height: 16))
+
+    let amountCoin = TransactionTwoColumnCellItem(reuseIdentifier: "TransactionTwoColumnCell",
+                                                  identifier: "TransactionTwoColumnCell_AmountCoin")
+    amountCoin.key1 = "Price".localized()
+    amountCoin.value1 = CurrencyNumberFormatter.formattedDecimal(with: data.price ?? 0.0,
+                                                                 formatter: coinFormatter)
+    cellItems.append(amountCoin)
+
+    cellItems.append(contentsOf: payloadBlock())
+
+    if transaction.date != nil {
+      let separator1 = SeparatorTableViewCellItem(reuseIdentifier: "SeparatorTableViewCell",
+                                                  identifier: "SeparatorTableViewCell_\(String.random())")
+      cellItems.append(separator1)
+
+      cellItems.append(contentsOf: dateBlock())
+      cellItems.append(blankItem(height: 5.0))
+    }
+
+    cellItems.append(feeBlock())
+
+    cellItems.append(blankItem(height: 10))
+
+    cellItems.append(shareTransaction())
+
+    return cellItems
+  }
+
+  func changeCoinOwnerItems(data: ChangeCoinOwnerTransactionData) -> [BaseCellItem] {
+    var cellItems = [BaseCellItem]()
+
+    cellItems.append(fromBlock())
+
+    let to = TransactionAddressCellItem(reuseIdentifier: "TransactionAddressCell",
+                                        identifier: "TransactionAddressCell_To")
+    to.address = transaction.data?.to
+    to.name = self.dependency.recipientInfoService.title(for: data.owner ?? "") ?? ""
+    to.title = "To"
+    to.address = data.owner
+    to.didTapAddress.subscribe(onNext: { [weak self] (_) in
+      UIPasteboard.general.string = data.owner
+      self?.copied.onNext(())
+    }).disposed(by: disposeBag)
+    to.avatar = UIImage(named: "SystemIcon")
+    cellItems.append(to)
+
+    cellItems.append(blankItem(height: 16))
+
+    let coin = TransactionTwoColumnCellItem(reuseIdentifier: "TransactionTwoColumnCell",
+                                                  identifier: "TransactionTwoColumnCell_AmountCoin")
+    coin.key1 = "Coin".localized()
+    coin.value1 = data.coinSymbol
+    cellItems.append(coin)
+
+    cellItems.append(contentsOf: payloadBlock())
+
+    if transaction.date != nil {
       let separator1 = SeparatorTableViewCellItem(reuseIdentifier: "SeparatorTableViewCell",
                                                   identifier: "SeparatorTableViewCell_\(String.random())")
       cellItems.append(separator1)
@@ -1096,6 +1230,23 @@ class TransactionViewModel: BaseViewModel, ViewModel {
   }
 
   // MARK: - Blocks
+
+  func fromBlock() -> TransactionAddressCellItem {
+    let from = TransactionAddressCellItem(reuseIdentifier: "TransactionAddressCell",
+                                          identifier: "TransactionAddressCell_From")
+    from.address = transaction.from
+    from.name = ""
+    from.title = "From"
+    if let address = transaction.from {
+      from.avatarURL = MinterMyAPIURL.avatarAddress(address: address).url()
+      from.name = self.dependency.recipientInfoService.title(for: address) ?? ""
+    }
+    from.didTapAddress.subscribe(onNext: { [weak self] (_) in
+      UIPasteboard.general.string = self?.transaction.from
+      self?.copied.onNext(())
+    }).disposed(by: disposeBag)
+    return from
+  }
 
   func shareTransaction() -> ButtonTableViewCellItem {
     let shareButton = ButtonTableViewCellItem(reuseIdentifier: "ButtonTableViewCell",

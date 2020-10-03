@@ -88,7 +88,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     appearance()
 
-//    UIApplication.shared.open(URL(string: "mintertestnet://bip.to/tx/5xGh4IpCQU5BTkFURVNUlJmZmZmZmZmZmZmZmZmZmZmZmZmZgIABgA")!, options: [:], completionHandler: nil)
+//    UIApplication.shared.open(URL(string: "mintertestnet://bip.to/tx/yBOCwWSAgAGA")!, options: [:], completionHandler: nil)
 
     return true
   }

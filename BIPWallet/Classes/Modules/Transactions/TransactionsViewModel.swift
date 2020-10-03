@@ -143,13 +143,13 @@ class TransactionsViewModel: BaseViewModel, ViewModel, TransactionViewableViewMo
 
       let transactionCellItem: BaseCellItem?
       switch txType {
-      case .send:
+      case .sendCoin:
         transactionCellItem = self.sendTransactionItem(with: transaction)
 
       case .multisend:
         transactionCellItem = self.multisendTransactionItem(with: transaction)
 
-      case .buy, .sell, .sellAll:
+      case .buyCoin, .sellCoin, .sellAllCoins:
         transactionCellItem = self.convertTransactionItem(with: transaction)
 
       case .delegate, .unbond:
@@ -158,8 +158,9 @@ class TransactionsViewModel: BaseViewModel, ViewModel, TransactionViewableViewMo
       case .redeemCheck:
         transactionCellItem = self.redeemCheckTransactionItem(with: transaction)
 
-      case .createCoin, .declare, .setCandidateOnline,
-           .setCandidateOffline, .createMultisig, .editCandidate:
+      case .createCoin, .declareCandidacy, .setCandidateOnline,
+           .setCandidateOffline, .createMultisigAddress, .editCandidate, .setHaltBlock,
+           .recreateCoin, .changeCoinOwner, .editMultisigOwner, .priceVote:
         transactionCellItem = self.systemTransactionItem(with: transaction)
       }
 
@@ -204,8 +205,7 @@ class TransactionsViewModel: BaseViewModel, ViewModel, TransactionViewableViewMo
         if !withoutLoader {
           self?.createSections(isLoading: self?.isLoading, transactions: txs)
         }
-      })
-      .subscribe(onNext: { [weak self] (transactions) in
+      }).subscribe(onNext: { [weak self] (transactions) in
         self?.isLoading = false
         self?.transactions.onNext(transactions[safe: 0..<10] ?? [])
       }).disposed(by: disposeBag)

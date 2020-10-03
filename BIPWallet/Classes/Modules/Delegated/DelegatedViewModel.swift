@@ -114,13 +114,13 @@ class DelegatedViewModel: BaseViewModel, ViewModel {
         let value2 = delegation2.value.bipValue ?? 0.0
         return (value1 > value2)
       }).sorted(by: { (delegation1, delegation2) -> Bool in
-        return !((delegation1.value.isKicked ?? false) && !(delegation2.value.isKicked ?? false))
+        return !((delegation1.value.isWaitlisted ?? false) && !(delegation2.value.isWaitlisted ?? false))
       }).map { (delegation) -> [BaseCellItem] in
         let coin = delegation.value.coin?.symbol
-        let publicKey = delegation.value.publicKey
+        let publicKey = delegation.value.validator?.publicKey
         let value = delegation.value.value
         let bipValue = delegation.value.bipValue
-        let isKicked = delegation.value.isKicked ?? false
+        let isKicked = delegation.value.isWaitlisted ?? false
 
         let id = "\(publicKey ?? "")_\(coin ?? "")"
 
@@ -147,8 +147,8 @@ class DelegatedViewModel: BaseViewModel, ViewModel {
         }
 
         coinCell.didTapMinus.map {
-          let validatorsPK = delegation.value.publicKey ?? ""
-          let validator = ValidatorItem(publicKey: validatorsPK, name: delegation.value.validatorName)
+          let validatorsPK = delegation.value.validator?.publicKey ?? ""
+          let validator = ValidatorItem(publicKey: validatorsPK, name: delegation.value.validator?.name)
           let validatorsDelegations = self.datasource[validatorsPK]?.mapValues {$0.value ?? 0.0} ?? [:]
           return (validator, delegation.key, validatorsDelegations)
         }.do(onNext: { [weak self] (_) in
@@ -162,15 +162,16 @@ class DelegatedViewModel: BaseViewModel, ViewModel {
       let validatorItem = DelegatedTableViewCellItem(reuseIdentifier: "DelegatedTableViewCell",
                                                      identifier: "DelegatedTableViewCell_\(val.key)")
       validatorItem.publicKey = val.key
-      validatorItem.title = val.value.values.first?.validatorName
-      validatorItem.iconURL = val.value.values.first?.validatorIconURL
+      validatorItem.title = val.value.values.first?.validator?.name
+      validatorItem.iconURL = val.value.values.first?.validator?.iconURL
+//      validatorItem.validatorDesc = val.value.values.first?.
 
-      validatorItem.didTapAdd.map { _ in return ValidatorItem(publicKey: val.key, name: val.value.values.first?.validatorName) }
+      validatorItem.didTapAdd.map { _ in return ValidatorItem(publicKey: val.key, name: val.value.values.first?.validator?.name) }
         .subscribe(self.showDelegate)
         .disposed(by: disposeBag)
 
       validatorItem.didTapCopy
-        .map { _ in return ValidatorItem(publicKey: val.key, name: val.value.values.first?.validatorName) }
+        .map { _ in return ValidatorItem(publicKey: val.key, name: val.value.values.first?.validator?.name) }
         .subscribe(onNext: { [weak self] val in
           UIPasteboard.general.string = val?.publicKey
           self?.showNotifyMessage.onNext("Copied!")
@@ -193,7 +194,7 @@ class DelegatedViewModel: BaseViewModel, ViewModel {
         self?.createSections()
       }).subscribe(onNext: { [weak self] (val) in
         val.1?.forEach({ (delegation) in
-          let key = delegation.publicKey ?? ""
+          let key = delegation.validator?.publicKey ?? ""
           if self?.datasource[key] == nil {
             self?.datasource[key] = [:]
           }
@@ -202,7 +203,7 @@ class DelegatedViewModel: BaseViewModel, ViewModel {
         })
 
         if val.1?.first(where: { (deleg) -> Bool in
-          return deleg.isKicked ?? false
+          return deleg.isWaitlisted ?? false
         }) != nil {
           self?.showKickedWarning.onNext(true)
         } else {

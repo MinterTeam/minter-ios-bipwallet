@@ -103,7 +103,9 @@ class ExplorerBalanceService: BalanceService {
       throw BalanceServiceError.incorrectAddress
     }
     account.lastSelected = Date()
-    self.accountSubject.onNext(account)
+    accountSubject.onNext(account)
+    updateBalance()
+    updateDelegated()
   }
 
   func lastBlockAgo() -> Observable<TimeInterval?> {

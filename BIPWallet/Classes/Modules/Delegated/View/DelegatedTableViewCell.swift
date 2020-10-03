@@ -15,6 +15,7 @@ class DelegatedTableViewCellItem: BaseCellItem {
   var iconURL: URL?
   var iconImage: UIImage?
   var publicKey: String?
+  var validatorDesc: String?
 
   var didTapAdd = PublishSubject<Void>()
   var didTapCopy = PublishSubject<Void>()
@@ -31,6 +32,7 @@ class DelegatedTableViewCell: BaseCell {
     }
   }
   @IBOutlet weak var publicKey: UILabel!
+  @IBOutlet weak var validatorDesc: UILabel!
   @IBOutlet weak var addButton: UIButton!
   @IBOutlet weak var copyButton: UIButton!
 
@@ -69,6 +71,8 @@ class DelegatedTableViewCell: BaseCell {
     if let image = item.iconImage {
       self.validatorIcon.image = image
     }
+
+    validatorDesc.text = item.validatorDesc
 
     addButton.rx.tap.asDriver().drive(item.didTapAdd).disposed(by: disposeBag)
     copyButton.rx.tap.asDriver().drive(item.didTapCopy).disposed(by: disposeBag)

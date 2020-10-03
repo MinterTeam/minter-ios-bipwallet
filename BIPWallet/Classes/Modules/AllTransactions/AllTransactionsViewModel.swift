@@ -189,9 +189,6 @@ class AllTransactionsViewModel: BaseViewModel, ViewModel, TransactionViewableVie
   // MARK: -
 
   func createSections(isLoading: Bool? = false, transactions: [MinterExplorer.Transaction]) {
-    if isLoading ?? false {
-      
-    }
     var newSections = [BaseTableSectionItem]()
     var items = [String: [BaseCellItem]]()
 
@@ -225,13 +222,13 @@ class AllTransactionsViewModel: BaseViewModel, ViewModel, TransactionViewableVie
 
       let transactionCellItem: BaseCellItem?
       switch txType {
-      case .send:
+      case .sendCoin:
         transactionCellItem = self.sendTransactionItem(with: transaction)
 
       case .multisend:
         transactionCellItem = self.multisendTransactionItem(with: transaction)
 
-      case .buy, .sell, .sellAll:
+      case .buyCoin, .sellCoin, .sellAllCoins:
         transactionCellItem = self.convertTransactionItem(with: transaction)
 
       case .delegate, .unbond:
@@ -240,8 +237,9 @@ class AllTransactionsViewModel: BaseViewModel, ViewModel, TransactionViewableVie
       case .redeemCheck:
         transactionCellItem = self.redeemCheckTransactionItem(with: transaction)
 
-      case .createCoin, .declare, .setCandidateOnline,
-           .setCandidateOffline, .createMultisig, .editCandidate:
+      case .createCoin, .declareCandidacy, .setCandidateOnline,
+           .setCandidateOffline, .createMultisigAddress, .editCandidate, .priceVote,
+           .changeCoinOwner, .recreateCoin, .editMultisigOwner, .setHaltBlock:
         transactionCellItem = self.systemTransactionItem(with: transaction)
       }
 

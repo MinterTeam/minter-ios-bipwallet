@@ -299,7 +299,7 @@ class GateManager: BaseManager {
 
       if let resp = response.data as? [String: Any] {
         if let hash = resp["hash"] as? String {
-          tx = hash
+          tx = hash.lowercased().capitalized
         }
         if let transaction = resp["transaction"] as? [String: Any] {
           if let blockVal = transaction["height"] as? String {

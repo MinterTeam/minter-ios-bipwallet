@@ -28,6 +28,7 @@ class DelegateUnbondCoordinator: BaseCoordinator<Void> {
        balanceService: BalanceService,
        validatorService: ValidatorService,
        coinService: CoinService) {
+
     self.rootViewController = rootViewController
     self.balanceService = balanceService
     self.validatorService = validatorService
