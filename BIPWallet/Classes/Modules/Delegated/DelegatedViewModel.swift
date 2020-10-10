@@ -20,6 +20,7 @@ class DelegatedViewModel: BaseViewModel, ViewModel {
   //Key - PublicKey
   //Value- [CoinSymbol: AddressDelegation]
   var datasource = [String: [String: AddressDelegation]]()
+  var validators = [String: ValidatorItem]()
 
   private let coinFormatter = CurrencyNumberFormatter.coinFormatter
 
@@ -45,6 +46,7 @@ class DelegatedViewModel: BaseViewModel, ViewModel {
 
   struct Dependency {
     var balanceService: BalanceService
+    var validatorService: ValidatorService
   }
 
   // MARK: -
@@ -112,10 +114,12 @@ class DelegatedViewModel: BaseViewModel, ViewModel {
       let items = val.value.sorted(by: { (delegation1, delegation2) -> Bool in
         let value1 = delegation1.value.bipValue ?? 0.0
         let value2 = delegation2.value.bipValue ?? 0.0
-        return (value1 > value2)
-      }).sorted(by: { (delegation1, delegation2) -> Bool in
-        return !((delegation1.value.isWaitlisted ?? false) && !(delegation2.value.isWaitlisted ?? false))
-      }).map { (delegation) -> [BaseCellItem] in
+        return (value1 > value2) && !((delegation1.value.isWaitlisted ?? false) && !(delegation2.value.isWaitlisted ?? false))
+      })
+//      .sorted(by: { (delegation1, delegation2) -> Bool in
+//        return !((delegation1.value.isWaitlisted ?? false) && !(delegation2.value.isWaitlisted ?? false))
+//      })
+      .map { (delegation) -> [BaseCellItem] in
         let coin = delegation.value.coin?.symbol
         let publicKey = delegation.value.validator?.publicKey
         let value = delegation.value.value
@@ -164,7 +168,12 @@ class DelegatedViewModel: BaseViewModel, ViewModel {
       validatorItem.publicKey = val.key
       validatorItem.title = val.value.values.first?.validator?.name
       validatorItem.iconURL = val.value.values.first?.validator?.iconURL
-//      validatorItem.validatorDesc = val.value.values.first?.
+      if let publicKey = val.value.values.first?.validator?.publicKey, let validator = self.validators[publicKey] {
+        let minStake = coinFormatter.formattedDecimal(with: validator.minStake)
+        validatorItem.validatorDesc = "Fee \(validator.commission ?? 100)% | Min. ~\(minStake) \(Coin.baseCoin().symbol!)"
+      } else {
+        validatorItem.validatorDesc = ""
+      }
 
       validatorItem.didTapAdd.map { _ in return ValidatorItem(publicKey: val.key, name: val.value.values.first?.validator?.name) }
         .subscribe(self.showDelegate)
@@ -189,10 +198,14 @@ class DelegatedViewModel: BaseViewModel, ViewModel {
   }
 
   func loadData() {
-    dependency.balanceService.delegatedBalance()
-      .do(afterNext: { [weak self] (val) in
+    Observable.combineLatest(dependency.balanceService.delegatedBalance(), dependency.validatorService.validators()).take(1)
+      .do(afterNext: { [weak self] (balances, validators) in
         self?.createSections()
-      }).subscribe(onNext: { [weak self] (val) in
+      }).subscribe(onNext: { [weak self] (balances, vldtrs) in
+        vldtrs.forEach { (validator) in
+          self?.validators[validator.publicKey] = validator
+        }
+        let val = balances
         val.1?.forEach({ (delegation) in
           let key = delegation.validator?.publicKey ?? ""
           if self?.datasource[key] == nil {

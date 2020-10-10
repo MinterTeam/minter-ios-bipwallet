@@ -33,13 +33,17 @@ class ExplorerCoinService: CoinService {
     }.filter({ (coins) -> Bool in
       return coins.count > 0
     }).subscribe(onNext: { (coins) in
-      self.allCoins = coins.map({ (coin) -> Coin in
-        if (coin.symbol ?? "") == Coin.baseCoin().symbol! {
-          coin.reserveBalance = Decimal.greatestFiniteMagnitude
-        }
-        return coin
-      })
+      self.setCoins(coins)
     }).disposed(by: disposeBag)
+  }
+
+  private func setCoins(_ coins: [Coin]) {
+    self.allCoins = coins.map({ (coin) -> Coin in
+      if coin.id == Coin.baseCoin().id! {
+        coin.reserveBalance = Decimal.greatestFiniteMagnitude
+      }
+      return coin
+    })
   }
 
   func coins(by term: String) -> Observable<[Coin]> {
@@ -59,6 +63,17 @@ class ExplorerCoinService: CoinService {
       observer.onCompleted()
       return Disposables.create()
     }
+  }
+
+  func coins() -> Observable<[Coin]> {
+    return manager.coins(term: "").map { (coins) -> [Coin] in
+      return coins ?? []
+    }.filter({ (coins) -> Bool in
+      return coins.count > 0
+    }).do { (coins) in
+      self.setCoins(coins)
+    }
+
   }
 
   func coinExists(name: String) -> Observable<Bool> {
@@ -84,9 +99,15 @@ class ExplorerCoinService: CoinService {
     return coins.first?.id
   }
 
+  func coinBy(id: Int) -> Coin? {
+    return allCoins.first { (coin) -> Bool in
+      return coin.id == id
+    }
+  }
+
 }
 
-enum ExplorerCoinManagerRxError : Error {
+enum ExplorerCoinManagerRxError: Error {
   case noCoin
 }
 

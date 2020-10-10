@@ -239,7 +239,7 @@ class AllTransactionsViewModel: BaseViewModel, ViewModel, TransactionViewableVie
 
       case .createCoin, .declareCandidacy, .setCandidateOnline,
            .setCandidateOffline, .createMultisigAddress, .editCandidate, .priceVote,
-           .changeCoinOwner, .recreateCoin, .editMultisigOwner, .setHaltBlock:
+           .changeCoinOwner, .recreateCoin, .editMultisigOwner, .setHaltBlock, .editCandidatePublicKey:
         transactionCellItem = self.systemTransactionItem(with: transaction)
       }
 

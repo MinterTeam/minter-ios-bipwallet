@@ -344,14 +344,18 @@ YOU ARE ABOUT TO SEND SEED PHRASE IN THE MESSAGE ATTACHED TO THIS TRANSACTION.\n
         if !(self?.isToValid(to: rec ?? "") ?? false) && (rec ?? "").count >= 5 {
           self?.addressStateSubject.onNext(.invalid(error: "INVALID VALUE".localized()))
         } else {
-          self?.addressStateSubject.onNext(.default)
+          if rec?.isValidPublicKey() == true {
+            self?.addressStateSubject.onNext(.invalid(error: "For delegations please go to Delegations section".uppercased().localized()))
+          } else {
+            self?.addressStateSubject.onNext(.default)
+          }
         }
         if self?.isValidMinterRecipient(recipient: rec ?? "") ?? false {
           self?.addressSubject.accept(rec)
         }
       }).filter({ [weak self] (rec) -> Bool in
         return self?.isToValid(to: rec ?? "") ?? false
-      }).flatMap { (rec) -> Observable<Event<ContactItem?>> in
+      }).flatMap { [unowned self] (rec) -> Observable<Event<ContactItem?>> in
         let term = (rec ?? "").lowercased()
         return self.dependency.contactsService.contactBy(name: term).materialize()
       }.do(onNext: { [weak self] (_) in

@@ -145,8 +145,7 @@ class ValidatorsViewModel: BaseViewModel, ViewModel {
     contactItem.name = item.name
     contactItem.avatarURL = item.iconURL
     contactItem.commission = "\(item.commission ?? 100) %"
-    var minStake = item.minStake
-    minStake.round(.toNearestOrEven)
+    let minStake = CurrencyNumberFormatter.coinFormatter.formattedDecimal(with: item.minStake)
     contactItem.minStake = "Min. ~\(minStake) \(Coin.baseCoin().symbol!)"
     return contactItem
   }

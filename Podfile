@@ -5,9 +5,9 @@ platform :ios, '11.0'
 
 def shared_pods
   #Minter
-	pod 'MinterCore', :path => '../../minter-ios-core', :branch => '1.2'
-	pod 'MinterMy'#, :path => '../../minter-ios-my'
-	pod 'MinterExplorer', :path => '../../minter-ios-explorer', :branch => 'minter1.2'
+	pod 'MinterCore', '~> 1.2.1'
+	pod 'MinterMy'
+	pod 'MinterExplorer', '~> 1.2.4'#, git: 'https://github.com/MinterTeam/minter-ios-explorer.git', branch: 'minter1.2'
   #Networking
 	pod 'Alamofire'
 	pod 'AlamofireImage'
@@ -39,7 +39,6 @@ def shared_pods
   pod 'ReachabilitySwift', '~> 4.3'
 	pod 'SwiftLint'
   pod 'Swinject'
-
   pod 'Firebase/Analytics'
   pod 'Firebase/Crashlytics'
   pod 'CryptoSwift', '~> 1.0'

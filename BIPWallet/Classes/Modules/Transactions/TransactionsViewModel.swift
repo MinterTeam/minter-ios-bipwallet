@@ -160,7 +160,7 @@ class TransactionsViewModel: BaseViewModel, ViewModel, TransactionViewableViewMo
 
       case .createCoin, .declareCandidacy, .setCandidateOnline,
            .setCandidateOffline, .createMultisigAddress, .editCandidate, .setHaltBlock,
-           .recreateCoin, .changeCoinOwner, .editMultisigOwner, .priceVote:
+           .recreateCoin, .changeCoinOwner, .editMultisigOwner, .priceVote, .editCandidatePublicKey:
         transactionCellItem = self.systemTransactionItem(with: transaction)
       }
 

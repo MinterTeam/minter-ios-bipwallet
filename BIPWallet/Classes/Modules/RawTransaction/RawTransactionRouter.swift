@@ -22,7 +22,9 @@ class RawTransactionRouter {
                                                    pinService: SecureStoragePINService()
   )
 
-  static func viewController(path: [String], param: [String: Any], balanceService: BalanceService, coinService: CoinService) -> UIViewController? {
+  static func viewController(path: [String], param: [String: Any],
+                             balanceService: BalanceService,
+                             coinService: CoinService) -> UIViewController? {
     var nonce: BigUInt?
     var gasPrice: BigUInt?
     var gasCoin: String = Coin.baseCoin().symbol!
@@ -68,11 +70,12 @@ class RawTransactionRouter {
 
 					let gasPriceValue = BigUInt(gasPriceData)
 					gasPrice = gasPriceValue > 0 ? gasPriceValue : nil
-					if let newGasCoin = String(coinData: gasCoinData) {
-						gasCoin = (newGasCoin == "") ? Coin.baseCoin().symbol! : newGasCoin
-						guard gasCoin.isValidCoin() else {
-							return nil
-						}
+          let coinId: Int = gasCoinData.withUnsafeBytes { $0.pointee }
+          if let newGasCoin = coinService.coinBy(id: coinId)?.symbol {
+            gasCoin = (newGasCoin == "") ? Coin.baseCoin().symbol! : newGasCoin
+            guard gasCoin.isValidCoin() else {
+              return nil
+            }
 					}
 					let typeBigInt = BigUInt(typeData)
 					guard let txType = RawTransactionType.type(with: typeBigInt) else {
@@ -141,6 +144,7 @@ class RawTransactionRouter {
     balanceService: BalanceService,
     coinService: CoinService
   ) -> UIViewController? {
+
     let viewModel: RawTransactionViewModel
     do {
       let dependency = RawTransactionViewModel.Dependency(account: RawTransactionViewModelAccount(),

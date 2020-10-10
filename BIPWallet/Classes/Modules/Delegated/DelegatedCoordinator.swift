@@ -31,7 +31,8 @@ class DelegatedCoordinator: BaseCoordinator<Void> {
   }
 
   override func start() -> Observable<Void> {
-    let dependency = DelegatedViewModel.Dependency(balanceService: balanceService)
+    let dependency = DelegatedViewModel.Dependency(balanceService: balanceService,
+                                                   validatorService: validatorService)
     let viewModel = DelegatedViewModel(dependency: dependency)
 
     let controller = DelegatedViewController.initFromStoryboard(name: "Delegated")

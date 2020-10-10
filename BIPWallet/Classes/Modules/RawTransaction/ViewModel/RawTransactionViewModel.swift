@@ -182,7 +182,7 @@ class RawTransactionViewModel: BaseViewModel, ViewModel {// swiftlint:disable:th
 		self.payload = payload
 		self.data = data
 
-		try makeFields(data: data)
+//		try makeFields(data: data)
 
     if let data = data, let txData = RLP.decode(data), let content = txData[0]?.content {
       switch content {
@@ -298,7 +298,11 @@ class RawTransactionViewModel: BaseViewModel, ViewModel {// swiftlint:disable:th
       self.sectionsSubject.onNext(self.createSections())
     }).disposed(by: disposeBag)
 
-		sectionsSubject.onNext(createSections())
+    self.dependency.coinService.coins().do(afterNext: { [unowned self] (coins) in
+      self.fields = []
+      try? self.makeFields(data: data)
+      self.sectionsSubject.onNext(self.createSections())
+    }).subscribe().disposed(by: disposeBag)
 	}
 
   func address() throws -> String {
@@ -314,7 +318,7 @@ class RawTransactionViewModel: BaseViewModel, ViewModel {// swiftlint:disable:th
 		}
 
 		Observable.combineLatest(self.dependency.gate.nonce(address: "Mx" + address),
-														 self.dependency.gate.minGas())
+                             self.dependency.gate.minGas()).take(1)
 			.do(onSubscribe: { [weak self] in
 				self?.sendingTxSubject.onNext(true)
         self?.isLoading.onNext(true)
@@ -1285,28 +1289,32 @@ extension RawTransactionViewModel {
           case .redeemCheck:
             let typeField = Field(key: "Type".localized(), value: "Redeem Check".localized(), isEditable: false)
             fields.append(typeField)
-            guard
-              let checkData = items[0].data else {
-                throw RawTransactionViewModelError.incorrectTxData
+
+            guard let checkData = items[0].data,
+                  let checkPayload = RLP.decode(checkData)?[0]?.content else {
+              throw RawTransactionViewModelError.incorrectTxData
             }
-            if let checkPayload = RLP.decode(checkData)?[0]?.content {
-              switch checkPayload {
-              case .list(let checkPayloadItems, _, _):
-                if
-                  let checkCoinData = checkPayloadItems[safe: 3]?.data,
-                  let checkAmount = checkPayloadItems[safe: 4]?.data {
-                  let value = BigUInt(checkAmount)
-                  let amount = (Decimal(bigInt: value) ?? 0).PIPToDecimal()
-                  let amountString = decimalFormatter.formattedDecimal(with: amount)
-                  let checkValue = amountString + " " + (String(coinData: checkCoinData) ?? "")
-                  let amountField = Field(key: "Amount".localized(), value: checkValue, isEditable: false)
-                  fields.append(amountField)
+
+            switch checkPayload {
+            case .list(let checkPayloadItems, _, _):
+              if
+                let checkCoinData = checkPayloadItems[safe: 3]?.data,
+                let checkAmount = checkPayloadItems[safe: 4]?.data,
+                let checkGasData = checkPayloadItems[safe: 5]?.data {
+                let value = BigUInt(checkAmount)
+                let amount = (Decimal(bigInt: value) ?? 0).PIPToDecimal()
+                let amountString = decimalFormatter.formattedDecimal(with: amount)
+                let checkValue = amountString + " " + (String(coinData: checkCoinData) ?? "")
+                let amountField = Field(key: "Amount".localized(), value: checkValue, isEditable: false)
+                fields.append(amountField)
+
+                let checkGasId: Int = checkGasData.withUnsafeBytes { $0.pointee }
+                if let gasCoin = self.dependency.coinService.coinBy(id: checkGasId)?.symbol {
+                  self.gasCoin = gasCoin
                 }
-              case .noItem:
-                break
-              case .data(_):
-                break
               }
+            case .noItem, .data(_):
+              break
             }
 
             let checkField = Field(key: "Check".localized(), value: "Mc" + checkData.toHexString(), isEditable: false)
@@ -1417,6 +1425,20 @@ extension RawTransactionViewModel {
 
             let ownerField = Field(key: "Owner Address".localized(), value: "Mx" + ownerAddressData.toHexString(), isEditable: false)
             fields.append(ownerField)
+            
+          case .editCandidatePublicKey:
+            let typeField = Field(key: "Type".localized(), value: "Edit Candidate".localized(), isEditable: false)
+            fields.append(typeField)
+
+            guard let publicKeyData = items[0].data,
+              let newPublicKeyData = items[1].data else {
+                throw RawTransactionViewModelError.incorrectTxData
+            }
+            let pkField = Field(key: "Public Key".localized(), value: "Mp" + publicKeyData.toHexString(), isEditable: false)
+            fields.append(pkField)
+
+            let newPkField = Field(key: "New Public Key".localized(), value: "Mp" + newPublicKeyData.toHexString(), isEditable: false)
+            fields.append(newPkField)
 
           case .setHaltBlock:
             let typeField = Field(key: "Type".localized(), value: "Set Halt Block".localized(), isEditable: false)
@@ -1463,14 +1485,14 @@ extension RawTransactionViewModel {
           }
           break
 
-        case .noItem: break
-        case .data(_): break
+        case .noItem, .data(_): break
       }
 
       if gasCoin.isValidCoin() {
         let gasField = Field(key: "Gas Coin".localized(), value: gasCoin, isEditable: false)
         fields.append(gasField)
       }
+
       if let payload = payload, payload.count > 0 {
         fields.append(payloadField)
       } else if isEditing.value {

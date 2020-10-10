@@ -109,6 +109,8 @@ class TransactionViewModel: BaseViewModel, ViewModel {
       cellItems = declareCandidacyItems(data: txData)
     } else if let txData = transaction.data as? MinterExplorer.EditCandidateTransactionData {
       cellItems = editCandidateItems(data: txData)
+    } else if let txData = transaction.data as? MinterExplorer.EditCandidatePublicKeyTransactionData {
+      cellItems = editCandidatePublicKeyItems(data: txData)
     } else if let txData = transaction.data as? MinterExplorer.SetCandidateBaseTransactionData {
       cellItems = setCandidateOnlineOfflineItems(data: txData)
     } else if let txData = transaction.data as? MinterExplorer.SetHaltBlockTransactionData {
@@ -887,7 +889,7 @@ class TransactionViewModel: BaseViewModel, ViewModel {
                                               identifier: "TransactionTwoColumnCell_\(String.random())")
     ratio.key1 = "Constant Reserve Ratio".localized()
 
-    ratio.value1 = "\(Int(NSDecimalNumber(decimal: data.constantReserveRatio ?? 0)))%"
+    ratio.value1 = "\(data.constantReserveRatio ?? 0)%"
 
     ratio.key2 = "Max Supply".localized()
     ratio.value2 = CurrencyNumberFormatter.formattedDecimal(with: data.maxSupply ?? 0.0,
@@ -958,7 +960,7 @@ class TransactionViewModel: BaseViewModel, ViewModel {
     let coin = TransactionTwoColumnCellItem(reuseIdentifier: "TransactionTwoColumnCell",
                                             identifier: "TransactionTwoColumnCell_\(String.random())")
     coin.key1 = "Commission".localized()
-    coin.value1 = "\(Int(NSDecimalNumber(decimal: data.commission ?? 0)))%"
+    coin.value1 = (data.commission != nil) ? "\(data.commission ?? 0)%" : ""
     coin.key2 = "Coin".localized()
     coin.value2 = data.coin?.symbol
     cellItems.append(coin)
@@ -1024,7 +1026,6 @@ class TransactionViewModel: BaseViewModel, ViewModel {
       cellItems.append(separator1)
 
       cellItems.append(contentsOf: dateBlock())
-//      cellItems.append(blankItem(height: 5.0))
     }
 
     let rewardAddress = TransactionKeyValueCellItem(reuseIdentifier: "TransactionKeyValueCell",
@@ -1038,6 +1039,65 @@ class TransactionViewModel: BaseViewModel, ViewModel {
     ownerAddress.key = "Owner Address".localized()
     ownerAddress.value = data.ownerAddress
     cellItems.append(ownerAddress)
+
+    let controlAddress = TransactionKeyValueCellItem(reuseIdentifier: "TransactionKeyValueCell",
+                                                  identifier: "TransactionKeyValueCell_Control")
+    controlAddress.key = "Control Address".localized()
+    controlAddress.value = data.controlAddress
+    cellItems.append(controlAddress)
+
+    cellItems.append(blankItem(height: 5))
+
+    cellItems.append(feeBlock())
+
+    cellItems.append(blankItem(height: 10))
+
+    cellItems.append(shareTransaction())
+
+    return cellItems
+  }
+
+  func editCandidatePublicKeyItems(data: EditCandidatePublicKeyTransactionData) -> [BaseCellItem] {
+    var cellItems = [BaseCellItem]()
+
+    let from = TransactionAddressCellItem(reuseIdentifier: "TransactionAddressCell",
+                                          identifier: "TransactionAddressCell_From")
+    from.address = transaction.from
+    from.name = ""
+    from.title = "From"
+    if let address = transaction.from {
+      from.avatarURL = MinterMyAPIURL.avatarAddress(address: address).url()
+      from.name = self.dependency.recipientInfoService.title(for: address) ?? ""
+    }
+    from.didTapAddress.subscribe(onNext: { [weak self] (_) in
+      UIPasteboard.general.string = self?.transaction.from
+      self?.copied.onNext(())
+    }).disposed(by: disposeBag)
+    cellItems.append(from)
+
+    cellItems.append(blankItem(height: 16))
+
+    cellItems.append(contentsOf: payloadBlock())
+
+    if let date = transaction.date {
+      let separator1 = SeparatorTableViewCellItem(reuseIdentifier: "SeparatorTableViewCell",
+                                                  identifier: "SeparatorTableViewCell_\(String.random())")
+      cellItems.append(separator1)
+
+      cellItems.append(contentsOf: dateBlock())
+    }
+
+    let publicKey = TransactionKeyValueCellItem(reuseIdentifier: "TransactionKeyValueCell",
+                                                  identifier: "TransactionKeyValueCell_PublicKey")
+    publicKey.key = "Public Key".localized()
+    publicKey.value = data.publicKey
+    cellItems.append(publicKey)
+
+    let newPublicKey = TransactionKeyValueCellItem(reuseIdentifier: "TransactionKeyValueCell",
+                                                  identifier: "TransactionKeyValueCell_NewPublicKey")
+    newPublicKey.key = "New Public Key".localized()
+    newPublicKey.value = data.newPublicKey
+    cellItems.append(newPublicKey)
 
     cellItems.append(blankItem(height: 5))
 

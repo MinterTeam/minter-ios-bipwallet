@@ -372,7 +372,7 @@ class DelegateUnbondViewModel: BaseViewModel, ViewModel, LastBlockViewable {
         self.sound.onNext(.bip)
       })
       .withLatestFrom(Observable.combineLatest(form, dependency.balanceService.account))
-      .flatMap { [weak self] (val) -> Observable<RawTransaction> in
+      .flatMap { [weak self] (val) -> Observable<Event<RawTransaction>> in
         guard let `self` = self,
           let coin = val.0.0,
           let coinId = self.dependency.coinService.coinId(symbol: coin),
@@ -394,7 +394,7 @@ class DelegateUnbondViewModel: BaseViewModel, ViewModel, LastBlockViewable {
                                       gasCoinId: gasCoinId,
                                       publicKey: aPublicKey,
                                       coinId: coinId,
-                                      amount: newAmount)
+                                      amount: newAmount).materialize()
         }
 
         if coinId == Coin.baseCoin().id! {
@@ -422,7 +422,7 @@ class DelegateUnbondViewModel: BaseViewModel, ViewModel, LastBlockViewable {
                                                         gasCoinId: gasCoinId,
                                                         publicKey: aPublicKey,
                                                         coinId: coinId,
-                                                        amount: amount)
+                                                        amount: amount).materialize()
             }
           }
         }
@@ -431,10 +431,17 @@ class DelegateUnbondViewModel: BaseViewModel, ViewModel, LastBlockViewable {
                                     gasCoinId: gasCoinId,
                                     publicKey: aPublicKey,
                                     coinId: coinId,
-                                    amount: newAmount)
+                                    amount: newAmount).materialize()
 
-      }.flatMap { [unowned self] (transaction) -> Observable<Event<String>> in
-        return self.signTransaction(rawTransaction: transaction).materialize()
+      }.flatMap { [unowned self] (event) -> Observable<Event<String>> in
+        switch event {
+        case .completed:
+          return Observable.empty().materialize()
+        case .next(let transaction):
+          return self.signTransaction(rawTransaction: transaction).materialize()
+        case .error(let error):
+          return Observable.error(error).materialize()
+        }
       }.flatMap({ [unowned self] (transaction) -> Observable<Event<(String?, Decimal?)>> in
         switch transaction {
         case .error(let error):
@@ -509,11 +516,11 @@ extension DelegateUnbondViewModel {
                                      coinId: Int,
                                      amount: Decimal) -> Observable<RawTransaction> {
 
-    return self.makeTransaction(account: account,
-                                gasCoinId: gasCoinId,
-                                publicKey: publicKey,
-                                coinId: coinId,
-                                amount: amount)
+    return makeTransaction(account: account,
+                           gasCoinId: gasCoinId,
+                           publicKey: publicKey,
+                           coinId: coinId,
+                           amount: amount)
       .flatMap { transaction -> Observable<Event<Decimal>> in
         let rawTx = transaction.encode()?.toHexString() ?? ""
         return self.dependency.gateService.estimateComission(rawTx: rawTx).materialize()
@@ -543,7 +550,7 @@ extension DelegateUnbondViewModel {
     return Observable.combineLatest(
       self.dependency.gateService.nonce(address: account.address),
       self.dependency.gateService.currentGas()
-    ).flatMap { [unowned self] val -> Observable<RawTransaction> in
+    ).take(1).flatMap { [unowned self] val -> Observable<RawTransaction> in
       let nonce = val.0
       let gas = val.1
       return Observable.create { (observer) -> Disposable in

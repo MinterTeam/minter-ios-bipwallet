@@ -292,7 +292,7 @@ class GetCoinsViewModel: ConvertCoinsViewModel, ViewModel {
 
           let coin = (self?.canPayComissionWithBaseCoin() ?? false) ? Coin.baseCoin().id : coinFromId
           guard let coinId = coin else {
-            self?.errorNotification.onNext("Can't find coin \(coin)")
+            self?.errorNotification.onNext("Can't find coin with id \(coinFromId)")
             return
           }
           //TODO: remove after https://github.com/MinterTeam/minter-go-node/issues/224

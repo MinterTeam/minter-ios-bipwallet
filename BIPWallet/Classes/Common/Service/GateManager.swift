@@ -70,7 +70,7 @@ class GateManager: BaseManager {
 		let url = MinterGateAPIURL.minGasPrice.url()
 
 		self.httpClient.getRequest(url, parameters: nil) { (response, error) in
-			if let resp = response.data as? [String : Any],
+			if let resp = response.data as? [String: Any],
 				let gas = resp["gas"] as? String,
 				let gasInt = Int(gas) {
 				completion?(gasInt, nil)
@@ -103,7 +103,7 @@ class GateManager: BaseManager {
 				return
 			}
 
-			if let data = response.data as? [String : Any],
+			if let data = response.data as? [String: Any],
 				let cnt = data["nonce"] as? String {
 				count = Decimal(string: cnt)
 			} else {
@@ -123,9 +123,9 @@ class GateManager: BaseManager {
 
 		let url = MinterGateAPIURL.estimateCoinBuy.url()
 
-		self.httpClient.getRequest(url, parameters: ["coinToBuy" : coinTo,
-																								 "coinToSell" : coinFrom,
-																								 "valueToBuy" : value]) { (response, error) in
+		self.httpClient.getRequest(url, parameters: ["coinToBuy": coinTo,
+																								 "coinToSell": coinFrom,
+																								 "valueToBuy": value]) { (response, error) in
 
 			var willPay: Decimal?
 			var com: Decimal?
@@ -140,7 +140,7 @@ class GateManager: BaseManager {
 				return
 			}
 
-			if let data = response.data as? [String : String],
+			if let data = response.data as? [String: String],
 				let pay = data["will_pay"],
 				let commission = data["commission"] {
 
@@ -183,7 +183,7 @@ class GateManager: BaseManager {
 				return
 			}
 
-			if let data = response.data as? [String : String],
+			if let data = response.data as? [String: String],
 				let get = data["will_get"],
 				let commission = data["commission"] {
 					willGet = Decimal(string: get)
@@ -214,7 +214,7 @@ class GateManager: BaseManager {
 															 parameters: ["coinToBuy": coinTo,
 																						"coinToSell": coinFrom,
 																						"valueToSell": value,
-																						"gasPrice" : gasPrice]) { (response, error) in
+																						"gasPrice": gasPrice]) { (response, error) in
 
 			var willGet: Decimal?
 			var com: Decimal?
@@ -229,7 +229,7 @@ class GateManager: BaseManager {
 				return
 			}
 
-			if let data = response.data as? [String : String],
+			if let data = response.data as? [String: String],
 				let get = data["will_get"],
 				let commission = data["commission"] {
 					willGet = Decimal(string: get)
@@ -264,7 +264,7 @@ class GateManager: BaseManager {
 				return
 			}
 
-			if let data = response.data as? [String : String], let commission = data["commission"] {
+			if let data = response.data as? [String: String], let commission = data["commission"] {
 				com = Decimal(string: commission)
 			} else {
 				err = GateManagerError.wrongResponse
@@ -282,7 +282,7 @@ class GateManager: BaseManager {
 
 		let url = MinterGateAPIURL.send.url()
 
-		self.httpClient.postRequest(url, parameters: ["transaction" : rawTransaction]) { (response, error) in
+		self.httpClient.postRequest(url, parameters: ["transaction": rawTransaction]) { (response, error) in
 
 			var tx: String?
       var block: Decimal?
@@ -299,7 +299,7 @@ class GateManager: BaseManager {
 
       if let resp = response.data as? [String: Any] {
         if let hash = resp["hash"] as? String {
-          tx = hash.lowercased().capitalized
+          tx = "Mt" + hash.stripMinterHexPrefix().lowercased()
         }
         if let transaction = resp["transaction"] as? [String: Any] {
           if let blockVal = transaction["height"] as? String {
