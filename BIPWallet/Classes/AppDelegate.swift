@@ -87,8 +87,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     appearance()
 
-//    UIApplication.shared.open(URL(string: "mintertestnet://bip.to/tx/-KkJuKL4oLid-JuDMTI0AoQ7msn_gIimiJBr2LAAAC24QSV8R1PI1PcejjTBzibKIQ0CEMPSV2ybDmkXGyVkphfpTfqH15jArK3u1q6UBsIBg6-TmJN1Zo5JUFKZaGw784kBHKDgN4GGYg0stGzlxfNS2HvtcJ8lEb1UUeOFIm_xWlDA8qB7Z4oBsr3vtER5t5sVlRsTA44RpYxeXf5X1sy1ipnKAICAgIDA?p=MTIz")!, options: [:], completionHandler: nil)
-
     return true
   }
 

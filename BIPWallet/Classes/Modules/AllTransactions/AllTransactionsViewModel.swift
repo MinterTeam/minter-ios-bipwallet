@@ -254,7 +254,9 @@ class AllTransactionsViewModel: BaseViewModel, ViewModel, TransactionViewableVie
     }
 
     let sctns = newSections.map({ (item) -> BaseTableSectionItem in
-      return BaseTableSectionItem(identifier: String.random(length: 20), header: item.header, items: (items[item.identifier] ?? []))
+      return BaseTableSectionItem(identifier: String.random(length: 20),
+                                  header: item.header,
+                                  items: (items[item.identifier] ?? []))
     })
 
     var currentSections = existingSections
@@ -298,8 +300,7 @@ class AllTransactionsViewModel: BaseViewModel, ViewModel, TransactionViewableVie
       }, onSubscribe: { [weak self] in
         self?.isLoading = true
         self?.isLoadingObservable.onNext(true)
-      })
-      .subscribe(onNext: { [weak self] (transactions) in
+      }).subscribe(onNext: { [weak self] (transactions) in
         guard transactions.count > 0 else {
           self?.stopSearching = true
           return

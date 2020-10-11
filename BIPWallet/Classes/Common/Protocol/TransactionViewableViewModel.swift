@@ -184,7 +184,7 @@ extension TransactionViewableViewModel {
   func redeemCheckTransactionItem(with transactionItem: TransactionItem) -> BaseCellItem? {
     let transaction = transactionItem
 
-    let sectionId = nil != transaction.txn ? String(transaction.txn!) : (transaction.hash  ?? String.random(length: 20))
+    let sectionId = (nil != transaction.txn ? String(transaction.txn!) : (transaction.hash  ?? String.random(length: 20))) + (address ?? String.random(length: 4))
 
     var signMultiplier = 1.0
     let toAddress = "Mx" + (address ?? "").stripMinterHexPrefix()
