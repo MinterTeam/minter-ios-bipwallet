@@ -17,4 +17,5 @@ protocol CoinService: class {
   func coinExists(name: String) -> Observable<Bool>
   func coinId(symbol: String) -> Int?
   func coinBy(id: Int) -> Coin?
+  func coinWith(predicate: (Coin) -> (Bool)) -> Coin?
 }

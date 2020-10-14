@@ -77,6 +77,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
       return val
     }).merge().flatMap { (result) -> Observable<Event<Void>> in
       guard let url = result?.url else {
+        
         if !pinService.isUnlocked() {
           return appCoordinator.start().materialize()
         }

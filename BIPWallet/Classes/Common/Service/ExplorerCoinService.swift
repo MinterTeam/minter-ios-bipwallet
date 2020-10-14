@@ -105,6 +105,12 @@ class ExplorerCoinService: CoinService {
     }
   }
 
+  func coinWith(predicate: (Coin) -> (Bool)) -> Coin? {
+    return allCoins.first { (coin) -> Bool in
+      return predicate(coin)
+    }
+  }
+
 }
 
 enum ExplorerCoinManagerRxError: Error {

@@ -14,7 +14,7 @@ import RxSwift
 class RawTransactionRouter {
 
 	static var patterns: [String] {
-		return ["tx", "tx/<string:d>"]
+    return ["tx", "tx/<string:d>"]
 	}
 
   static let authService = LocalStorageAuthService(storage: SecureStorage(namespace: "Auth"),
@@ -27,7 +27,7 @@ class RawTransactionRouter {
                              coinService: CoinService) -> UIViewController? {
     var nonce: BigUInt?
     var gasPrice: BigUInt?
-    var gasCoin: String = Coin.baseCoin().symbol!
+    var gasCoinId: BigUInt?
     var type: RawTransactionType = .sendCoin
     var txData: Data?
     var payload: String?
@@ -36,10 +36,10 @@ class RawTransactionRouter {
     guard let tx = param["d"] as? String else {
       return nil
     }
+
     var newTx = tx.data(using: .utf8) ?? Data()
     var rlpItem = RLP.decode(tx)
     if nil == rlpItem?[0]?.content,
-
       let data = Data(base64URLEncoded: tx) {
         newTx = data
         rlpItem = RLP.decode(data)
@@ -49,45 +49,36 @@ class RawTransactionRouter {
       let rlpItem = rlpItem,
       let content = rlpItem[0]?.content {
 
-			switch content {
-			case .noItem:
-				return nil
+      switch content {
+      case .noItem, .data(_):
+        return nil
 
-			case .list(let items, _, _):
-				if items.count >= 3 {//shortened version
-					guard
-						let typeData = items[safe: 0]?.data,
-						let txDataData = RLP.decode(items[safe: 1]?.data ?? Data())?.data,
-						let payloadData = items[safe: 2]?.data
-					else { return nil }
+      case .list(let items, _, _):
+        if items.count >= 3 {//shortened version
+          guard
+            let typeData = items[safe: 0]?.data,
+            let txDataData = RLP.decode(items[safe: 1]?.data ?? Data())?.data,
+            let payloadData = items[safe: 2]?.data
+          else { return nil }
 
-					let nonceData = items[safe: 3]?.data ?? Data()
-					let gasPriceData = items[safe: 4]?.data ?? Data()
-					let gasCoinData = items[safe: 5]?.data ?? Data()
+          let nonceData = items[safe: 3]?.data ?? Data()
+          let gasPriceData = items[safe: 4]?.data ?? Data()
+          let gasCoinData = items[safe: 5]?.data ?? Data()
 
-					let nonceValue = BigUInt(nonceData)
-					nonce = nonceValue > 0 ? nonceValue : nil
+          let nonceValue = BigUInt(nonceData)
+          nonce = nonceValue > 0 ? nonceValue : nil
 
-					let gasPriceValue = BigUInt(gasPriceData)
-					gasPrice = gasPriceValue > 0 ? gasPriceValue : nil
-          let coinId: Int = gasCoinData.withUnsafeBytes { $0.pointee }
-          if let newGasCoin = coinService.coinBy(id: coinId)?.symbol {
-            gasCoin = (newGasCoin == "") ? Coin.baseCoin().symbol! : newGasCoin
-            guard gasCoin.isValidCoin() else {
-              return nil
-            }
+          let gasPriceValue = BigUInt(gasPriceData)
+          gasPrice = gasPriceValue > 0 ? gasPriceValue : nil
+          gasCoinId = BigUInt(gasCoinData)
+          let typeBigInt = BigUInt(typeData)
+          guard let txType = RawTransactionType.type(with: typeBigInt) else {
+            return nil
 					}
-					let typeBigInt = BigUInt(typeData)
-					guard let txType = RawTransactionType.type(with: typeBigInt) else {
-						return nil
-					}
-					type = txType
-					txData = txDataData
-					payload = String(data: payloadData, encoding: .utf8)
-				}
-
-			case .data(let val):
-				return nil
+          type = txType
+          txData = txDataData
+          payload = String(data: payloadData, encoding: .utf8)
+        }
 			}
 
 			if let password = param["p"] as? String {
@@ -106,7 +97,7 @@ class RawTransactionRouter {
 
       return viewController(nonce: nonce,
                             gasPrice: gasPrice,
-                            gasCoin: gasCoin,
+                            gasCoinId: gasCoinId,
                             type: type,
                             data: txData,
                             payload: payload,
@@ -134,7 +125,7 @@ class RawTransactionRouter {
   static func viewController(// swiftlint:disable:this type_body_length cyclomatic_complexity function_parameter_count
     nonce: BigUInt?,
     gasPrice: BigUInt?,
-    gasCoin: String?,
+    gasCoinId: BigUInt?,
     type: RawTransactionType,
     data: Data?,
     payload: String?,
@@ -149,14 +140,14 @@ class RawTransactionRouter {
     do {
       let dependency = RawTransactionViewModel.Dependency(account: RawTransactionViewModelAccount(),
                                                           gate: GateManager.shared,
-                                                          authService: self.authService, 
+                                                          authService: authService,
                                                           balanceService: balanceService,
                                                           coinService: coinService)
       viewModel = try RawTransactionViewModel(
         dependency: dependency,
         nonce: nonce,
         gasPrice: gasPrice,
-        gasCoin: gasCoin,
+        gasCoinId: gasCoinId,
         type: type,
         data: data,
         payload: payload,

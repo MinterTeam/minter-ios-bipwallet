@@ -121,7 +121,8 @@ class RawTransactionViewModel: BaseViewModel, ViewModel {// swiftlint:disable:th
 	private var payload: String?
   private var type: RawTransactionType
 	private var gasPrice: BigUInt?
-	private var gasCoin: String
+  private var gasCoin: String = Coin.baseCoin().symbol!
+  private var gasCoinId: BigUInt
   private var data: Data? {
     didSet {
       self.isButtonEnabled.accept(data != nil)
@@ -159,7 +160,7 @@ class RawTransactionViewModel: BaseViewModel, ViewModel {// swiftlint:disable:th
     isLoggedIn: Bool = false,
 		nonce: BigUInt?,
 		gasPrice: BigUInt?,
-		gasCoin: String?,
+		gasCoinId: BigUInt?,
 		type: RawTransactionType,
 		data: Data?,
 		payload: String?,
@@ -173,7 +174,7 @@ class RawTransactionViewModel: BaseViewModel, ViewModel {// swiftlint:disable:th
 		self.type = type
 
 		self.gasPrice = gasPrice
-		self.gasCoin = gasCoin ?? Coin.baseCoin().symbol!
+		self.gasCoinId = gasCoinId ?? BigUInt(Coin.baseCoin().id!)
 		self.nonce = nonce
 		self.userData = userData
 
@@ -225,11 +226,11 @@ class RawTransactionViewModel: BaseViewModel, ViewModel {// swiftlint:disable:th
                          }())
     )
 
-		sendButtonDidTapSubject.subscribe(onNext: { [weak self] (_) in
-			self?.sendTx()
-		}).disposed(by: disposeBag)
+    sendButtonDidTapSubject.subscribe(onNext: { [weak self] (_) in
+      self?.sendTx()
+    }).disposed(by: disposeBag)
 
-		viewDidAppearSubject.subscribe(onNext: { [weak self] (_) in
+    viewDidAppearSubject.subscribe(onNext: { [weak self] (_) in
       guard let `self` = self else { return }
       let accs = self.dependency.authService.accounts()
       //If there are multiple accounts - show picker
@@ -238,34 +239,34 @@ class RawTransactionViewModel: BaseViewModel, ViewModel {// swiftlint:disable:th
         return
       }
 
-			self.vibrateSubject.onNext(())
+      self.vibrateSubject.onNext(())
 
-			let viewModel = ConfirmPopupViewModel(desc: "You’re about to perform a transaction.\nChoose your active wallet.".localized(),
+      let viewModel = ConfirmPopupViewModel(desc: "You’re about to perform a transaction.\nChoose your active wallet.".localized(),
                                             buttonTitle: "Continue".localized(),
                                             dependency: ConfirmPopupViewModel.Dependency(authService: self.dependency.authService))
-			viewModel.buttonTitle = "Continue".localized()
-			viewModel.cancelTitle = "Cancel".localized()
-			viewModel.output.didTapActionButton
+      viewModel.buttonTitle = "Continue".localized()
+      viewModel.cancelTitle = "Cancel".localized()
+      viewModel.output.didTapActionButton
         .subscribe(onNext: { [weak self] (item) in
           self?.account = item
           self?.popupSubject.onNext(nil)
         }).disposed(by: self.disposeBag)
 
-			viewModel.output.didTapCancel
-				.asDriver(onErrorJustReturn: ())
-				.drive(onNext: { _ in
-					self.popupSubject.onNext(nil)
-				}).disposed(by: self.disposeBag)
+      viewModel.output.didTapCancel
+        .asDriver(onErrorJustReturn: ())
+        .drive(onNext: { _ in
+          self.popupSubject.onNext(nil)
+        }).disposed(by: self.disposeBag)
 
-			self.sendingTxSubject.asDriver(onErrorJustReturn: false)
-				.drive(viewModel.input.activityIndicator)
-				.disposed(by: self.disposeBag)
+      self.sendingTxSubject.asDriver(onErrorJustReturn: false)
+        .drive(viewModel.input.activityIndicator)
+        .disposed(by: self.disposeBag)
 
       let popup = ConfirmPopupViewController.initFromStoryboard(name: "Popup")
       popup.viewModel = viewModel
       viewModel.dismissable = true
-			self.popupSubject.onNext(popup)
-		}).disposed(by: disposeBag)
+      self.popupSubject.onNext(popup)
+    }).disposed(by: disposeBag)
 
     proceedButtonDidTapSubject.subscribe(sendButtonDidTapSubject).disposed(by: disposeBag)
 
@@ -273,14 +274,14 @@ class RawTransactionViewModel: BaseViewModel, ViewModel {// swiftlint:disable:th
 
     Observable.of(isEditing.map {_ in}, dependency.balanceService.balances().map {_ in}).merge()
       .debounce(.microseconds(100), scheduler: MainScheduler.instance)
-      .withLatestFrom(dependency.balanceService.balances()).map({ (val) -> Bool in
+      .withLatestFrom(dependency.balanceService.balances()).map({ [unowned self] (val) -> Bool in
         guard let neededCoin = self.neededCoin, let neededAmount = self.neededCoinAmount else { return false }
         return (val.balances[neededCoin]?.0 ?? 0.0) < neededAmount
       }).subscribe(onNext: { val in
         self.shouldShowNeededCoin.accept(val)
       }).disposed(by: disposeBag)
 
-    shouldShowNeededCoin.debounce(.seconds(1), scheduler: MainScheduler.instance).subscribe(onNext: { (val) in
+    shouldShowNeededCoin.debounce(.seconds(1), scheduler: MainScheduler.instance).subscribe(onNext: { [unowned self] (val) in
       self.sectionsSubject.onNext(self.createSections())
     }).disposed(by: disposeBag)
 
@@ -312,28 +313,28 @@ class RawTransactionViewModel: BaseViewModel, ViewModel {// swiftlint:disable:th
     return adr
   }
 
-	private func sendTx() {
+  private func sendTx() {
     guard let address = self.account?.address.stripMinterHexPrefix() else {
-			return
-		}
+      return
+    }
 
-		Observable.combineLatest(self.dependency.gate.nonce(address: "Mx" + address),
+    Observable.combineLatest(self.dependency.gate.nonce(address: "Mx" + address),
                              self.dependency.gate.minGas()).take(1)
-			.do(onSubscribe: { [weak self] in
-				self?.sendingTxSubject.onNext(true)
+      .do(onSubscribe: { [weak self] in
+        self?.sendingTxSubject.onNext(true)
         self?.isLoading.onNext(true)
-			}).flatMap({ [weak self] (result) -> Observable<String?> in
-				let (nonce, _) = result
-				guard let nnnc = BigUInt(decimal: Decimal(nonce+1)),
-          let gasCoin = self?.dependency.coinService.coinId(symbol: self?.gasCoin ?? ""),
-					let type = self?.type,
-          let privateKey = try self?.dependency.account.privatekey(for: address)
-					else {
-						return Observable.error(RawTransactionViewModelError.noPrivateKey)
+      }).flatMap({ [weak self] (result) -> Observable<String?> in
+        let (nonce, _) = result
+        guard let nnnc = BigUInt(decimal: Decimal(nonce+1)),
+              let gasCoin = self?.dependency.coinService.coinId(symbol: self?.gasCoin ?? ""),
+              let type = self?.type,
+              let privateKey = try self?.dependency.account.privatekey(for: address)
+            else {
+              return Observable.error(RawTransactionViewModelError.noPrivateKey)
 				}
 
-				let gasPrice = (self?.gasPrice != nil) ? self!.gasPrice! : BigUInt(try self?.currentGas.value() ?? RawTransactionDefaultGasPrice)
-				let resultNonce = (self?.nonce != nil) ? self!.nonce! : nnnc
+        let gasPrice = (self?.gasPrice != nil) ? self!.gasPrice! : BigUInt(try self?.currentGas.value() ?? RawTransactionDefaultGasPrice)
+        let resultNonce = (self?.nonce != nil) ? self!.nonce! : nnnc
 
         if let passwordString = self?.userData?["p"] as? String,
           let proof = RawTransactionSigner.proof(address: address, passphrase: passwordString),
@@ -348,25 +349,24 @@ class RawTransactionViewModel: BaseViewModel, ViewModel {// swiftlint:disable:th
 																data: self?.data ?? Data(),
 																payload: self?.payload?.data(using: .utf8) ?? Data())
 
-				let signedTx = RawTransactionSigner.sign(rawTx: tx, privateKey: privateKey)
+        let signedTx = RawTransactionSigner.sign(rawTx: tx, privateKey: privateKey)
         return self?.dependency.gate.send(rawTx: signedTx).map {$0.0} ?? Observable<String?>.empty()
-			}).subscribe(onNext: { [weak self] (result) in
+      }).subscribe(onNext: { [weak self] (result) in
         self?.isLoading.onNext(false)
-				self?.lastSentTransactionHash = result
-				if let sentViewModel = self?.sentViewModel() {
+        self?.lastSentTransactionHash = result
+        if let sentViewModel = self?.sentViewModel() {
           let sentViewController = SentPopupViewController.initFromStoryboard(name: "Popup")
           sentViewController.viewModel = sentViewModel
-					self?.popupSubject.onNext(sentViewController)
-				}
-
-				self?.sendingTxSubject.onNext(false)
-			}, onError: { [weak self] (error) in
+          self?.popupSubject.onNext(sentViewController)
+        }
+        self?.sendingTxSubject.onNext(false)
+      }, onError: { [weak self] (error) in
         self?.isLoading.onNext(false)
-				self?.sendingTxSubject.onNext(false)
-				self?.handle(error: error)
-				self?.popupSubject.onNext(nil)
-			}).disposed(by: disposeBag)
-	}
+        self?.sendingTxSubject.onNext(false)
+        self?.handle(error: error)
+        self?.popupSubject.onNext(nil)
+      }).disposed(by: disposeBag)
+  }
 
 	// MARK: - Sections
 
@@ -374,13 +374,12 @@ class RawTransactionViewModel: BaseViewModel, ViewModel {// swiftlint:disable:th
     var items = [BaseCellItem]()
     for elem in fields.enumerated() {
       let field = elem.element
-
       var item: BaseCellItem
       if elem.offset == 0 {
         if isEditing.value {
           guard field.isEditable else { continue }
           item = RawTransactionTextViewCellItem(reuseIdentifier: "RawTransactionTextViewCell",
-                                            identifier: "RawTransactionTextViewCell_" + (field.key ?? String.random()))
+                                                identifier: "RawTransactionTextViewCell_" + (field.key ?? String.random()))
           (item as? RawTransactionTextViewCellItem)?.title = field.key ?? ""
           (item as? RawTransactionTextViewCellItem)?.value = field.value
           (item as? RawTransactionTextViewCellItem)?.lastBlockText = self.lastBlockString
@@ -409,7 +408,7 @@ class RawTransactionViewModel: BaseViewModel, ViewModel {// swiftlint:disable:th
         if isEditing.value {
           guard field.isEditable else { continue }
           item = RawTransactionTextViewCellItem(reuseIdentifier: "RawTransactionTextViewCell",
-                                            identifier: "RawTransactionTextViewCell_\(elem.offset)" + (field.key ?? String.random()))
+                                                identifier: "RawTransactionTextViewCell_\(elem.offset)" + (field.key ?? String.random()))
           (item as? RawTransactionTextViewCellItem)?.title = field.key ?? ""
           (item as? RawTransactionTextViewCellItem)?.value = field.value
           (item as? RawTransactionTextViewCellItem)?.lastBlockText = Observable.just(NSAttributedString())
@@ -438,23 +437,23 @@ class RawTransactionViewModel: BaseViewModel, ViewModel {// swiftlint:disable:th
 			items.append(item)
 		}
 
-		let fee = TwoTitleTableViewCellItem(reuseIdentifier: "TwoTitleTableViewCell",
-																				identifier: CellIdentifierPrefix.fee.rawValue)
-		fee.title = "Transaction Fee".localized()
-		let payloadData = payload?.data(using: .utf8)
-		fee.subtitle = self.commissionText(for: 1, payloadData: payloadData)
-		fee.subtitleObservable = self.commissionTextObservable
+    let fee = TwoTitleTableViewCellItem(reuseIdentifier: "TwoTitleTableViewCell",
+                                        identifier: CellIdentifierPrefix.fee.rawValue)
+    fee.title = "Transaction Fee".localized()
+    let payloadData = payload?.data(using: .utf8)
+    fee.subtitle = self.commissionText(for: 1, payloadData: payloadData)
+    fee.subtitleObservable = self.commissionTextObservable
 
-		let blank = BlankTableViewCellItem(reuseIdentifier: "BlankTableViewCell",
-																			 identifier: CellIdentifierPrefix.blank.rawValue)
+    let blank = BlankTableViewCellItem(reuseIdentifier: "BlankTableViewCell",
+                                       identifier: CellIdentifierPrefix.blank.rawValue)
     let blank0 = BlankTableViewCellItem(reuseIdentifier: "BlankTableViewCell",
                                         identifier: CellIdentifierPrefix.blank.rawValue + "_0")
     blank0.height = 16.0
 
-		let button = ButtonTableViewCellItem(reuseIdentifier: "ButtonTableViewCell",
-																				 identifier: CellIdentifierPrefix.button.rawValue)
-		button.title = "Confirm and Send".localized()
-		button.buttonPattern = "purple"
+    let button = ButtonTableViewCellItem(reuseIdentifier: "ButtonTableViewCell",
+                                         identifier: CellIdentifierPrefix.button.rawValue)
+    button.title = "Confirm and Send".localized()
+    button.buttonPattern = "purple"
     button.buttonColor = "purple"
     button.isLoadingObserver = isLoading
     button.isButtonEnabled = true
@@ -604,10 +603,10 @@ extension RawTransactionViewModel {
 
           case .sendCoin:
             guard let coinData = items[0].data,
-              let coin = String(coinData: coinData),
-              let addressData = items[1].data,
-              let valueData = items[2].data,
-              addressData.toHexString().isValidAddress() else {
+                  let coin = self.coinBy(coinIdData: coinData)?.symbol,
+                  let addressData = items[1].data,
+                  let valueData = items[2].data,
+                  addressData.toHexString().isValidAddress() else {
                 throw RawTransactionViewModelError.incorrectTxData
             }
 
@@ -694,10 +693,10 @@ extension RawTransactionViewModel {
             fields.append(typeField)
             guard
               let coinFromData = items[0].data,
-              let coinFrom = String(coinData: coinFromData),
+              let coinFrom = self.coinBy(coinIdData: coinFromData)?.symbol,
               let valueData = items[1].data,
               let coinToData = items[2].data,
-              let coinTo = String(coinData: coinToData),
+              let coinTo = self.coinBy(coinIdData: coinToData)?.symbol,
               let minimumValueToBuyData = items[3].data,
               coinTo.isValidCoin(),
               coinFrom.isValidCoin() else {
@@ -813,9 +812,9 @@ extension RawTransactionViewModel {
             fields.append(typeField)
             
             guard let coinFromData = items[0].data,
-              let coinFrom = String(coinData: coinFromData),
+              let coinFrom = self.coinBy(coinIdData: coinFromData)?.symbol,
               let coinToData = items[1].data,
-              let coinTo = String(coinData: coinToData),
+              let coinTo = self.coinBy(coinIdData: coinToData)?.symbol,
               let minimumValueToBuyData = items[2].data,
               coinTo.isValidCoin(),
               coinFrom.isValidCoin() else {
@@ -902,10 +901,10 @@ extension RawTransactionViewModel {
             fields.append(typeField)
 
             guard let coinFromData = items[2].data,
-              let coinFrom = String(coinData: coinFromData),
+              let coinFrom = self.coinBy(coinIdData: coinFromData)?.symbol,
               let valueData = items[1].data,
               let coinToData = items[0].data,
-              let coinTo = String(coinData: coinToData),
+              let coinTo = self.coinBy(coinIdData: coinToData)?.symbol,
               let maximumValueToSpendData = items[3].data,
               coinTo.isValidCoin(),
               coinFrom.isValidCoin() else {
@@ -1084,7 +1083,7 @@ extension RawTransactionViewModel {
               let publicKeyData = items[1].data,
               let commissionData = items[2].data,
               let coinData = items[3].data,
-              let coin = String(coinData: coinData),
+              let coin = self.coinBy(coinIdData: coinData)?.symbol,
               let stakeData = items[4].data else {
                 throw RawTransactionViewModelError.incorrectTxData
             }
@@ -1117,7 +1116,7 @@ extension RawTransactionViewModel {
             guard
               let publicKeyData = items[0].data,
               let coinData = items[1].data,
-              let coin = String(coinData: coinData),
+              let coin = self.coinBy(coinIdData: coinData)?.symbol,
               let stakeData = items[2].data,
               coin.isValidCoin() else {
                 throw RawTransactionViewModelError.incorrectTxData
@@ -1206,7 +1205,7 @@ extension RawTransactionViewModel {
             guard
               let publicKeyData = items[0].data,
               let coinData = items[1].data,
-              let coin = String(coinData: coinData),
+              let coin = self.coinBy(coinIdData: coinData)?.symbol,
               let stakeData = items[2].data else {
                 throw RawTransactionViewModelError.incorrectTxData
             }
@@ -1308,8 +1307,11 @@ extension RawTransactionViewModel {
                 let amountField = Field(key: "Amount".localized(), value: checkValue, isEditable: false)
                 fields.append(amountField)
 
-                let checkGasId: Int = checkGasData.withUnsafeBytes { $0.pointee }
-                if let gasCoin = self.dependency.coinService.coinBy(id: checkGasId)?.symbol {
+                let checkGasBigInt = BigUInt(checkGasData)
+                if let gasCoin = self.dependency.coinService.coinWith(predicate: { (coin) -> (Bool) in
+                  guard let id = coin.id else { return false }
+                  return checkGasBigInt == BigUInt(id)
+                })?.symbol {
                   self.gasCoin = gasCoin
                 }
               }
@@ -1389,7 +1391,7 @@ extension RawTransactionViewModel {
                 let addressDictData = array[idx]?.data,
                 let addressDict = RLP.decode(addressDictData),
                 let coinData = addressDict[0]?.data,
-                let coin = String(coinData: coinData),
+                let coin = self.coinBy(coinIdData: coinData)?.symbol,
                 let addressData = addressDict[1]?.data,
                 let valueData = addressDict[2]?.data {
                   let address = addressData.toHexString()
@@ -1425,9 +1427,9 @@ extension RawTransactionViewModel {
 
             let ownerField = Field(key: "Owner Address".localized(), value: "Mx" + ownerAddressData.toHexString(), isEditable: false)
             fields.append(ownerField)
-            
+
           case .editCandidatePublicKey:
-            let typeField = Field(key: "Type".localized(), value: "Edit Candidate".localized(), isEditable: false)
+            let typeField = Field(key: "Type".localized(), value: "Edit Candidate Public Key".localized(), isEditable: false)
             fields.append(typeField)
 
             guard let publicKeyData = items[0].data,
@@ -1500,6 +1502,15 @@ extension RawTransactionViewModel {
       }
     }
 	}
+
+  func coinBy(coinIdData: Data) -> Coin? {
+    let coinId = BigUInt(coinIdData)
+    return self.dependency.coinService.coinWith(predicate: { (coin) -> (Bool) in
+      guard let id = coin.id else { return false }
+      return coinId == BigUInt(id)
+    })
+  }
+
 }
 
 extension RawTransactionViewModel: LastBlockViewable {}

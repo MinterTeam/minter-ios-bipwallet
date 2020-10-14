@@ -31,7 +31,7 @@ extension RawTransactionType {
                                            .recreateCoin,
                                            .changeCoinOwner,
                                            .editMultisigOwner,
-                                           .priceVote]
+                                           .priceVote, .editCandidatePublicKey]
 
 		for type in supported {
 			if value == BigUInt(type.rawValue) {

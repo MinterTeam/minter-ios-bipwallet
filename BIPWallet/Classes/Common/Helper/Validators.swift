@@ -21,7 +21,7 @@ class AmountValidator : BaseValidator {
 class CoinValidator: BaseValidator {
 
 	class func isValid(coin: String?) -> Bool {
-    let test = NSPredicate(format: "SELF MATCHES %@", "[a-zA-Z0-9]{3,10}$")
+    let test = NSPredicate(format: "SELF MATCHES %@", "[a-zA-Z0-9-]{3,100}$")
     return test.evaluate(with: coin ?? "")
 	}
 }
