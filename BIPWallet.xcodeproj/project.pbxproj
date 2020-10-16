@@ -272,6 +272,74 @@
 		FA9E51B323ED9976007263B9 /* BIPWalletUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA9E51B223ED9976007263B9 /* BIPWalletUITests.swift */; };
 		FA9FE562246E86A400788310 /* PopupLoadingView.xib in Resources */ = {isa = PBXBuildFile; fileRef = FA9FE561246E86A400788310 /* PopupLoadingView.xib */; };
 		FA9FE564246E86E100788310 /* PopupLoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA9FE563246E86E100788310 /* PopupLoadingView.swift */; };
+		FAA7CA92253734B5006F6F24 /* IGStoryPreviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAA7CA62253734B4006F6F24 /* IGStoryPreviewView.swift */; };
+		FAA7CA93253734B5006F6F24 /* IGStoryPreviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAA7CA62253734B4006F6F24 /* IGStoryPreviewView.swift */; };
+		FAA7CA94253734B5006F6F24 /* UIView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAA7CA64253734B4006F6F24 /* UIView+Extension.swift */; };
+		FAA7CA95253734B5006F6F24 /* UIView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAA7CA64253734B4006F6F24 /* UIView+Extension.swift */; };
+		FAA7CA96253734B5006F6F24 /* IGAdditions.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAA7CA65253734B4006F6F24 /* IGAdditions.swift */; };
+		FAA7CA97253734B5006F6F24 /* IGAdditions.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAA7CA65253734B4006F6F24 /* IGAdditions.swift */; };
+		FAA7CA98253734B5006F6F24 /* Color+Additions.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAA7CA66253734B4006F6F24 /* Color+Additions.swift */; };
+		FAA7CA99253734B5006F6F24 /* Color+Additions.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAA7CA66253734B4006F6F24 /* Color+Additions.swift */; };
+		FAA7CA9A253734B5006F6F24 /* ImageView+Additions.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAA7CA67253734B4006F6F24 /* ImageView+Additions.swift */; };
+		FAA7CA9B253734B5006F6F24 /* ImageView+Additions.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAA7CA67253734B4006F6F24 /* ImageView+Additions.swift */; };
+		FAA7CA9C253734B5006F6F24 /* IGSnapProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAA7CA69253734B4006F6F24 /* IGSnapProgressView.swift */; };
+		FAA7CA9D253734B5006F6F24 /* IGSnapProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAA7CA69253734B4006F6F24 /* IGSnapProgressView.swift */; };
+		FAA7CA9E253734B5006F6F24 /* IGStoryPreviewHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAA7CA6A253734B4006F6F24 /* IGStoryPreviewHeaderView.swift */; };
+		FAA7CA9F253734B5006F6F24 /* IGStoryPreviewHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAA7CA6A253734B4006F6F24 /* IGStoryPreviewHeaderView.swift */; };
+		FAA7CAA2253734B5006F6F24 /* LICENSE in Resources */ = {isa = PBXBuildFile; fileRef = FAA7CA6F253734B5006F6F24 /* LICENSE */; };
+		FAA7CAA3253734B5006F6F24 /* LICENSE in Resources */ = {isa = PBXBuildFile; fileRef = FAA7CA6F253734B5006F6F24 /* LICENSE */; };
+		FAA7CAA4253734B5006F6F24 /* CubeAttributesAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAA7CA71253734B5006F6F24 /* CubeAttributesAnimator.swift */; };
+		FAA7CAA5253734B5006F6F24 /* CubeAttributesAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAA7CA71253734B5006F6F24 /* CubeAttributesAnimator.swift */; };
+		FAA7CAA6253734B5006F6F24 /* AnimatedCollectionViewLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAA7CA72253734B5006F6F24 /* AnimatedCollectionViewLayout.swift */; };
+		FAA7CAA7253734B5006F6F24 /* AnimatedCollectionViewLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAA7CA72253734B5006F6F24 /* AnimatedCollectionViewLayout.swift */; };
+		FAA7CAA8253734B5006F6F24 /* UIView+Anchor.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAA7CA73253734B5006F6F24 /* UIView+Anchor.swift */; };
+		FAA7CAA9253734B5006F6F24 /* UIView+Anchor.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAA7CA73253734B5006F6F24 /* UIView+Anchor.swift */; };
+		FAA7CAAA253734B5006F6F24 /* LayoutAttributesAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAA7CA74253734B5006F6F24 /* LayoutAttributesAnimator.swift */; };
+		FAA7CAAB253734B5006F6F24 /* LayoutAttributesAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAA7CA74253734B5006F6F24 /* LayoutAttributesAnimator.swift */; };
+		FAA7CAAC253734B5006F6F24 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = FAA7CA75253734B5006F6F24 /* README.md */; };
+		FAA7CAAD253734B5006F6F24 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = FAA7CA75253734B5006F6F24 /* README.md */; };
+		FAA7CAAE253734B5006F6F24 /* IGCommon.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAA7CA77253734B5006F6F24 /* IGCommon.swift */; };
+		FAA7CAAF253734B5006F6F24 /* IGCommon.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAA7CA77253734B5006F6F24 /* IGCommon.swift */; };
+		FAA7CAB0253734B5006F6F24 /* IGConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAA7CA78253734B5006F6F24 /* IGConstants.swift */; };
+		FAA7CAB1253734B5006F6F24 /* IGConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAA7CA78253734B5006F6F24 /* IGConstants.swift */; };
+		FAA7CAB2253734B5006F6F24 /* IGRetryButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAA7CA79253734B5006F6F24 /* IGRetryButton.swift */; };
+		FAA7CAB3253734B5006F6F24 /* IGRetryButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAA7CA79253734B5006F6F24 /* IGRetryButton.swift */; };
+		FAA7CAB4253734B5006F6F24 /* IGStoryPreviewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAA7CA7B253734B5006F6F24 /* IGStoryPreviewCell.swift */; };
+		FAA7CAB5253734B5006F6F24 /* IGStoryPreviewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAA7CA7B253734B5006F6F24 /* IGStoryPreviewCell.swift */; };
+		FAA7CAB6253734B5006F6F24 /* IGStory.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAA7CA7D253734B5006F6F24 /* IGStory.swift */; };
+		FAA7CAB7253734B5006F6F24 /* IGStory.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAA7CA7D253734B5006F6F24 /* IGStory.swift */; };
+		FAA7CAB8253734B5006F6F24 /* IGStories.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAA7CA7E253734B5006F6F24 /* IGStories.swift */; };
+		FAA7CAB9253734B5006F6F24 /* IGStories.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAA7CA7E253734B5006F6F24 /* IGStories.swift */; };
+		FAA7CABA253734B5006F6F24 /* IGSnap.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAA7CA7F253734B5006F6F24 /* IGSnap.swift */; };
+		FAA7CABB253734B5006F6F24 /* IGSnap.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAA7CA7F253734B5006F6F24 /* IGSnap.swift */; };
+		FAA7CABC253734B5006F6F24 /* IGUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAA7CA80253734B5006F6F24 /* IGUser.swift */; };
+		FAA7CABD253734B5006F6F24 /* IGUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAA7CA80253734B5006F6F24 /* IGUser.swift */; };
+		FAA7CABE253734B5006F6F24 /* IGStoryPreviewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAA7CA82253734B5006F6F24 /* IGStoryPreviewModel.swift */; };
+		FAA7CABF253734B5006F6F24 /* IGStoryPreviewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAA7CA82253734B5006F6F24 /* IGStoryPreviewModel.swift */; };
+		FAA7CAC0253734B5006F6F24 /* IGStoryPreviewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAA7CA83253734B5006F6F24 /* IGStoryPreviewController.swift */; };
+		FAA7CAC1253734B6006F6F24 /* IGStoryPreviewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAA7CA83253734B5006F6F24 /* IGStoryPreviewController.swift */; };
+		FAA7CAC2253734B6006F6F24 /* IGPlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAA7CA85253734B5006F6F24 /* IGPlayerView.swift */; };
+		FAA7CAC3253734B6006F6F24 /* IGPlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAA7CA85253734B5006F6F24 /* IGPlayerView.swift */; };
+		FAA7CAC4253734B6006F6F24 /* UIImageView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAA7CA87253734B5006F6F24 /* UIImageView+Extension.swift */; };
+		FAA7CAC5253734B6006F6F24 /* UIImageView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAA7CA87253734B5006F6F24 /* UIImageView+Extension.swift */; };
+		FAA7CAC6253734B6006F6F24 /* IGResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAA7CA88253734B5006F6F24 /* IGResult.swift */; };
+		FAA7CAC7253734B6006F6F24 /* IGResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAA7CA88253734B5006F6F24 /* IGResult.swift */; };
+		FAA7CAC8253734B6006F6F24 /* IGRoundedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAA7CA89253734B5006F6F24 /* IGRoundedView.swift */; };
+		FAA7CAC9253734B6006F6F24 /* IGRoundedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAA7CA89253734B5006F6F24 /* IGRoundedView.swift */; };
+		FAA7CACA253734B6006F6F24 /* IGImageRequestable.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAA7CA8A253734B5006F6F24 /* IGImageRequestable.swift */; };
+		FAA7CACB253734B6006F6F24 /* IGImageRequestable.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAA7CA8A253734B5006F6F24 /* IGImageRequestable.swift */; };
+		FAA7CACC253734B6006F6F24 /* IGError.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAA7CA8B253734B5006F6F24 /* IGError.swift */; };
+		FAA7CACD253734B6006F6F24 /* IGError.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAA7CA8B253734B5006F6F24 /* IGError.swift */; };
+		FAA7CACE253734B6006F6F24 /* IGURLSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAA7CA8C253734B5006F6F24 /* IGURLSession.swift */; };
+		FAA7CACF253734B6006F6F24 /* IGURLSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAA7CA8C253734B5006F6F24 /* IGURLSession.swift */; };
+		FAA7CAD0253734B6006F6F24 /* IGCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAA7CA8D253734B5006F6F24 /* IGCache.swift */; };
+		FAA7CAD1253734B6006F6F24 /* IGCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAA7CA8D253734B5006F6F24 /* IGCache.swift */; };
+		FAA7CAD2253734B6006F6F24 /* IGMockLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAA7CA8F253734B5006F6F24 /* IGMockLoader.swift */; };
+		FAA7CAD3253734B6006F6F24 /* IGMockLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAA7CA8F253734B5006F6F24 /* IGMockLoader.swift */; };
+		FAA7CAD4253734B6006F6F24 /* IGVideoCacheManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAA7CA91253734B5006F6F24 /* IGVideoCacheManager.swift */; };
+		FAA7CAD5253734B6006F6F24 /* IGVideoCacheManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAA7CA91253734B5006F6F24 /* IGVideoCacheManager.swift */; };
+		FAA7CAE3253775FE006F6F24 /* stories.json in Resources */ = {isa = PBXBuildFile; fileRef = FAA7CAE2253775FE006F6F24 /* stories.json */; };
+		FAA7CAE4253775FE006F6F24 /* stories.json in Resources */ = {isa = PBXBuildFile; fileRef = FAA7CAE2253775FE006F6F24 /* stories.json */; };
 		FAAAD88124977B7A00D7F5FE /* DashedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA62231824517C93006089EC /* DashedView.swift */; };
 		FAAAD88224977B7A00D7F5FE /* UIImageViewExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAD143862459761F002C2F1C /* UIImageViewExtension.swift */; };
 		FAAAD88324977B7A00D7F5FE /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA9E519423ED9972007263B9 /* ViewController.swift */; };
@@ -990,6 +1058,41 @@
 		FA9FCBC1245C7E18002A6B75 /* Inter.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Inter.otf; sourceTree = "<group>"; };
 		FA9FE561246E86A400788310 /* PopupLoadingView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PopupLoadingView.xib; sourceTree = "<group>"; };
 		FA9FE563246E86E100788310 /* PopupLoadingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopupLoadingView.swift; sourceTree = "<group>"; };
+		FAA7CA62253734B4006F6F24 /* IGStoryPreviewView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IGStoryPreviewView.swift; sourceTree = "<group>"; };
+		FAA7CA64253734B4006F6F24 /* UIView+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIView+Extension.swift"; sourceTree = "<group>"; };
+		FAA7CA65253734B4006F6F24 /* IGAdditions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IGAdditions.swift; sourceTree = "<group>"; };
+		FAA7CA66253734B4006F6F24 /* Color+Additions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Color+Additions.swift"; sourceTree = "<group>"; };
+		FAA7CA67253734B4006F6F24 /* ImageView+Additions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ImageView+Additions.swift"; sourceTree = "<group>"; };
+		FAA7CA69253734B4006F6F24 /* IGSnapProgressView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IGSnapProgressView.swift; sourceTree = "<group>"; };
+		FAA7CA6A253734B4006F6F24 /* IGStoryPreviewHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IGStoryPreviewHeaderView.swift; sourceTree = "<group>"; };
+		FAA7CA6D253734B5006F6F24 /* Reachability.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Reachability.swift; sourceTree = "<group>"; };
+		FAA7CA6F253734B5006F6F24 /* LICENSE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
+		FAA7CA71253734B5006F6F24 /* CubeAttributesAnimator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CubeAttributesAnimator.swift; sourceTree = "<group>"; };
+		FAA7CA72253734B5006F6F24 /* AnimatedCollectionViewLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AnimatedCollectionViewLayout.swift; sourceTree = "<group>"; };
+		FAA7CA73253734B5006F6F24 /* UIView+Anchor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIView+Anchor.swift"; sourceTree = "<group>"; };
+		FAA7CA74253734B5006F6F24 /* LayoutAttributesAnimator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LayoutAttributesAnimator.swift; sourceTree = "<group>"; };
+		FAA7CA75253734B5006F6F24 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		FAA7CA77253734B5006F6F24 /* IGCommon.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IGCommon.swift; sourceTree = "<group>"; };
+		FAA7CA78253734B5006F6F24 /* IGConstants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IGConstants.swift; sourceTree = "<group>"; };
+		FAA7CA79253734B5006F6F24 /* IGRetryButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IGRetryButton.swift; sourceTree = "<group>"; };
+		FAA7CA7B253734B5006F6F24 /* IGStoryPreviewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IGStoryPreviewCell.swift; sourceTree = "<group>"; };
+		FAA7CA7D253734B5006F6F24 /* IGStory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IGStory.swift; sourceTree = "<group>"; };
+		FAA7CA7E253734B5006F6F24 /* IGStories.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IGStories.swift; sourceTree = "<group>"; };
+		FAA7CA7F253734B5006F6F24 /* IGSnap.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IGSnap.swift; sourceTree = "<group>"; };
+		FAA7CA80253734B5006F6F24 /* IGUser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IGUser.swift; sourceTree = "<group>"; };
+		FAA7CA82253734B5006F6F24 /* IGStoryPreviewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IGStoryPreviewModel.swift; sourceTree = "<group>"; };
+		FAA7CA83253734B5006F6F24 /* IGStoryPreviewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IGStoryPreviewController.swift; sourceTree = "<group>"; };
+		FAA7CA85253734B5006F6F24 /* IGPlayerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IGPlayerView.swift; sourceTree = "<group>"; };
+		FAA7CA87253734B5006F6F24 /* UIImageView+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIImageView+Extension.swift"; sourceTree = "<group>"; };
+		FAA7CA88253734B5006F6F24 /* IGResult.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IGResult.swift; sourceTree = "<group>"; };
+		FAA7CA89253734B5006F6F24 /* IGRoundedView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IGRoundedView.swift; sourceTree = "<group>"; };
+		FAA7CA8A253734B5006F6F24 /* IGImageRequestable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IGImageRequestable.swift; sourceTree = "<group>"; };
+		FAA7CA8B253734B5006F6F24 /* IGError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IGError.swift; sourceTree = "<group>"; };
+		FAA7CA8C253734B5006F6F24 /* IGURLSession.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IGURLSession.swift; sourceTree = "<group>"; };
+		FAA7CA8D253734B5006F6F24 /* IGCache.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IGCache.swift; sourceTree = "<group>"; };
+		FAA7CA8F253734B5006F6F24 /* IGMockLoader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IGMockLoader.swift; sourceTree = "<group>"; };
+		FAA7CA91253734B5006F6F24 /* IGVideoCacheManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IGVideoCacheManager.swift; sourceTree = "<group>"; };
+		FAA7CAE2253775FE006F6F24 /* stories.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = stories.json; sourceTree = "<group>"; };
 		FAAAD9D424977B7A00D7F5FE /* BIPWalletTestnet.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BIPWalletTestnet.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		FAAAD9D524977B7A00D7F5FE /* BIPWalletTestnet-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "BIPWalletTestnet-Info.plist"; path = "/Users/alex/Documents/NewWallet/BIPWallet/BIPWalletTestnet-Info.plist"; sourceTree = "<absolute>"; };
 		FAAAD9D624977BDF00D7F5FE /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -1529,6 +1632,7 @@
 		FA3BDE102423C5950076A7F4 /* Third Party */ = {
 			isa = PBXGroup;
 			children = (
+				FAA7CA602537349C006F6F24 /* Stories */,
 				FAC14A4324810FA6008D1A45 /* SearchTextField */,
 				FAD143852459761F002C2F1C /* QRCode */,
 				FA3BDEA1242BEA2A0076A7F4 /* PlayNDrop */,
@@ -1813,6 +1917,7 @@
 				FA9E519E23ED9976007263B9 /* Info.plist */,
 				FA3BDEA5242BEA3D0076A7F4 /* BIPWallet-Bridging-Header.h */,
 				FAAAD9D524977B7A00D7F5FE /* BIPWalletTestnet-Info.plist */,
+				FAA7CAE2253775FE006F6F24 /* stories.json */,
 			);
 			path = BIPWallet;
 			sourceTree = "<group>";
@@ -1843,6 +1948,167 @@
 				FA9FE563246E86E100788310 /* PopupLoadingView.swift */,
 			);
 			path = View;
+			sourceTree = "<group>";
+		};
+		FAA7CA602537349C006F6F24 /* Stories */ = {
+			isa = PBXGroup;
+			children = (
+				FAA7CA7A253734B5006F6F24 /* CollectionViewCell */,
+				FAA7CA76253734B5006F6F24 /* Common */,
+				FAA7CA63253734B4006F6F24 /* Extension */,
+				FAA7CA6B253734B5006F6F24 /* External */,
+				FAA7CA84253734B5006F6F24 /* IGPlayerView */,
+				FAA7CA86253734B5006F6F24 /* ImageStorer */,
+				FAA7CA7C253734B5006F6F24 /* Models */,
+				FAA7CA68253734B4006F6F24 /* StoryHeaderView & ProgressView */,
+				FAA7CA81253734B5006F6F24 /* StoryPreview */,
+				FAA7CA61253734B4006F6F24 /* StoryPreviewView */,
+				FAA7CA8E253734B5006F6F24 /* Stubs */,
+				FAA7CA90253734B5006F6F24 /* Video Cache */,
+			);
+			path = Stories;
+			sourceTree = "<group>";
+		};
+		FAA7CA61253734B4006F6F24 /* StoryPreviewView */ = {
+			isa = PBXGroup;
+			children = (
+				FAA7CA62253734B4006F6F24 /* IGStoryPreviewView.swift */,
+			);
+			path = StoryPreviewView;
+			sourceTree = "<group>";
+		};
+		FAA7CA63253734B4006F6F24 /* Extension */ = {
+			isa = PBXGroup;
+			children = (
+				FAA7CA64253734B4006F6F24 /* UIView+Extension.swift */,
+				FAA7CA65253734B4006F6F24 /* IGAdditions.swift */,
+				FAA7CA66253734B4006F6F24 /* Color+Additions.swift */,
+				FAA7CA67253734B4006F6F24 /* ImageView+Additions.swift */,
+			);
+			path = Extension;
+			sourceTree = "<group>";
+		};
+		FAA7CA68253734B4006F6F24 /* StoryHeaderView & ProgressView */ = {
+			isa = PBXGroup;
+			children = (
+				FAA7CA69253734B4006F6F24 /* IGSnapProgressView.swift */,
+				FAA7CA6A253734B4006F6F24 /* IGStoryPreviewHeaderView.swift */,
+			);
+			path = "StoryHeaderView & ProgressView";
+			sourceTree = "<group>";
+		};
+		FAA7CA6B253734B5006F6F24 /* External */ = {
+			isa = PBXGroup;
+			children = (
+				FAA7CA6C253734B5006F6F24 /* Reachability */,
+				FAA7CA6E253734B5006F6F24 /* AnimatedCollectionViewLayout */,
+			);
+			path = External;
+			sourceTree = "<group>";
+		};
+		FAA7CA6C253734B5006F6F24 /* Reachability */ = {
+			isa = PBXGroup;
+			children = (
+				FAA7CA6D253734B5006F6F24 /* Reachability.swift */,
+			);
+			path = Reachability;
+			sourceTree = "<group>";
+		};
+		FAA7CA6E253734B5006F6F24 /* AnimatedCollectionViewLayout */ = {
+			isa = PBXGroup;
+			children = (
+				FAA7CA6F253734B5006F6F24 /* LICENSE */,
+				FAA7CA70253734B5006F6F24 /* Source */,
+				FAA7CA75253734B5006F6F24 /* README.md */,
+			);
+			path = AnimatedCollectionViewLayout;
+			sourceTree = "<group>";
+		};
+		FAA7CA70253734B5006F6F24 /* Source */ = {
+			isa = PBXGroup;
+			children = (
+				FAA7CA71253734B5006F6F24 /* CubeAttributesAnimator.swift */,
+				FAA7CA72253734B5006F6F24 /* AnimatedCollectionViewLayout.swift */,
+				FAA7CA73253734B5006F6F24 /* UIView+Anchor.swift */,
+				FAA7CA74253734B5006F6F24 /* LayoutAttributesAnimator.swift */,
+			);
+			path = Source;
+			sourceTree = "<group>";
+		};
+		FAA7CA76253734B5006F6F24 /* Common */ = {
+			isa = PBXGroup;
+			children = (
+				FAA7CA77253734B5006F6F24 /* IGCommon.swift */,
+				FAA7CA78253734B5006F6F24 /* IGConstants.swift */,
+				FAA7CA79253734B5006F6F24 /* IGRetryButton.swift */,
+			);
+			path = Common;
+			sourceTree = "<group>";
+		};
+		FAA7CA7A253734B5006F6F24 /* CollectionViewCell */ = {
+			isa = PBXGroup;
+			children = (
+				FAA7CA7B253734B5006F6F24 /* IGStoryPreviewCell.swift */,
+			);
+			path = CollectionViewCell;
+			sourceTree = "<group>";
+		};
+		FAA7CA7C253734B5006F6F24 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				FAA7CA7D253734B5006F6F24 /* IGStory.swift */,
+				FAA7CA7E253734B5006F6F24 /* IGStories.swift */,
+				FAA7CA7F253734B5006F6F24 /* IGSnap.swift */,
+				FAA7CA80253734B5006F6F24 /* IGUser.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		FAA7CA81253734B5006F6F24 /* StoryPreview */ = {
+			isa = PBXGroup;
+			children = (
+				FAA7CA82253734B5006F6F24 /* IGStoryPreviewModel.swift */,
+				FAA7CA83253734B5006F6F24 /* IGStoryPreviewController.swift */,
+			);
+			path = StoryPreview;
+			sourceTree = "<group>";
+		};
+		FAA7CA84253734B5006F6F24 /* IGPlayerView */ = {
+			isa = PBXGroup;
+			children = (
+				FAA7CA85253734B5006F6F24 /* IGPlayerView.swift */,
+			);
+			path = IGPlayerView;
+			sourceTree = "<group>";
+		};
+		FAA7CA86253734B5006F6F24 /* ImageStorer */ = {
+			isa = PBXGroup;
+			children = (
+				FAA7CA87253734B5006F6F24 /* UIImageView+Extension.swift */,
+				FAA7CA88253734B5006F6F24 /* IGResult.swift */,
+				FAA7CA89253734B5006F6F24 /* IGRoundedView.swift */,
+				FAA7CA8A253734B5006F6F24 /* IGImageRequestable.swift */,
+				FAA7CA8B253734B5006F6F24 /* IGError.swift */,
+				FAA7CA8C253734B5006F6F24 /* IGURLSession.swift */,
+				FAA7CA8D253734B5006F6F24 /* IGCache.swift */,
+			);
+			path = ImageStorer;
+			sourceTree = "<group>";
+		};
+		FAA7CA8E253734B5006F6F24 /* Stubs */ = {
+			isa = PBXGroup;
+			children = (
+				FAA7CA8F253734B5006F6F24 /* IGMockLoader.swift */,
+			);
+			path = Stubs;
+			sourceTree = "<group>";
+		};
+		FAA7CA90253734B5006F6F24 /* Video Cache */ = {
+			isa = PBXGroup;
+			children = (
+				FAA7CA91253734B5006F6F24 /* IGVideoCacheManager.swift */,
+			);
+			path = "Video Cache";
 			sourceTree = "<group>";
 		};
 		FAAE57D224473ED70035CE99 /* View */ = {
@@ -2290,6 +2556,8 @@
 				FA91D58C243630AF00F901AF /* ContactPickerHeader.xib in Resources */,
 				FADA6FA624615E5200FFBCCF /* pop_zap.wav in Resources */,
 				FA28DCCB249CA5F8005B14DF /* GoogleService-Info.plist in Resources */,
+				FAA7CAA2253734B5006F6F24 /* LICENSE in Resources */,
+				FAA7CAAC253734B5006F6F24 /* README.md in Resources */,
 				FA663D3E23FEEB830029D5D0 /* CoinTableViewCell.xib in Resources */,
 				FA663D49240019210029D5D0 /* SeparatorTableViewCell.xib in Resources */,
 				FA3BDE75242BA7000076A7F4 /* UsernameTableViewCell.xib in Resources */,
@@ -2303,6 +2571,7 @@
 				FAC14A4724811192008D1A45 /* SearchTextFieldCell.xib in Resources */,
 				FA3BDEA0242BE9BC0076A7F4 /* Popup.storyboard in Resources */,
 				FAE621FA24076DA10040BE4C /* AddWalletCell.xib in Resources */,
+				FAA7CAE3253775FE006F6F24 /* stories.json in Resources */,
 				FA9FE562246E86A400788310 /* PopupLoadingView.xib in Resources */,
 				FAE621FC240D1AF00040BE4C /* Transaction.storyboard in Resources */,
 				FA663D4E240019300029D5D0 /* ButtonTableViewCell.xib in Resources */,
@@ -2386,6 +2655,8 @@
 				FAAAD9A224977B7A00D7F5FE /* Validators.storyboard in Resources */,
 				FAAAD9A324977B7A00D7F5FE /* ContactPickerHeader.xib in Resources */,
 				FAAAD9A424977B7A00D7F5FE /* pop_zap.wav in Resources */,
+				FAA7CAA3253734B5006F6F24 /* LICENSE in Resources */,
+				FAA7CAAD253734B5006F6F24 /* README.md in Resources */,
 				FAAAD9A524977B7A00D7F5FE /* CoinTableViewCell.xib in Resources */,
 				FAAAD9A624977B7A00D7F5FE /* SeparatorTableViewCell.xib in Resources */,
 				FAAAD9A724977B7A00D7F5FE /* UsernameTableViewCell.xib in Resources */,
@@ -2399,6 +2670,7 @@
 				FAAAD9AF24977B7A00D7F5FE /* SearchTextFieldCell.xib in Resources */,
 				FAAAD9B024977B7A00D7F5FE /* Popup.storyboard in Resources */,
 				FAAAD9B124977B7A00D7F5FE /* AddWalletCell.xib in Resources */,
+				FAA7CAE4253775FE006F6F24 /* stories.json in Resources */,
 				FAAAD9B224977B7A00D7F5FE /* PopupLoadingView.xib in Resources */,
 				FAAAD9B324977B7A00D7F5FE /* Transaction.storyboard in Resources */,
 				FAAAD9B424977B7A00D7F5FE /* ButtonTableViewCell.xib in Resources */,
@@ -2560,6 +2832,7 @@
 				FAD1438A2459761F002C2F1C /* UIImageViewExtension.swift in Sources */,
 				FA9E519523ED9972007263B9 /* ViewController.swift in Sources */,
 				FA663D50240019980029D5D0 /* BalanceService.swift in Sources */,
+				FAA7CABC253734B5006F6F24 /* IGUser.swift in Sources */,
 				FA3BDE0F2423C5470076A7F4 /* ConvertCoinsViewController.swift in Sources */,
 				FAF04BDB24499300004CBC07 /* ValidatorItem.swift in Sources */,
 				FA6AFB49244DC31800CCBE19 /* DisclosureTableViewCell.swift in Sources */,
@@ -2582,6 +2855,7 @@
 				FA9E519123ED9972007263B9 /* AppDelegate.swift in Sources */,
 				FACA65C123F97CA200399359 /* ClearBarNavigationController.swift in Sources */,
 				FACA656123F6B86A00399359 /* Sugar.swift in Sources */,
+				FAA7CA9A253734B5006F6F24 /* ImageView+Additions.swift in Sources */,
 				FA7DB988242CA05700B1E01A /* SpendCoinPickerItem.swift in Sources */,
 				FA663D4D240019300029D5D0 /* ButtonTableViewCell.swift in Sources */,
 				FACA656C23F6B8C600399359 /* ImpactProtocol.swift in Sources */,
@@ -2603,9 +2877,12 @@
 				FAE162D82403DA4F007E9CAD /* TransactionViewableViewModel.swift in Sources */,
 				FACA653723F2AE5200399359 /* BaseViewModel.swift in Sources */,
 				FA663D3D23FEEB830029D5D0 /* CoinTableViewCell.swift in Sources */,
+				FAA7CAA4253734B5006F6F24 /* CubeAttributesAnimator.swift in Sources */,
 				FA39EA0C2404149F00757020 /* String+Validation.swift in Sources */,
 				FA3BDE86242BAA5E0076A7F4 /* AmountTextFieldTableViewCell.swift in Sources */,
+				FAA7CA92253734B5006F6F24 /* IGStoryPreviewView.swift in Sources */,
 				FA3BDE3D242A745E0076A7F4 /* GateService.swift in Sources */,
+				FAA7CAC4253734B6006F6F24 /* UIImageView+Extension.swift in Sources */,
 				FA3BDE222423C5DC0076A7F4 /* CoinAutocompleteCell.swift in Sources */,
 				FA787471242109EC0039E2BB /* TransactionKeyValueCell.swift in Sources */,
 				FA171A9E248817D100D8B813 /* DelegateUnbondConfirmPopupViewModel.swift in Sources */,
@@ -2616,17 +2893,20 @@
 				FAB635F124E9403600900560 /* RawTransactionTextViewCell.swift in Sources */,
 				FAE621F4240590340040BE4C /* WalletCell.swift in Sources */,
 				FACA655423F403FD00399359 /* Storage.swift in Sources */,
+				FAA7CAD4253734B6006F6F24 /* IGVideoCacheManager.swift in Sources */,
 				FACA65BB23F791DF00399359 /* HandlerView.swift in Sources */,
 				FA3BDE182423C5A30076A7F4 /* LUAutocompleteViewDelegate.swift in Sources */,
 				FA171AA3248817D100D8B813 /* DelegateUnbondSucceedPopupCoordinator.swift in Sources */,
 				FA91D58E243634BF00F901AF /* ContactPickerHeader.swift in Sources */,
 				FA3BDE68242BA5110076A7F4 /* TextViewTableViewCell.swift in Sources */,
+				FAA7CAC2253734B6006F6F24 /* IGPlayerView.swift in Sources */,
 				FA171AA1248817D100D8B813 /* DelegateUnbondSucceedPopupViewModel.swift in Sources */,
 				FACA657423F6BE5000399359 /* StoryboardInitializable.swift in Sources */,
 				FAF04BD72449927C004CBC07 /* ValidatorService.swift in Sources */,
 				FACA655023F4024E00399359 /* AuthStorage.swift in Sources */,
 				FA3BDE9C242BE9B70076A7F4 /* SendPopupViewModel.swift in Sources */,
 				FAE01A2F244B720C00C5EB96 /* AccountService.swift in Sources */,
+				FAA7CAB0253734B5006F6F24 /* IGConstants.swift in Sources */,
 				FA39EA0F2404D20200757020 /* LoadingTableViewCell.swift in Sources */,
 				FA91D573242FC60700F901AF /* ContactEntryDataBaseModel.swift in Sources */,
 				FA3BDEA4242BEA2A0076A7F4 /* CCMPlayNDropView.m in Sources */,
@@ -2646,6 +2926,7 @@
 				FAAE57D424473EE10035CE99 /* DelegatedTableViewCell.swift in Sources */,
 				050FD4BCA318DDBFEBAE70A4 /* WelcomeViewController.swift in Sources */,
 				FA3BDE53242B83C80076A7F4 /* QRCodeReaderViewControllerDelegate.swift in Sources */,
+				FAA7CA98253734B5006F6F24 /* Color+Additions.swift in Sources */,
 				8FAD9334A14929F40714F256 /* WelcomeViewModel.swift in Sources */,
 				FA91D5822431FFE300F901AF /* ContactItem.swift in Sources */,
 				FACA655E23F6B84600399359 /* DefaultButton.swift in Sources */,
@@ -2655,8 +2936,11 @@
 				FA3BDE62242BA44A0076A7F4 /* PickerTableViewCell.swift in Sources */,
 				FA3BDE3624261DE50076A7F4 /* DefaultTextField.swift in Sources */,
 				FA91D5792430841800F901AF /* LocalStorageAuthService.swift in Sources */,
+				FAA7CAC6253734B6006F6F24 /* IGResult.swift in Sources */,
+				FAA7CA9C253734B5006F6F24 /* IGSnapProgressView.swift in Sources */,
 				FAD3E02F24655AA900446261 /* DefaultSegmentedControl.swift in Sources */,
 				FACA656823F6B8B600399359 /* CurrencyNumberFormatter.swift in Sources */,
+				FAA7CAC0253734B5006F6F24 /* IGStoryPreviewController.swift in Sources */,
 				FA3BDE6B242BA5500076A7F4 /* AutoGrowingTextView.swift in Sources */,
 				FACA65B723F6D21800399359 /* Configuration.swift in Sources */,
 				FAE162F52403E19D007E9CAD /* TransactionTitleHelper.swift in Sources */,
@@ -2669,6 +2953,7 @@
 				FACA65D423FAEB6100399359 /* String+Random.swift in Sources */,
 				FA520BB0241FDC8000146E49 /* TransactionAddressCell.swift in Sources */,
 				FA169673243CA81900F36FF2 /* AccountItem.swift in Sources */,
+				FAA7CA94253734B5006F6F24 /* UIView+Extension.swift in Sources */,
 				3118C42D1BC1D9A988E95E75 /* BalanceViewModel.swift in Sources */,
 				FA62232A24517D17006089EC /* RawTransactionType+Helper.swift in Sources */,
 				FACA65C723FA977100399359 /* String+Localized.swift in Sources */,
@@ -2677,11 +2962,13 @@
 				FA3BDE5A242B83C80076A7F4 /* ToggleTorchButton.swift in Sources */,
 				FA91D57F2430BFC000F901AF /* ContactEntryTableViewCell.swift in Sources */,
 				FA663D52240032FD0029D5D0 /* GateManager.swift in Sources */,
+				FAA7CA96253734B5006F6F24 /* IGAdditions.swift in Sources */,
 				FA3BDE7F242BA7CC0076A7F4 /* Notifiable.swift in Sources */,
 				FA91D570242E0FD200F901AF /* DefaultHeader.swift in Sources */,
 				C555964A565D5D0E47D20A33 /* BalanceCoordinator.swift in Sources */,
 				FAF317862421189500D1556C /* TransactionTwoColumnCell.swift in Sources */,
 				FA3BDE71242BA6630076A7F4 /* TextFieldTableViewCell.swift in Sources */,
+				FAA7CAB4253734B5006F6F24 /* IGStoryPreviewCell.swift in Sources */,
 				FAF04BDD24499353004CBC07 /* ExplorerValidatorService.swift in Sources */,
 				FAD1438B2459761F002C2F1C /* CIImageExtension.swift in Sources */,
 				FACA656A23F6B8B600399359 /* Decimal+.swift in Sources */,
@@ -2691,12 +2978,15 @@
 				AAECC4888291B535131A228A /* SignInViewModel.swift in Sources */,
 				FA62233724583B97006089EC /* RecipientInfoService.swift in Sources */,
 				E267E578C4157B7DDDA7A08C /* SignInCoordinator.swift in Sources */,
+				FAA7CAD0253734B6006F6F24 /* IGCache.swift in Sources */,
 				FAE162F82403E2EE007E9CAD /* TransactionCell.swift in Sources */,
+				FAA7CACC253734B6006F6F24 /* IGError.swift in Sources */,
 				FACA65BD23F7965700399359 /* DefaultTextView.swift in Sources */,
 				773972312A5D21EF396E0024 /* WalletViewController.swift in Sources */,
 				FA62232824517CF9006089EC /* Data+Base64URL.swift in Sources */,
 				ABE6C1AB835FBF73D185BCD3 /* WalletViewModel.swift in Sources */,
 				6CCDF5CFC5D97B0D2EEA779D /* WalletCoordinator.swift in Sources */,
+				FAA7CAA8253734B5006F6F24 /* UIView+Anchor.swift in Sources */,
 				337B40B7306272957F8CA5A7 /* CreateWalletViewController.swift in Sources */,
 				FA3BDE3F242A755D0076A7F4 /* ExplorerGateService.swift in Sources */,
 				EA3D2631E1BE051E430932E2 /* CreateWalletViewModel.swift in Sources */,
@@ -2717,9 +3007,11 @@
 				FA91D5872433974D00F901AF /* DraggableViewController.swift in Sources */,
 				93FC3760934144DCCF6B9658 /* SettingsViewModel.swift in Sources */,
 				FA3BDE56242B83C80076A7F4 /* QRCodeReaderView.swift in Sources */,
+				FAA7CAB8253734B5006F6F24 /* IGStories.swift in Sources */,
 				FA4EDC5224F6F20900079ACA /* DelegatedCoinTableViewCell.swift in Sources */,
 				FA3BDEA9242BFB730076A7F4 /* GrowingTextView.swift in Sources */,
 				E56D2E5CB6B34140762F8C6A /* SettingsCoordinator.swift in Sources */,
+				FAA7CACE253734B6006F6F24 /* IGURLSession.swift in Sources */,
 				FAC149012498C08B00F556C2 /* LastBlockViewable.swift in Sources */,
 				FA6223332455DA75006089EC /* SettingsTableHeaderView.swift in Sources */,
 				FA62232E24534451006089EC /* WalletSelectableViewModel.swift in Sources */,
@@ -2734,7 +3026,9 @@
 				FA3BDE2824251C1B0076A7F4 /* String+Coin.swift in Sources */,
 				FA3BDE78242BA7540076A7F4 /* TwoTitleTableViewCell.swift in Sources */,
 				FA3BDE55242B83C80076A7F4 /* QRCodeReaderViewControllerBuilder.swift in Sources */,
+				FAA7CACA253734B6006F6F24 /* IGImageRequestable.swift in Sources */,
 				08FC94142CA4263EF49422A2 /* TransactionsViewController.swift in Sources */,
+				FAA7CAA6253734B5006F6F24 /* AnimatedCollectionViewLayout.swift in Sources */,
 				348E055C141F2BA7089A95A1 /* TransactionsViewModel.swift in Sources */,
 				FA3BDE192423C5A30076A7F4 /* LUAutocompleteViewDataSource.swift in Sources */,
 				9702FB9620D6F04E98F96FBD /* TransactionsCoordinator.swift in Sources */,
@@ -2742,8 +3036,10 @@
 				DF44E76EB74AFA0B80496081 /* SelectWalletViewModel.swift in Sources */,
 				970F2B83693366F8B98467A4 /* SelectWalletCoordinator.swift in Sources */,
 				FAE01A31244B72A700C5EB96 /* LocalStorageAccountService.swift in Sources */,
+				FAA7CAC8253734B6006F6F24 /* IGRoundedView.swift in Sources */,
 				FA3BDE1E2423C5AE0076A7F4 /* CBPinEntryViewDefaults.swift in Sources */,
 				72E0332233FEEFD3C028BD15 /* TransactionViewController.swift in Sources */,
+				FAA7CABA253734B5006F6F24 /* IGSnap.swift in Sources */,
 				FA3BDE54242B83C80076A7F4 /* QRCodeReaderViewContainer.swift in Sources */,
 				68080FC199A22F6478D721E5 /* TransactionViewModel.swift in Sources */,
 				FA78746E242107700039E2BB /* BlankTableViewCell.swift in Sources */,
@@ -2773,11 +3069,13 @@
 				FA3BDE95242BE9AF0076A7F4 /* ConfirmPopupViewController.swift in Sources */,
 				A6925EC3F1CD0E7498C392A2 /* GetCoinsViewModel.swift in Sources */,
 				FA3BDE3324251D5F0076A7F4 /* McTextField.swift in Sources */,
+				FAA7CAB2253734B5006F6F24 /* IGRetryButton.swift in Sources */,
 				F39099EE1A94F4AA606FCA2D /* GetCoinsCoordinator.swift in Sources */,
 				FA6AFB4F244E263D00CCBE19 /* SecureStoragePINService.swift in Sources */,
 				B8C7C5504DC63DA7036124DB /* ContactPickerViewController.swift in Sources */,
 				63ACD7AD88C1561764F0C046 /* ContactPickerViewModel.swift in Sources */,
 				FA6223302454537B006089EC /* WhiteNavigationController.swift in Sources */,
+				FAA7CABE253734B5006F6F24 /* IGStoryPreviewModel.swift in Sources */,
 				01297AB280A7D9CFA286672E /* ContactPickerCoordinator.swift in Sources */,
 				FA62231024507A92006089EC /* AppSettings.swift in Sources */,
 				2071CEDA020C159326FA5E19 /* ModifyContactViewController.swift in Sources */,
@@ -2808,14 +3106,18 @@
 				61E66212F4D185E28DD99CCE /* ShareViewModel.swift in Sources */,
 				1EEF27A2C33CC1815D49FDAF /* ShareCoordinator.swift in Sources */,
 				7F537B239CF76A1554900DDC /* ContactRemoveConfirmationViewController.swift in Sources */,
+				FAA7CAAA253734B5006F6F24 /* LayoutAttributesAnimator.swift in Sources */,
 				D979A8618F9751FFF246A404 /* ContactRemoveConfirmationViewModel.swift in Sources */,
 				27D1BCC4816245235DF376AC /* ContactRemoveConfirmationCoordinator.swift in Sources */,
+				FAA7CA9E253734B5006F6F24 /* IGStoryPreviewHeaderView.swift in Sources */,
+				FAA7CAD2253734B6006F6F24 /* IGMockLoader.swift in Sources */,
 				6B4928AF0F17E79F4817439E /* WalletRemoveConfirmationViewController.swift in Sources */,
 				D77A23A8AD092181934144EE /* WalletRemoveConfirmationViewModel.swift in Sources */,
 				CC82CC9FEAD10C672D17E79F /* WalletRemoveConfirmationCoordinator.swift in Sources */,
 				C2F939095E8D1FCC2D001B80 /* ConvertPopupViewController.swift in Sources */,
 				2434AEDD8EA83015BF5F4C2C /* ConvertPopupViewModel.swift in Sources */,
 				05CC5EB87907355437411D8D /* ConvertPopupCoordinator.swift in Sources */,
+				FAA7CAB6253734B5006F6F24 /* IGStory.swift in Sources */,
 				D3F1230E1977330C038054F5 /* ConvertSucceedPopupViewController.swift in Sources */,
 				788B9CFE6D6E368DE77A2900 /* ConvertSucceedPopupViewModel.swift in Sources */,
 				2EDFF7137A5287A534A5575D /* ConvertSucceedPopupCoordinator.swift in Sources */,
@@ -2824,6 +3126,7 @@
 				C0FE649AEC36600B2783FCF2 /* SendSucceedPopupCoordinator.swift in Sources */,
 				1921CF3586EDFEAE823871A0 /* ValidatorsViewController.swift in Sources */,
 				FF2B4D84542270A7DC52B580 /* ValidatorsViewModel.swift in Sources */,
+				FAA7CAAE253734B5006F6F24 /* IGCommon.swift in Sources */,
 				C988C4722613A8C5334D3778 /* ValidatorsCoordinator.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -2853,6 +3156,7 @@
 				FAAAD88224977B7A00D7F5FE /* UIImageViewExtension.swift in Sources */,
 				FAAAD88324977B7A00D7F5FE /* ViewController.swift in Sources */,
 				FAAAD88424977B7A00D7F5FE /* BalanceService.swift in Sources */,
+				FAA7CABD253734B5006F6F24 /* IGUser.swift in Sources */,
 				FAAAD88524977B7A00D7F5FE /* ConvertCoinsViewController.swift in Sources */,
 				FAAAD88624977B7A00D7F5FE /* ValidatorItem.swift in Sources */,
 				FAAAD88724977B7A00D7F5FE /* DisclosureTableViewCell.swift in Sources */,
@@ -2875,6 +3179,7 @@
 				FAAAD89724977B7A00D7F5FE /* AppDelegate.swift in Sources */,
 				FAAAD89824977B7A00D7F5FE /* ClearBarNavigationController.swift in Sources */,
 				FAAAD89924977B7A00D7F5FE /* Sugar.swift in Sources */,
+				FAA7CA9B253734B5006F6F24 /* ImageView+Additions.swift in Sources */,
 				FAAAD89A24977B7A00D7F5FE /* SpendCoinPickerItem.swift in Sources */,
 				FAAAD89B24977B7A00D7F5FE /* ButtonTableViewCell.swift in Sources */,
 				FAAAD89C24977B7A00D7F5FE /* ImpactProtocol.swift in Sources */,
@@ -2896,9 +3201,12 @@
 				FAAAD8AC24977B7A00D7F5FE /* TransactionViewableViewModel.swift in Sources */,
 				FAAAD8AD24977B7A00D7F5FE /* BaseViewModel.swift in Sources */,
 				FAAAD8AE24977B7A00D7F5FE /* CoinTableViewCell.swift in Sources */,
+				FAA7CAA5253734B5006F6F24 /* CubeAttributesAnimator.swift in Sources */,
 				FAAAD8AF24977B7A00D7F5FE /* String+Validation.swift in Sources */,
 				FAAAD8B024977B7A00D7F5FE /* AmountTextFieldTableViewCell.swift in Sources */,
+				FAA7CA93253734B5006F6F24 /* IGStoryPreviewView.swift in Sources */,
 				FAAAD8B124977B7A00D7F5FE /* GateService.swift in Sources */,
+				FAA7CAC5253734B6006F6F24 /* UIImageView+Extension.swift in Sources */,
 				FAAAD8B224977B7A00D7F5FE /* CoinAutocompleteCell.swift in Sources */,
 				FAAAD8B324977B7A00D7F5FE /* TransactionKeyValueCell.swift in Sources */,
 				FAAAD8B424977B7A00D7F5FE /* DelegateUnbondConfirmPopupViewModel.swift in Sources */,
@@ -2909,17 +3217,20 @@
 				FAB635F224E9403600900560 /* RawTransactionTextViewCell.swift in Sources */,
 				FAAAD8B924977B7A00D7F5FE /* WalletCell.swift in Sources */,
 				FAAAD8BA24977B7A00D7F5FE /* Storage.swift in Sources */,
+				FAA7CAD5253734B6006F6F24 /* IGVideoCacheManager.swift in Sources */,
 				FAAAD8BB24977B7A00D7F5FE /* HandlerView.swift in Sources */,
 				FAAAD8BC24977B7A00D7F5FE /* LUAutocompleteViewDelegate.swift in Sources */,
 				FAAAD8BD24977B7A00D7F5FE /* DelegateUnbondSucceedPopupCoordinator.swift in Sources */,
 				FAAAD8BE24977B7A00D7F5FE /* ContactPickerHeader.swift in Sources */,
 				FAAAD8BF24977B7A00D7F5FE /* TextViewTableViewCell.swift in Sources */,
+				FAA7CAC3253734B6006F6F24 /* IGPlayerView.swift in Sources */,
 				FAAAD8C024977B7A00D7F5FE /* DelegateUnbondSucceedPopupViewModel.swift in Sources */,
 				FAAAD8C124977B7A00D7F5FE /* StoryboardInitializable.swift in Sources */,
 				FAAAD8C224977B7A00D7F5FE /* ValidatorService.swift in Sources */,
 				FAAAD8C324977B7A00D7F5FE /* AuthStorage.swift in Sources */,
 				FAAAD8C424977B7A00D7F5FE /* SendPopupViewModel.swift in Sources */,
 				FAAAD8C524977B7A00D7F5FE /* AccountService.swift in Sources */,
+				FAA7CAB1253734B5006F6F24 /* IGConstants.swift in Sources */,
 				FAAAD8C624977B7A00D7F5FE /* LoadingTableViewCell.swift in Sources */,
 				FAAAD8C724977B7A00D7F5FE /* ContactEntryDataBaseModel.swift in Sources */,
 				FAAAD8C824977B7A00D7F5FE /* CCMPlayNDropView.m in Sources */,
@@ -2939,6 +3250,7 @@
 				FAAAD8D624977B7A00D7F5FE /* DelegatedTableViewCell.swift in Sources */,
 				FAAAD8D724977B7A00D7F5FE /* WelcomeViewController.swift in Sources */,
 				FAAAD8D824977B7A00D7F5FE /* QRCodeReaderViewControllerDelegate.swift in Sources */,
+				FAA7CA99253734B5006F6F24 /* Color+Additions.swift in Sources */,
 				FAAAD8D924977B7A00D7F5FE /* WelcomeViewModel.swift in Sources */,
 				FAAAD8DA24977B7A00D7F5FE /* ContactItem.swift in Sources */,
 				FAAAD8DB24977B7A00D7F5FE /* DefaultButton.swift in Sources */,
@@ -2948,8 +3260,11 @@
 				FAAAD8DF24977B7A00D7F5FE /* PickerTableViewCell.swift in Sources */,
 				FAAAD8E024977B7A00D7F5FE /* DefaultTextField.swift in Sources */,
 				FAAAD8E124977B7A00D7F5FE /* LocalStorageAuthService.swift in Sources */,
+				FAA7CAC7253734B6006F6F24 /* IGResult.swift in Sources */,
+				FAA7CA9D253734B5006F6F24 /* IGSnapProgressView.swift in Sources */,
 				FAAAD8E224977B7A00D7F5FE /* DefaultSegmentedControl.swift in Sources */,
 				FAAAD8E324977B7A00D7F5FE /* CurrencyNumberFormatter.swift in Sources */,
+				FAA7CAC1253734B6006F6F24 /* IGStoryPreviewController.swift in Sources */,
 				FAAAD8E424977B7A00D7F5FE /* AutoGrowingTextView.swift in Sources */,
 				FAAAD8E524977B7A00D7F5FE /* Configuration.swift in Sources */,
 				FAAAD8E624977B7A00D7F5FE /* TransactionTitleHelper.swift in Sources */,
@@ -2962,6 +3277,7 @@
 				FAAAD8EC24977B7A00D7F5FE /* String+Random.swift in Sources */,
 				FAAAD8ED24977B7A00D7F5FE /* TransactionAddressCell.swift in Sources */,
 				FAAAD8EE24977B7A00D7F5FE /* AccountItem.swift in Sources */,
+				FAA7CA95253734B5006F6F24 /* UIView+Extension.swift in Sources */,
 				FAAAD8EF24977B7A00D7F5FE /* BalanceViewModel.swift in Sources */,
 				FAAAD8F024977B7A00D7F5FE /* RawTransactionType+Helper.swift in Sources */,
 				FAAAD8F124977B7A00D7F5FE /* String+Localized.swift in Sources */,
@@ -2970,11 +3286,13 @@
 				FAAAD8F424977B7A00D7F5FE /* ToggleTorchButton.swift in Sources */,
 				FAAAD8F524977B7A00D7F5FE /* ContactEntryTableViewCell.swift in Sources */,
 				FAAAD8F624977B7A00D7F5FE /* GateManager.swift in Sources */,
+				FAA7CA97253734B5006F6F24 /* IGAdditions.swift in Sources */,
 				FAAAD8F724977B7A00D7F5FE /* Notifiable.swift in Sources */,
 				FAAAD8F824977B7A00D7F5FE /* DefaultHeader.swift in Sources */,
 				FAAAD8F924977B7A00D7F5FE /* BalanceCoordinator.swift in Sources */,
 				FAAAD8FA24977B7A00D7F5FE /* TransactionTwoColumnCell.swift in Sources */,
 				FAAAD8FB24977B7A00D7F5FE /* TextFieldTableViewCell.swift in Sources */,
+				FAA7CAB5253734B5006F6F24 /* IGStoryPreviewCell.swift in Sources */,
 				FAAAD8FC24977B7A00D7F5FE /* ExplorerValidatorService.swift in Sources */,
 				FAAAD8FD24977B7A00D7F5FE /* CIImageExtension.swift in Sources */,
 				FAAAD8FE24977B7A00D7F5FE /* Decimal+.swift in Sources */,
@@ -2984,12 +3302,15 @@
 				FAAAD90224977B7A00D7F5FE /* SignInViewModel.swift in Sources */,
 				FAAAD90324977B7A00D7F5FE /* RecipientInfoService.swift in Sources */,
 				FAAAD90424977B7A00D7F5FE /* SignInCoordinator.swift in Sources */,
+				FAA7CAD1253734B6006F6F24 /* IGCache.swift in Sources */,
 				FAAAD90524977B7A00D7F5FE /* TransactionCell.swift in Sources */,
+				FAA7CACD253734B6006F6F24 /* IGError.swift in Sources */,
 				FAAAD90624977B7A00D7F5FE /* DefaultTextView.swift in Sources */,
 				FAAAD90724977B7A00D7F5FE /* WalletViewController.swift in Sources */,
 				FAAAD90824977B7A00D7F5FE /* Data+Base64URL.swift in Sources */,
 				FAAAD90924977B7A00D7F5FE /* WalletViewModel.swift in Sources */,
 				FAAAD90A24977B7A00D7F5FE /* WalletCoordinator.swift in Sources */,
+				FAA7CAA9253734B5006F6F24 /* UIView+Anchor.swift in Sources */,
 				FAAAD90B24977B7A00D7F5FE /* CreateWalletViewController.swift in Sources */,
 				FAAAD90C24977B7A00D7F5FE /* ExplorerGateService.swift in Sources */,
 				FAAAD90D24977B7A00D7F5FE /* CreateWalletViewModel.swift in Sources */,
@@ -3010,9 +3331,11 @@
 				FAAAD91C24977B7A00D7F5FE /* DraggableViewController.swift in Sources */,
 				FAAAD91D24977B7A00D7F5FE /* SettingsViewModel.swift in Sources */,
 				FAAAD91E24977B7A00D7F5FE /* QRCodeReaderView.swift in Sources */,
+				FAA7CAB9253734B5006F6F24 /* IGStories.swift in Sources */,
 				FA4EDC5324F6F20A00079ACA /* DelegatedCoinTableViewCell.swift in Sources */,
 				FAAAD91F24977B7A00D7F5FE /* GrowingTextView.swift in Sources */,
 				FAAAD92024977B7A00D7F5FE /* SettingsCoordinator.swift in Sources */,
+				FAA7CACF253734B6006F6F24 /* IGURLSession.swift in Sources */,
 				FAC149022498C59F00F556C2 /* LastBlockViewable.swift in Sources */,
 				FAAAD92124977B7A00D7F5FE /* SettingsTableHeaderView.swift in Sources */,
 				FAAAD92224977B7A00D7F5FE /* WalletSelectableViewModel.swift in Sources */,
@@ -3027,7 +3350,9 @@
 				FAAAD92B24977B7A00D7F5FE /* String+Coin.swift in Sources */,
 				FAAAD92C24977B7A00D7F5FE /* TwoTitleTableViewCell.swift in Sources */,
 				FAAAD92D24977B7A00D7F5FE /* QRCodeReaderViewControllerBuilder.swift in Sources */,
+				FAA7CACB253734B6006F6F24 /* IGImageRequestable.swift in Sources */,
 				FAAAD92E24977B7A00D7F5FE /* TransactionsViewController.swift in Sources */,
+				FAA7CAA7253734B5006F6F24 /* AnimatedCollectionViewLayout.swift in Sources */,
 				FAAAD92F24977B7A00D7F5FE /* TransactionsViewModel.swift in Sources */,
 				FAAAD93024977B7A00D7F5FE /* LUAutocompleteViewDataSource.swift in Sources */,
 				FAAAD93124977B7A00D7F5FE /* TransactionsCoordinator.swift in Sources */,
@@ -3035,8 +3360,10 @@
 				FAAAD93324977B7A00D7F5FE /* SelectWalletViewModel.swift in Sources */,
 				FAAAD93424977B7A00D7F5FE /* SelectWalletCoordinator.swift in Sources */,
 				FAAAD93524977B7A00D7F5FE /* LocalStorageAccountService.swift in Sources */,
+				FAA7CAC9253734B6006F6F24 /* IGRoundedView.swift in Sources */,
 				FAAAD93624977B7A00D7F5FE /* CBPinEntryViewDefaults.swift in Sources */,
 				FAAAD93724977B7A00D7F5FE /* TransactionViewController.swift in Sources */,
+				FAA7CABB253734B5006F6F24 /* IGSnap.swift in Sources */,
 				FAAAD93824977B7A00D7F5FE /* QRCodeReaderViewContainer.swift in Sources */,
 				FAAAD93924977B7A00D7F5FE /* TransactionViewModel.swift in Sources */,
 				FAAAD93A24977B7A00D7F5FE /* BlankTableViewCell.swift in Sources */,
@@ -3066,11 +3393,13 @@
 				FAAAD95124977B7A00D7F5FE /* ConfirmPopupViewController.swift in Sources */,
 				FAAAD95224977B7A00D7F5FE /* GetCoinsViewModel.swift in Sources */,
 				FAAAD95324977B7A00D7F5FE /* McTextField.swift in Sources */,
+				FAA7CAB3253734B5006F6F24 /* IGRetryButton.swift in Sources */,
 				FAAAD95424977B7A00D7F5FE /* GetCoinsCoordinator.swift in Sources */,
 				FAAAD95524977B7A00D7F5FE /* SecureStoragePINService.swift in Sources */,
 				FAAAD95624977B7A00D7F5FE /* ContactPickerViewController.swift in Sources */,
 				FAAAD95724977B7A00D7F5FE /* ContactPickerViewModel.swift in Sources */,
 				FAAAD95824977B7A00D7F5FE /* WhiteNavigationController.swift in Sources */,
+				FAA7CABF253734B5006F6F24 /* IGStoryPreviewModel.swift in Sources */,
 				FAAAD95924977B7A00D7F5FE /* ContactPickerCoordinator.swift in Sources */,
 				FAAAD95A24977B7A00D7F5FE /* AppSettings.swift in Sources */,
 				FAAAD95B24977B7A00D7F5FE /* ModifyContactViewController.swift in Sources */,
@@ -3101,14 +3430,18 @@
 				FAAAD97424977B7A00D7F5FE /* ShareViewModel.swift in Sources */,
 				FAAAD97524977B7A00D7F5FE /* ShareCoordinator.swift in Sources */,
 				FAAAD97624977B7A00D7F5FE /* ContactRemoveConfirmationViewController.swift in Sources */,
+				FAA7CAAB253734B5006F6F24 /* LayoutAttributesAnimator.swift in Sources */,
 				FAAAD97724977B7A00D7F5FE /* ContactRemoveConfirmationViewModel.swift in Sources */,
 				FAAAD97824977B7A00D7F5FE /* ContactRemoveConfirmationCoordinator.swift in Sources */,
+				FAA7CA9F253734B5006F6F24 /* IGStoryPreviewHeaderView.swift in Sources */,
+				FAA7CAD3253734B6006F6F24 /* IGMockLoader.swift in Sources */,
 				FAAAD97924977B7A00D7F5FE /* WalletRemoveConfirmationViewController.swift in Sources */,
 				FAAAD97A24977B7A00D7F5FE /* WalletRemoveConfirmationViewModel.swift in Sources */,
 				FAAAD97B24977B7A00D7F5FE /* WalletRemoveConfirmationCoordinator.swift in Sources */,
 				FAAAD97C24977B7A00D7F5FE /* ConvertPopupViewController.swift in Sources */,
 				FAAAD97D24977B7A00D7F5FE /* ConvertPopupViewModel.swift in Sources */,
 				FAAAD97E24977B7A00D7F5FE /* ConvertPopupCoordinator.swift in Sources */,
+				FAA7CAB7253734B5006F6F24 /* IGStory.swift in Sources */,
 				FAAAD97F24977B7A00D7F5FE /* ConvertSucceedPopupViewController.swift in Sources */,
 				FAAAD98024977B7A00D7F5FE /* ConvertSucceedPopupViewModel.swift in Sources */,
 				FAAAD98124977B7A00D7F5FE /* ConvertSucceedPopupCoordinator.swift in Sources */,
@@ -3117,6 +3450,7 @@
 				FAAAD98424977B7A00D7F5FE /* SendSucceedPopupCoordinator.swift in Sources */,
 				FAAAD98524977B7A00D7F5FE /* ValidatorsViewController.swift in Sources */,
 				FAAAD98624977B7A00D7F5FE /* ValidatorsViewModel.swift in Sources */,
+				FAA7CAAF253734B5006F6F24 /* IGCommon.swift in Sources */,
 				FAAAD98724977B7A00D7F5FE /* ValidatorsCoordinator.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

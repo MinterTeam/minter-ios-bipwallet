@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="16097.2" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17156" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16087"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17125"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
+        <capability name="collection view cell content view" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <customFonts key="customFonts">
@@ -29,7 +31,7 @@
                                         <color key="backgroundColor" red="0.1843137255" green="0.1137254902" blue="0.41176470590000003" alpha="1" colorSpace="deviceRGB"/>
                                     </view>
                                     <view multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Jcw-bC-189">
-                                        <rect key="frame" x="0.0" y="0.0" width="414" height="164"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="414" height="111"/>
                                         <subviews>
                                             <label opaque="NO" multipleTouchEnabled="YES" alpha="0.69999999999999996" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Available Balance" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LZU-RC-aW4" customClass="UHBCustomLabel" customModule="BIPWallet" customModuleProvider="target">
                                                 <rect key="frame" x="48" y="16" width="350" height="0.0"/>
@@ -71,8 +73,8 @@
                                                     </userDefinedRuntimeAttribute>
                                                 </userDefinedRuntimeAttributes>
                                             </label>
-                                            <label opaque="NO" multipleTouchEnabled="YES" alpha="0.69999999999999996" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Delegated Balance" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ecJ-97-sxu" customClass="UHBCustomLabel" customModule="BIPWallet" customModuleProvider="target">
-                                                <rect key="frame" x="48" y="101" width="366" height="16"/>
+                                            <label opaque="NO" multipleTouchEnabled="YES" alpha="0.69999999999999996" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Delegated Balance" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ecJ-97-sxu" customClass="UHBCustomLabel" customModule="BIPWallet" customModuleProvider="target">
+                                                <rect key="frame" x="48" y="48" width="366" height="0.0"/>
                                                 <fontDescription key="fontDescription" name="Inter_Semi-Bold" family="Inter" pointSize="13"/>
                                                 <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <nil key="highlightedColor"/>
@@ -82,8 +84,8 @@
                                                     </userDefinedRuntimeAttribute>
                                                 </userDefinedRuntimeAttributes>
                                             </label>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="0.0000 BIP" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0vM-Ic-kBX" customClass="UHBCustomLabel" customModule="BIPWallet" customModuleProvider="target">
-                                                <rect key="frame" x="48" y="120" width="366" height="19"/>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0.0000 BIP" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0vM-Ic-kBX" customClass="UHBCustomLabel" customModule="BIPWallet" customModuleProvider="target">
+                                                <rect key="frame" x="48" y="51" width="366" height="0.0"/>
                                                 <fontDescription key="fontDescription" name="Inter_Semi-Bold" family="Inter" pointSize="16"/>
                                                 <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <nil key="highlightedColor"/>
@@ -94,15 +96,42 @@
                                                 </userDefinedRuntimeAttributes>
                                             </label>
                                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" image="BalanceDelegatedDisclosureImage" translatesAutoresizingMaskIntoConstraints="NO" id="1hC-UY-7sX">
-                                                <rect key="frame" x="379" y="108" width="24" height="24"/>
+                                                <rect key="frame" x="379" y="55" width="24" height="24"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" constant="24" id="zb6-Xi-gjT"/>
                                                     <constraint firstAttribute="height" constant="24" id="zz8-5M-i9v"/>
                                                 </constraints>
                                             </imageView>
-                                            <button hidden="YES" opaque="NO" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ZpQ-ES-i6q">
-                                                <rect key="frame" x="0.0" y="101" width="414" height="38"/>
+                                            <button hidden="YES" opaque="NO" multipleTouchEnabled="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ZpQ-ES-i6q">
+                                                <rect key="frame" x="0.0" y="48" width="414" height="30"/>
                                             </button>
+                                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="npT-dZ-8C5">
+                                                <rect key="frame" x="0.0" y="158" width="414" height="6"/>
+                                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="96" id="khE-dk-4it"/>
+                                                </constraints>
+                                                <collectionViewFlowLayout key="collectionViewLayout" automaticEstimatedItemSize="YES" minimumLineSpacing="10" minimumInteritemSpacing="10" id="dnk-c7-PxO">
+                                                    <size key="itemSize" width="96" height="96"/>
+                                                    <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                                                    <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                                                    <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                                </collectionViewFlowLayout>
+                                                <cells>
+                                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="IGStoryPreviewCell" id="AtY-Mi-HIW" customClass="IGStoryPreviewCell" customModule="BIPWallet" customModuleProvider="target">
+                                                        <rect key="frame" x="0.0" y="0.0" width="96" height="96"/>
+                                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                        <collectionViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="dye-YK-FDp">
+                                                            <rect key="frame" x="0.0" y="0.0" width="96" height="96"/>
+                                                            <autoresizingMask key="autoresizingMask"/>
+                                                        </collectionViewCellContentView>
+                                                    </collectionViewCell>
+                                                </cells>
+                                                <connections>
+                                                    <outlet property="dataSource" destination="b1B-CA-8a6" id="uOs-UD-N3K"/>
+                                                    <outlet property="delegate" destination="b1B-CA-8a6" id="m87-dI-xm8"/>
+                                                </connections>
+                                            </collectionView>
                                         </subviews>
                                         <color key="backgroundColor" red="0.18431372549019609" green="0.11372549019607843" blue="0.41176470588235292" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <constraints>
@@ -110,23 +139,27 @@
                                             <constraint firstAttribute="trailing" secondItem="1jl-Ro-hiQ" secondAttribute="trailing" constant="16" id="CMN-Ej-Ytq"/>
                                             <constraint firstAttribute="bottom" secondItem="1hC-UY-7sX" secondAttribute="bottom" constant="32" id="DkF-NQ-T6P"/>
                                             <constraint firstItem="ZpQ-ES-i6q" firstAttribute="top" secondItem="ecJ-97-sxu" secondAttribute="top" id="KpG-DL-Gv2"/>
+                                            <constraint firstAttribute="bottom" secondItem="npT-dZ-8C5" secondAttribute="bottom" constant="24" id="L2p-Np-Pm0"/>
                                             <constraint firstItem="LZU-RC-aW4" firstAttribute="top" secondItem="Jcw-bC-189" secondAttribute="top" constant="16" id="NNM-dd-MLa"/>
                                             <constraint firstAttribute="trailing" secondItem="ecJ-97-sxu" secondAttribute="trailing" id="QSh-gR-C4T"/>
                                             <constraint firstItem="LZU-RC-aW4" firstAttribute="leading" secondItem="Jcw-bC-189" secondAttribute="leading" constant="48" id="TM5-HU-Yxk"/>
                                             <constraint firstItem="ZpQ-ES-i6q" firstAttribute="bottom" secondItem="0vM-Ic-kBX" secondAttribute="bottom" id="TwF-9h-2kf"/>
                                             <constraint firstItem="ecJ-97-sxu" firstAttribute="leading" secondItem="LZU-RC-aW4" secondAttribute="leading" id="XYh-UO-3DA"/>
                                             <constraint firstAttribute="trailing" secondItem="1hC-UY-7sX" secondAttribute="trailing" constant="11" id="YhT-Vb-ofh"/>
+                                            <constraint firstItem="npT-dZ-8C5" firstAttribute="top" secondItem="ZpQ-ES-i6q" secondAttribute="bottom" constant="25" id="Zuf-6o-dEM"/>
+                                            <constraint firstItem="npT-dZ-8C5" firstAttribute="top" secondItem="0vM-Ic-kBX" secondAttribute="bottom" constant="107" id="ZwI-om-cRW"/>
                                             <constraint firstAttribute="trailing" secondItem="ZpQ-ES-i6q" secondAttribute="trailing" id="duF-IH-N0J"/>
                                             <constraint firstItem="hRj-4M-g3L" firstAttribute="leading" secondItem="1jl-Ro-hiQ" secondAttribute="leading" id="gFP-De-CGP"/>
                                             <constraint firstAttribute="trailing" secondItem="0vM-Ic-kBX" secondAttribute="trailing" id="i4R-Mr-6PC"/>
+                                            <constraint firstItem="npT-dZ-8C5" firstAttribute="leading" secondItem="Jcw-bC-189" secondAttribute="leading" id="ig1-Z5-HiL"/>
                                             <constraint firstItem="0vM-Ic-kBX" firstAttribute="top" secondItem="ecJ-97-sxu" secondAttribute="bottom" constant="3" id="jPT-pS-RcI"/>
                                             <constraint firstItem="ZpQ-ES-i6q" firstAttribute="leading" secondItem="Jcw-bC-189" secondAttribute="leading" id="m9v-M4-q2F"/>
                                             <constraint firstItem="0vM-Ic-kBX" firstAttribute="leading" secondItem="ecJ-97-sxu" secondAttribute="leading" id="nEl-hK-LCe"/>
                                             <constraint firstItem="ecJ-97-sxu" firstAttribute="top" secondItem="hRj-4M-g3L" secondAttribute="bottom" constant="24" id="neL-ga-peC"/>
-                                            <constraint firstAttribute="bottom" secondItem="0vM-Ic-kBX" secondAttribute="bottom" constant="25" id="o6a-aE-XkE"/>
                                             <constraint firstItem="1jl-Ro-hiQ" firstAttribute="top" secondItem="LZU-RC-aW4" secondAttribute="bottom" constant="6" id="pNj-Tu-P3O"/>
                                             <constraint firstItem="1jl-Ro-hiQ" firstAttribute="leading" secondItem="LZU-RC-aW4" secondAttribute="leading" id="qnL-G7-HmV"/>
                                             <constraint firstItem="hRj-4M-g3L" firstAttribute="top" secondItem="1jl-Ro-hiQ" secondAttribute="bottom" constant="2" id="uLz-BC-e6K"/>
+                                            <constraint firstAttribute="trailing" secondItem="npT-dZ-8C5" secondAttribute="trailing" id="wlt-6l-0FL"/>
                                         </constraints>
                                     </view>
                                     <view multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ZBL-0Z-dM2">
@@ -184,6 +217,7 @@
                                 <viewLayoutGuide key="frameLayoutGuide" id="ltf-Lo-4ec"/>
                             </scrollView>
                         </subviews>
+                        <viewLayoutGuide key="safeArea" id="gS7-dX-vnJ"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="NlE-9E-UKy" firstAttribute="leading" secondItem="gS7-dX-vnJ" secondAttribute="leading" id="8v1-WR-VOB"/>
@@ -196,7 +230,6 @@
                             <constraint firstItem="uTW-SA-zQg" firstAttribute="bottom" secondItem="gS7-dX-vnJ" secondAttribute="bottom" placeholder="YES" id="oTl-Yn-BnJ"/>
                             <constraint firstItem="NlE-9E-UKy" firstAttribute="bottom" secondItem="gS7-dX-vnJ" secondAttribute="bottom" id="rrg-wP-AYu"/>
                         </constraints>
-                        <viewLayoutGuide key="safeArea" id="gS7-dX-vnJ"/>
                     </view>
                     <extendedEdge key="edgesForExtendedLayout" bottom="YES"/>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" translucent="NO" prompted="NO"/>
@@ -221,5 +254,8 @@
     </scenes>
     <resources>
         <image name="BalanceDelegatedDisclosureImage" width="8" height="12"/>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
     </resources>
 </document>
