@@ -268,3 +268,52 @@ class BalanceViewController: SegmentedPagerTabStripViewController, Controller, S
   }
 
 }
+
+extension BalanceViewController: UICollectionViewDelegate, UICollectionViewDataSource {
+
+  func numberOfSections(in collectionView: UICollectionView) -> Int {
+    return 1
+  }
+
+  func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+    return 1
+  }
+
+  func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+    let item = collectionView.dequeueReusableCell(withReuseIdentifier: "IGStoryPreviewCell", for: indexPath)
+    item.backgroundColor = .red
+    return item
+  }
+
+  func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+    let storyDict: [String: Any] = [
+      "data": ["id":3,
+        "title":"Test2",
+        "icon":"https://image.minter.network/minter-stories/icon/3",
+        "weight":1,
+        "is_active":true,
+        "created_at":"2020-09-28T10:44:06.075043Z",
+        "slides": [
+          ["id":1,"story_id":1,"weight":0,"title":"test","file":"https://image.minter.network/minter-stories/2/slide/1","link":"https://minter.network","created_at":"2020-09-28T10:46:30.969621Z"],
+          ["id":2,"story_id":2,"weight":0,"title":"test","file":"https://image.minter.network/minter-stories/2/slide/1","link":"https://minter.network","created_at":"2020-09-28T10:46:30.969621Z"]
+        ]
+      ]
+    ]
+    let story = IGStory(id: "1", icon: "https://image.minter.network/minter-stories/icon/3", slides: [
+      IGSnap(id: "1", storyId: 1, title: "trololo", file: "https://image.minter.network/minter-stories/2/slide/1", url: "https://image.minter.network/minter-stories/2/slide/1"),
+      IGSnap(id: "2", storyId: 1, title: "trololo", file: "https://image.minter.network/minter-stories/2/slide/1", url: "https://user-images.githubusercontent.com/16580898/31142698-bc93677e-a883-11e7-97ff-7a298665a406.png"),
+      IGSnap(id: "3", storyId: 1, title: "trololo", file: "https://image.minter.network/minter-stories/2/slide/1", url: "https://image.minter.network/minter-stories/2/slide/1")
+    ])
+    let story2 = IGStory(id: "2", icon: "https://image.minter.network/minter-stories/icon/3", slides: [
+      IGSnap(id: "1", storyId: 1, title: "trololo", file: "https://image.minter.network/minter-stories/2/slide/1", url: "https://user-images.githubusercontent.com/16580898/31142698-bc93677e-a883-11e7-97ff-7a298665a406.png")
+    ])
+
+    let stories = [story, story2]
+
+//    let stories = (try? IGMockLoader.loadAPIResponse(response: storyDict))?.otherStories ?? []
+    let storyPreviewScene = IGStoryPreviewController(layout: .cubic, stories: stories, handPickedStoryIndex: 0, handPickedSnapIndex: 0)
+    storyPreviewScene.modalPresentationStyle = .fullScreen
+    self.present(storyPreviewScene, animated: true, completion: nil)
+  }
+
+}
