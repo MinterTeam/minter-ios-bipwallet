@@ -170,7 +170,7 @@ class SendViewModel: BaseViewModel, ViewModel, WalletSelectableViewModel {// swi
   private var lastSentTransactionHash: String?
   private var selectedCoin = Variable<String?>(nil)
   private let accountManager = AccountManager()
-  private let infoManager = InfoManager(httpClient: APIClient())
+  private let infoManager = InfoManager(httpClient: APIClient(headers: ["X-Minter-Chain-Id": "chilinet"]))
   private let payloadSubject = BehaviorSubject<String?>(value: "")
   private let clearPayloadSubject = BehaviorSubject<String?>(value: "")
   private let errorNotificationSubject = PublishSubject<NotifiableError?>()

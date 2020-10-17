@@ -14,7 +14,7 @@ class ExplorerGateService: GateService {
 
   private let disposeBag = DisposeBag()
 
-  private let gateManager = GateManager(httpClient: APIClient())
+  private let gateManager = GateManager(httpClient: APIClient(headers: ["X-Minter-Chain-Id": "chilinet"]))
 
   private let gasSubject = ReplaySubject<Int>.create(bufferSize: 1)
 

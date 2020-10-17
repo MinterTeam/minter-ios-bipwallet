@@ -59,7 +59,7 @@ class GateManager: BaseManager {
 
 	// MARK: -
 
-	static let shared = GateManager(httpClient: APIClient())
+  static let shared = GateManager(httpClient: APIClient(headers: ["X-Minter-Chain-Id": "chilinet"]))
 
   private(set) var lastGas = MinterCore.RawTransactionDefaultGasPrice
 

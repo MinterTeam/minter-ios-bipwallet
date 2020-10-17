@@ -17,7 +17,7 @@ class ExplorerValidatorService: ValidatorService {
 
   private var validatorsSubject = ReplaySubject<[ValidatorItem]>.create(bufferSize: 1)
 
-  private lazy var manager = MinterExplorer.ValidatorManager(httpClient: APIClient.shared)
+  private lazy var manager = MinterExplorer.ValidatorManager(httpClient: APIClient(headers: ["X-Minter-Chain-Id": "chilinet"]))
 
   func validators() -> Observable<[ValidatorItem]> {
     return validatorsSubject.asObservable()

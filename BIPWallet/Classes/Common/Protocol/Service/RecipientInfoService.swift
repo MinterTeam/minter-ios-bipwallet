@@ -46,7 +46,7 @@ class ExplorerRecipientInfoService: RecipientInfoService {
   private let didChangeInfoSubject = PublishSubject<Void>()
 
   let contactsService: ContactsService
-  let validatorManager = MinterExplorer.ValidatorManager(httpClient: APIClient())
+  let validatorManager = MinterExplorer.ValidatorManager(httpClient: APIClient(headers: ["X-Minter-Chain-Id": "chilinet"]))
 
   var infoTitleItems = [String: String]()
   var infoAvatarItems = [String: URL]()

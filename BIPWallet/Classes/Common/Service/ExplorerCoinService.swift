@@ -17,7 +17,7 @@ class ExplorerCoinService: CoinService {
     loadCoins()
   }
 
-  private let manager = ExplorerCoinManager(httpClient: APIClient())
+  private let manager = ExplorerCoinManager(httpClient: APIClient(headers: ["X-Minter-Chain-Id": "chilinet"]))
 
   private var allCoins = [Coin]()
 
