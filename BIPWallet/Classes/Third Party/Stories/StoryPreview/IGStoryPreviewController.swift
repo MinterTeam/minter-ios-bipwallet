@@ -258,6 +258,7 @@ extension IGStoryPreviewController: UICollectionViewDelegate {
     }
     //Prepare the setup for first time story launch
     delegate?.didShowSnap(withId: cell.story?.internalIdentifier)
+
     if story_copy == nil {
       cell.willDisplayCellForZerothIndex(with: cell.story?.lastPlayedSnapIndex ?? 0, handpickedSnapIndex: handPickedSnapIndex)
       return

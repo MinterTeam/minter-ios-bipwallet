@@ -35,9 +35,12 @@ enum MinterStoriesServiceAPIURL {
 class MinterStoriesService: StoriesService {
 
   private let httpClient: HTTPClient
+  private let storage = UserDefaults(suiteName: "stories")
+  private let secureStorage: Storage
 
-  init(httpClient: HTTPClient = APIClient()) {
+  init(httpClient: HTTPClient = APIClient(), secureStorage: Storage = SecureStorage(namespace: "stories")) {
     self.httpClient = httpClient
+    self.secureStorage = secureStorage
   }
 
   private let storiesSubject = ReplaySubject<[IGStory]>.create(bufferSize: 1)
@@ -56,14 +59,26 @@ class MinterStoriesService: StoriesService {
 
   func storyShowed(id: Int) {
     //Send request..
+    let url = MinterStoriesServiceAPIURL.storyShowed.url
 
-    
-    UserDefaults(suiteName: "stories")?.set(true, forKey: "\(id)")
-    UserDefaults(suiteName: "stories")?.synchronize()
+    self.httpClient.getRequest(url, parameters: ["uid": self.storyUID(), "sid": id]) { (response, error) in
+
+    }
+    storage?.set(true, forKey: "\(id)")
+    storage?.synchronize()
   }
 
   func hasSeen(storyId: Int) -> Bool {
     return UserDefaults(suiteName: "stories")?.bool(forKey: "\(storyId)") ?? false
+  }
+
+  private func storyUID() -> String {
+    if let uid = secureStorage.string(forKey: "uid") as? String {
+      return uid
+    }
+    let uid = UUID().uuidString
+    secureStorage.set(uid, forKey: "uid")
+    return uid
   }
 
   // MARK: -

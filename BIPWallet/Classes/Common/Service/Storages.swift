@@ -52,6 +52,11 @@ class LocalStorage<T>: Storage {
     storage.set(bool, forKey: key)
     storage.synchronize()
   }
+  
+  func set(_ string: String, forKey key: String) {
+    storage.set(string, forKey: key)
+    storage.synchronize()
+  }
 
   func allKeys() -> [String]? {
     return nil
@@ -62,6 +67,10 @@ class LocalStorage<T>: Storage {
       return NSKeyedUnarchiver.unarchiveObject(with: obj)
     }
     return nil
+  }
+
+  func string(forKey key: String) -> String? {
+    self.storage.object(forKey: key) as? String
   }
 
   func bool(forKey key: String) -> Bool? {
@@ -108,6 +117,10 @@ class SecureStorage: Storage {
     storage.set(archive, forKey: key)
   }
 
+  func set(_ string: String, forKey key: String) {
+    storage.set(string, forKey: key)
+  }
+
   // MARK: - Getters
 
   func allKeys() -> [String]? {
@@ -124,6 +137,10 @@ class SecureStorage: Storage {
 
   func bool(forKey key: String) -> Bool? {
     return storage.getBool(key)
+  }
+
+  func string(forKey key: String) -> String? {
+    return storage.get(key)
   }
 
   // MARK: - Remove
