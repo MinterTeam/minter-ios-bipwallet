@@ -74,7 +74,8 @@ class WalletCoordinator: BaseCoordinator<Void> {
                                                 recipientInfoService: recipientInfoService,
                                                 transactionService: transactionService,
                                                 validatorService: validatorService,
-                                                coinService: coinService
+                                                coinService: coinService,
+                                                storiesService: MinterStoriesService()
                                                 )
     coordinate(to: balanceCoordiantor).subscribe().disposed(by: disposeBag)
 

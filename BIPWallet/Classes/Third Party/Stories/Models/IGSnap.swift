@@ -16,16 +16,16 @@ public enum MimeType: String {
 //{"id":1,"story_id":1,"weight":0,"title":"test","file":"https://image.minter.network/minter-stories/2/slide/1","link":"https://minter.network","created_at":"2020-09-28T10:46:30.969621Z","updated_at":null,"deleted_at":null}
 
 public class IGSnap: Codable {
-  public let storyId: Int
-  public let weight: Int = 1
-  public let title: String
-  public let file: String
-  public let internalIdentifier: String
-  public let mimeType: String
-  public let lastUpdated: String
-  public let url: String
+  public var storyId: Int?
+  public var weight: Int = 1
+  public var title: String
+  public var file: String
+  public var internalIdentifier: Int
+  public var mimeType: String = MimeType.image.rawValue
+  public var lastUpdated: String? = ""
+  public var url: String
 
-  init(id: String, storyId: Int, title: String, file: String, url: String) {
+  init(id: Int, storyId: Int, title: String, file: String, url: String) {
     self.internalIdentifier = id
     self.storyId = storyId
     self.title = title
@@ -38,10 +38,10 @@ public class IGSnap: Codable {
   // Store the deleted snaps id in NSUserDefaults, so that when app get relaunch deleted snaps will not display.
   public var isDeleted: Bool {
     set {
-      UserDefaults.standard.set(newValue, forKey: internalIdentifier)
+      UserDefaults.standard.set(newValue, forKey: "\(internalIdentifier)")
     }
     get {
-      return UserDefaults.standard.value(forKey: internalIdentifier) != nil
+      return UserDefaults.standard.value(forKey: "\(internalIdentifier)") != nil
     }
   }
 
@@ -59,9 +59,9 @@ public class IGSnap: Codable {
   enum CodingKeys: String, CodingKey {
     case internalIdentifier = "id"
     case storyId = "story_id"
-    case mimeType = "mime_type"
+//    case mimeType = "mime_type"
     case lastUpdated = "last_updated"
-    case url = "url"
+    case url = "link"
     case file
     case weight
     case title

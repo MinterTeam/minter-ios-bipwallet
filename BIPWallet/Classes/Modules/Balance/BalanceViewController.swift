@@ -10,6 +10,7 @@ import UIKit
 import RxSwift
 import XLPagerTabStrip
 import SnapKit
+import RxDataSources
 
 class BalanceViewController: SegmentedPagerTabStripViewController, Controller, StoryboardInitializable {
 
@@ -27,6 +28,9 @@ class BalanceViewController: SegmentedPagerTabStripViewController, Controller, S
 
   // MARK: - IBOutlet
 
+  @IBOutlet weak var collectionViewHeightConstraint: NSLayoutConstraint!
+  @IBOutlet weak var collectionViewBottomConstraint: NSLayoutConstraint!
+  @IBOutlet weak var collectionView: UICollectionView!
   @IBOutlet weak var scrollView: UIScrollView!
   @IBOutlet weak var balanceView: UIView!
   @IBOutlet weak var balanceTitle: UILabel!
@@ -101,6 +105,8 @@ class BalanceViewController: SegmentedPagerTabStripViewController, Controller, S
       .drive(viewModel.input.didTapDelegatedBalance)
       .disposed(by: disposeBag)
 
+    collectionView.rx.itemSelected.subscribe(viewModel.input.didTapStory).disposed(by: disposeBag)
+
     shareItem.rx.tap.asDriver().drive(viewModel.input.didTapShare).disposed(by: disposeBag)
     scanQRItem.rx.tap.asDriver().drive(viewModel.input.didTapScanQR).disposed(by: disposeBag)
 
@@ -158,6 +164,16 @@ class BalanceViewController: SegmentedPagerTabStripViewController, Controller, S
     viewModel.output.openAppSettings.asDriver(onErrorJustReturn: ()).drive(onNext: { [weak self] (_) in
       self?.openAppSpecificSettings()
     }).disposed(by: disposeBag)
+
+    viewModel.output.stories.do(onNext: { [unowned self] (items) in
+      if items.count > 0 {
+        self.showStories()
+      } else {
+        self.hideStories()
+      }
+    })
+    .bind(to: collectionView.rx.items(dataSource: rxDataSource!))
+    .disposed(by: disposeBag)
   }
 
   func configureDefault() {
@@ -191,6 +207,8 @@ class BalanceViewController: SegmentedPagerTabStripViewController, Controller, S
     }).disposed(by: disposeBag)
   }
 
+  var rxDataSource: RxCollectionViewSectionedAnimatedDataSource<BaseTableSectionItem>?
+
   // MARK: - ViewController
 
   let shareItem = UIBarButtonItem(image: UIImage(named: "ShareIcon"), style: .plain, target: nil, action: nil)
@@ -200,6 +218,8 @@ class BalanceViewController: SegmentedPagerTabStripViewController, Controller, S
 
   override func viewDidLoad() {
     super.viewDidLoad()
+
+    hideStories()
 
     refreshControl = UIRefreshControl()
     refreshControl?.translatesAutoresizingMaskIntoConstraints = false
@@ -225,6 +245,23 @@ class BalanceViewController: SegmentedPagerTabStripViewController, Controller, S
       guard let `self` = self else { return }
       self.present(self.readerVC, animated: true, completion: nil)
     }).disposed(by: disposeBag)
+
+    collectionView.register(UINib(nibName: "StoryCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "StoryCollectionViewCell")
+
+    rxDataSource = RxCollectionViewSectionedAnimatedDataSource<BaseTableSectionItem>(
+      configureCell: { dataSource, tableView, indexPath, sm in
+
+        guard let item = try? dataSource.model(at: indexPath) as? BaseCellItem,
+              let cell = self.collectionView.dequeueReusableCell(withReuseIdentifier: item.reuseIdentifier, for: indexPath) as? Configurable & UICollectionViewCell else {
+          return UICollectionViewCell()
+        }
+        cell.configure(item: item)
+        return cell
+    })
+
+    rxDataSource?.animationConfiguration = AnimationConfiguration(insertAnimation: .top,
+                                                                  reloadAnimation: .none,
+                                                                  deleteAnimation: .automatic)
 
     configure(with: viewModel)
 
@@ -266,54 +303,25 @@ class BalanceViewController: SegmentedPagerTabStripViewController, Controller, S
       scrollViewHeightConstraint.constant = maxHeight
     }
   }
-
 }
 
-extension BalanceViewController: UICollectionViewDelegate, UICollectionViewDataSource {
+extension BalanceViewController: UICollectionViewDelegateFlowLayout {
 
-  func numberOfSections(in collectionView: UICollectionView) -> Int {
-    return 1
+  func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+    return .init(width: 96, height: 96)
   }
 
-  func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-    return 1
+  func showStories() {
+    collectionViewBottomConstraint.constant = 24
+    collectionViewHeightConstraint.constant = 96
+    UIView.animate(withDuration: 0.5) {
+      self.view.layoutIfNeeded()
+    }
   }
 
-  func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-    let item = collectionView.dequeueReusableCell(withReuseIdentifier: "IGStoryPreviewCell", for: indexPath)
-    item.backgroundColor = .red
-    return item
-  }
-
-  func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-    let storyDict: [String: Any] = [
-      "data": ["id":3,
-        "title":"Test2",
-        "icon":"https://image.minter.network/minter-stories/icon/3",
-        "weight":1,
-        "is_active":true,
-        "created_at":"2020-09-28T10:44:06.075043Z",
-        "slides": [
-          ["id":1,"story_id":1,"weight":0,"title":"test","file":"https://image.minter.network/minter-stories/2/slide/1","link":"https://minter.network","created_at":"2020-09-28T10:46:30.969621Z"],
-          ["id":2,"story_id":2,"weight":0,"title":"test","file":"https://image.minter.network/minter-stories/2/slide/1","link":"https://minter.network","created_at":"2020-09-28T10:46:30.969621Z"]
-        ]
-      ]
-    ]
-    let story = IGStory(id: "1", icon: "https://image.minter.network/minter-stories/icon/3", slides: [
-      IGSnap(id: "1", storyId: 1, title: "trololo", file: "https://image.minter.network/minter-stories/2/slide/1", url: "https://image.minter.network/minter-stories/2/slide/1"),
-      IGSnap(id: "2", storyId: 1, title: "trololo", file: "https://image.minter.network/minter-stories/2/slide/1", url: "https://user-images.githubusercontent.com/16580898/31142698-bc93677e-a883-11e7-97ff-7a298665a406.png"),
-      IGSnap(id: "3", storyId: 1, title: "trololo", file: "https://image.minter.network/minter-stories/2/slide/1", url: "https://image.minter.network/minter-stories/2/slide/1")
-    ])
-    let story2 = IGStory(id: "2", icon: "https://image.minter.network/minter-stories/icon/3", slides: [
-      IGSnap(id: "1", storyId: 1, title: "trololo", file: "https://image.minter.network/minter-stories/2/slide/1", url: "https://user-images.githubusercontent.com/16580898/31142698-bc93677e-a883-11e7-97ff-7a298665a406.png")
-    ])
-
-    let stories = [story, story2]
-
-//    let stories = (try? IGMockLoader.loadAPIResponse(response: storyDict))?.otherStories ?? []
-    let storyPreviewScene = IGStoryPreviewController(layout: .cubic, stories: stories, handPickedStoryIndex: 0, handPickedSnapIndex: 0)
-    storyPreviewScene.modalPresentationStyle = .fullScreen
-    self.present(storyPreviewScene, animated: true, completion: nil)
+  func hideStories() {
+    collectionViewBottomConstraint.constant = 0
+    collectionViewHeightConstraint.constant = 0
   }
 
 }

@@ -38,10 +38,13 @@ class BalanceViewModel: BaseViewModel, ViewModel, WalletSelectableViewModel {
   private let didTapShare = PublishSubject<Void>()
   private let didScanQR = PublishSubject<String?>()
   private let didTapScanQR = PublishSubject<Void>()
+  let didTapStory = PublishSubject<IndexPath>()
   private let openAppSettingsSubject = PublishSubject<Void>()
   private let balanceTitle = PublishSubject<String?>()
   let didRefresh = PublishSubject<Void>()
   lazy var balanceTitleObservable = Observable.of(Observable<Int>.timer(0, period: 0.5, scheduler: MainScheduler.instance).map {_ in}, self.changedBalanceTypeSubject.map {_ in}).merge()
+  let storiesSubject = ReplaySubject<[BaseTableSectionItem]>.create(bufferSize: 1)
+  let forceUpdateStories = PublishSubject<Void>()
 
   // MARK: - ViewModel
 
@@ -58,6 +61,7 @@ class BalanceViewModel: BaseViewModel, ViewModel, WalletSelectableViewModel {
     var didScanQR: AnyObserver<String?>
     var didTapScanQR: AnyObserver<Void>
     var didRefresh: AnyObserver<Void>
+    var didTapStory: AnyObserver<IndexPath>
   }
 
   struct Output {
@@ -70,12 +74,15 @@ class BalanceViewModel: BaseViewModel, ViewModel, WalletSelectableViewModel {
     var didTapShare: Observable<Void>
     var didScanQR: Observable<String?>
     var openAppSettings: Observable<Void>
+    var stories: Observable<[BaseTableSectionItem]>
   }
 
   struct Dependency {
     var balanceService: BalanceService
     var appSettingsSerivce: AppSettings
     var coinService: CoinService
+    var storiesService: StoriesService
+    var appSettings: AppSettings
   }
 
   init(dependency: Dependency) {
@@ -90,7 +97,8 @@ class BalanceViewModel: BaseViewModel, ViewModel, WalletSelectableViewModel {
                        didTapShare: didTapShare.asObserver(),
                        didScanQR: didScanQR.asObserver(),
                        didTapScanQR: didTapScanQR.asObserver(),
-                       didRefresh: didRefresh.asObserver()
+                       didRefresh: didRefresh.asObserver(),
+                       didTapStory: didTapStory.asObserver()
     )
 
     self.output = Output(availabaleBalance: availableBalance.asObservable(),
@@ -101,7 +109,8 @@ class BalanceViewModel: BaseViewModel, ViewModel, WalletSelectableViewModel {
                          balanceTitle: balanceTitle.asObservable(),
                          didTapShare: didTapShare.asObservable(),
                          didScanQR: didScanQR.asObservable(),
-                         openAppSettings: openAppSettingsSubject.asObservable()
+                         openAppSettings: openAppSettingsSubject.asObservable(),
+                         stories: storiesSubject
     )
 
     bind()
@@ -131,7 +140,7 @@ class BalanceViewModel: BaseViewModel, ViewModel, WalletSelectableViewModel {
       let val = self.balanceHeaderItem(balanceType: .balanceBIP, balance: 0.0, isUSD: type == .totalBalanceUSD)
       self.availableBalance.onNext(val.text ?? NSAttributedString())
     }).disposed(by: disposeBag)
-    
+
     //Showing delegated balance
     dependency.balanceService.delegatedBalance().subscribe(onNext: { (val) in
       let balance = val.2 ?? 0
@@ -203,6 +212,36 @@ class BalanceViewModel: BaseViewModel, ViewModel, WalletSelectableViewModel {
         }
         self.showErrorMessage.onNext("Invalid transaction data".localized())
       }).disposed(by: disposeBag)
+
+    Observable.of(dependency.storiesService.stories().map {_ in}, forceUpdateStories, self.dependency.appSettings.showStoriesObservable.map {_ in}).merge()
+      .filter { self.dependency.appSettings.showStories }
+      .withLatestFrom(dependency.storiesService.stories())
+      .map({ (strs) -> [BaseTableSectionItem] in
+        var section = BaseTableSectionItem(identifier: "Stories")
+        section.items = strs.sorted(by: { (story1, story2) -> Bool in
+          let story1Seen = !self.dependency.storiesService.hasSeen(storyId: story1.internalIdentifier)
+          let story2Seen = !self.dependency.storiesService.hasSeen(storyId: story2.internalIdentifier)
+          return story1Seen && !story2Seen
+        }).map({ (story) -> StoryCollectionViewCellItem in
+          let seenKey = String(self.dependency.storiesService.hasSeen(storyId: story.internalIdentifier))
+
+          let item = StoryCollectionViewCellItem(reuseIdentifier: "StoryCollectionViewCell",
+                                                 identifier: "StoryCollectionViewCell_\(story.internalIdentifier)_\(seenKey)")
+          item.backgroundImageURL = story.icon
+          item.isNew = !self.dependency.storiesService.hasSeen(storyId: story.internalIdentifier)
+          item.title = story.title
+          return item
+        })
+        return [section]
+    }).subscribe(storiesSubject).disposed(by: disposeBag)
+
+    self.dependency.appSettings.showStoriesObservable.filter { (showStories) -> Bool in
+      return !(showStories ?? true)
+    }.map({ _ -> [BaseTableSectionItem] in
+      return []
+    }).subscribe(storiesSubject).disposed(by: disposeBag)
+
+    dependency.storiesService.updateStories()
   }
 
   func balanceHeaderText(balanceType: BalanceType, balances: BalanceService.BalancesResponse) -> BalanceHeaderItem {

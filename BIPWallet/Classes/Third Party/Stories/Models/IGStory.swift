@@ -20,36 +20,38 @@ import Foundation
 
 public class IGStory: Codable {
 
-  init(id: String, icon: String, slides: [IGSnap]) {
+  init(id: Int, icon: String, slides: [IGSnap]) {
     self.internalIdentifier = id
     self.icon = icon
     self._snaps = slides
     self.lastUpdated = 1
   }
 
-    // Note: To retain lastPlayedSnapIndex value for each story making this type as class
+  // Note: To retain lastPlayedSnapIndex value for each story making this type as class
   public var snapsCount: Int {
     return snaps.count
   }
 
   // To hold the json snaps.
-  private var _snaps: [IGSnap]
+  private var _snaps: [IGSnap]? = []
 
   // To carry forwarding non-deleted snaps.
   public var snaps: [IGSnap] {
-    return _snaps.filter{!($0.isDeleted)}
+    return (_snaps ?? []).filter{!($0.isDeleted)}
   }
 
-  public var internalIdentifier: String
-  public var lastUpdated: Int
+  public var internalIdentifier: Int
+  public var lastUpdated: Int?
   public var weight: Int = 1
-  public var icon: String
+  public var icon: String = ""
   var lastPlayedSnapIndex = 0
   var isCompletelyVisible = false
   var isCancelledAbruptly = false
+  var title: String?
 
   enum CodingKeys: String, CodingKey {
     //case snapsCount = "snaps_count"
+    case title
     case _snaps = "slides"
     case weight
     case internalIdentifier = "id"
