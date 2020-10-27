@@ -23,6 +23,7 @@ class BalanceCoordinator: BaseCoordinator<Void> {
   let transactionService: TransactionService
   let validatorService: ValidatorService
   let coinService: CoinService
+  let storiesService: StoriesService
 
   init(navigationController: UINavigationController,
        balanceService: BalanceService,
@@ -30,7 +31,8 @@ class BalanceCoordinator: BaseCoordinator<Void> {
        recipientInfoService: RecipientInfoService,
        transactionService: TransactionService,
        validatorService: ValidatorService,
-       coinService: CoinService
+       coinService: CoinService,
+       storiesService: StoriesService
   ) {
 
     self.navigationController = navigationController
@@ -40,6 +42,7 @@ class BalanceCoordinator: BaseCoordinator<Void> {
     self.transactionService = transactionService
     self.validatorService = validatorService
     self.coinService = coinService
+    self.storiesService = storiesService
 
     super.init()
   }
@@ -48,7 +51,10 @@ class BalanceCoordinator: BaseCoordinator<Void> {
     let controller = BalanceViewController.initFromStoryboard(name: "Balance")
     let dependency = BalanceViewModel.Dependency(balanceService: balanceService,
                                                  appSettingsSerivce: LocalStorageAppSettings(),
-                                                 coinService: coinService)
+                                                 coinService: coinService,
+                                                 storiesService: storiesService,
+                                                 appSettings: LocalStorageAppSettings()
+                                                 )
     let viewModel = BalanceViewModel(dependency: dependency)
     controller.viewModel = viewModel
 
@@ -116,12 +122,35 @@ class BalanceCoordinator: BaseCoordinator<Void> {
       //Updating account emoji on getting newest balance data
       return self.authService.updateAccount(account: account)
     }).subscribe().disposed(by: disposeBag)
-    
+
     viewModel.didRefresh.withLatestFrom(self.balanceService.account).subscribe(onNext: { (account) in
       guard let address = account?.address, address.isValidAddress() else { return }
       self.balanceService.updateBalance()
       self.balanceService.updateDelegated()
       transactions.refresh()
+    }).disposed(by: disposeBag)
+
+    viewModel.didTapStory.withLatestFrom(storiesService.stories()) { ($0, $1) }.map({ (taped, stories) -> (Int, [IGStory]) in
+      return (taped.item, stories.sorted(by: { (story1, story2) -> Bool in
+        let story1Seen = !self.storiesService.hasSeen(storyId: story1.internalIdentifier)
+        let story2Seen = !self.storiesService.hasSeen(storyId: story2.internalIdentifier)
+        return story1Seen && !story2Seen
+      }).map({ (story) -> IGStory in
+        let newStory = story
+        newStory.lastPlayedSnapIndex = 0
+        return newStory
+      }))
+    }).subscribe(onNext: { [unowned self] (taped, stories) in
+      let storyPreviewScene = IGStoryPreviewController(layout: .cubic,
+                                                       stories: stories,
+                                                       handPickedStoryIndex: taped,
+                                                       handPickedSnapIndex: 0)
+      storyPreviewScene.modalPresentationStyle = .fullScreen
+      storyPreviewScene.delegate = self
+      storyPreviewScene.rx.viewWillDisappear.subscribe(onNext: { _ in
+        viewModel.forceUpdateStories.onNext(())
+      }).disposed(by: self.disposeBag)
+      self.navigationController.present(storyPreviewScene, animated: true, completion: nil)
     }).disposed(by: disposeBag)
 
     navigationController.setViewControllers([controller], animated: false)
@@ -271,6 +300,15 @@ extension BalanceCoordinator {
         }
       }).disposed(by: disposeBag)
 
+  }
+
+}
+
+extension BalanceCoordinator: IGStoryPreviewControllerDelegate {
+
+  func didShowSnap(withId: Int?) {
+    guard let id = withId else { return }
+    storiesService.storyShowed(id: id)
   }
 
 }

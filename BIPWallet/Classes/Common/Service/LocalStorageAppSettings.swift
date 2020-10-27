@@ -7,10 +7,12 @@
 //
 
 import Foundation
+import RxSwift
+import RxCocoa
 
 class LocalStorageAppSettings: AppSettings {
 
-  @LocalStorage("userId", defaultValue: true)
+  @LocalStorage("isSoundEnabled", defaultValue: true)
   var isSoundEnabled: Bool
 
   @LocalStorage("balanceType", defaultValue: "balanceBIP")
@@ -18,4 +20,9 @@ class LocalStorageAppSettings: AppSettings {
 
   @LocalStorage("showStories", defaultValue: true)
   var showStories: Bool
+
+  var showStoriesObservable: Observable<Bool?> {
+    return UserDefaults.standard.rx.observe(Bool.self, "showStories")
+  }
+
 }

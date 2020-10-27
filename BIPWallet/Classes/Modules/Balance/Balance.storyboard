@@ -3,10 +3,8 @@
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17125"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17126"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
-        <capability name="System colors in document resources" minToolsVersion="11.0"/>
-        <capability name="collection view cell content view" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <customFonts key="customFonts">
@@ -31,7 +29,7 @@
                                         <color key="backgroundColor" red="0.1843137255" green="0.1137254902" blue="0.41176470590000003" alpha="1" colorSpace="deviceRGB"/>
                                     </view>
                                     <view multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Jcw-bC-189">
-                                        <rect key="frame" x="0.0" y="0.0" width="414" height="111"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="414" height="128"/>
                                         <subviews>
                                             <label opaque="NO" multipleTouchEnabled="YES" alpha="0.69999999999999996" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Available Balance" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LZU-RC-aW4" customClass="UHBCustomLabel" customModule="BIPWallet" customModuleProvider="target">
                                                 <rect key="frame" x="48" y="16" width="350" height="0.0"/>
@@ -95,40 +93,31 @@
                                                     </userDefinedRuntimeAttribute>
                                                 </userDefinedRuntimeAttributes>
                                             </label>
-                                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" image="BalanceDelegatedDisclosureImage" translatesAutoresizingMaskIntoConstraints="NO" id="1hC-UY-7sX">
-                                                <rect key="frame" x="379" y="55" width="24" height="24"/>
+                                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="BalanceDelegatedDisclosureImage" translatesAutoresizingMaskIntoConstraints="NO" id="1hC-UY-7sX">
+                                                <rect key="frame" x="379" y="58" width="24" height="24"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" constant="24" id="zb6-Xi-gjT"/>
                                                     <constraint firstAttribute="height" constant="24" id="zz8-5M-i9v"/>
                                                 </constraints>
                                             </imageView>
                                             <button hidden="YES" opaque="NO" multipleTouchEnabled="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ZpQ-ES-i6q">
-                                                <rect key="frame" x="0.0" y="48" width="414" height="30"/>
+                                                <rect key="frame" x="0.0" y="48" width="414" height="3"/>
                                             </button>
-                                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="npT-dZ-8C5">
-                                                <rect key="frame" x="0.0" y="158" width="414" height="6"/>
-                                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" alwaysBounceHorizontal="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="npT-dZ-8C5">
+                                                <rect key="frame" x="0.0" y="76" width="414" height="28"/>
+                                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="96" id="khE-dk-4it"/>
                                                 </constraints>
-                                                <collectionViewFlowLayout key="collectionViewLayout" automaticEstimatedItemSize="YES" minimumLineSpacing="10" minimumInteritemSpacing="10" id="dnk-c7-PxO">
+                                                <collectionViewFlowLayout key="collectionViewLayout" scrollDirection="horizontal" minimumLineSpacing="10" minimumInteritemSpacing="16" id="dnk-c7-PxO">
                                                     <size key="itemSize" width="96" height="96"/>
+                                                    <size key="estimatedItemSize" width="96" height="96"/>
                                                     <size key="headerReferenceSize" width="0.0" height="0.0"/>
                                                     <size key="footerReferenceSize" width="0.0" height="0.0"/>
-                                                    <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                                    <inset key="sectionInset" minX="48" minY="0.0" maxX="0.0" maxY="0.0"/>
                                                 </collectionViewFlowLayout>
-                                                <cells>
-                                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="IGStoryPreviewCell" id="AtY-Mi-HIW" customClass="IGStoryPreviewCell" customModule="BIPWallet" customModuleProvider="target">
-                                                        <rect key="frame" x="0.0" y="0.0" width="96" height="96"/>
-                                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                        <collectionViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="dye-YK-FDp">
-                                                            <rect key="frame" x="0.0" y="0.0" width="96" height="96"/>
-                                                            <autoresizingMask key="autoresizingMask"/>
-                                                        </collectionViewCellContentView>
-                                                    </collectionViewCell>
-                                                </cells>
+                                                <cells/>
                                                 <connections>
-                                                    <outlet property="dataSource" destination="b1B-CA-8a6" id="uOs-UD-N3K"/>
                                                     <outlet property="delegate" destination="b1B-CA-8a6" id="m87-dI-xm8"/>
                                                 </connections>
                                             </collectionView>
@@ -137,7 +126,6 @@
                                         <constraints>
                                             <constraint firstAttribute="trailing" secondItem="LZU-RC-aW4" secondAttribute="trailing" constant="16" id="5sU-yp-F1b"/>
                                             <constraint firstAttribute="trailing" secondItem="1jl-Ro-hiQ" secondAttribute="trailing" constant="16" id="CMN-Ej-Ytq"/>
-                                            <constraint firstAttribute="bottom" secondItem="1hC-UY-7sX" secondAttribute="bottom" constant="32" id="DkF-NQ-T6P"/>
                                             <constraint firstItem="ZpQ-ES-i6q" firstAttribute="top" secondItem="ecJ-97-sxu" secondAttribute="top" id="KpG-DL-Gv2"/>
                                             <constraint firstAttribute="bottom" secondItem="npT-dZ-8C5" secondAttribute="bottom" constant="24" id="L2p-Np-Pm0"/>
                                             <constraint firstItem="LZU-RC-aW4" firstAttribute="top" secondItem="Jcw-bC-189" secondAttribute="top" constant="16" id="NNM-dd-MLa"/>
@@ -158,9 +146,15 @@
                                             <constraint firstItem="ecJ-97-sxu" firstAttribute="top" secondItem="hRj-4M-g3L" secondAttribute="bottom" constant="24" id="neL-ga-peC"/>
                                             <constraint firstItem="1jl-Ro-hiQ" firstAttribute="top" secondItem="LZU-RC-aW4" secondAttribute="bottom" constant="6" id="pNj-Tu-P3O"/>
                                             <constraint firstItem="1jl-Ro-hiQ" firstAttribute="leading" secondItem="LZU-RC-aW4" secondAttribute="leading" id="qnL-G7-HmV"/>
+                                            <constraint firstItem="1hC-UY-7sX" firstAttribute="top" secondItem="ecJ-97-sxu" secondAttribute="top" constant="10" id="uKc-Qv-cV1"/>
                                             <constraint firstItem="hRj-4M-g3L" firstAttribute="top" secondItem="1jl-Ro-hiQ" secondAttribute="bottom" constant="2" id="uLz-BC-e6K"/>
                                             <constraint firstAttribute="trailing" secondItem="npT-dZ-8C5" secondAttribute="trailing" id="wlt-6l-0FL"/>
                                         </constraints>
+                                        <variation key="default">
+                                            <mask key="constraints">
+                                                <exclude reference="ZwI-om-cRW"/>
+                                            </mask>
+                                        </variation>
                                     </view>
                                     <view multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ZBL-0Z-dM2">
                                         <rect key="frame" x="2" y="163" width="419" height="69"/>
@@ -237,6 +231,9 @@
                         <outlet property="availableBalance" destination="1jl-Ro-hiQ" id="H3B-9m-8Nt"/>
                         <outlet property="balanceTitle" destination="LZU-RC-aW4" id="Psl-ch-bhC"/>
                         <outlet property="balanceView" destination="Jcw-bC-189" id="hjR-vx-XhR"/>
+                        <outlet property="collectionView" destination="npT-dZ-8C5" id="QVh-9m-9Fd"/>
+                        <outlet property="collectionViewBottomConstraint" destination="L2p-Np-Pm0" id="15E-ql-8Bc"/>
+                        <outlet property="collectionViewHeightConstraint" destination="khE-dk-4it" id="KNJ-kg-8vd"/>
                         <outlet property="containerView" destination="uTW-SA-zQg" id="atq-Rw-5gR"/>
                         <outlet property="delegatedBalance" destination="0vM-Ic-kBX" id="BuU-Jr-v2M"/>
                         <outlet property="delegatedBalanceButton" destination="ZpQ-ES-i6q" id="qzS-pq-paS"/>
@@ -254,8 +251,5 @@
     </scenes>
     <resources>
         <image name="BalanceDelegatedDisclosureImage" width="8" height="12"/>
-        <systemColor name="systemBackgroundColor">
-            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-        </systemColor>
     </resources>
 </document>

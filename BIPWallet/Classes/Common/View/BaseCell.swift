@@ -9,7 +9,7 @@
 import UIKit
 import RxSwift
 
-protocol Configurable where Self: UITableViewCell {
+protocol Configurable {
 	func configure(item: BaseCellItem)
 }
 
