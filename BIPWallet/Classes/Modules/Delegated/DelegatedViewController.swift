@@ -22,6 +22,7 @@ class DelegatedViewController: BaseViewController, Controller, StoryboardInitial
 
   // MARK: -
 
+  @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
   @IBOutlet weak var noContactsLabel: UILabel!
   @IBOutlet weak var tableView: UITableView!
   @IBOutlet var warningView: UIView!
@@ -45,11 +46,15 @@ class DelegatedViewController: BaseViewController, Controller, StoryboardInitial
     self.rx.viewDidLoad.bind(to: viewModel.input.viewDidLoad).disposed(by: disposeBag)
 
     rightBarItem.rx.tap.asDriver().drive(viewModel.input.didTapAdd).disposed(by: disposeBag)
- 
+
     //Output
     viewModel.output.sections
       .do(onNext: { [weak self] (items) in
         self?.noContactsLabel.alpha = items.count > 0 ? 0.0 : 1.0
+        self?.activityIndicator.alpha = items.count > 0 ? 0.0 : 1.0
+        if items.count > 0 {
+          self?.activityIndicator.stopAnimating()
+        }
       })
       .bind(to: tableView.rx.items(dataSource: rxDataSource!))
       .disposed(by: disposeBag)
@@ -58,8 +63,9 @@ class DelegatedViewController: BaseViewController, Controller, StoryboardInitial
       .subscribe(viewModel.input.willDisplayCell)
       .disposed(by: disposeBag)
 
-    viewModel.output.showKickedWarning.asDriver(onErrorJustReturn: false).drive(onNext: { val in
-      self.toggleTableFooterView(show: val)
+    viewModel.output.showKickedWarning.asDriver(onErrorJustReturn: false)
+      .drive(onNext: { [weak self] val in
+      self?.toggleTableFooterView(show: val)
     }).disposed(by: disposeBag)
 
     viewModel.input.viewDidLoad.onNext(())
@@ -67,14 +73,16 @@ class DelegatedViewController: BaseViewController, Controller, StoryboardInitial
 
   // MARK: -
 
-  var rxDataSource: RxTableViewSectionedReloadDataSource<BaseTableSectionItem>?
+  var rxDataSource: RxTableViewSectionedAnimatedDataSource<BaseTableSectionItem>?
 
   override func viewDidLoad() {
     super.viewDidLoad()
 
-    rxDataSource = RxTableViewSectionedReloadDataSource<BaseTableSectionItem>(
-      configureCell: { dataSource, tableView, indexPath, sm in
+    activityIndicator.startAnimating()
+    noContactsLabel.alpha = 0.0
 
+    rxDataSource = RxTableViewSectionedAnimatedDataSource<BaseTableSectionItem>(
+      configureCell: { dataSource, tableView, indexPath, sm in
         guard let item = try? dataSource.model(at: indexPath) as? BaseCellItem,
           let cell = tableView.dequeueReusableCell(withIdentifier: item.reuseIdentifier) as? ConfigurableCell else {
           return UITableViewCell()

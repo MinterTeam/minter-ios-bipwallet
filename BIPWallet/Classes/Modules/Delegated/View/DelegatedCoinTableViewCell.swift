@@ -35,9 +35,9 @@ class DelegatedCoinTableViewCell: BaseCell {
   @IBOutlet weak var title: UILabel!
   @IBOutlet weak var coinImage: UIImageView! {
     didSet {
-//      coinImage.makeBorderWithCornerRadius(radius: 16,
-//                                           borderColor: .clear,
-//                                           borderWidth: 0)
+      coinImage.makeBorderWithCornerRadius(radius: 16,
+                                           borderColor: .clear,
+                                           borderWidth: 0)
     }
   }
   @IBOutlet weak var amount: UILabel! {
@@ -46,13 +46,7 @@ class DelegatedCoinTableViewCell: BaseCell {
     }
   }
   @IBOutlet weak var coin: UILabel!
-//  @IBOutlet weak var amountLeadingConstraint: NSLayoutConstraint! {
-//    didSet {
-//      amountLeadingConstraints = amountLeadingConstraint
-//    }
-//  }
   @IBOutlet weak var minusButton: UIButton!
-//  var amountLeadingConstraints: NSLayoutConstraint?
   @IBOutlet weak var coinImageWrapper: UIView! {
     didSet {
       coinImageWrapper.backgroundColor = .clear

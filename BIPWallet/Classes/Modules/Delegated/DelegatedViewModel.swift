@@ -88,7 +88,7 @@ class DelegatedViewModel: BaseViewModel, ViewModel {
 
   func bind() {
     viewDidLoad.subscribe(onNext: { [weak self] (_) in
-      self?.createSections()
+//      self?.createSections()
       self?.loadData()
     }).disposed(by: disposeBag)
 
@@ -115,11 +115,7 @@ class DelegatedViewModel: BaseViewModel, ViewModel {
         let value1 = delegation1.value.bipValue ?? 0.0
         let value2 = delegation2.value.bipValue ?? 0.0
         return (value1 > value2) && !((delegation1.value.isWaitlisted ?? false) && !(delegation2.value.isWaitlisted ?? false))
-      })
-//      .sorted(by: { (delegation1, delegation2) -> Bool in
-//        return !((delegation1.value.isWaitlisted ?? false) && !(delegation2.value.isWaitlisted ?? false))
-//      })
-      .map { (delegation) -> [BaseCellItem] in
+      }).map { (delegation) -> [BaseCellItem] in
         let coin = delegation.value.coin?.symbol
         let publicKey = delegation.value.validator?.publicKey
         let value = delegation.value.value
@@ -189,7 +185,7 @@ class DelegatedViewModel: BaseViewModel, ViewModel {
       let separator = SeparatorTableViewCellItem(reuseIdentifier: "SeparatorTableViewCell",
                                                  identifier: "SeparatorTableViewCell_\(val.key)")
 
-      let section = BaseTableSectionItem(identifier: String.random(),
+      let section = BaseTableSectionItem(identifier: "DelegatedSection_\(val.key)",
                                          header: "Stakes".localized(),
                                          items: [validatorItem, separator] + items.flatMap {$0})
       return section
