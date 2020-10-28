@@ -7,7 +7,7 @@ def shared_pods
   #Minter
 	pod 'MinterCore', '~> 1.2.1'
 	pod 'MinterMy'
-	pod 'MinterExplorer', :path => '../../minter-ios-explorer/'#'~> 1.2.4'#, git: 'https://github.com/MinterTeam/minter-ios-explorer.git', branch: 'minter1.2'
+	pod 'MinterExplorer', '~> 1.2.5'
   #Networking
 	pod 'Alamofire'
 	pod 'AlamofireImage'
