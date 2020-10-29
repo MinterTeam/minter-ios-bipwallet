@@ -29,7 +29,7 @@ final class IGStoryPreviewHeaderView: UIView {
 
   public var story: IGStory? {
     didSet {
-      snapsPerStory  = (story?.snapsCount)! < maxSnaps ? (story?.snapsCount)! : maxSnaps
+      snapsPerStory = (story?.snapsCount)! < maxSnaps ? (story?.snapsCount)! : maxSnaps
     }
   }
 
@@ -97,7 +97,7 @@ final class IGStoryPreviewHeaderView: UIView {
     let pv = getProgressView
     NSLayoutConstraint.activate([
       pv.igLeftAnchor.constraint(equalTo: self.igLeftAnchor),
-      pv.igTopAnchor.constraint(equalTo: self.igTopAnchor, constant: 8),
+      pv.igTopAnchor.constraint(equalTo: self.igTopAnchor, constant: 4),
       self.igRightAnchor.constraint(equalTo: pv.igRightAnchor),
       pv.heightAnchor.constraint(equalToConstant: 10)
     ])
@@ -107,17 +107,17 @@ final class IGStoryPreviewHeaderView: UIView {
     //Setting constraints for detailView
     NSLayoutConstraint.activate([
       detailView.heightAnchor.constraint(equalToConstant: 40),
-      closeButton.igLeftAnchor.constraint(equalTo: detailView.igLeftAnchor, constant: 10),
-      shareButton.igRightAnchor.constraint(equalTo: detailView.igRightAnchor, constant: 10)
+      closeButton.igLeftAnchor.constraint(equalTo: detailView.igLeftAnchor, constant: -2),
+      shareButton.igRightAnchor.constraint(equalTo: detailView.igRightAnchor, constant: 2)
     ])
 
     //Setting constraints for closeButton and shareButton
     NSLayoutConstraint.activate([
-      closeButton.igLeftAnchor.constraint(equalTo: self.igLeftAnchor, constant: 10),
-      closeButton.igCenterYAnchor.constraint(equalTo: self.igCenterYAnchor),
+      closeButton.igLeftAnchor.constraint(equalTo: self.igLeftAnchor, constant: -2),
+      closeButton.igCenterYAnchor.constraint(equalTo: self.igCenterYAnchor, constant: -2),
 
-      shareButton.igRightAnchor.constraint(equalTo: self.igRightAnchor, constant: 10),
-      shareButton.igCenterYAnchor.constraint(equalTo: self.igCenterYAnchor),
+      shareButton.igRightAnchor.constraint(equalTo: self.igRightAnchor, constant: 2),
+      shareButton.igCenterYAnchor.constraint(equalTo: self.igCenterYAnchor, constant: -2),
 
       closeButton.widthAnchor.constraint(equalToConstant: 60),
       closeButton.heightAnchor.constraint(equalToConstant: 80),
@@ -176,7 +176,7 @@ final class IGStoryPreviewHeaderView: UIView {
   public func createSnapProgressors() {
     print("Progressor count: \(getProgressView.subviews.count)")
     let padding: CGFloat = 8 //GUI-Padding
-    let height: CGFloat = 3
+    let height: CGFloat = 2
     var pvIndicatorArray: [IGSnapProgressIndicatorView] = []
     var pvArray: [IGSnapProgressView] = []
 

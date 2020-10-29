@@ -45,8 +45,8 @@ class ShareViewController: BaseViewController, Controller, StoryboardInitializab
     }).disposed(by: disposeBag)
 
     shareButton.rx.tap.asDriver().drive(viewModel.input.didTapShare).disposed(by: disposeBag)
-    addressView.rx.tapGesture().when(.ended).map {_ in}.asDriver(onErrorJustReturn: ()).drive(viewModel.input.didTapCopy).disposed(by: disposeBag)
-
+    addressView.rx.tapGesture().when(.ended).map {_ in}.asDriver(onErrorJustReturn: ())
+      .drive(viewModel.input.didTapCopy).disposed(by: disposeBag)
   }
 
   // MARK: - ViewController
