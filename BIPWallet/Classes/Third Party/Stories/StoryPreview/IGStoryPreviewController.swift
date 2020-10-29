@@ -302,6 +302,7 @@ extension IGStoryPreviewController: UICollectionViewDelegate {
 }
 
 // MARK:- Extension|UICollectionViewDelegateFlowLayout
+
 extension IGStoryPreviewController: UICollectionViewDelegateFlowLayout {
 
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
@@ -377,7 +378,15 @@ extension IGStoryPreviewController {
 extension IGStoryPreviewController: StoryPreviewProtocol {
 
   func didTapShareButton() {
-    
+    guard let story = self.stories[safe: nStoryIndex], let snap = story.snaps[safe: story.lastPlayedSnapIndex] else {
+      return
+    }
+    self.currentCell?.pauseEntireSnap()
+    let ac = UIActivityViewController(activityItems: [URL(string: snap.url)], applicationActivities: nil)
+    self.present(ac, animated: true)
+    ac.rx.viewDidDisappear.subscribe(onDisposed: { [weak self] in
+      self?.currentCell?.resumeEntireSnap()
+    }).disposed(by: disposeBag)
   }
 
   func didCompletePreview() {

@@ -42,10 +42,6 @@ extension ViewAnimator where Self: IGSnapProgressView {
     }) { [weak self, storyIdentifier] (finished) in
       self?.story.isCancelledAbruptly = !finished
       self?.state = .finished
-      print("***")
-      print(storyIdentifier)
-      print(self?.snapIndex)
-      print("***")
       if finished == true {
         if let strongSelf = self {
           return completion(strongSelf.story_identifier!, strongSelf.snapIndex!, strongSelf.story.isCancelledAbruptly)
