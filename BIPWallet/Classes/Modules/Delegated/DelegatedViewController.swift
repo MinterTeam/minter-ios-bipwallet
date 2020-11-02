@@ -51,13 +51,18 @@ class DelegatedViewController: BaseViewController, Controller, StoryboardInitial
     viewModel.output.sections
       .do(onNext: { [weak self] (items) in
         self?.noContactsLabel.alpha = items.count > 0 ? 0.0 : 1.0
-        self?.activityIndicator.alpha = items.count > 0 ? 0.0 : 1.0
-        if items.count > 0 {
-          self?.activityIndicator.stopAnimating()
-        }
       })
       .bind(to: tableView.rx.items(dataSource: rxDataSource!))
       .disposed(by: disposeBag)
+
+    viewModel.output.isLoading.subscribe(onNext: { [weak self] (isLoading) in
+      self?.activityIndicator.alpha = isLoading ? 1.0 : 0.0
+      if isLoading {
+        self?.activityIndicator.stopAnimating()
+      } else {
+        self?.activityIndicator.startAnimating()
+      }
+    }).disposed(by: disposeBag)
 
     tableView.rx.willDisplayCell
       .subscribe(viewModel.input.willDisplayCell)

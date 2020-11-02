@@ -56,7 +56,7 @@
                                                     </userDefinedRuntimeAttributes>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="middleTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8YV-5L-DBd" customClass="SlashedZeroesLabel" customModule="BIPWallet" customModuleProvider="target">
-                                                    <rect key="frame" x="48" y="33" width="27" height="14"/>
+                                                    <rect key="frame" x="48" y="33" width="29" height="14"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="14" id="juS-UZ-yqD"/>
                                                     </constraints>
@@ -134,11 +134,11 @@
                                     </tableViewCell>
                                 </prototypes>
                             </tableView>
-                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="medium" translatesAutoresizingMaskIntoConstraints="NO" id="a7H-YE-8Pi">
-                                <rect key="frame" x="197" y="394" width="20" height="20"/>
+                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="large" translatesAutoresizingMaskIntoConstraints="NO" id="a7H-YE-8Pi">
+                                <rect key="frame" x="188.5" y="385.5" width="37" height="37"/>
                             </activityIndicatorView>
                             <label opaque="NO" userInteractionEnabled="NO" alpha="0.0" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="You don't have any delegated stakes yet" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hOI-jh-zgq" customClass="UHBCustomLabel" customModule="BIPWallet" customModuleProvider="target">
-                                <rect key="frame" x="16" y="393.5" width="382" height="21"/>
+                                <rect key="frame" x="16" y="393" width="382" height="22"/>
                                 <fontDescription key="fontDescription" name="Inter_Semi-Bold" family="Inter" pointSize="18"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>

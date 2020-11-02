@@ -7,7 +7,7 @@ def shared_pods
   #Minter
 	pod 'MinterCore', '~> 1.2.1'
 	pod 'MinterMy'
-	pod 'MinterExplorer', '~> 1.2.5'
+	pod 'MinterExplorer', :path => '../../minter-ios-explorer'
   #Networking
 	pod 'Alamofire'
 	pod 'AlamofireImage'

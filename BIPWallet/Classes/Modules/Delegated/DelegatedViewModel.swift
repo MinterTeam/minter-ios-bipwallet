@@ -42,6 +42,7 @@ class DelegatedViewModel: BaseViewModel, ViewModel {
     var showDelegate: Observable<ValidatorItem?>
     var showUnbond: Observable<(ValidatorItem?, String?, [String: Decimal]?)>
     var showKickedWarning: Observable<Bool>
+    var isLoading: Observable<Bool>
   }
 
   struct Dependency {
@@ -53,7 +54,7 @@ class DelegatedViewModel: BaseViewModel, ViewModel {
 
   //start with second page because we already have first page results
   private var page = 1
-  private var isLoading = false
+//  private var isLoading = false
   private var canLoadMore = true
   private var sections = PublishSubject<[BaseTableSectionItem]>()
   private var viewDidLoad = PublishSubject<Void>()
@@ -63,6 +64,7 @@ class DelegatedViewModel: BaseViewModel, ViewModel {
   private let showUnbond = PublishSubject<(ValidatorItem?, String?, [String: Decimal]?)>()
   private let didTapAdd = PublishSubject<Void>()
   private let showKickedWarning = ReplaySubject<Bool>.create(bufferSize: 1)
+  private let isLoading = ReplaySubject<Bool>.create(bufferSize: 1)
 
   init(dependency: Dependency) {
     super.init()
@@ -76,7 +78,8 @@ class DelegatedViewModel: BaseViewModel, ViewModel {
     self.output = Output(sections: sections.asObservable(),
                          showDelegate: showDelegate.asObservable(),
                          showUnbond: showUnbond.asObservable(),
-                         showKickedWarning: showKickedWarning.asObservable()
+                         showKickedWarning: showKickedWarning.asObservable(),
+                         isLoading: isLoading.asObservable()
     )
 
     self.dependency = dependency
@@ -197,6 +200,9 @@ class DelegatedViewModel: BaseViewModel, ViewModel {
     Observable.combineLatest(dependency.balanceService.delegatedBalance(), dependency.validatorService.validators()).take(1)
       .do(afterNext: { [weak self] (balances, validators) in
         self?.createSections()
+        self?.isLoading.onNext(false)
+      }, onSubscribe: { [weak self] in
+        self?.isLoading.onNext(true)
       }).subscribe(onNext: { [weak self] (balances, vldtrs) in
         vldtrs.forEach { (validator) in
           self?.validators[validator.publicKey] = validator

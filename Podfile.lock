@@ -166,7 +166,7 @@ DEPENDENCIES:
   - GoldenKeystore (from `https://github.com/sidorov-panda/GoldenKeystore`)
   - KeychainSwift
   - MinterCore (~> 1.2.1)
-  - MinterExplorer (from `../../minter-ios-explorer/`)
+  - MinterExplorer (from `../../minter-ios-explorer`)
   - MinterMy
   - NotificationBannerSwift
   - ObjectMapper (~> 3.3)
@@ -245,7 +245,7 @@ EXTERNAL SOURCES:
   GoldenKeystore:
     :git: https://github.com/sidorov-panda/GoldenKeystore
   MinterExplorer:
-    :path: "../../minter-ios-explorer/"
+    :path: "../../minter-ios-explorer"
   RealmSwift:
     :branch: master
     :git: https://github.com/realm/realm-cocoa.git
@@ -329,6 +329,6 @@ SPEC CHECKSUMS:
   XLPagerTabStrip: 63166e21c9844fa30f2d95d30f335e73be5caf22
   YandexMobileMetrica: f18374ee6977a4cd1d0a86298a0df4ad7baf4135
 
-PODFILE CHECKSUM: e4c0c25c51e29461b1ba92fd853cfaa90c704025
+PODFILE CHECKSUM: 1a599d484899c42914c6563ad59c1ca10e12a22c
 
 COCOAPODS: 1.10.0
