@@ -644,7 +644,7 @@ YOU ARE ABOUT TO SEND SEED PHRASE IN THE MESSAGE ATTACHED TO THIS TRANSACTION.\n
 
   func selectedPickerItem() -> PickerTableViewCellPickerItem? {
     guard let coin = selectedCoin.value else {
-        return nil
+      return nil
     }
     let balances = lastBalances
     guard let balance = balances[coin] else {
@@ -782,8 +782,8 @@ YOU ARE ABOUT TO SEND SEED PHRASE IN THE MESSAGE ATTACHED TO THIS TRANSACTION.\n
     coinId: Int,
     payload: String,
     selectedAddress: String,
-    canPayCommissionWithBaseCoin: Bool
-    ) -> Observable<String?> {
+    canPayCommissionWithBaseCoin: Bool) -> Observable<String?> {
+
       return Observable.create { (observer) -> Disposable in
 
         let isMax = self.isMaxAmount.value
