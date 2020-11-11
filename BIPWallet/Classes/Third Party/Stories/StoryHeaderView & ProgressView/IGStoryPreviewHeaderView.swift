@@ -52,7 +52,7 @@ final class IGStoryPreviewHeaderView: UIView {
   private lazy var shareButton: UIButton = {
     let button = UIButton()
     button.translatesAutoresizingMaskIntoConstraints = false
-    button.setImage(#imageLiteral(resourceName: "ShareIcon"), for: .normal)
+    button.setImage(#imageLiteral(resourceName: "ig_share"), for: .normal)
     button.addTarget(self, action: #selector(didTapShare(_:)), for: .touchUpInside)
     return button
   }()
@@ -82,10 +82,29 @@ final class IGStoryPreviewHeaderView: UIView {
     super.init(coder: aDecoder)
   }
 
+  var isDark: Bool = true {
+    didSet {
+//      if isDark {
+        self.closeButton.tintColor = .white
+        self.shareButton.tintColor = .white
+//      } else {
+//        self.closeButton.tintColor = .black
+//        self.shareButton.tintColor = .black
+//      }
+    }
+  }
+
+  var showShare: Bool = true {
+    didSet {
+      self.shareButton.isHidden = !showShare
+    }
+  }
+
   // MARK: - Private functions
 
   private func loadUIElements() {
     backgroundColor = .clear
+    isDark = true
     addSubview(getProgressView)
     addSubview(detailView)
     addSubview(closeButton)

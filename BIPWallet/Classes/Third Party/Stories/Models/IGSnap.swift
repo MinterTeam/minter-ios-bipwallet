@@ -19,16 +19,18 @@ public class IGSnap: Codable {
   public var storyId: Int?
   public var weight: Int = 1
   public var title: String
+  public var text: String = ""
   public var file: String
   public var internalIdentifier: Int
   public var mimeType: String = MimeType.image.rawValue
   public var lastUpdated: String? = ""
   public var url: String
 
-  init(id: Int, storyId: Int, title: String, file: String, url: String) {
+  init(id: Int, storyId: Int, title: String, text: String, file: String, url: String) {
     self.internalIdentifier = id
     self.storyId = storyId
     self.title = title
+    self.text = text
     self.file = file
     self.url = url
     self.mimeType = MimeType.image.rawValue
@@ -65,5 +67,6 @@ public class IGSnap: Codable {
     case file
     case weight
     case title
+    case text
   }
 }

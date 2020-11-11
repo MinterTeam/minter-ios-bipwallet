@@ -138,6 +138,7 @@ class BalanceCoordinator: BaseCoordinator<Void> {
       }).map({ (story) -> IGStory in
         let newStory = story
         newStory.lastPlayedSnapIndex = 0
+        newStory.isCompletelyVisible = false
         return newStory
       }))
     }).subscribe(onNext: { [unowned self] (taped, stories) in

@@ -10,7 +10,7 @@ import Foundation
 import RxSwift
 import MinterCore
 
-var MinterStoriesServiceBaseURLString = "https://minter-stories-api.kubernetes.icu/api"
+var MinterStoriesServiceBaseURLString = "https://stories-api.bip.to/api"
 
 enum MinterStoriesServiceError: Error {
   case invalidResponse
@@ -38,7 +38,7 @@ class MinterStoriesService: StoriesService {
   private let storage = UserDefaults(suiteName: "stories")
   private let secureStorage: Storage
 
-  init(httpClient: HTTPClient = APIClient(), secureStorage: Storage = SecureStorage(namespace: "stories")) {
+  init(httpClient: HTTPClient = APIClient(headers: ["Accept-Language": "ru"/*Locale.preferredLanguages.first ?? "en"*/]), secureStorage: Storage = SecureStorage(namespace: "stories")) {
     self.httpClient = httpClient
     self.secureStorage = secureStorage
   }

@@ -35,6 +35,14 @@ class StoryCollectionViewCell: UICollectionViewCell, Configurable {
 
   override func awakeFromNib() {
     super.awakeFromNib()
+
+    let gradient = CAGradientLayer()
+    gradient.frame = self.bounds
+    gradient.colors = [UIColor.clear.cgColor, UIColor.black.cgColor]
+    gradient.startPoint = CGPoint(x: 0.5, y: 0)
+    gradient.endPoint = CGPoint(x: 0.5, y: 5.0)
+    self.layer.insertSublayer(gradient, at: 0)
+
     layoutIfNeeded()
   }
 

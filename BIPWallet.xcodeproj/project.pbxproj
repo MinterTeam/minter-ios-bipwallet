@@ -752,6 +752,10 @@
 		FADA6FA624615E5200FFBCCF /* pop_zap.wav in Resources */ = {isa = PBXBuildFile; fileRef = FADA6FA224615E5200FFBCCF /* pop_zap.wav */; };
 		FADA6FA724615E5200FFBCCF /* pop_hi.wav in Resources */ = {isa = PBXBuildFile; fileRef = FADA6FA324615E5200FFBCCF /* pop_hi.wav */; };
 		FADA6FA92461C9C100FFBCCF /* ContactRemoveConfirmation.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FADA6FA82461C9C100FFBCCF /* ContactRemoveConfirmation.storyboard */; };
+		FADDD1242559DA2A007251CA /* UIColor+Average.swift in Sources */ = {isa = PBXBuildFile; fileRef = FADDD1232559DA2A007251CA /* UIColor+Average.swift */; };
+		FADDD1252559DA2A007251CA /* UIColor+Average.swift in Sources */ = {isa = PBXBuildFile; fileRef = FADDD1232559DA2A007251CA /* UIColor+Average.swift */; };
+		FADDD175255A86C4007251CA /* UIButton+Vertically.swift in Sources */ = {isa = PBXBuildFile; fileRef = FADDD174255A86C4007251CA /* UIButton+Vertically.swift */; };
+		FADDD176255A86C4007251CA /* UIButton+Vertically.swift in Sources */ = {isa = PBXBuildFile; fileRef = FADDD174255A86C4007251CA /* UIButton+Vertically.swift */; };
 		FAE01A2F244B720C00C5EB96 /* AccountService.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAE01A2E244B720C00C5EB96 /* AccountService.swift */; };
 		FAE01A31244B72A700C5EB96 /* LocalStorageAccountService.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAE01A30244B72A700C5EB96 /* LocalStorageAccountService.swift */; };
 		FAE162D22402EE36007E9CAD /* UISegmentedControl+Font.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAE162D12402EE36007E9CAD /* UISegmentedControl+Font.swift */; };
@@ -1177,6 +1181,8 @@
 		FADA6FA224615E5200FFBCCF /* pop_zap.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = pop_zap.wav; sourceTree = "<group>"; };
 		FADA6FA324615E5200FFBCCF /* pop_hi.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = pop_hi.wav; sourceTree = "<group>"; };
 		FADA6FA82461C9C100FFBCCF /* ContactRemoveConfirmation.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = ContactRemoveConfirmation.storyboard; sourceTree = "<group>"; };
+		FADDD1232559DA2A007251CA /* UIColor+Average.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Average.swift"; sourceTree = "<group>"; };
+		FADDD174255A86C4007251CA /* UIButton+Vertically.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIButton+Vertically.swift"; sourceTree = "<group>"; };
 		FAE01A2E244B720C00C5EB96 /* AccountService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountService.swift; sourceTree = "<group>"; };
 		FAE01A30244B72A700C5EB96 /* LocalStorageAccountService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalStorageAccountService.swift; sourceTree = "<group>"; };
 		FAE162D12402EE36007E9CAD /* UISegmentedControl+Font.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UISegmentedControl+Font.swift"; sourceTree = "<group>"; };
@@ -2158,7 +2164,6 @@
 				FA91D5852433971900F901AF /* ViewController */,
 				FA663D3A23FEEB510029D5D0 /* View */,
 				FACA655F23F6B85C00399359 /* Helper */,
-				FACA655C23F6B80100399359 /* UIKit */,
 				FACA654C23F4020700399359 /* Model */,
 				FACA654923F4019500399359 /* Service */,
 				FACA652D23F2AADD00399359 /* Protocol */,
@@ -2251,36 +2256,33 @@
 		FACA655F23F6B85C00399359 /* Helper */ = {
 			isa = PBXGroup;
 			children = (
+				FADDD1302559DAAF007251CA /* Decimal */,
+				FADDD12F2559DA90007251CA /* URL */,
+				FADDD12E2559DA6D007251CA /* String */,
+				FADDD1222559DA11007251CA /* UIColor */,
 				FAD3E031246953AA00446261 /* AmountHelper.swift */,
 				FADA6F9D24615E2D00FFBCCF /* SoundHelper.swift */,
-				FA62232B24517D9E006089EC /* URL+Params.swift */,
 				FA62232924517D17006089EC /* RawTransactionType+Helper.swift */,
 				FA62232724517CF8006089EC /* Data+Base64URL.swift */,
 				FA3BDE2924251C7A0076A7F4 /* Validators.swift */,
-				FA3BDE2724251C1A0076A7F4 /* String+Coin.swift */,
 				FAE621EE24050CDF0040BE4C /* AddressManager+Rx.swift */,
 				FA39EA0B2404149F00757020 /* String+Validation.swift */,
 				FAE162F42403E19D007E9CAD /* TransactionTitleHelper.swift */,
 				FA663D3F23FEEBC00029D5D0 /* CALayer+Shadow.swift */,
-				FACA65D323FAEB6100399359 /* String+Random.swift */,
-				FACA65C623FA977100399359 /* String+Localized.swift */,
 				FACA65C423FA974300399359 /* BannerHelper.swift */,
 				FACA65BE23F7AEF700399359 /* UIViewController+HideKeyboard.swift */,
-				FACA656D23F6B91C00399359 /* UIColor+Default.swift */,
-				FACA656F23F6B91C00399359 /* UIColor+HEX.swift */,
 				FACA656E23F6B91C00399359 /* UIFont+Default.swift */,
 				FACA656B23F6B8C600399359 /* ImpactProtocol.swift */,
-				FACA656623F6B8B600399359 /* Decimal+.swift */,
-				FACA656223F6B8B600399359 /* Decimal+Flaoting.swift */,
 				FACA656323F6B8B600399359 /* Formatters */,
 				FACA656023F6B86A00399359 /* Sugar.swift */,
 				FACA65C023F97CA200399359 /* ClearBarNavigationController.swift */,
+				FACA655C23F6B80100399359 /* UIKit */,
 				FACA65C223F9820300399359 /* UIViewController+BlurView.swift */,
 				FACA65C823FA97B300399359 /* UIView+ShakeError.swift */,
 				FAE162D12402EE36007E9CAD /* UISegmentedControl+Font.swift */,
 				FA91D5882434B56200F901AF /* UIViewController+BackgroundTap.swift */,
 				FAD1438E245C1B83002C2F1C /* UILabel+Letterspacing.swift */,
-				FAC14A482481239D008D1A45 /* URL+ValidatorAvatar.swift */,
+				FADDD174255A86C4007251CA /* UIButton+Vertically.swift */,
 			);
 			path = Helper;
 			sourceTree = "<group>";
@@ -2354,6 +2356,44 @@
 				FACA65B623F6D21800399359 /* Configuration.swift */,
 			);
 			path = Classes;
+			sourceTree = "<group>";
+		};
+		FADDD1222559DA11007251CA /* UIColor */ = {
+			isa = PBXGroup;
+			children = (
+				FACA656D23F6B91C00399359 /* UIColor+Default.swift */,
+				FACA656F23F6B91C00399359 /* UIColor+HEX.swift */,
+				FADDD1232559DA2A007251CA /* UIColor+Average.swift */,
+			);
+			path = UIColor;
+			sourceTree = "<group>";
+		};
+		FADDD12E2559DA6D007251CA /* String */ = {
+			isa = PBXGroup;
+			children = (
+				FA3BDE2724251C1A0076A7F4 /* String+Coin.swift */,
+				FACA65D323FAEB6100399359 /* String+Random.swift */,
+				FACA65C623FA977100399359 /* String+Localized.swift */,
+			);
+			path = String;
+			sourceTree = "<group>";
+		};
+		FADDD12F2559DA90007251CA /* URL */ = {
+			isa = PBXGroup;
+			children = (
+				FAC14A482481239D008D1A45 /* URL+ValidatorAvatar.swift */,
+				FA62232B24517D9E006089EC /* URL+Params.swift */,
+			);
+			path = URL;
+			sourceTree = "<group>";
+		};
+		FADDD1302559DAAF007251CA /* Decimal */ = {
+			isa = PBXGroup;
+			children = (
+				FACA656623F6B8B600399359 /* Decimal+.swift */,
+				FACA656223F6B8B600399359 /* Decimal+Flaoting.swift */,
+			);
+			path = Decimal;
 			sourceTree = "<group>";
 		};
 		FAE621F22405901B0040BE4C /* View */ = {
@@ -2969,6 +3009,7 @@
 				FACA656823F6B8B600399359 /* CurrencyNumberFormatter.swift in Sources */,
 				FAA7CAC0253734B5006F6F24 /* IGStoryPreviewController.swift in Sources */,
 				FA3BDE6B242BA5500076A7F4 /* AutoGrowingTextView.swift in Sources */,
+				FADDD1242559DA2A007251CA /* UIColor+Average.swift in Sources */,
 				FACA65B723F6D21800399359 /* Configuration.swift in Sources */,
 				FAE162F52403E19D007E9CAD /* TransactionTitleHelper.swift in Sources */,
 				FACA65D523FAEC5B00399359 /* AccountDataBaseModel.swift in Sources */,
@@ -2987,6 +3028,7 @@
 				FACA657023F6B91C00399359 /* UIColor+Default.swift in Sources */,
 				FA3BDE3B242786C90076A7F4 /* ExplorerCoinService.swift in Sources */,
 				FA3BDE5A242B83C80076A7F4 /* ToggleTorchButton.swift in Sources */,
+				FADDD175255A86C4007251CA /* UIButton+Vertically.swift in Sources */,
 				FA91D57F2430BFC000F901AF /* ContactEntryTableViewCell.swift in Sources */,
 				FA663D52240032FD0029D5D0 /* GateManager.swift in Sources */,
 				FAA7CA96253734B5006F6F24 /* IGAdditions.swift in Sources */,
@@ -3296,6 +3338,7 @@
 				FAAAD8E324977B7A00D7F5FE /* CurrencyNumberFormatter.swift in Sources */,
 				FAA7CAC1253734B6006F6F24 /* IGStoryPreviewController.swift in Sources */,
 				FAAAD8E424977B7A00D7F5FE /* AutoGrowingTextView.swift in Sources */,
+				FADDD1252559DA2A007251CA /* UIColor+Average.swift in Sources */,
 				FAAAD8E524977B7A00D7F5FE /* Configuration.swift in Sources */,
 				FAAAD8E624977B7A00D7F5FE /* TransactionTitleHelper.swift in Sources */,
 				FAAAD8E724977B7A00D7F5FE /* AccountDataBaseModel.swift in Sources */,
@@ -3314,6 +3357,7 @@
 				FAAAD8F224977B7A00D7F5FE /* UIColor+Default.swift in Sources */,
 				FAAAD8F324977B7A00D7F5FE /* ExplorerCoinService.swift in Sources */,
 				FAAAD8F424977B7A00D7F5FE /* ToggleTorchButton.swift in Sources */,
+				FADDD176255A86C4007251CA /* UIButton+Vertically.swift in Sources */,
 				FAAAD8F524977B7A00D7F5FE /* ContactEntryTableViewCell.swift in Sources */,
 				FAAAD8F624977B7A00D7F5FE /* GateManager.swift in Sources */,
 				FAA7CA97253734B5006F6F24 /* IGAdditions.swift in Sources */,
