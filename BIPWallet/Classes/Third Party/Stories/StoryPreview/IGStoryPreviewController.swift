@@ -102,13 +102,6 @@ final class IGStoryPreviewController: UIViewController, UIGestureRecognizerDeleg
     openGesture.delegate = self
     openGesture.addTarget(self, action: #selector(didSwipeUp(_:)))
     _view.snapsCollectionView.addGestureRecognizer(openGesture)
-
-    // This should be handled for only currently logged in user story and not for all other user stories.
-//        if(isDeleteSnapEnabled) {
-//            showActionSheetGesture.delegate = self
-//            showActionSheetGesture.addTarget(self, action: #selector(showActionSheet))
-//            _view.snapsCollectionView.addGestureRecognizer(showActionSheetGesture)
-//        }
   }
 
   override func viewDidLoad() {
@@ -117,11 +110,6 @@ final class IGStoryPreviewController: UIViewController, UIGestureRecognizerDeleg
 
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
-    // AppUtility.lockOrientation(.portrait)
-    // Or to rotate and lock
-    if UIDevice.current.userInterfaceIdiom == .phone {
-//            IGAppUtility.lockOrientation(.portrait, andRotateTo: .portrait)
-    }
 
     if !executeOnce {
       DispatchQueue.main.async {
@@ -137,10 +125,6 @@ final class IGStoryPreviewController: UIViewController, UIGestureRecognizerDeleg
 
   override func viewWillDisappear(_ animated: Bool) {
     super.viewWillDisappear(animated)
-    if UIDevice.current.userInterfaceIdiom == .phone {
-        // Don't forget to reset when view is being removed
-//            IGAppUtility.lockOrientation(.all)
-    }
   }
 
   override func didReceiveMemoryWarning() {
@@ -191,7 +175,7 @@ final class IGStoryPreviewController: UIViewController, UIGestureRecognizerDeleg
   @objc func didSwipeUp(_ sender: Any) {
     guard let story = stories[safe: nStoryIndex],
           let snap = story.snaps[safe: story.lastPlayedSnapIndex],
-          let snapURL = URL(string: snap.file) else {
+          let snapURL = URL(string: snap.url) else {
       return
     }
 
@@ -294,6 +278,7 @@ extension IGStoryPreviewController: UICollectionViewDelegate {
         cell.stopPlayer()
       }
       vCell.startProgressors()
+      print("cell is startProgressors")
     }
     if vCellIndexPath.item == nStoryIndex {
       vCell.didEndDisplayingCell()
@@ -378,15 +363,39 @@ extension IGStoryPreviewController {
 extension IGStoryPreviewController: StoryPreviewProtocol {
 
   func didTapShareButton() {
-    guard let story = self.stories[safe: nStoryIndex], let snap = story.snaps[safe: story.lastPlayedSnapIndex] else {
+    guard let story = self.stories[safe: nStoryIndex],
+          let snap = story.snaps[safe: story.lastPlayedSnapIndex],
+          let snapURL = URL(string: snap.url) else {
       return
     }
+
     self.currentCell?.pauseEntireSnap()
-    let ac = UIActivityViewController(activityItems: [URL(string: snap.url)], applicationActivities: nil)
+    let ac = UIActivityViewController(activityItems: [snapURL], applicationActivities: nil)
     self.present(ac, animated: true)
     ac.rx.viewDidDisappear.subscribe(onDisposed: { [weak self] in
       self?.currentCell?.resumeEntireSnap()
     }).disposed(by: disposeBag)
+  }
+
+  func didTapSeeMore() {
+    guard let story = self.stories[safe: nStoryIndex],
+          let snap = story.snaps[safe: story.lastPlayedSnapIndex],
+          let snapURL = URL(string: snap.url) else {
+      return
+    }
+
+    let safari = SFSafariViewController(url: snapURL)
+    safari.modalPresentationStyle = .popover
+    safari.modalTransitionStyle = .coverVertical
+    safari.delegate = self
+
+    safari.rx.viewDidDisappear.subscribe(onDisposed: { [weak self] in
+      self?.currentCell?.resumeEntireSnap()
+    }).disposed(by: disposeBag)
+
+    self.present(safari, animated: true, completion: { [weak self] in
+      self?.currentCell?.pauseEntireSnap()
+    })
   }
 
   func didCompletePreview() {
