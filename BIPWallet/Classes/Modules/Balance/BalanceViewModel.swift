@@ -33,7 +33,6 @@ class BalanceViewModel: BaseViewModel, ViewModel, WalletSelectableViewModel {
   private let delegatedBalance = PublishSubject<String>()
   private let didTapSelectWallet = PublishSubject<Void>()
   private let didTapDelegatedBalance = PublishSubject<Void>()
-  private let wallet = PublishSubject<String>()
   private let didTapBalance = PublishSubject<Void>()
   private let didTapShare = PublishSubject<Void>()
   private let didScanQR = PublishSubject<String?>()
@@ -69,6 +68,7 @@ class BalanceViewModel: BaseViewModel, ViewModel, WalletSelectableViewModel {
     var delegatedBalance: Observable<String>
     var didTapSelectWallet: Observable<Void>
     var wallet: Observable<String?>
+    var address: Observable<String?>
     var showDelegated: Observable<Void>
     var balanceTitle: Observable<String?>
     var didTapShare: Observable<Void>
@@ -104,7 +104,8 @@ class BalanceViewModel: BaseViewModel, ViewModel, WalletSelectableViewModel {
     self.output = Output(availabaleBalance: availableBalance.asObservable(),
                          delegatedBalance: delegatedBalance.asObservable(),
                          didTapSelectWallet: didTapSelectWallet.map { $0 },
-                         wallet: walletObservable(),
+                         wallet: walletTitleObservable(),
+                         address: walletAddress(),
                          showDelegated: didTapDelegatedBalance.asObservable(),
                          balanceTitle: balanceTitle.asObservable(),
                          didTapShare: didTapShare.asObservable(),
@@ -116,6 +117,15 @@ class BalanceViewModel: BaseViewModel, ViewModel, WalletSelectableViewModel {
     bind()
 
     try? reachability?.startNotifier()
+  }
+
+  private func walletAddress() -> Observable<String?> {
+    return Observable.combineLatest(walletTitleObservable(), walletAddressObservable()).map { val in
+      let candidatAddress = TransactionTitleHelper.title(from: val.1 ?? "")
+      guard false == val.0?.contains(candidatAddress) else { return "" }
+
+      return candidatAddress
+    }
   }
 
   // MARK: -
@@ -213,6 +223,7 @@ class BalanceViewModel: BaseViewModel, ViewModel, WalletSelectableViewModel {
         self.showErrorMessage.onNext("Invalid transaction data".localized())
       }).disposed(by: disposeBag)
 
+    //Stories
     Observable.of(dependency.storiesService.stories().map {_ in}, forceUpdateStories, self.dependency.appSettings.showStoriesObservable.map {_ in}).merge()
       .filter { self.dependency.appSettings.showStories }
       .withLatestFrom(dependency.storiesService.stories())

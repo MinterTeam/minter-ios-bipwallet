@@ -79,7 +79,6 @@ final class IGStoryPreviewCell: UICollectionViewCell, UIScrollViewDelegate {
   private lazy var storyTitleView: IGStoryTitleTextView = {
     let view = IGStoryTitleTextView()
     view.translatesAutoresizingMaskIntoConstraints = false
-    
     return view
   }()
 
@@ -135,8 +134,8 @@ final class IGStoryPreviewCell: UICollectionViewCell, UIScrollViewDelegate {
       if let snap = story?.snaps[safe: snapIndex] {
         let hasURL = URL(string: snap.url) != nil
         storyHeaderView.showShare = hasURL
-        storyTitleView.titleLabel.text = snap.title
-        storyTitleView.textLabel.text = snap.text
+        storyTitleView.titleLabel.text = String(htmlString: snap.title)
+        storyTitleView.textLabel.text = String(htmlString: snap.text)
 
         storyBottomViewBottomConstraint.constant = (hasURL ? -16 : 50)
         storyBottomViewBottomConstraint.isActive = true
@@ -144,7 +143,7 @@ final class IGStoryPreviewCell: UICollectionViewCell, UIScrollViewDelegate {
       }
 
       switch direction {
-      case .forward:
+      case .forward, .backward:
         guard let snap = story?.snaps[safe: snapIndex] else { return }
 
         if snap.kind != MimeType.video {
@@ -167,20 +166,20 @@ final class IGStoryPreviewCell: UICollectionViewCell, UIScrollViewDelegate {
           }
         }
 
-      case .backward:
-        guard let snap = story?.snaps[safe: snapIndex] else { return }
-        if snap.kind != MimeType.video {
-          if let snapView = getSnapview() {
-            self.startRequest(snapView: snapView, with: snap.file)
-          }
-        } else {
-          if let videoView = getVideoView(with: snapIndex) {
-            startPlayer(videoView: videoView, with: snap.file)
-          } else {
-            let videoView = self.createVideoView()
-            self.startPlayer(videoView: videoView, with: snap.file)
-          }
-        }
+//      case .backward:
+//        guard let snap = story?.snaps[safe: snapIndex] else { return }
+//        if snap.kind != MimeType.video {
+//          if let snapView = getSnapview() {
+//            self.startRequest(snapView: snapView, with: snap.file)
+//          }
+//        } else {
+//          if let videoView = getVideoView(with: snapIndex) {
+//            startPlayer(videoView: videoView, with: snap.file)
+//          } else {
+//            let videoView = self.createVideoView()
+//            self.startPlayer(videoView: videoView, with: snap.file)
+//          }
+//        }
       }
     }
   }
@@ -256,15 +255,17 @@ final class IGStoryPreviewCell: UICollectionViewCell, UIScrollViewDelegate {
                                                      attribute: .width,
                                                      multiplier: 1.0,
                                                      constant: 100.0))
+    
+    let windowInsets = UIApplication.shared.keyWindow?.safeAreaInsets ?? .zero
 
     NSLayoutConstraint.activate([
       storyHeaderView.igLeftAnchor.constraint(equalTo: contentView.igLeftAnchor),
       contentView.igRightAnchor.constraint(equalTo: storyHeaderView.igRightAnchor),
-      storyHeaderView.igTopAnchor.constraint(equalTo: contentView.igTopAnchor),
+      storyHeaderView.igTopAnchor.constraint(equalTo: contentView.igTopAnchor, constant: windowInsets.top),
       storyHeaderView.heightAnchor.constraint(equalToConstant: 80),
       storyBottomView.igCenterXAnchor.constraint(equalTo: contentView.igCenterXAnchor),
       storyBottomViewBottomConstraint,
-      storyTitleView.igBottomAnchor.constraint(equalTo: storyBottomView.igTopAnchor),
+      storyTitleView.igBottomAnchor.constraint(equalTo: storyBottomView.igTopAnchor, constant: -25),
       storyTitleView.igLeftAnchor.constraint(equalTo: contentView.igLeftAnchor),
       storyTitleView.igRightAnchor.constraint(equalTo: contentView.igRightAnchor)
     ])
@@ -274,6 +275,7 @@ final class IGStoryPreviewCell: UICollectionViewCell, UIScrollViewDelegate {
     let snapView = UIImageView()
     snapView.translatesAutoresizingMaskIntoConstraints = false
     snapView.tag = snapIndex + snapViewTagIndicator
+    snapView.contentMode = .scaleAspectFill
 
     let gradient = CAGradientLayer()
     gradient.frame = self.bounds
@@ -354,17 +356,11 @@ final class IGStoryPreviewCell: UICollectionViewCell, UIScrollViewDelegate {
   }
 
   private func startRequest(snapView: UIImageView, with url: String) {
+    print("startRequest \(url)")
+
     snapView.setImage(url: url, style: .squared) { result in
-      DispatchQueue.main.async { [weak self] in
+      DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) { [weak self] in
         guard let strongSelf = self else { return }
-        if let image = snapView.image {
-          DispatchQueue.global().async {
-            let isDark = image.isDark
-            DispatchQueue.main.async {
-              self?.storyHeaderView.isDark = isDark
-            }
-          }
-        }
 
         switch result {
           case .success(_):
@@ -600,6 +596,7 @@ final class IGStoryPreviewCell: UICollectionViewCell, UIScrollViewDelegate {
 
   private func gearupTheProgressors(type: MimeType, playerView: IGPlayerView? = nil) {
     print("gearupTheProgressors *****", snapIndex)
+
     if let holderView = getProgressIndicatorView(with: snapIndex),
       let progressView = getProgressView(with: snapIndex) {
 
@@ -608,7 +605,14 @@ final class IGStoryPreviewCell: UICollectionViewCell, UIScrollViewDelegate {
       DispatchQueue.main.async {
         if type == .image {
           progressView.start(with: 5.0, holderView: holderView, completion: { (identifier, snapIndex, isCancelledAbruptly) in
+            guard identifier != "Unknown" else {
+              return
+            }
+
             print("Completed snapindex: \(snapIndex)")
+
+            print(identifier)
+
             if isCancelledAbruptly == false {
               self.didCompleteProgress()
             }
@@ -623,8 +627,10 @@ final class IGStoryPreviewCell: UICollectionViewCell, UIScrollViewDelegate {
   // MARK: - Internal functions
 
   func startProgressors() {
+    
     print("startProgressors")
-    DispatchQueue.main.async {
+    DispatchQueue.main.async { [weak self] in
+      guard let `self` = self else { return }
       print("startProgressors-1")
       guard self.scrollview.subviews.count > 0 else { return }
       print("startProgressors-2")
@@ -646,7 +652,11 @@ final class IGStoryPreviewCell: UICollectionViewCell, UIScrollViewDelegate {
             print("startProgressors-2-5")
           }
         } else {
+          //What a hack, retry this in case UI isn't ready yet
           print("startProgressors-3")
+          DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) { [weak self] in
+            self?.startProgressors()
+          }
         }
       }
     }
@@ -674,56 +684,6 @@ final class IGStoryPreviewCell: UICollectionViewCell, UIScrollViewDelegate {
     fillupLastPlayedSnaps(index)
   }
 
-  func deleteSnap() {
-      let progressView = storyHeaderView.getProgressView
-      clearLastPlayedSnaps(snapIndex)
-      stopSnapProgressors(with: snapIndex)
-      
-      let snapCount = story?.snapsCount ?? 0
-      if let lastIndicatorView = getProgressIndicatorView(with: snapCount-1), let preLastIndicatorView = getProgressIndicatorView(with: snapCount-2) {
-        
-        lastIndicatorView.constraints.forEach { $0.isActive = false }
-        
-        preLastIndicatorView.rightConstraiant?.isActive = false
-        preLastIndicatorView.rightConstraiant = progressView.igRightAnchor.constraint(equalTo: preLastIndicatorView.igRightAnchor, constant: 8)
-        preLastIndicatorView.rightConstraiant?.isActive = true
-      } else {
-          debugPrint("No Snaps")
-      }
-      /**
-       - If user is going to delete video snap, then we need to stop the player.
-       - Remove the videoView/snapView from the scrollview subviews. Because once the snap got deleted, the next snap will be created on that same frame(x,y,width,height). If we didn't remove the videoView/snapView from scrollView subviews then it will create some wierd issues.
-       */
-      if story?.snaps[snapIndex].kind == .video {
-        stopPlayer()
-      }
-
-      scrollview.subviews.filter({$0.tag == snapIndex + snapViewTagIndicator}).first?.removeFromSuperview()
-
-      /**
-       Once we set isDeleted, snaps and snaps count will be reduced by one. So, instead of snapIndex+1, we need to pass snapIndex to willMoveToPreviousOrNextSnap. But the corresponding progressIndicator is not currently in active. Another possible way is we can always remove last presented progress indicator. So that snapIndex and tag will matches, so that progress indicator starts.
-       */
-      story?.snaps[snapIndex].isDeleted = true
-      direction = .forward
-      for sIndex in 0..<snapIndex {
-        if let holderView = self.getProgressIndicatorView(with: sIndex),
-          let progressView = self.getProgressView(with: sIndex){
-          progressView.widthConstraint?.isActive = false
-          progressView.widthConstraint = progressView.widthAnchor.constraint(equalTo: holderView.widthAnchor, multiplier: 1.0)
-          progressView.widthConstraint?.isActive = true
-        }
-      }
-
-      DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.3) {[weak self] in
-        guard let strongSelf = self else {
-          return
-        }
-        strongSelf.willMoveToPreviousOrNextSnap(n: strongSelf.snapIndex)
-      }
-
-      //Do the api call, when api request is success remove the snap using snap internal identifier from the nsuserdefaults.
-  }
-
   // MARK: - Public functions
 
   public func willDisplayCellForZerothIndex(with sIndex: Int, handpickedSnapIndex: Int) {
@@ -733,7 +693,7 @@ final class IGStoryPreviewCell: UICollectionViewCell, UIScrollViewDelegate {
   }
 
   public func willDisplayCell(with sIndex: Int) {
-    //Todo:Make sure to move filling part and creating at one place
+    //Todo: Make sure to move filling part and creating at one place
     //Clear the progressor subviews before the creating new set of progressors.
     storyHeaderView.clearTheProgressorSubviews()
     storyHeaderView.createSnapProgressors()
@@ -835,6 +795,7 @@ final class IGStoryPreviewCell: UICollectionViewCell, UIScrollViewDelegate {
 // MARK: - Extension|StoryPreviewHeaderProtocol
 
 extension IGStoryPreviewCell: StoryPreviewHeaderProtocol {
+
   func didTapShareButton() {
     delegate?.didTapShareButton()
   }
@@ -924,7 +885,7 @@ class IGStoryTitleTextView: UIView {
   var titleLabel: UILabel = {
     let label = UILabel()
     label.translatesAutoresizingMaskIntoConstraints = false
-    label.font = UIFont.semiBoldFont(of: 32)
+    label.font = UIFont.semiBoldFont(of: 24)
     label.numberOfLines = 0
     label.textColor = .white
     return label
@@ -933,7 +894,7 @@ class IGStoryTitleTextView: UIView {
   var textLabel: UILabel = {
     let label = UILabel()
     label.translatesAutoresizingMaskIntoConstraints = false
-    label.font = UIFont.defaultFont(of: 16)
+    label.font = UIFont.defaultFont(of: 18)
     label.numberOfLines = 0
     label.textColor = .white
     return label
@@ -962,7 +923,7 @@ class IGStoryTitleTextView: UIView {
   func installLayoutConstraints() {
     addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-24-[titleLabel]-24-|", options: [], metrics: nil, views: ["titleLabel": titleLabel]))
     addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-24-[textLabel]-24-|", options: [], metrics: nil, views: ["textLabel": textLabel]))
-    addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:[titleLabel]-16-[textLabel]-0-|", options: [], metrics: nil, views: ["titleLabel": titleLabel, "textLabel": textLabel]))
+    addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:[titleLabel]-8-[textLabel]-0-|", options: [], metrics: nil, views: ["titleLabel": titleLabel, "textLabel": textLabel]))
   }
 
 }

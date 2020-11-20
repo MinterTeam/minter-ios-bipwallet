@@ -199,6 +199,8 @@
 		FA4EDC5D24F6FB4D00079ACA /* ValidatorTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FA4EDC5924F6FB4D00079ACA /* ValidatorTableViewCell.xib */; };
 		FA520BB0241FDC8000146E49 /* TransactionAddressCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA520BAE241FDC8000146E49 /* TransactionAddressCell.swift */; };
 		FA520BB1241FDC8000146E49 /* TransactionAddressCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FA520BAF241FDC8000146E49 /* TransactionAddressCell.xib */; };
+		FA571C962566F9B8002FF6F0 /* BalanceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA571C952566F9B8002FF6F0 /* BalanceView.swift */; };
+		FA571C972566F9B8002FF6F0 /* BalanceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA571C952566F9B8002FF6F0 /* BalanceView.swift */; };
 		FA62231024507A92006089EC /* AppSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA62230F24507A92006089EC /* AppSettings.swift */; };
 		FA62231224507ADB006089EC /* LocalStorageAppSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA62231124507ADB006089EC /* LocalStorageAppSettings.swift */; };
 		FA62231F24517C93006089EC /* RawTransactionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA62231524517C93006089EC /* RawTransactionViewModel.swift */; };
@@ -344,8 +346,6 @@
 		FAA7CAD3253734B6006F6F24 /* IGMockLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAA7CA8F253734B5006F6F24 /* IGMockLoader.swift */; };
 		FAA7CAD4253734B6006F6F24 /* IGVideoCacheManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAA7CA91253734B5006F6F24 /* IGVideoCacheManager.swift */; };
 		FAA7CAD5253734B6006F6F24 /* IGVideoCacheManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAA7CA91253734B5006F6F24 /* IGVideoCacheManager.swift */; };
-		FAA7CAE3253775FE006F6F24 /* stories.json in Resources */ = {isa = PBXBuildFile; fileRef = FAA7CAE2253775FE006F6F24 /* stories.json */; };
-		FAA7CAE4253775FE006F6F24 /* stories.json in Resources */ = {isa = PBXBuildFile; fileRef = FAA7CAE2253775FE006F6F24 /* stories.json */; };
 		FAAAD88124977B7A00D7F5FE /* DashedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA62231824517C93006089EC /* DashedView.swift */; };
 		FAAAD88224977B7A00D7F5FE /* UIImageViewExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAD143862459761F002C2F1C /* UIImageViewExtension.swift */; };
 		FAAAD88324977B7A00D7F5FE /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA9E519423ED9972007263B9 /* ViewController.swift */; };
@@ -752,8 +752,6 @@
 		FADA6FA624615E5200FFBCCF /* pop_zap.wav in Resources */ = {isa = PBXBuildFile; fileRef = FADA6FA224615E5200FFBCCF /* pop_zap.wav */; };
 		FADA6FA724615E5200FFBCCF /* pop_hi.wav in Resources */ = {isa = PBXBuildFile; fileRef = FADA6FA324615E5200FFBCCF /* pop_hi.wav */; };
 		FADA6FA92461C9C100FFBCCF /* ContactRemoveConfirmation.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FADA6FA82461C9C100FFBCCF /* ContactRemoveConfirmation.storyboard */; };
-		FADDD1242559DA2A007251CA /* UIColor+Average.swift in Sources */ = {isa = PBXBuildFile; fileRef = FADDD1232559DA2A007251CA /* UIColor+Average.swift */; };
-		FADDD1252559DA2A007251CA /* UIColor+Average.swift in Sources */ = {isa = PBXBuildFile; fileRef = FADDD1232559DA2A007251CA /* UIColor+Average.swift */; };
 		FADDD175255A86C4007251CA /* UIButton+Vertically.swift in Sources */ = {isa = PBXBuildFile; fileRef = FADDD174255A86C4007251CA /* UIButton+Vertically.swift */; };
 		FADDD176255A86C4007251CA /* UIButton+Vertically.swift in Sources */ = {isa = PBXBuildFile; fileRef = FADDD174255A86C4007251CA /* UIButton+Vertically.swift */; };
 		FAE01A2F244B720C00C5EB96 /* AccountService.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAE01A2E244B720C00C5EB96 /* AccountService.swift */; };
@@ -990,6 +988,7 @@
 		FA4EDC5924F6FB4D00079ACA /* ValidatorTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ValidatorTableViewCell.xib; sourceTree = "<group>"; };
 		FA520BAE241FDC8000146E49 /* TransactionAddressCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionAddressCell.swift; sourceTree = "<group>"; };
 		FA520BAF241FDC8000146E49 /* TransactionAddressCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TransactionAddressCell.xib; sourceTree = "<group>"; };
+		FA571C952566F9B8002FF6F0 /* BalanceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BalanceView.swift; sourceTree = "<group>"; };
 		FA62230F24507A92006089EC /* AppSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppSettings.swift; sourceTree = "<group>"; };
 		FA62231124507ADB006089EC /* LocalStorageAppSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalStorageAppSettings.swift; sourceTree = "<group>"; };
 		FA62231524517C93006089EC /* RawTransactionViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RawTransactionViewModel.swift; sourceTree = "<group>"; };
@@ -1107,7 +1106,6 @@
 		FAA7CA8D253734B5006F6F24 /* IGCache.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IGCache.swift; sourceTree = "<group>"; };
 		FAA7CA8F253734B5006F6F24 /* IGMockLoader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IGMockLoader.swift; sourceTree = "<group>"; };
 		FAA7CA91253734B5006F6F24 /* IGVideoCacheManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IGVideoCacheManager.swift; sourceTree = "<group>"; };
-		FAA7CAE2253775FE006F6F24 /* stories.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = stories.json; sourceTree = "<group>"; };
 		FAAAD9D424977B7A00D7F5FE /* BIPWalletTestnet.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BIPWalletTestnet.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		FAAAD9D524977B7A00D7F5FE /* BIPWalletTestnet-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "BIPWalletTestnet-Info.plist"; path = "/Users/alex/Documents/NewWallet/BIPWallet/BIPWalletTestnet-Info.plist"; sourceTree = "<absolute>"; };
 		FAAAD9D624977BDF00D7F5FE /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -1181,7 +1179,6 @@
 		FADA6FA224615E5200FFBCCF /* pop_zap.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = pop_zap.wav; sourceTree = "<group>"; };
 		FADA6FA324615E5200FFBCCF /* pop_hi.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = pop_hi.wav; sourceTree = "<group>"; };
 		FADA6FA82461C9C100FFBCCF /* ContactRemoveConfirmation.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = ContactRemoveConfirmation.storyboard; sourceTree = "<group>"; };
-		FADDD1232559DA2A007251CA /* UIColor+Average.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Average.swift"; sourceTree = "<group>"; };
 		FADDD174255A86C4007251CA /* UIButton+Vertically.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIButton+Vertically.swift"; sourceTree = "<group>"; };
 		FAE01A2E244B720C00C5EB96 /* AccountService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountService.swift; sourceTree = "<group>"; };
 		FAE01A30244B72A700C5EB96 /* LocalStorageAccountService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalStorageAccountService.swift; sourceTree = "<group>"; };
@@ -1872,6 +1869,7 @@
 			children = (
 				FA85626C254051C9009FBDA8 /* StoryCollectionViewCell.swift */,
 				FA85626D254051C9009FBDA8 /* StoryCollectionViewCell.xib */,
+				FA571C952566F9B8002FF6F0 /* BalanceView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -1945,7 +1943,6 @@
 				FA9E519E23ED9976007263B9 /* Info.plist */,
 				FA3BDEA5242BEA3D0076A7F4 /* BIPWallet-Bridging-Header.h */,
 				FAAAD9D524977B7A00D7F5FE /* BIPWalletTestnet-Info.plist */,
-				FAA7CAE2253775FE006F6F24 /* stories.json */,
 			);
 			path = BIPWallet;
 			sourceTree = "<group>";
@@ -2363,7 +2360,6 @@
 			children = (
 				FACA656D23F6B91C00399359 /* UIColor+Default.swift */,
 				FACA656F23F6B91C00399359 /* UIColor+HEX.swift */,
-				FADDD1232559DA2A007251CA /* UIColor+Average.swift */,
 			);
 			path = UIColor;
 			sourceTree = "<group>";
@@ -2635,7 +2631,6 @@
 				FAC14A4724811192008D1A45 /* SearchTextFieldCell.xib in Resources */,
 				FA3BDEA0242BE9BC0076A7F4 /* Popup.storyboard in Resources */,
 				FAE621FA24076DA10040BE4C /* AddWalletCell.xib in Resources */,
-				FAA7CAE3253775FE006F6F24 /* stories.json in Resources */,
 				FA9FE562246E86A400788310 /* PopupLoadingView.xib in Resources */,
 				FAE621FC240D1AF00040BE4C /* Transaction.storyboard in Resources */,
 				FA663D4E240019300029D5D0 /* ButtonTableViewCell.xib in Resources */,
@@ -2735,7 +2730,6 @@
 				FAAAD9AF24977B7A00D7F5FE /* SearchTextFieldCell.xib in Resources */,
 				FAAAD9B024977B7A00D7F5FE /* Popup.storyboard in Resources */,
 				FAAAD9B124977B7A00D7F5FE /* AddWalletCell.xib in Resources */,
-				FAA7CAE4253775FE006F6F24 /* stories.json in Resources */,
 				FAAAD9B224977B7A00D7F5FE /* PopupLoadingView.xib in Resources */,
 				FAAAD9B324977B7A00D7F5FE /* Transaction.storyboard in Resources */,
 				FAAAD9B424977B7A00D7F5FE /* ButtonTableViewCell.xib in Resources */,
@@ -3009,7 +3003,6 @@
 				FACA656823F6B8B600399359 /* CurrencyNumberFormatter.swift in Sources */,
 				FAA7CAC0253734B5006F6F24 /* IGStoryPreviewController.swift in Sources */,
 				FA3BDE6B242BA5500076A7F4 /* AutoGrowingTextView.swift in Sources */,
-				FADDD1242559DA2A007251CA /* UIColor+Average.swift in Sources */,
 				FACA65B723F6D21800399359 /* Configuration.swift in Sources */,
 				FAE162F52403E19D007E9CAD /* TransactionTitleHelper.swift in Sources */,
 				FACA65D523FAEC5B00399359 /* AccountDataBaseModel.swift in Sources */,
@@ -3176,6 +3169,7 @@
 				8E7C3FE73E3E1DEC3C982D12 /* ShareViewController.swift in Sources */,
 				61E66212F4D185E28DD99CCE /* ShareViewModel.swift in Sources */,
 				1EEF27A2C33CC1815D49FDAF /* ShareCoordinator.swift in Sources */,
+				FA571C962566F9B8002FF6F0 /* BalanceView.swift in Sources */,
 				7F537B239CF76A1554900DDC /* ContactRemoveConfirmationViewController.swift in Sources */,
 				FAA7CAAA253734B5006F6F24 /* LayoutAttributesAnimator.swift in Sources */,
 				D979A8618F9751FFF246A404 /* ContactRemoveConfirmationViewModel.swift in Sources */,
@@ -3338,7 +3332,6 @@
 				FAAAD8E324977B7A00D7F5FE /* CurrencyNumberFormatter.swift in Sources */,
 				FAA7CAC1253734B6006F6F24 /* IGStoryPreviewController.swift in Sources */,
 				FAAAD8E424977B7A00D7F5FE /* AutoGrowingTextView.swift in Sources */,
-				FADDD1252559DA2A007251CA /* UIColor+Average.swift in Sources */,
 				FAAAD8E524977B7A00D7F5FE /* Configuration.swift in Sources */,
 				FAAAD8E624977B7A00D7F5FE /* TransactionTitleHelper.swift in Sources */,
 				FAAAD8E724977B7A00D7F5FE /* AccountDataBaseModel.swift in Sources */,
@@ -3505,6 +3498,7 @@
 				FAAAD97324977B7A00D7F5FE /* ShareViewController.swift in Sources */,
 				FAAAD97424977B7A00D7F5FE /* ShareViewModel.swift in Sources */,
 				FAAAD97524977B7A00D7F5FE /* ShareCoordinator.swift in Sources */,
+				FA571C972566F9B8002FF6F0 /* BalanceView.swift in Sources */,
 				FAAAD97624977B7A00D7F5FE /* ContactRemoveConfirmationViewController.swift in Sources */,
 				FAA7CAAB253734B5006F6F24 /* LayoutAttributesAnimator.swift in Sources */,
 				FAAAD97724977B7A00D7F5FE /* ContactRemoveConfirmationViewModel.swift in Sources */,
@@ -3687,7 +3681,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = BIPWallet/BIPWallet.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 302;
+				CURRENT_PROJECT_VERSION = 308;
 				DEVELOPMENT_TEAM = A26H28FPZU;
 				INFOPLIST_FILE = BIPWallet/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
@@ -3695,7 +3689,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 2.0.1;
+				MARKETING_VERSION = 2.0.3;
 				PRODUCT_BUNDLE_IDENTIFIER = MNT.BipWallet;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "BIPWallet/BIPWallet-Bridging-Header.h";
@@ -3711,7 +3705,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = BIPWallet/BIPWallet.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 302;
+				CURRENT_PROJECT_VERSION = 308;
 				DEVELOPMENT_TEAM = A26H28FPZU;
 				INFOPLIST_FILE = BIPWallet/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
@@ -3719,7 +3713,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 2.0.1;
+				MARKETING_VERSION = 2.0.3;
 				PRODUCT_BUNDLE_IDENTIFIER = MNT.BipWallet;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "BIPWallet/BIPWallet-Bridging-Header.h";
@@ -3819,7 +3813,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIconTestnet;
 				CODE_SIGN_ENTITLEMENTS = BIPWallet/BIPWalletTestnet.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 299;
+				CURRENT_PROJECT_VERSION = 307;
 				DEVELOPMENT_TEAM = A26H28FPZU;
 				INFOPLIST_FILE = "BIPWalletTestnet-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
@@ -3827,7 +3821,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 2.0.1;
+				MARKETING_VERSION = 2.0.3;
 				PRODUCT_BUNDLE_IDENTIFIER = MNT.BipWalletTestnet;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "BIPWallet/BIPWallet-Bridging-Header.h";
@@ -3843,7 +3837,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIconTestnet;
 				CODE_SIGN_ENTITLEMENTS = BIPWallet/BIPWalletTestnet.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 299;
+				CURRENT_PROJECT_VERSION = 307;
 				DEVELOPMENT_TEAM = A26H28FPZU;
 				INFOPLIST_FILE = "BIPWalletTestnet-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
@@ -3851,7 +3845,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 2.0.1;
+				MARKETING_VERSION = 2.0.3;
 				PRODUCT_BUNDLE_IDENTIFIER = MNT.BipWalletTestnet;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";

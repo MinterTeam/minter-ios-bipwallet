@@ -38,7 +38,7 @@ class MinterStoriesService: StoriesService {
   private let storage = UserDefaults(suiteName: "stories")
   private let secureStorage: Storage
 
-  init(httpClient: HTTPClient = APIClient(headers: ["Accept-Language": "ru"/*Locale.preferredLanguages.first ?? "en"*/]), secureStorage: Storage = SecureStorage(namespace: "stories")) {
+  init(httpClient: HTTPClient = APIClient(headers: ["Accept-Language": Locale.preferredLanguages.first ?? "en"]), secureStorage: Storage = SecureStorage(namespace: "stories")) {
     self.httpClient = httpClient
     self.secureStorage = secureStorage
   }

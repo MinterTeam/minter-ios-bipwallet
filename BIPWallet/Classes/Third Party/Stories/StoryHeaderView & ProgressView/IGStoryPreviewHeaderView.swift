@@ -46,6 +46,7 @@ final class IGStoryPreviewHeaderView: UIView {
     button.translatesAutoresizingMaskIntoConstraints = false
     button.setImage(#imageLiteral(resourceName: "ic_close"), for: .normal)
     button.addTarget(self, action: #selector(didTapClose(_:)), for: .touchUpInside)
+    button.tintColor = .white
     return button
   }()
 
@@ -54,6 +55,7 @@ final class IGStoryPreviewHeaderView: UIView {
     button.translatesAutoresizingMaskIntoConstraints = false
     button.setImage(#imageLiteral(resourceName: "ig_share"), for: .normal)
     button.addTarget(self, action: #selector(didTapShare(_:)), for: .touchUpInside)
+    button.tintColor = .white
     return button
   }()
 
@@ -82,18 +84,6 @@ final class IGStoryPreviewHeaderView: UIView {
     super.init(coder: aDecoder)
   }
 
-  var isDark: Bool = true {
-    didSet {
-//      if isDark {
-        self.closeButton.tintColor = .white
-        self.shareButton.tintColor = .white
-//      } else {
-//        self.closeButton.tintColor = .black
-//        self.shareButton.tintColor = .black
-//      }
-    }
-  }
-
   var showShare: Bool = true {
     didSet {
       self.shareButton.isHidden = !showShare
@@ -104,7 +94,6 @@ final class IGStoryPreviewHeaderView: UIView {
 
   private func loadUIElements() {
     backgroundColor = .clear
-    isDark = true
     addSubview(getProgressView)
     addSubview(detailView)
     addSubview(closeButton)
@@ -194,7 +183,7 @@ final class IGStoryPreviewHeaderView: UIView {
 
   public func createSnapProgressors() {
     print("Progressor count: \(getProgressView.subviews.count)")
-    let padding: CGFloat = 8 //GUI-Padding
+    let padding: CGFloat = 4 //GUI-Padding
     let height: CGFloat = 2
     var pvIndicatorArray: [IGSnapProgressIndicatorView] = []
     var pvArray: [IGSnapProgressView] = []

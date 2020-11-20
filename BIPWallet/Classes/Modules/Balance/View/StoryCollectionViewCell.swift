@@ -37,17 +37,18 @@ class StoryCollectionViewCell: UICollectionViewCell, Configurable {
     super.awakeFromNib()
 
     let gradient = CAGradientLayer()
-    gradient.frame = self.bounds
+    gradient.frame = self.backgroundImage.bounds
     gradient.colors = [UIColor.clear.cgColor, UIColor.black.cgColor]
-    gradient.startPoint = CGPoint(x: 0.5, y: 0)
-    gradient.endPoint = CGPoint(x: 0.5, y: 5.0)
-    self.layer.insertSublayer(gradient, at: 0)
+    gradient.startPoint = CGPoint(x: 0.5, y: 0.0)
+    gradient.endPoint = CGPoint(x: 0.5, y: 2.0)
+    self.backgroundImage?.layer.addSublayer(gradient)
 
     layoutIfNeeded()
   }
 
   override func prepareForReuse() {
     super.prepareForReuse()
+    self.backgroundImage.image = UIImage(named: "storiesBackground")
   }
 
   // MARK: -
@@ -56,10 +57,10 @@ class StoryCollectionViewCell: UICollectionViewCell, Configurable {
     guard let item = item as? StoryCollectionViewCellItem else { return }
 
     self.backgroundImage.setImage(urlString: item.backgroundImageURL ?? "",
-                                  placeHolderImage: nil) { (_) in
+                                  placeHolderImage: UIImage(named: "storiesBackground")) { (_) in
 
     }
-    self.storyTitle.text = item.title
+    self.storyTitle.text = String(htmlString: item.title ?? "")
     self.storiesBackgroundImage.isHidden = !item.isNew
   }
 

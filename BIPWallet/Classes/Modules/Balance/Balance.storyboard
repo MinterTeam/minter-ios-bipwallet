@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17156" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17506" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17126"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17505"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -16,7 +16,7 @@
         <!-- -->
         <scene sceneID="GZM-ux-e3z">
             <objects>
-                <viewController storyboardIdentifier="BalanceViewController" title=" " useStoryboardIdentifierAsRestorationIdentifier="YES" id="b1B-CA-8a6" customClass="BalanceViewController" customModule="BIPWallet" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="BalanceViewController" title=" " extendedLayoutIncludesOpaqueBars="YES" useStoryboardIdentifierAsRestorationIdentifier="YES" id="b1B-CA-8a6" customClass="BalanceViewController" customModule="BIPWallet" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" multipleTouchEnabled="YES" contentMode="scaleToFill" id="woN-k6-82S">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="808"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -28,11 +28,11 @@
                                         <rect key="frame" x="0.0" y="0.0" width="414" height="232.5"/>
                                         <color key="backgroundColor" red="0.1843137255" green="0.1137254902" blue="0.41176470590000003" alpha="1" colorSpace="deviceRGB"/>
                                     </view>
-                                    <view multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Jcw-bC-189">
+                                    <view multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Jcw-bC-189" customClass="BalanceView" customModule="BIPWallet" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="0.0" width="414" height="128"/>
                                         <subviews>
                                             <label opaque="NO" multipleTouchEnabled="YES" alpha="0.69999999999999996" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Available Balance" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LZU-RC-aW4" customClass="UHBCustomLabel" customModule="BIPWallet" customModuleProvider="target">
-                                                <rect key="frame" x="48" y="16" width="350" height="0.0"/>
+                                                <rect key="frame" x="48" y="31" width="350" height="0.0"/>
                                                 <fontDescription key="fontDescription" name="Inter_Semi-Bold" family="Inter" pointSize="13"/>
                                                 <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <nil key="highlightedColor"/>
@@ -43,7 +43,7 @@
                                                 </userDefinedRuntimeAttributes>
                                             </label>
                                             <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1jl-Ro-hiQ">
-                                                <rect key="frame" x="48" y="22" width="350" height="0.0"/>
+                                                <rect key="frame" x="48" y="37" width="350" height="0.0"/>
                                                 <attributedString key="attributedText">
                                                     <fragment content="0.">
                                                         <attributes>
@@ -61,7 +61,7 @@
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hRj-4M-g3L" customClass="UHBCustomLabel" customModule="BIPWallet" customModuleProvider="target">
-                                                <rect key="frame" x="48" y="24" width="0.0" height="0.0"/>
+                                                <rect key="frame" x="48" y="39" width="0.0" height="0.0"/>
                                                 <fontDescription key="fontDescription" name="Inter_Semi-Bold" family="Inter" pointSize="13"/>
                                                 <color key="textColor" red="0.20392156862745098" green="0.7803921568627451" blue="0.34901960784313724" alpha="1" colorSpace="deviceRGB"/>
                                                 <nil key="highlightedColor"/>
@@ -72,7 +72,7 @@
                                                 </userDefinedRuntimeAttributes>
                                             </label>
                                             <label opaque="NO" multipleTouchEnabled="YES" alpha="0.69999999999999996" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Delegated Balance" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ecJ-97-sxu" customClass="UHBCustomLabel" customModule="BIPWallet" customModuleProvider="target">
-                                                <rect key="frame" x="48" y="48" width="366" height="0.0"/>
+                                                <rect key="frame" x="48" y="63" width="366" height="0.0"/>
                                                 <fontDescription key="fontDescription" name="Inter_Semi-Bold" family="Inter" pointSize="13"/>
                                                 <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <nil key="highlightedColor"/>
@@ -83,7 +83,7 @@
                                                 </userDefinedRuntimeAttributes>
                                             </label>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0.0000 BIP" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0vM-Ic-kBX" customClass="UHBCustomLabel" customModule="BIPWallet" customModuleProvider="target">
-                                                <rect key="frame" x="48" y="51" width="366" height="0.0"/>
+                                                <rect key="frame" x="48" y="66" width="366" height="0.0"/>
                                                 <fontDescription key="fontDescription" name="Inter_Semi-Bold" family="Inter" pointSize="16"/>
                                                 <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <nil key="highlightedColor"/>
@@ -94,14 +94,14 @@
                                                 </userDefinedRuntimeAttributes>
                                             </label>
                                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="BalanceDelegatedDisclosureImage" translatesAutoresizingMaskIntoConstraints="NO" id="1hC-UY-7sX">
-                                                <rect key="frame" x="379" y="58" width="24" height="24"/>
+                                                <rect key="frame" x="379" y="73" width="24" height="24"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" constant="24" id="zb6-Xi-gjT"/>
                                                     <constraint firstAttribute="height" constant="24" id="zz8-5M-i9v"/>
                                                 </constraints>
                                             </imageView>
                                             <button hidden="YES" opaque="NO" multipleTouchEnabled="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ZpQ-ES-i6q">
-                                                <rect key="frame" x="0.0" y="48" width="414" height="3"/>
+                                                <rect key="frame" x="0.0" y="63" width="414" height="3"/>
                                             </button>
                                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" alwaysBounceHorizontal="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="npT-dZ-8C5">
                                                 <rect key="frame" x="0.0" y="76" width="414" height="28"/>
@@ -128,7 +128,7 @@
                                             <constraint firstAttribute="trailing" secondItem="1jl-Ro-hiQ" secondAttribute="trailing" constant="16" id="CMN-Ej-Ytq"/>
                                             <constraint firstItem="ZpQ-ES-i6q" firstAttribute="top" secondItem="ecJ-97-sxu" secondAttribute="top" id="KpG-DL-Gv2"/>
                                             <constraint firstAttribute="bottom" secondItem="npT-dZ-8C5" secondAttribute="bottom" constant="24" id="L2p-Np-Pm0"/>
-                                            <constraint firstItem="LZU-RC-aW4" firstAttribute="top" secondItem="Jcw-bC-189" secondAttribute="top" constant="16" id="NNM-dd-MLa"/>
+                                            <constraint firstItem="LZU-RC-aW4" firstAttribute="top" secondItem="Jcw-bC-189" secondAttribute="top" constant="31" id="NNM-dd-MLa"/>
                                             <constraint firstAttribute="trailing" secondItem="ecJ-97-sxu" secondAttribute="trailing" id="QSh-gR-C4T"/>
                                             <constraint firstItem="LZU-RC-aW4" firstAttribute="leading" secondItem="Jcw-bC-189" secondAttribute="leading" constant="48" id="TM5-HU-Yxk"/>
                                             <constraint firstItem="ZpQ-ES-i6q" firstAttribute="bottom" secondItem="0vM-Ic-kBX" secondAttribute="bottom" id="TwF-9h-2kf"/>

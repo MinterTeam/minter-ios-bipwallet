@@ -11,13 +11,14 @@ import RxSwift
 
 protocol WalletSelectableViewModel {
   var balanceService: BalanceService! { get }
-  func walletObservable() -> Observable<String?>
+  func walletTitleObservable() -> Observable<String?>
+  func walletAddressObservable() -> Observable<String?>
   func showWalletObservable() -> Observable<Void>
 }
 
 extension WalletSelectableViewModel {
 
-  func walletObservable() -> Observable<String?> {
+  func walletTitleObservable() -> Observable<String?> {
     return Observable.of(self.balanceService.account.map {_ in}, self.balanceService.balances().map{_ in}).merge()
       .withLatestFrom(self.balanceService.account)
       .map { (item) -> String? in
@@ -25,4 +26,13 @@ extension WalletSelectableViewModel {
         return (item?.emoji ?? "") + "  " + title
     }
   }
+
+  func walletAddressObservable() -> Observable<String?> {
+    return Observable.of(self.balanceService.account.map {_ in}, self.balanceService.balances().map{_ in}).merge()
+      .withLatestFrom(self.balanceService.account)
+      .map { (item) -> String? in
+        return item?.address
+    }
+  }
+
 }

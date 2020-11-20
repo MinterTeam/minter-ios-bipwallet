@@ -34,7 +34,6 @@ class BalanceViewController: SegmentedPagerTabStripViewController, Controller, S
   @IBOutlet weak var scrollView: UIScrollView!
   @IBOutlet weak var balanceView: UIView!
   @IBOutlet weak var balanceTitle: UILabel!
-  @IBOutlet weak var segmentedControlView: UIView!
   @IBOutlet weak var availableBalance: UILabel!
   @IBOutlet weak var delegatedBalanceTitle: UILabel!
   @IBOutlet weak var delegatedBalance: UILabel! {
@@ -43,38 +42,85 @@ class BalanceViewController: SegmentedPagerTabStripViewController, Controller, S
     }
   }
   @IBOutlet weak var delegatedBalanceButton: UIButton!
+  @IBOutlet weak var segmentedControlView: UIView!
   @IBOutlet weak var scrollViewHeightConstraint: NSLayoutConstraint!
 
   var walletSelectorButton = UIButton()
-  let walletLabel = UILabel(frame: CGRect(x: 0, y: 0, width: 150, height: 30))
-  var walletSelectorView: UIView {
-    let customView = UIView(frame: CGRect(x: 0, y: 0, width: 173, height: 100))
-    walletLabel.isUserInteractionEnabled = false
+  let walletLabel = UILabel(frame: CGRect(x: 0, y: 0, width: 200, height: 30))
+  let walletAddressLabel = UILabel(frame: CGRect(x: 0, y: 31, width: 200, height: 16))
+  lazy var walletSelectorView: UIView = {
+    let customView = UIView(frame: CGRect(x: 17, y: 0, width: 200, height: 41))
+//    walletLabel.isUserInteractionEnabled = false
     walletLabel.textColor = .white
     walletLabel.font = UIFont.boldFont(of: 18.0)
-    let expandImageView = UIImageView(image: UIImage(named: "WalletsExpandImage")!)
+    let image = UIImage(named: "WalletsExpandImage")!.withRenderingMode(.alwaysTemplate)
+    let expandImageView = UIImageView(image: image)
     expandImageView.tintColor = .white
-    expandImageView.isUserInteractionEnabled = false
+//    expandImageView.isUserInteractionEnabled = false
     customView.addSubview(walletLabel)
     customView.addSubview(expandImageView)
+
+    walletAddressLabel.translatesAutoresizingMaskIntoConstraints = false
+    walletAddressLabel.textColor = UIColor(hex: 0xFFFFFF, alpha: 0.7)
+    walletAddressLabel.font = UIFont.semiBoldFont(of: 13.0)
+    customView.addSubview(walletAddressLabel)
 
     walletLabel.snp.makeConstraints { (maker) in
       maker.top.equalTo(customView).offset(9)
       maker.left.equalTo(customView)
       maker.height.equalTo(21)
-      maker.right.equalTo(customView).offset(-25)
+//      maker.right.equalTo(customView)
     }
+
+    walletAddressLabel.snp.makeConstraints { (maker) in
+      maker.top.equalTo(walletLabel.snp.bottom).offset(1)
+      maker.left.equalTo(customView).offset(31)
+      maker.height.equalTo(16)
+//      maker.right.equalTo(customView)
+    }
+
     expandImageView.snp.makeConstraints { (maker) in
       maker.centerY.equalTo(walletLabel)
-      maker.left.equalTo(walletLabel.snp.right).offset(15)
+//      maker.left.equalTo(walletLabel.snp.right).offset(15)
+      maker.right.greaterThanOrEqualTo(walletAddressLabel.snp.right).offset(15)
+      maker.right.greaterThanOrEqualTo(walletLabel.snp.right).offset(15)
     }
-    customView.isUserInteractionEnabled = false
-    customView.addSubview(walletSelectorButton)
-    walletSelectorButton.snp.makeConstraints { (maker) in
-      maker.top.left.right.bottom.equalTo(customView)
-    }
+//    customView.isUserInteractionEnabled = false
+//    customView.addSubview(walletSelectorButton)
+//    walletSelectorButton.snp.makeConstraints { (maker) in
+//      maker.top.left.right.bottom.equalTo(customView)
+//    }
+
+    self.rx.viewWillDisappear.subscribe(onNext: { [weak self] (animated) in
+      if animated {
+        UIView.animate(withDuration: 0.1) {
+          self?.walletSelectorView.alpha = 0.0
+        }
+      } else {
+        self?.walletSelectorView.alpha = 0.0
+      }
+    }).disposed(by: disposeBag)
+
+    self.rx.viewDidAppear.subscribe(onNext: { [weak self] (animated) in
+      if animated {
+        UIView.animate(withDuration: 0.1) {
+          self?.walletSelectorView.alpha = 1.0
+        }
+      } else {
+        self?.walletSelectorView.alpha = 1.0
+      }
+    }).disposed(by: disposeBag)
+
+    self.scrollView.rx.contentOffset.subscribe(onNext: { (point) in
+
+      self.walletAddressLabel.alpha = min(1, max(0, -0.03*point.y + 1))
+      if point.y > 33 {
+        self.walletAddressLabel.alpha = 0.0
+      }
+    }).disposed(by: disposeBag)
+
     return customView
-  }
+  }()
 
   lazy var readerVC: QRCodeReaderViewController = {
     let builder = QRCodeReaderViewControllerBuilder {
@@ -95,10 +141,9 @@ class BalanceViewController: SegmentedPagerTabStripViewController, Controller, S
     configureDefault()
 
     //Input
-    walletSelectorButton.rx.tap
-      .asDriver()
-      .drive(viewModel.input.didTapSelectWallet)
-      .disposed(by: disposeBag)
+    walletSelectorView.rx.tapGesture().when(.ended).map { _ in }
+    .subscribe(viewModel.input.didTapSelectWallet)
+    .disposed(by: disposeBag)
 
     delegatedBalanceButton.rx.tap
       .asDriver()
@@ -125,9 +170,8 @@ class BalanceViewController: SegmentedPagerTabStripViewController, Controller, S
       }
     }
 
-    self.refreshControl?.rx.controlEvent(.valueChanged)
+    refreshControl?.rx.controlEvent(.valueChanged)
       .asDriver().drive(onNext: { [weak self] (_) in
-//        self?.refreshControl?.beginRefreshing()
         self?.viewModel.input.didRefresh.onNext(())
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
           self?.refreshControl?.endRefreshing()
@@ -150,12 +194,12 @@ class BalanceViewController: SegmentedPagerTabStripViewController, Controller, S
     viewModel.output
       .wallet
       .distinctUntilChanged()
-      .subscribe(onNext: { [weak self] (val) in
-        guard let `self` = self else { return }
-        self.walletLabel.text = val
-        let button = UIBarButtonItem(customView: self.walletSelectorView)
-        self.navigationItem.setLeftBarButton(button, animated: true)
-    }).disposed(by: disposeBag)
+      .asDriver(onErrorJustReturn: nil)
+      .drive(walletLabel.rx.text)
+      .disposed(by: disposeBag)
+
+    viewModel.output.address.distinctUntilChanged()
+      .subscribe(walletAddressLabel.rx.text).disposed(by: disposeBag)
 
     viewModel.output.balanceTitle.asDriver(onErrorJustReturn: nil)
       .drive(balanceTitle.rx.text)
@@ -268,6 +312,10 @@ class BalanceViewController: SegmentedPagerTabStripViewController, Controller, S
     //HACK: to layout child view controllers
     view.layoutIfNeeded()
     self.setNeedsStatusBarAppearanceUpdate()
+
+    navigationController?.navigationBar.addSubview(self.walletSelectorView)
+
+    self.navigationController?.interactivePopGestureRecognizer?.addTarget(self, action: #selector(handleBackPopGesture(gesture:)))
   }
 
   override func viewWillAppear(_ animated: Bool) {
@@ -322,6 +370,15 @@ extension BalanceViewController: UICollectionViewDelegateFlowLayout {
   func hideStories() {
     collectionViewBottomConstraint.constant = 0
     collectionViewHeightConstraint.constant = 0
+  }
+
+}
+
+extension BalanceViewController: UIGestureRecognizerDelegate {
+
+  @objc func handleBackPopGesture(gesture: UIGestureRecognizer) {
+    let progress = (gesture.location(in: view).x / view.bounds.width)
+    walletSelectorView.alpha = progress
   }
 
 }

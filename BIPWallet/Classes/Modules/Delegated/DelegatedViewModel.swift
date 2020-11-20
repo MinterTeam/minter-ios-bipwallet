@@ -91,7 +91,6 @@ class DelegatedViewModel: BaseViewModel, ViewModel {
 
   func bind() {
     viewDidLoad.subscribe(onNext: { [weak self] (_) in
-//      self?.createSections()
       self?.loadData()
     }).disposed(by: disposeBag)
 

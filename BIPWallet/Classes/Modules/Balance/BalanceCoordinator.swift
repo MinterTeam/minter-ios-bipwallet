@@ -141,17 +141,18 @@ class BalanceCoordinator: BaseCoordinator<Void> {
         newStory.isCompletelyVisible = false
         return newStory
       }))
-    }).subscribe(onNext: { [unowned self] (taped, stories) in
+    }).subscribe(onNext: { [weak self] (taped, stories) in
+      guard let `self` = self else { return }
       let storyPreviewScene = IGStoryPreviewController(layout: .cubic,
                                                        stories: stories,
                                                        handPickedStoryIndex: taped,
                                                        handPickedSnapIndex: 0)
-      storyPreviewScene.modalPresentationStyle = .fullScreen
+      storyPreviewScene.modalPresentationStyle = .overCurrentContext
       storyPreviewScene.delegate = self
       storyPreviewScene.rx.viewWillDisappear.subscribe(onNext: { _ in
         viewModel.forceUpdateStories.onNext(())
       }).disposed(by: self.disposeBag)
-      self.navigationController.present(storyPreviewScene, animated: true, completion: nil)
+      self.navigationController.tabBarController?.present(storyPreviewScene, animated: true, completion: nil)
     }).disposed(by: disposeBag)
 
     navigationController.setViewControllers([controller], animated: false)
