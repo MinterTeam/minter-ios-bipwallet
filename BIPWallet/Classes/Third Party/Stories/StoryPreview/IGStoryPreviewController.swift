@@ -21,10 +21,6 @@ protocol IGStoryPreviewControllerDelegate: class {
  then Story Completed
  */
 final class IGStoryPreviewController: UIViewController, UIGestureRecognizerDelegate {
-  
-  deinit {
-    
-  }
 
   weak var delegate: IGStoryPreviewControllerDelegate?
 

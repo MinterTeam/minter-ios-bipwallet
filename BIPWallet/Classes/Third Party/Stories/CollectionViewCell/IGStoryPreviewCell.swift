@@ -595,7 +595,6 @@ final class IGStoryPreviewCell: UICollectionViewCell, UIScrollViewDelegate {
   }
 
   private func gearupTheProgressors(type: MimeType, playerView: IGPlayerView? = nil) {
-    print("gearupTheProgressors *****", snapIndex)
 
     if let holderView = getProgressIndicatorView(with: snapIndex),
       let progressView = getProgressView(with: snapIndex) {
@@ -608,10 +607,6 @@ final class IGStoryPreviewCell: UICollectionViewCell, UIScrollViewDelegate {
             guard identifier != "Unknown" else {
               return
             }
-
-            print("Completed snapindex: \(snapIndex)")
-
-            print(identifier)
 
             if isCancelledAbruptly == false {
               self.didCompleteProgress()
@@ -627,33 +622,28 @@ final class IGStoryPreviewCell: UICollectionViewCell, UIScrollViewDelegate {
   // MARK: - Internal functions
 
   func startProgressors() {
-    
-    print("startProgressors")
     DispatchQueue.main.async { [weak self] in
       guard let `self` = self else { return }
-      print("startProgressors-1")
       guard self.scrollview.subviews.count > 0 else { return }
-      print("startProgressors-2")
+
       let imageView = self.scrollview.subviews.filter { v in v.tag == self.snapIndex + snapViewTagIndicator }.first as? UIImageView
       if imageView?.image != nil && self.story?.isCompletelyVisible == true {
-        print("startProgressors-2-1")
+
         self.gearupTheProgressors(type: .image)
       } else {
-        print("startProgressors-2-2")
         // Didend displaying will call this startProgressors method. After that only isCompletelyVisible get true. Then we have to start the video if that snap contains video.
         if self.story?.isCompletelyVisible == true {
-          print("startProgressors-2-3")
+
           let videoView = self.scrollview.subviews.filter { v in v.tag == self.snapIndex + snapViewTagIndicator }.first as? IGPlayerView
           let snap = self.story?.snaps[self.snapIndex]
           if let vv = videoView, self.story?.isCompletelyVisible == true {
-            print("startProgressors-2-4")
+
             self.startPlayer(videoView: vv, with: snap!.file)
           } else {
-            print("startProgressors-2-5")
+
           }
         } else {
-          //What a hack, retry this in case UI isn't ready yet
-          print("startProgressors-3")
+          //What a hack, retry this in case UI isn't ready yet?
           DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) { [weak self] in
             self?.startProgressors()
           }
