@@ -172,27 +172,31 @@ extension LocalStorageAuthService {
             return
           }
 
-          do {
-            try self.accountManager.saveMnemonic(mnemonic: mnemonic)
-          } catch {
-            observer.onError(AuthServiceError.unknown)
-            return
+          DispatchQueue.global(qos: .utility).async {
+            do {
+              try self.accountManager.saveMnemonic(mnemonic: mnemonic)
+            } catch {
+              observer.onError(AuthServiceError.unknown)
+              return
+            }
+
+            DispatchQueue.main.async {
+              let newTitle = title
+
+              let dbModel = AccountDataBaseModel()
+              dbModel.address = address
+              dbModel.title = newTitle
+
+              do {
+                try self.databaseStorage.add(object: dbModel)
+              } catch {
+                observer.onError(AuthServiceError.unknown)
+                return
+              }
+              observer.onNext(AccountItem(title: newTitle, address: address))
+              observer.onCompleted()
+            }
           }
-
-          let newTitle = title
-
-          let dbModel = AccountDataBaseModel()
-          dbModel.address = address
-          dbModel.title = newTitle
-
-          do {
-            try self.databaseStorage.add(object: dbModel)
-          } catch {
-            observer.onError(AuthServiceError.unknown)
-            return
-          }
-          observer.onNext(AccountItem(title: newTitle, address: address))
-          observer.onCompleted()
         }
       }
       return Disposables.create()

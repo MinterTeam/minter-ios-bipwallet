@@ -217,7 +217,7 @@ class SendViewModel: BaseViewModel, ViewModel, WalletSelectableViewModel {// swi
                          showContactsPicker: showContactsPicker.asObservable(),
                          recipient: recipientSubject.asObservable(),
                          didProvideAutocomplete: didProvideAutocomplete.asObservable(),
-                         wallet: walletObservable(),
+                         wallet: walletTitleObservable(),
                          timerText: balanceTitleObservable.withLatestFrom(balanceService.lastBlockAgo()).map {
                           let ago = Date().timeIntervalSince1970 - ($0 ?? 0)
                           return self.headerViewLastUpdatedTitleText(seconds: ago) },

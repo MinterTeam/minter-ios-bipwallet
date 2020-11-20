@@ -17,6 +17,7 @@ class ShareViewModel: BaseViewModel, ViewModel {
   private let didTapImage = PublishSubject<Void>()
   private let didTapShare = PublishSubject<Void>()
   private let copied = PublishSubject<Void>()
+  private let image = ReplaySubject<UIImage?>.create(bufferSize: 1)
 
   // MARK: - ViewModel
 
@@ -47,7 +48,7 @@ class ShareViewModel: BaseViewModel, ViewModel {
                        didTapShare: didTapShare.asObserver()
     )
 
-    self.output = Output(image: Observable.just(QRCode(account.address)?.image),
+    self.output = Output(image: image.asObservable(),
                          address: Observable.just(account.address),
                          copied: copied.asObservable(),
                          didTapShare: didTapShare.asObservable()
@@ -67,6 +68,14 @@ class ShareViewModel: BaseViewModel, ViewModel {
       UIPasteboard.general.string = self?.account.address
       self?.copied.onNext(())
     }).disposed(by: disposeBag)
+
+    DispatchQueue.global().async { [weak self] in
+      guard let `self` = self else { return }
+      let image = QRCode(self.account.address)?.image
+      DispatchQueue.main.async {
+        self.image.onNext(image)
+      }
+    }
 
   }
 

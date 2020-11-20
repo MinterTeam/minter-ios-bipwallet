@@ -27,7 +27,9 @@ extension String {
 	}
 
   func isValidWalletTitle() -> Bool {
-    return !self.isEmpty
+    //For now we decided to enable any string to be a valid wallet title
+    return true
+//    return !self.isEmpty
 //    let usernameTest = NSPredicate(format: "SELF MATCHES %@", "^[^\\s](.{0,17})$")
 //    return self.isEmpty || usernameTest.evaluate(with: self)
   }

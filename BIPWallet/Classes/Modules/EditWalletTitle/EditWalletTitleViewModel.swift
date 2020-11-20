@@ -92,9 +92,7 @@ class EditWalletTitleViewModel: BaseViewModel, ViewModel {
 
   func bind() {
 
-    didTapSave.withLatestFrom(title).filter({ (title) -> Bool in
-      return true
-    }).flatMap { [weak self] (title) -> Observable<Event<String>> in
+    didTapSave.withLatestFrom(title).flatMap { [weak self] (title) -> Observable<Event<String>> in
       guard let `self` = self else { return Observable.empty() }
       return self.validateForm(title).materialize()
     }.flatMap({ [weak self] (event) -> Observable<Void> in
@@ -124,13 +122,11 @@ class EditWalletTitleViewModel: BaseViewModel, ViewModel {
     return Observable<String>.create { (observer) -> Disposable in
       if let newTitle = title?.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines),
         newTitle.isValidWalletTitle() {
-        if let title = title {
-          guard self.dependency.authService.accounts().filter({ (item) -> Bool in
-            return item.title == title && item.address != self.accountItem.address
-          }).isEmpty else {
-            observer.onError(EditWalletTitleViewModelError.dublicateTitle)
-            return Disposables.create()
-          }
+        guard self.dependency.authService.accounts().filter({ (item) -> Bool in
+          return item.title == newTitle && item.address != self.accountItem.address
+        }).isEmpty else {
+          observer.onError(EditWalletTitleViewModelError.dublicateTitle)
+          return Disposables.create()
         }
         observer.onNext(newTitle)
       } else {

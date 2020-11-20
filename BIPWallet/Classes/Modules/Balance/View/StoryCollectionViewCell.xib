@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="17156" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17126"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <array key="Inter.otf">
+            <string>Inter_Semi-Bold</string>
+        </array>
+    </customFonts>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" reuseIdentifier="StoryCollectionViewCell" id="gTV-IL-0wX" customClass="StoryCollectionViewCell" customModule="BIPWallet" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="96" height="96"/>
+            <autoresizingMask key="autoresizingMask"/>
+            <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
+                <rect key="frame" x="0.0" y="0.0" width="96" height="96"/>
+                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                <subviews>
+                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" insetsLayoutMarginsFromSafeArea="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Acl-F6-wSm">
+                        <rect key="frame" x="1" y="1" width="94" height="94"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="94" id="nOm-Pm-cjc"/>
+                            <constraint firstAttribute="height" constant="94" id="rei-Zj-dtb"/>
+                        </constraints>
+                    </imageView>
+                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="storiesGradientBackground" translatesAutoresizingMaskIntoConstraints="NO" id="4IE-pf-o7B">
+                        <rect key="frame" x="0.0" y="0.0" width="96" height="96"/>
+                    </imageView>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="bottomLeft" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Как правильно выбирать мастерноду?" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumFontSize="6" adjustsFontForContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="zUD-N8-xfL">
+                        <rect key="frame" x="8" y="32.5" width="80" height="58.5"/>
+                        <fontDescription key="fontDescription" name="Inter_Semi-Bold" family="Inter" pointSize="12"/>
+                        <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                </subviews>
+            </view>
+            <constraints>
+                <constraint firstItem="zUD-N8-xfL" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" constant="8" id="808-ix-aBU"/>
+                <constraint firstItem="Acl-F6-wSm" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" constant="1" id="Hfq-8Y-owh"/>
+                <constraint firstItem="Acl-F6-wSm" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" constant="1" id="IEO-wp-2fD"/>
+                <constraint firstItem="zUD-N8-xfL" firstAttribute="top" relation="greaterThanOrEqual" secondItem="gTV-IL-0wX" secondAttribute="top" constant="5" id="Lfb-KF-Khx"/>
+                <constraint firstAttribute="trailing" secondItem="4IE-pf-o7B" secondAttribute="trailing" id="OfK-uz-kvc"/>
+                <constraint firstAttribute="trailing" secondItem="Acl-F6-wSm" secondAttribute="trailing" constant="1" id="PJ1-n2-btf"/>
+                <constraint firstAttribute="bottom" secondItem="4IE-pf-o7B" secondAttribute="bottom" id="TLk-4D-bjf"/>
+                <constraint firstAttribute="bottom" secondItem="zUD-N8-xfL" secondAttribute="bottom" constant="5" id="WoF-24-QAu"/>
+                <constraint firstItem="4IE-pf-o7B" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" id="jK5-aH-aRO"/>
+                <constraint firstItem="4IE-pf-o7B" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" id="s9H-RE-q7b"/>
+                <constraint firstAttribute="trailing" secondItem="zUD-N8-xfL" secondAttribute="trailing" constant="8" id="vQt-CL-Vhg"/>
+                <constraint firstAttribute="bottom" secondItem="Acl-F6-wSm" secondAttribute="bottom" constant="1" id="zwg-pZ-oTA"/>
+            </constraints>
+            <size key="customSize" width="250" height="181"/>
+            <connections>
+                <outlet property="backgroundImage" destination="Acl-F6-wSm" id="Ts5-Ve-qKo"/>
+                <outlet property="storiesBackgroundImage" destination="4IE-pf-o7B" id="Cvk-Za-zTJ"/>
+                <outlet property="storyTitle" destination="zUD-N8-xfL" id="6Wi-Jn-kGC"/>
+            </connections>
+            <point key="canvasLocation" x="189.85507246376812" y="144.30803571428569"/>
+        </collectionViewCell>
+    </objects>
+    <resources>
+        <image name="storiesGradientBackground" width="100" height="100"/>
+    </resources>
+</document>

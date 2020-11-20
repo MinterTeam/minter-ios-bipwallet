@@ -1,7 +1,7 @@
 //
 //  AppDelegate.swift
 //  BIPWallet
-//
+//x
 //  Created by Alexey Sidorov on 07.02.2020.
 //  Copyright © 2020 Alexey Sidorov. All rights reserved.
 //
@@ -77,7 +77,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
       return val
     }).merge().flatMap { (result) -> Observable<Event<Void>> in
       guard let url = result?.url else {
-        
+
         if !pinService.isUnlocked() {
           return appCoordinator.start().materialize()
         }

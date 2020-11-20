@@ -85,16 +85,16 @@ class CreateWalletViewModel: BaseViewModel, ViewModel {
       UIPasteboard.general.string = mnemonic
     }).disposed(by: disposeBag)
 
-    didTapActivate.observeOn(MainScheduler.asyncInstance).asObservable().do(onNext: { (_) in
-      self.isLoading.onNext(true)
-    }, onError: { (error) in
-      self.isLoading.onNext(false)
-    }, onCompleted: {
-      self.isLoading.onNext(false)
-    }, onSubscribe: {
-      self.isLoading.onNext(true)
-    }).flatMap({ (_) -> Observable<AccountItem> in
-      guard let mnemonic = try? self.mnemonic.value() else {
+    didTapActivate.observeOn(MainScheduler.asyncInstance).asObservable().do(onNext: { [weak self] (_) in
+      self?.isLoading.onNext(true)
+    }, onError: { [weak self] (error) in
+      self?.isLoading.onNext(false)
+    }, onCompleted: { [weak self] in
+      self?.isLoading.onNext(false)
+    }, onSubscribe: { [weak self] in
+      self?.isLoading.onNext(true)
+    }).flatMap({ [weak self] (_) -> Observable<AccountItem> in
+      guard let `self` = self, let mnemonic = try? self.mnemonic.value() else {
         return Observable.error(CreateWalletViewModelError.incorrectMnemonics)
       }
       return self.dependency.authService.addAccount(with: mnemonic, title: nil)

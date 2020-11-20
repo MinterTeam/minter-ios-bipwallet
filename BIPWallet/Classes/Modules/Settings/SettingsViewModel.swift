@@ -155,6 +155,20 @@ class SettingsViewModel: BaseViewModel, ViewModel {
     section2.items = [switchItem]
     sctns.append(section2)
 
+    var section3 = BaseTableSectionItem(identifier: "STORIES", header: "STORIES".localized())
+
+    let storiesItem = SwitchTableViewCellItem(reuseIdentifier: "SwitchTableViewCell",
+                                             identifier: "SwitchTableViewCell_Stories")
+    storiesItem.title = "Show Stories".localized()
+    storiesItem.isOn = self.dependency.appSettings.showStories
+    storiesItem.isOnSubject.subscribe(onNext: { [unowned self] (val) in
+      self.dependency.appSettings.showStories = val
+      self.sound.onNext(.click)
+    }).disposed(by: disposeBag)
+    section3.items = [storiesItem]
+
+    sctns.append(section3)
+
     sections.onNext(sctns)
   }
 
