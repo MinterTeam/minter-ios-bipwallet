@@ -32,31 +32,19 @@ class BalanceViewController: SegmentedPagerTabStripViewController, Controller, S
   @IBOutlet weak var collectionViewBottomConstraint: NSLayoutConstraint!
   @IBOutlet weak var collectionView: UICollectionView!
   @IBOutlet weak var scrollView: UIScrollView!
-  @IBOutlet weak var balanceView: UIView!
-  @IBOutlet weak var balanceTitle: UILabel!
-  @IBOutlet weak var availableBalance: UILabel!
-  @IBOutlet weak var delegatedBalanceTitle: UILabel!
-  @IBOutlet weak var delegatedBalance: UILabel! {
-    didSet {
-      delegatedBalance.font = UIFont.semiBoldFont(of: 16.0)
-    }
-  }
-  @IBOutlet weak var delegatedBalanceButton: UIButton!
+  @IBOutlet weak var balanceView: BalanceView!
   @IBOutlet weak var segmentedControlView: UIView!
   @IBOutlet weak var scrollViewHeightConstraint: NSLayoutConstraint!
 
-  var walletSelectorButton = UIButton()
   let walletLabel = UILabel(frame: CGRect(x: 0, y: 0, width: 200, height: 30))
   let walletAddressLabel = UILabel(frame: CGRect(x: 0, y: 31, width: 200, height: 16))
   lazy var walletSelectorView: UIView = {
     let customView = UIView(frame: CGRect(x: 17, y: 0, width: 200, height: 41))
-//    walletLabel.isUserInteractionEnabled = false
     walletLabel.textColor = .white
     walletLabel.font = UIFont.boldFont(of: 18.0)
     let image = UIImage(named: "WalletsExpandImage")!.withRenderingMode(.alwaysTemplate)
     let expandImageView = UIImageView(image: image)
     expandImageView.tintColor = .white
-//    expandImageView.isUserInteractionEnabled = false
     customView.addSubview(walletLabel)
     customView.addSubview(expandImageView)
 
@@ -69,27 +57,19 @@ class BalanceViewController: SegmentedPagerTabStripViewController, Controller, S
       maker.top.equalTo(customView).offset(9)
       maker.left.equalTo(customView)
       maker.height.equalTo(21)
-//      maker.right.equalTo(customView)
     }
 
     walletAddressLabel.snp.makeConstraints { (maker) in
       maker.top.equalTo(walletLabel.snp.bottom).offset(1)
       maker.left.equalTo(customView).offset(31)
       maker.height.equalTo(16)
-//      maker.right.equalTo(customView)
     }
 
     expandImageView.snp.makeConstraints { (maker) in
       maker.centerY.equalTo(walletLabel)
-//      maker.left.equalTo(walletLabel.snp.right).offset(15)
       maker.right.greaterThanOrEqualTo(walletAddressLabel.snp.right).offset(15)
       maker.right.greaterThanOrEqualTo(walletLabel.snp.right).offset(15)
     }
-//    customView.isUserInteractionEnabled = false
-//    customView.addSubview(walletSelectorButton)
-//    walletSelectorButton.snp.makeConstraints { (maker) in
-//      maker.top.left.right.bottom.equalTo(customView)
-//    }
 
     self.rx.viewWillDisappear.subscribe(onNext: { [weak self] (animated) in
       if animated {
@@ -111,11 +91,10 @@ class BalanceViewController: SegmentedPagerTabStripViewController, Controller, S
       }
     }).disposed(by: disposeBag)
 
-    self.scrollView.rx.contentOffset.subscribe(onNext: { (point) in
-
-      self.walletAddressLabel.alpha = min(1, max(0, -0.03*point.y + 1))
+    scrollView.rx.contentOffset.subscribe(onNext: { [weak self] (point) in
+      self?.walletAddressLabel.alpha = min(1, max(0, -0.03*point.y + 1))
       if point.y > 33 {
-        self.walletAddressLabel.alpha = 0.0
+        self?.walletAddressLabel.alpha = 0.0
       }
     }).disposed(by: disposeBag)
 
@@ -145,7 +124,7 @@ class BalanceViewController: SegmentedPagerTabStripViewController, Controller, S
     .subscribe(viewModel.input.didTapSelectWallet)
     .disposed(by: disposeBag)
 
-    delegatedBalanceButton.rx.tap
+    balanceView.delegatedBalanceButton.rx.tap
       .asDriver()
       .drive(viewModel.input.didTapDelegatedBalance)
       .disposed(by: disposeBag)
@@ -155,10 +134,10 @@ class BalanceViewController: SegmentedPagerTabStripViewController, Controller, S
     shareItem.rx.tap.asDriver().drive(viewModel.input.didTapShare).disposed(by: disposeBag)
     scanQRItem.rx.tap.asDriver().drive(viewModel.input.didTapScanQR).disposed(by: disposeBag)
 
-    Observable.of(availableBalance.rx.tapGesture(), balanceTitle.rx.tapGesture()).merge().when(.ended)
+    Observable.of(balanceView.availableBalance.rx.tapGesture(), balanceView.balanceTitle.rx.tapGesture()).merge().when(.ended)
       .map {_ in}.subscribe(viewModel.input.didTapBalance).disposed(by: disposeBag)
 
-    Observable.of(delegatedBalanceTitle.rx.tapGesture(), delegatedBalance.rx.tapGesture()).merge().when(.ended)
+    Observable.of(balanceView.delegatedBalanceTitle.rx.tapGesture(), balanceView.delegatedBalance.rx.tapGesture()).merge().when(.ended)
       .map {_ in}.subscribe(viewModel.input.didTapDelegatedBalance).disposed(by: disposeBag)
 
     readerVC.completionBlock = { [weak self] (result: QRCodeReaderResult?) in
@@ -178,19 +157,23 @@ class BalanceViewController: SegmentedPagerTabStripViewController, Controller, S
         }
       }).disposed(by: disposeBag)
 
-    //Output
+    // MARK: - Output
+
+    //Balance string
     viewModel.output
       .availabaleBalance
       .asDriver(onErrorJustReturn: NSAttributedString())
-      .drive(availableBalance.rx.attributedText)
+      .drive(balanceView.availableBalance.rx.attributedText)
       .disposed(by: disposeBag)
 
+    // Delegated balance string
     viewModel.output
       .delegatedBalance
       .asDriver(onErrorJustReturn: "")
-      .drive(delegatedBalance.rx.text)
+      .drive(balanceView.delegatedBalance.rx.text)
       .disposed(by: disposeBag)
 
+    // Wallet title
     viewModel.output
       .wallet
       .distinctUntilChanged()
@@ -198,16 +181,19 @@ class BalanceViewController: SegmentedPagerTabStripViewController, Controller, S
       .drive(walletLabel.rx.text)
       .disposed(by: disposeBag)
 
+    // Wallet address
     viewModel.output.address.distinctUntilChanged()
       .subscribe(walletAddressLabel.rx.text).disposed(by: disposeBag)
 
+    // Balance title, used to update counter
     viewModel.output.balanceTitle.asDriver(onErrorJustReturn: nil)
-      .drive(balanceTitle.rx.text)
+      .drive(balanceView.balanceTitle.rx.text)
       .disposed(by: disposeBag)
 
-    viewModel.output.openAppSettings.asDriver(onErrorJustReturn: ()).drive(onNext: { [weak self] (_) in
-      self?.openAppSpecificSettings()
-    }).disposed(by: disposeBag)
+    viewModel.output.openAppSettings.asDriver(onErrorJustReturn: ())
+      .drive(onNext: { [weak self] (_) in
+        self?.openAppSpecificSettings()
+      }).disposed(by: disposeBag)
 
     viewModel.output.stories.do(onNext: { [unowned self] (items) in
       if items.count > 0 {

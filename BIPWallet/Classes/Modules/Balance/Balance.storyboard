@@ -155,6 +155,13 @@
                                                 <exclude reference="ZwI-om-cRW"/>
                                             </mask>
                                         </variation>
+                                        <connections>
+                                            <outlet property="availableBalance" destination="1jl-Ro-hiQ" id="bZP-jU-drL"/>
+                                            <outlet property="balanceTitle" destination="LZU-RC-aW4" id="yCp-F9-n9n"/>
+                                            <outlet property="delegatedBalance" destination="0vM-Ic-kBX" id="HCQ-yR-wnv"/>
+                                            <outlet property="delegatedBalanceButton" destination="ZpQ-ES-i6q" id="CT1-Gj-III"/>
+                                            <outlet property="delegatedBalanceTitle" destination="ecJ-97-sxu" id="ucT-wW-J9x"/>
+                                        </connections>
                                     </view>
                                     <view multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ZBL-0Z-dM2">
                                         <rect key="frame" x="2" y="163" width="419" height="69"/>
@@ -228,16 +235,11 @@
                     <extendedEdge key="edgesForExtendedLayout" bottom="YES"/>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" translucent="NO" prompted="NO"/>
                     <connections>
-                        <outlet property="availableBalance" destination="1jl-Ro-hiQ" id="H3B-9m-8Nt"/>
-                        <outlet property="balanceTitle" destination="LZU-RC-aW4" id="Psl-ch-bhC"/>
                         <outlet property="balanceView" destination="Jcw-bC-189" id="hjR-vx-XhR"/>
                         <outlet property="collectionView" destination="npT-dZ-8C5" id="QVh-9m-9Fd"/>
                         <outlet property="collectionViewBottomConstraint" destination="L2p-Np-Pm0" id="15E-ql-8Bc"/>
                         <outlet property="collectionViewHeightConstraint" destination="khE-dk-4it" id="KNJ-kg-8vd"/>
                         <outlet property="containerView" destination="uTW-SA-zQg" id="atq-Rw-5gR"/>
-                        <outlet property="delegatedBalance" destination="0vM-Ic-kBX" id="BuU-Jr-v2M"/>
-                        <outlet property="delegatedBalanceButton" destination="ZpQ-ES-i6q" id="qzS-pq-paS"/>
-                        <outlet property="delegatedBalanceTitle" destination="ecJ-97-sxu" id="NMG-J4-ba0"/>
                         <outlet property="scrollView" destination="NlE-9E-UKy" id="Peo-j6-fdH"/>
                         <outlet property="scrollViewHeightConstraint" destination="6Lc-Mz-X0C" id="ezF-Dq-ZIu"/>
                         <outlet property="segmentedControl" destination="8vz-1R-ytc" id="xd2-3s-jhE"/>
