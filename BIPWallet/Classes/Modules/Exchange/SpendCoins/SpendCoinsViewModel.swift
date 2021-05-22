@@ -309,7 +309,7 @@ class SpendCoinsViewModel: ConvertCoinsViewModel, ViewModel {
       return
     }
 
-    Observable<Void>.just(()).withLatestFrom(dependency.balanceService.account)
+    Observable<Void>.just(()).flatMap{_ in self.coinService.updateCoinsWithResponse()}.withLatestFrom(dependency.balanceService.account)
       .filter({ (account) -> Bool in
         return account != nil && (account?.address.isValidAddress() ?? false)
     }).map({ (item) -> String in

@@ -371,6 +371,7 @@ class DelegateUnbondViewModel: BaseViewModel, ViewModel, LastBlockViewable {
         self.impact.onNext(.hard)
         self.sound.onNext(.bip)
       })
+      .flatMap { _ in self.dependency.coinService.updateCoinsWithResponse() }
       .withLatestFrom(Observable.combineLatest(form, dependency.balanceService.account))
       .flatMap { [weak self] (val) -> Observable<Event<RawTransaction>> in
         guard let `self` = self,

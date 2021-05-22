@@ -226,7 +226,7 @@ class RawTransactionViewModel: BaseViewModel, ViewModel {// swiftlint:disable:th
                          }())
     )
 
-    sendButtonDidTapSubject.subscribe(onNext: { [weak self] (_) in
+    sendButtonDidTapSubject.flatMap { _ in self.dependency.coinService.updateCoinsWithResponse() }.subscribe(onNext: { [weak self] (_) in
       self?.sendTx()
     }).disposed(by: disposeBag)
 

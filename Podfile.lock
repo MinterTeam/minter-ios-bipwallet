@@ -79,7 +79,7 @@ PODS:
     - GoogleUtilities/Logger
   - KeychainSwift (19.0.0)
   - MarqueeLabel (4.0.5)
-  - MinterCore (1.2.2):
+  - MinterCore (1.2.7):
     - Alamofire (= 4.7.3)
     - BigInt (~> 3.0)
     - CryptoSwift (~> 1.0)
@@ -165,7 +165,7 @@ DEPENDENCIES:
   - Firebase/Crashlytics
   - GoldenKeystore (from `https://github.com/sidorov-panda/GoldenKeystore`)
   - KeychainSwift
-  - MinterCore (~> 1.2.1)
+  - MinterCore (~> 1.2.4)
   - MinterExplorer (from `../../minter-ios-explorer`)
   - MinterMy
   - NotificationBannerSwift
@@ -295,7 +295,7 @@ SPEC CHECKSUMS:
   GoogleUtilities: ffb2f4159f2c897c6e8992bd7fbcdef8a300589c
   KeychainSwift: a06190cf933ad46b1e0abc3d77d29c06331715c7
   MarqueeLabel: 00cc0bcd087111dca575878b3531af980559707d
-  MinterCore: 14cc91d56b3ba0bbb00184fbab6a94260404b6bb
+  MinterCore: c6a88319fe9ab7532f50ea1ac630593687467936
   MinterExplorer: b0e719917063fe8dd743dfa12cddb08550d04ea2
   MinterMy: 4198c68f2dbdcced3cb6cbe86a6d300b81433288
   nanopb: 1bf24dd71191072e120b83dd02d08f3da0d65e53
@@ -329,6 +329,6 @@ SPEC CHECKSUMS:
   XLPagerTabStrip: 63166e21c9844fa30f2d95d30f335e73be5caf22
   YandexMobileMetrica: f18374ee6977a4cd1d0a86298a0df4ad7baf4135
 
-PODFILE CHECKSUM: 1a599d484899c42914c6563ad59c1ca10e12a22c
+PODFILE CHECKSUM: 80f1011b492101aea6e9157afa843e71cf4ff053
 
 COCOAPODS: 1.10.0

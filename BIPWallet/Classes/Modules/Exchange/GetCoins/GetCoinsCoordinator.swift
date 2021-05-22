@@ -59,7 +59,9 @@ class GetCoinsCoordinator: BaseCoordinator<Void> {
       return self.coordinate(to: convertPopupCoordiantor)
     }).withLatestFrom(balanceService.account) {
       return ($0, $1)
-    }.subscribe(onNext: { val in
+    }.flatMap({ (val) -> Observable<(ConvertPopupCoordinatorResult, AccountItem?)> in
+      return coinService.updateCoinsWithResponse().map { _ in val }
+    }).subscribe(onNext: { val in
       guard let address = val.1?.address else { return }
 
       switch val.0 {

@@ -240,7 +240,6 @@ class GetCoinsViewModel: ConvertCoinsViewModel, ViewModel {
   func exchange(selectedAddress: String) {
     var approximatelySumRoundedVal = ((try? self.approximatelySum.value()) ?? 0) * 1.1 * TransactionCoinFactorDecimal
     approximatelySumRoundedVal.round(.up)
-
     guard
       let coinFrom = self.selectedCoin?.transformToCoinName(),
       let coinFromId = self.dependency.coinService.coinId(symbol: coinFrom),

@@ -12,6 +12,7 @@ import MinterCore
 
 protocol CoinService: class {
   func updateCoins()
+  func updateCoinsWithResponse() -> Observable<Bool>
   func coins() -> Observable<[Coin]>
   func coins(by term: String) -> Observable<[Coin]>
   func coinExists(name: String) -> Observable<Bool>

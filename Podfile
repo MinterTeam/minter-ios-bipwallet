@@ -5,7 +5,7 @@ platform :ios, '11.0'
 
 def shared_pods
   #Minter
-	pod 'MinterCore', '~> 1.2.1'
+	pod 'MinterCore', '~> 1.2.4'
 	pod 'MinterMy'
 	pod 'MinterExplorer', :path => '../../minter-ios-explorer'
   #Networking

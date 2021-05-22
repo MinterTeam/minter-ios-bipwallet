@@ -686,11 +686,12 @@ YOU ARE ABOUT TO SEND SEED PHRASE IN THE MESSAGE ATTACHED TO THIS TRANSACTION.\n
         self?.isLoadingNonceSubject.onNext(true)
       }).map({ (val) -> (Int, Int) in
         return (val.0+1, val.1)
-      }).flatMapLatest({ (val) -> Observable<((Int, Int), FormChangedObservable, BalanceService.BalancesResponse)> in
+      }).flatMapLatest({ (val) -> Observable<((Int, Int), FormChangedObservable, BalanceService.BalancesResponse, Bool)> in
         return Observable.zip(
           Observable.just(val),
           self.formChangedObservable.asObservable(),
-          self.dependency.balanceService.balances()
+          self.dependency.balanceService.balances(),
+          self.dependency.coinService.updateCoinsWithResponse()
         )
       }).flatMapLatest({ (val) -> Observable<String?> in
         let nonce = BigUInt(val.0.0)

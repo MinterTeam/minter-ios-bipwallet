@@ -27,6 +27,16 @@ class ExplorerCoinService: CoinService {
     loadCoins()
   }
 
+  func updateCoinsWithResponse() -> Observable<Bool> {
+    manager.coins(term: "").map { (coins) -> [Coin] in
+      return coins ?? []
+    }.do(onNext: { [weak self] (coins) in
+      self?.setCoins(coins)
+    }).map({ (coins) -> Bool in
+      return coins.count > 0
+    })
+  }
+
   private func loadCoins() {
     manager.coins(term: "").map { (coins) -> [Coin] in
       return coins ?? []
@@ -73,7 +83,6 @@ class ExplorerCoinService: CoinService {
     }).do { (coins) in
       self.setCoins(coins)
     }
-
   }
 
   func coinExists(name: String) -> Observable<Bool> {
