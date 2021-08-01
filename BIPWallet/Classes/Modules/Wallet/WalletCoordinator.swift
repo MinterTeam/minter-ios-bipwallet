@@ -42,6 +42,8 @@ class WalletCoordinator: BaseCoordinator<Void> {
     let contactsService = LocalStorageContactsService()
     let validatorService = ExplorerValidatorService()
 //    validatorService.updateValidators()
+    
+    GateManager.shared.priceCommissions().subscribe().disposed(by: disposeBag)
 
     let recipientInfoService = ExplorerRecipientInfoService(contactsService: contactsService)
 

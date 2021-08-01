@@ -149,7 +149,7 @@ class TransactionsViewModel: BaseViewModel, ViewModel, TransactionViewableViewMo
       case .multisend:
         transactionCellItem = self.multisendTransactionItem(with: transaction)
 
-      case .buyCoin, .sellCoin, .sellAllCoins:
+      case .buyCoin, .sellCoin, .sellAllCoins, .buySwap, .sellSwap, .sellAllSwap:
         transactionCellItem = self.convertTransactionItem(with: transaction)
 
       case .delegate, .unbond:

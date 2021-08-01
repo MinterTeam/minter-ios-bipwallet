@@ -91,11 +91,11 @@ final class AppCoordinator: BaseCoordinator<Void> {
   }
 
   private func startWelcome() -> Observable<Void> {
-    return coordinate(to: WelcomeCoordinator(window: window, authService: self.authService))
+    return coordinate(to: WelcomeCoordinator(window: window, authService: authService))
   }
 
   private func startWallet() -> Observable<Void> {
-    let coordinator = WalletCoordinator(window: window, authService: authService, pinService: self.pinService, transactionService: transactionService, balanceService: balanceService)
+    let coordinator = WalletCoordinator(window: window, authService: authService, pinService: pinService, transactionService: transactionService, balanceService: balanceService)
     return coordinate(to: coordinator)
   }
 
@@ -115,8 +115,7 @@ final class AppCoordinator: BaseCoordinator<Void> {
         // maybe do something on completion here
     })
 
-    let coordinator = PINCoordinator(navigationController: navigation,
-                                     pinService: self.pinService)
+    let coordinator = PINCoordinator(navigationController: navigation, pinService: pinService)
     return coordinate(to: coordinator)
   }
 

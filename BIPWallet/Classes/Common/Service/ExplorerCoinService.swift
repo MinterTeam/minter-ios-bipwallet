@@ -38,8 +38,16 @@ class ExplorerCoinService: CoinService {
   }
 
   private func loadCoins() {
-    manager.coins(term: "").map { (coins) -> [Coin] in
-      return coins ?? []
+    Observable.zip(manager.verifiedCoins().catchErrorJustReturn([]), manager.coins(term: "")).map { (result) -> [Coin] in
+      let coins = result.1
+      let verified = result.0
+      return (coins ?? []).map { coin in
+        var newCoin = coin
+        newCoin.isOracleVerified = verified?.contains(where: { ver in
+          coin.id == ver.id
+        }) ?? false
+        return newCoin
+      }
     }.filter({ (coins) -> Bool in
       return coins.count > 0
     }).subscribe(onNext: { (coins) in
@@ -120,6 +128,34 @@ class ExplorerCoinService: CoinService {
     }
   }
 
+  func route(fromCoin: String, toCoin: String, amount: Decimal, type: String = "input") -> Observable<(Decimal, [Coin])> {
+    return Observable.create { (observer) -> Disposable in
+      self.manager.route(fromCoin: fromCoin, toCoin: toCoin, type: type, amount: amount) { estimate, coins, error in
+        guard error == nil else {
+          observer.onError(error!)
+          return
+        }
+        observer.onNext((estimate ?? 0.0, coins ?? []))
+        observer.onCompleted()
+      }
+      return Disposables.create()
+    }
+  }
+
+  public func estimate(fromCoin: String, toCoin: String, amount: Decimal, type: PoolServiceRouteType) -> Observable<CoinManagerEstimateResponse?> {
+    return Observable.create { (observer) -> Disposable in
+      self.manager.estimate(fromCoin: fromCoin, toCoin: toCoin, type: type.rawValue, amount: amount) { response, error in
+        guard error == nil else {
+          observer.onError(error!)
+          return
+        }
+        observer.onNext(response)
+        observer.onCompleted()
+      }
+      return Disposables.create()
+    }
+  }
+
 }
 
 enum ExplorerCoinManagerRxError: Error {
@@ -164,4 +200,21 @@ extension ExplorerCoinManager {
       return Disposables.create()
     }
   }
+
+  func verifiedCoins() -> Observable<[Coin]?> {
+    return Observable.create { (observer) -> Disposable in
+      self.verifiedCoins() { (coins, error) in
+
+        guard error == nil else {
+          observer.onError(error!)
+          return
+        }
+
+        observer.onNext(coins)
+        observer.onCompleted()
+      }
+      return Disposables.create()
+    }
+  }
+
 }

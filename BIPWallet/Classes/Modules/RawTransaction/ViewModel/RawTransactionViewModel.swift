@@ -1484,6 +1484,9 @@ extension RawTransactionViewModel {
 
             let priceField = Field(key: "Price".localized(), value: "\(BigUInt(price))".localized(), isEditable: false)
             fields.append(priceField)
+            
+          default:
+            break
           }
           break
 

@@ -110,6 +110,8 @@
 		FA171AA2248817D100D8B813 /* DelegateUnbondSucceedPopupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA171A98248817D000D8B813 /* DelegateUnbondSucceedPopupViewController.swift */; };
 		FA171AA3248817D100D8B813 /* DelegateUnbondSucceedPopupCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA171A99248817D000D8B813 /* DelegateUnbondSucceedPopupCoordinator.swift */; };
 		FA171AA4248817D100D8B813 /* DelegateUnbondSucceedPopup.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FA171A9A248817D000D8B813 /* DelegateUnbondSucceedPopup.storyboard */; };
+		FA1767D0269495C3008514AB /* ExplorerPoolService.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA1767CF269495C3008514AB /* ExplorerPoolService.swift */; };
+		FA1767D1269495C3008514AB /* ExplorerPoolService.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA1767CF269495C3008514AB /* ExplorerPoolService.swift */; };
 		FA28DCC9249CA5F2005B14DF /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = FA28DCC8249CA5F2005B14DF /* GoogleService-Info.plist */; };
 		FA28DCCB249CA5F8005B14DF /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = FA28DCCA249CA5F8005B14DF /* GoogleService-Info.plist */; };
 		FA28DCD1249FE12A005B14DF /* RawTransactionFieldWithBlockTimeTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA28DCCF249FE12A005B14DF /* RawTransactionFieldWithBlockTimeTableViewCell.swift */; };
@@ -904,6 +906,7 @@
 		FA171A98248817D000D8B813 /* DelegateUnbondSucceedPopupViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DelegateUnbondSucceedPopupViewController.swift; sourceTree = "<group>"; };
 		FA171A99248817D000D8B813 /* DelegateUnbondSucceedPopupCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DelegateUnbondSucceedPopupCoordinator.swift; sourceTree = "<group>"; };
 		FA171A9A248817D000D8B813 /* DelegateUnbondSucceedPopup.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = DelegateUnbondSucceedPopup.storyboard; sourceTree = "<group>"; };
+		FA1767CF269495C3008514AB /* ExplorerPoolService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExplorerPoolService.swift; sourceTree = "<group>"; };
 		FA28DCC4249B77DB005B14DF /* BIPWalletTestnet.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = BIPWalletTestnet.entitlements; sourceTree = "<group>"; };
 		FA28DCC5249B77FE005B14DF /* BIPWallet.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = BIPWallet.entitlements; sourceTree = "<group>"; };
 		FA28DCC8249CA5F2005B14DF /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
@@ -2217,6 +2220,7 @@
 				FAF04BDC24499353004CBC07 /* ExplorerValidatorService.swift */,
 				FAE01A30244B72A700C5EB96 /* LocalStorageAccountService.swift */,
 				FA62231124507ADB006089EC /* LocalStorageAppSettings.swift */,
+				FA1767CF269495C3008514AB /* ExplorerPoolService.swift */,
 			);
 			path = Service;
 			sourceTree = "<group>";
@@ -3030,6 +3034,7 @@
 				C555964A565D5D0E47D20A33 /* BalanceCoordinator.swift in Sources */,
 				FAF317862421189500D1556C /* TransactionTwoColumnCell.swift in Sources */,
 				FA3BDE71242BA6630076A7F4 /* TextFieldTableViewCell.swift in Sources */,
+				FA1767D0269495C3008514AB /* ExplorerPoolService.swift in Sources */,
 				FAA7CAB4253734B5006F6F24 /* IGStoryPreviewCell.swift in Sources */,
 				FAF04BDD24499353004CBC07 /* ExplorerValidatorService.swift in Sources */,
 				FAD1438B2459761F002C2F1C /* CIImageExtension.swift in Sources */,
@@ -3359,6 +3364,7 @@
 				FAAAD8F924977B7A00D7F5FE /* BalanceCoordinator.swift in Sources */,
 				FAAAD8FA24977B7A00D7F5FE /* TransactionTwoColumnCell.swift in Sources */,
 				FAAAD8FB24977B7A00D7F5FE /* TextFieldTableViewCell.swift in Sources */,
+				FA1767D1269495C3008514AB /* ExplorerPoolService.swift in Sources */,
 				FAA7CAB5253734B5006F6F24 /* IGStoryPreviewCell.swift in Sources */,
 				FAAAD8FC24977B7A00D7F5FE /* ExplorerValidatorService.swift in Sources */,
 				FAAAD8FD24977B7A00D7F5FE /* CIImageExtension.swift in Sources */,
@@ -3681,7 +3687,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = BIPWallet/BIPWallet.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 309;
+				CURRENT_PROJECT_VERSION = 316;
 				DEVELOPMENT_TEAM = A26H28FPZU;
 				INFOPLIST_FILE = BIPWallet/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
@@ -3689,7 +3695,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 2.0.4;
+				MARKETING_VERSION = 2.1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = MNT.BipWallet;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "BIPWallet/BIPWallet-Bridging-Header.h";
@@ -3705,7 +3711,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = BIPWallet/BIPWallet.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 309;
+				CURRENT_PROJECT_VERSION = 316;
 				DEVELOPMENT_TEAM = A26H28FPZU;
 				INFOPLIST_FILE = BIPWallet/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
@@ -3713,7 +3719,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 2.0.4;
+				MARKETING_VERSION = 2.1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = MNT.BipWallet;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "BIPWallet/BIPWallet-Bridging-Header.h";
@@ -3813,7 +3819,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIconTestnet;
 				CODE_SIGN_ENTITLEMENTS = BIPWallet/BIPWalletTestnet.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 309;
+				CURRENT_PROJECT_VERSION = 316;
 				DEVELOPMENT_TEAM = A26H28FPZU;
 				INFOPLIST_FILE = "BIPWalletTestnet-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
@@ -3821,7 +3827,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 2.0.4;
+				MARKETING_VERSION = 2.1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = MNT.BipWalletTestnet;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "BIPWallet/BIPWallet-Bridging-Header.h";
@@ -3837,7 +3843,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIconTestnet;
 				CODE_SIGN_ENTITLEMENTS = BIPWallet/BIPWalletTestnet.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 309;
+				CURRENT_PROJECT_VERSION = 316;
 				DEVELOPMENT_TEAM = A26H28FPZU;
 				INFOPLIST_FILE = "BIPWalletTestnet-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
@@ -3845,7 +3851,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 2.0.4;
+				MARKETING_VERSION = 2.1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = MNT.BipWalletTestnet;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";

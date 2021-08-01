@@ -220,11 +220,13 @@ class DelegateUnbondViewModel: BaseViewModel, ViewModel, LastBlockViewable {
                           return Observable.just("Delegate your coins to validators and receive related regular payments")
                          }(),
                          errorMessage: errorMessage.asObservable(),
-                         fee: self.dependency.gateService.currentGas().map({ (gas) -> String in
-                          let comType = self.isUnbond ? RawTransactionType.unbond.commission() : RawTransactionType.delegate.commission()
+                         fee: Observable.combineLatest(self.dependency.gateService.currentGas(),
+                                                       self.dependency.gateService.commission()).map({ (gas, commissions) -> String in
+                          let comType = self.isUnbond ? (commissions.transactionCommissions[.unbond] ?? RawTransactionType.unbond.commission())
+                            : (commissions.transactionCommissions[.delegate] ?? RawTransactionType.delegate.commission())
                           let com = (Decimal(gas) * comType).PIPToDecimal()
-                          let fee = CurrencyNumberFormatter.formattedDecimal(with: com,
-                                                                             formatter: CurrencyNumberFormatter.decimalFormatter) + " " + (Coin.baseCoin().symbol ?? "")
+                          let commissionCoin = self.dependency.gateService.lastComission?.coin?.symbol ?? ""
+                          let fee = CurrencyNumberFormatter.decimalFormatter.formattedDecimal(with: com) + " " + commissionCoin
                           return fee
                          }),
                          hasMultipleCoins: {

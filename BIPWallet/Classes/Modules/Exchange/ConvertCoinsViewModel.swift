@@ -10,6 +10,7 @@ import Foundation
 import RxSwift
 import MinterCore
 import MinterExplorer
+import RxRelay
 
 class ConvertCoinsViewModel: BaseViewModel {
 
@@ -28,6 +29,7 @@ class ConvertCoinsViewModel: BaseViewModel {
 		}
 	}
 
+  var approximatelyReady = BehaviorSubject<Bool>(value: false)
   var spendCoinField = ReplaySubject<String?>.create(bufferSize: 2)
 	var hasCoin = Variable<Bool>(false)
 	var coinIsLoading = Variable(false)
@@ -36,6 +38,8 @@ class ConvertCoinsViewModel: BaseViewModel {
 	var amountError = Variable<String?>(nil)
 	var getCoinError = PublishSubject<String?>()
   lazy var isApproximatelyLoading = PublishSubject<Bool>()
+  lazy var isPoolExhange = BehaviorRelay<Bool>(value: false)
+  lazy var poolPath = BehaviorRelay<[Int]>(value: [])
 	lazy var isLoading = BehaviorSubject<Bool>(value: false)
 	lazy var errorNotification = PublishSubject<String?>()
 	lazy var successMessage = PublishSubject<String?>()
@@ -44,7 +48,10 @@ class ConvertCoinsViewModel: BaseViewModel {
 	var currentGas = RawTransactionDefaultGasPrice
   lazy var feeObservable = ReplaySubject<String>.create(bufferSize: 1)
 	var baseCoinCommission: Decimal {
-    return (Decimal(currentGas) * RawTransactionType.buyCoin.commission()) / TransactionCoinFactorDecimal
+    let additionalFee = self.poolPath.value.count > 2 ? Decimal(poolPath.value.count - 2) * (gateService.lastComission?.transactionCommissions[.sellPoolDelta]?.PIPToDecimal() ?? 0.0) : 0.0
+    let commission = !self.isPoolExhange.value ? (gateService.lastComission?.transactionCommissions[.buyBancor]?.PIPToDecimal() ?? 0.0) :
+      ((gateService.lastComission?.transactionCommissions[.sellPoolBase]?.PIPToDecimal() ?? 0.0) + additionalFee)
+    return (Decimal(currentGas) * commission)
 	}
   var hasMultipleCoinsObserver: Observable<Bool> {
     return balanceService.balances().map { (value) -> Bool in
@@ -90,12 +97,15 @@ class ConvertCoinsViewModel: BaseViewModel {
     }).disposed(by: disposeBag)
 
     gateService.updateGas()
-    gateService.currentGas().startWith(RawTransactionDefaultGasPrice).subscribe(onNext: { [weak self] (val) in
-      self?.currentGas = val
-      let fee = CurrencyNumberFormatter.formattedDecimal(with: self?.baseCoinCommission ?? 0.0,
-                                                         formatter: CurrencyNumberFormatter.decimalFormatter) + " " + (Coin.baseCoin().symbol ?? "")
-      self?.feeObservable.onNext(fee)
-    }).disposed(by: disposeBag)
+    Observable.combineLatest(poolPath.asObservable(), approximatelyReady.asObservable(), gateService.currentGas())
+      .withLatestFrom(gateService.currentGas())
+      .startWith(RawTransactionDefaultGasPrice)
+      .subscribe(onNext: { [weak self] (val) in
+        self?.currentGas = val
+        let commissionCoin = self?.gateService.lastComission?.coin?.symbol ?? ""
+        let fee = CurrencyNumberFormatter.decimalFormatter.formattedDecimal(with: self?.baseCoinCommission ?? 0.0) + " " + commissionCoin
+        self?.feeObservable.onNext(fee)
+      }).disposed(by: disposeBag)
 
     getCoin.distinctUntilChanged()
       .do(onNext: { [weak self] (term) in
@@ -151,14 +161,12 @@ class ConvertCoinsViewModel: BaseViewModel {
 	}
 
 	var selectedBalanceString: String? {
-    return CurrencyNumberFormatter.formattedDecimal(with: selectedBalance,
-                                                    formatter: CurrencyNumberFormatter.decimalFormatter)
+    return CurrencyNumberFormatter.decimalFormatter.formattedDecimal(with: selectedBalance)
 	}
 
 	var spendCoinText: String {
 		let selected = (selectedCoin ?? "")
-		let bal = CurrencyNumberFormatter.formattedDecimal(with: selectedBalance,
-																											 formatter: formatter)
+		let bal = formatter.formattedDecimal(with: selectedBalance)
 		return selected + " (" + bal + ")"
 	}
 
@@ -192,21 +200,23 @@ class ConvertCoinsViewModel: BaseViewModel {
 
 extension ConvertCoinsViewModel: LUAutocompleteViewDelegate, LUAutocompleteViewDataSource {
 
-  func autocompleteView(_ autocompleteView: LUAutocompleteView, didSelect text: String) {
-    getCoin.onNext(text)
+  func autocompleteView(_ autocompleteView: LUAutocompleteView, didSelect text: AutocompleteModel) {
+    getCoin.onNext(text.description)
     endEditing.onNext(())
   }
 
   func autocompleteView(_ autocompleteView: LUAutocompleteView,
                         elementsFor text: String,
-                        completion: @escaping ([String]) -> Void) {
+                        completion: @escaping ([AutocompleteModel]) -> Void) {
     self.coins(by: text) { (coins) in
 
       let coinsArray = coins.map({ (coin) -> String in
         return coin.symbol ?? ""
       }).filter({ (coin) -> Bool in
         return coin != ""
-      })
+      }).map { str in
+        TextAutocompleteModel(shouldShowCheckmark: false, text: str)
+      }
 
       completion(Array(coinsArray[safe: 0..<3] ?? []))
     }

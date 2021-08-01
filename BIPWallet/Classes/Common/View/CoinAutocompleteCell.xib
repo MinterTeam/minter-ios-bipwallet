@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="16097" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="18122" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16087"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="18093"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <customFonts key="customFonts">
@@ -22,7 +22,7 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dhK-86-I1p" customClass="SlashedZeroesLabel" customModule="BIPWallet" customModuleProvider="target">
-                        <rect key="frame" x="16" y="14" width="398" height="20"/>
+                        <rect key="frame" x="16" y="14" width="44.5" height="20"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="20" id="fgr-NW-mwS"/>
                         </constraints>
@@ -35,18 +35,31 @@
                             </userDefinedRuntimeAttribute>
                         </userDefinedRuntimeAttributes>
                     </label>
+                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="checkmarkIcon" translatesAutoresizingMaskIntoConstraints="NO" id="jut-p5-ZX8">
+                        <rect key="frame" x="70.5" y="18" width="12" height="12"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="12" id="Gw4-3G-6gq"/>
+                            <constraint firstAttribute="height" constant="12" id="yCG-fa-Vnc"/>
+                        </constraints>
+                    </imageView>
                 </subviews>
                 <constraints>
                     <constraint firstAttribute="bottom" secondItem="dhK-86-I1p" secondAttribute="bottom" constant="14" id="6AG-aG-WEf"/>
+                    <constraint firstItem="jut-p5-ZX8" firstAttribute="leading" secondItem="dhK-86-I1p" secondAttribute="trailing" constant="10" id="B2G-il-dCj"/>
                     <constraint firstItem="dhK-86-I1p" firstAttribute="top" secondItem="XP3-Ak-1iE" secondAttribute="top" constant="14" id="Hul-CZ-m8z"/>
-                    <constraint firstAttribute="trailing" secondItem="dhK-86-I1p" secondAttribute="trailing" constant="10" id="RPu-cc-4sl"/>
+                    <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="dhK-86-I1p" secondAttribute="trailing" constant="10" id="RPu-cc-4sl"/>
+                    <constraint firstItem="jut-p5-ZX8" firstAttribute="centerY" secondItem="dhK-86-I1p" secondAttribute="centerY" id="eoR-CD-5RD"/>
                     <constraint firstItem="dhK-86-I1p" firstAttribute="leading" secondItem="XP3-Ak-1iE" secondAttribute="leading" constant="16" id="yJz-Tk-TOB"/>
                 </constraints>
             </tableViewCellContentView>
             <connections>
+                <outlet property="checkmarkIcon" destination="jut-p5-ZX8" id="jW9-Ec-0nU"/>
                 <outlet property="coinTitleLabel" destination="dhK-86-I1p" id="E2b-V8-pHl"/>
             </connections>
             <point key="canvasLocation" x="48" y="-63.868065967016499"/>
         </tableViewCell>
     </objects>
+    <resources>
+        <image name="checkmarkIcon" width="12" height="12"/>
+    </resources>
 </document>

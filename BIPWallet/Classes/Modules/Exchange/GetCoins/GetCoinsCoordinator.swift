@@ -24,6 +24,7 @@ class GetCoinsCoordinator: BaseCoordinator<Void> {
        gateService: GateService,
        transactionService: TransactionService,
        coinService: CoinService,
+       poolService: PoolService,
        coin: String? = nil,
        amount: Decimal? = nil,
        closeAfterBuy: Bool = false) {
@@ -35,7 +36,9 @@ class GetCoinsCoordinator: BaseCoordinator<Void> {
     let viewModel = GetCoinsViewModel(dependency: GetCoinsViewModel.Dependency(balanceService: balanceService,
                                                                                coinService: coinService,
                                                                                gateService: gateService,
-                                                                               transactionService: transactionService))
+                                                                               transactionService: transactionService,
+                                                                               poolService: poolService
+    ))
     viewController = сontroller
     (viewController as? GetCoinsViewController)?.viewModel = viewModel
 

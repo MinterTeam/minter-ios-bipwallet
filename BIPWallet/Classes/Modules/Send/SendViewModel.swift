@@ -182,7 +182,8 @@ class SendViewModel: BaseViewModel, ViewModel, WalletSelectableViewModel {// swi
   var gasObservable: Observable<String> {
     return Observable.combineLatest(currentGas.asObservable(),
                                     clearPayloadSubject.asObservable(),
-                                    formChangedObservable)
+                                    formChangedObservable,
+                                    GateManager.shared.priceCommissions())
       .map({ [weak self] (obj) -> String in
         let payloadData = obj.2.3?.data(using: .utf8)
         let recipient = obj.2.1
@@ -878,10 +879,11 @@ YOU ARE ABOUT TO SEND SEED PHRASE IN THE MESSAGE ATTACHED TO THIS TRANSACTION.\n
   }
 
   private func comissionText(recipient: String, for gas: Int, payloadData: Data? = nil) -> String {
-    let payloadCom = Decimal((payloadData ?? Data()).count) * RawTransaction.payloadByteComissionPrice.decimalFromPIP()
-    var commission = (RawTransactionType.sendCoin.commission() + payloadCom).PIPToDecimal() * Decimal(gas)
+    let payloadCom = Decimal((payloadData ?? Data()).count) * (GateManager.shared.lastComission?.payloadByte?.decimalFromPIP() ?? 0) //RawTransaction.payloadByteComissionPrice.decimalFromPIP()
+    let txCommission = GateManager.shared.lastComission?.transactionCommissions[.send] ?? 0
+    let commission = (txCommission  + payloadCom).PIPToDecimal() * Decimal(gas)
     let balanceString = coinFormatter.formattedDecimal(with: commission)
-    return balanceString + " " + (Coin.baseCoin().symbol ?? "")
+    return balanceString + " " + (GateManager.shared.lastComission?.coin?.symbol ?? Coin.baseCoin().symbol ?? "")
   }
 
   // MARK: -
@@ -955,22 +957,22 @@ extension SendViewModel {
 
 extension SendViewModel: LUAutocompleteViewDataSource, LUAutocompleteViewDelegate {
 
-  func autocompleteView(_ autocompleteView: LUAutocompleteView, elementsFor text: String, completion: @escaping ([String]) -> Void) {
+  func autocompleteView(_ autocompleteView: LUAutocompleteView, elementsFor text: String, completion: @escaping ([AutocompleteModel]) -> Void) {
     let term = text.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines).lowercased()
     self.dependency.contactsService.contacts()
       .subscribe(onNext: { [weak self] (contacts) in
         let data = ((contacts.filter { (item) -> Bool in
           return (item.name ?? "").lowercased().starts(with: term) && (item.name ?? "").lowercased() != term.lowercased()
-        })[safe: 0..<3])?.map { (item) -> String in
-          return (item.name ?? "")
+        })[safe: 0..<3])?.map { (item) -> TextAutocompleteModel in
+          return TextAutocompleteModel(shouldShowCheckmark: false, text: (item.name ?? ""))
         } ?? []
         completion(data.sorted())
         self?.didProvideAutocomplete.onNext(())
     }).disposed(by: disposeBag)
   }
 
-  func autocompleteView(_ autocompleteView: LUAutocompleteView, didSelect text: String) {
-    self.recipientSubject.accept(text)
+  func autocompleteView(_ autocompleteView: LUAutocompleteView, didSelect text: AutocompleteModel) {
+    self.recipientSubject.accept(text.description)
   }
 
 }

@@ -13,8 +13,10 @@ class CoinAutocompleteCell: LUAutocompleteTableViewCell {
 
 	@IBOutlet weak var coinTitleLabel: UILabel!
 
-	override func set(text: String, searchText: String? = nil) {
-		let attributedText = NSMutableAttributedString(string: text,
+  @IBOutlet weak var checkmarkIcon: UIImageView!
+
+  override func set(text: AutocompleteModel, searchText: String? = nil) {
+    let attributedText = NSMutableAttributedString(string: text.description,
                                                    attributes: [NSAttributedString.Key.font: UIFont.defaultFont(of: 16.0)])
 
 		if let srch = searchText, let range = attributedText.string.range(of: srch) {
@@ -24,6 +26,7 @@ class CoinAutocompleteCell: LUAutocompleteTableViewCell {
 		}
 
 		coinTitleLabel.attributedText = attributedText
+    checkmarkIcon?.isHidden = !text.shouldShowCheckmark
 	}
 
 }

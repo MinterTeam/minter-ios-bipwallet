@@ -8,6 +8,10 @@
 
 import Foundation
 
+public protocol AutocompleteModel: CustomStringConvertible {
+  var shouldShowCheckmark: Bool { get set }
+}
+
 /** The `LUAutocompleteViewDataSource` protocol is adopted by an object that mediates the application’s data model for a `LUAutocompleteView` object.
 The data source provides the autocomplete view object with the information it needs to display.
 */
@@ -19,5 +23,5 @@ public protocol LUAutocompleteViewDataSource: class {
         - text: A string representing the input from the text field.
         - completion: A closure that contains the elements matching `text` that will be displayed by autocomplete view.
     */
-    func autocompleteView(_ autocompleteView: LUAutocompleteView, elementsFor text: String, completion: @escaping ([String]) -> Void)
+    func autocompleteView(_ autocompleteView: LUAutocompleteView, elementsFor text: String, completion: @escaping ([AutocompleteModel]) -> Void)
 }

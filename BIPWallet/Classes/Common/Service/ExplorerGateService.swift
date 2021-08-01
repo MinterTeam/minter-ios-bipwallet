@@ -9,8 +9,21 @@
 import Foundation
 import RxSwift
 import MinterCore
+import MinterExplorer
 
 class ExplorerGateService: GateService {
+
+  init() {
+    self.priceCommissions().subscribe().disposed(by: disposeBag)
+  }
+
+  func priceCommissions() -> Observable<(Decimal?)> {
+    return gateManager.priceCommissions()
+  }
+
+  var lastComission: Commission? {
+    return gateManager.lastComission
+  }
 
   private let disposeBag = DisposeBag()
 
@@ -20,6 +33,10 @@ class ExplorerGateService: GateService {
 
   func currentGas() -> Observable<Int> {
     return gasSubject.asObserver()
+  }
+
+  func commission() -> Observable<Commission> {
+    return gateManager.commissionSubject
   }
 
   func updateGas() {
@@ -36,6 +53,24 @@ class ExplorerGateService: GateService {
 
   func estimateComission(rawTx: String) -> Observable<Decimal> {
     gateManager.estimateComission(tx: rawTx)
+  }
+
+  func estimateCoinBuy(coinFrom: String,
+                       coinTo: String,
+                       value: Decimal) -> Observable<EstimateConvertResponse> {
+    return Observable.create { (observer) -> Disposable in
+      self.gateManager.estimateCoinBuy(coinFrom: coinFrom, coinTo: coinTo, value: value) { (res, error) in
+        if let error = error {
+          observer.onError(error)
+        } else if res == nil {
+          observer.onError(GateManagerError.wrongResponse)
+        } else {
+          observer.onNext(res!)
+          observer.onCompleted()
+        }
+      }
+      return Disposables.create()
+    }
   }
 
 }

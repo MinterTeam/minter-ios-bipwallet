@@ -18,14 +18,17 @@ class SpendCoinsCoordinator: BaseCoordinator<Void> {
        balanceService: BalanceService,
        gateService: GateService,
        transactionService: TransactionService,
-       coinService: CoinService
+       coinService: CoinService,
+       poolService: PoolService
        ) {
     super.init()
 
     let dependency = SpendCoinsViewModel.Dependency(coinService: coinService,
                                                     balanceService: balanceService,
                                                     gateService: gateService,
-                                                    transactionService: transactionService)
+                                                    transactionService: transactionService,
+                                                    poolService: poolService
+                                                    )
 
     let viewModel = SpendCoinsViewModel(dependency: dependency)
     viewController = сontroller

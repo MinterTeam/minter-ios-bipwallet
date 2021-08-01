@@ -8,6 +8,19 @@
 
 import UIKit
 
+public struct TextAutocompleteModel: AutocompleteModel, Comparable {
+  public static func < (lhs: TextAutocompleteModel, rhs: TextAutocompleteModel) -> Bool {
+    return lhs.description < rhs.description
+  }
+  
+  public var shouldShowCheckmark: Bool
+  public var text: String
+  
+  public var description: String {
+    return self.text
+  }
+}
+
 /// The base class for cells used in `LUAutocompleteView`
 open class LUAutocompleteTableViewCell: UITableViewCell {
     // MARK - Public Functions
@@ -20,7 +33,7 @@ open class LUAutocompleteTableViewCell: UITableViewCell {
      
     - Warning: Must be implemented by each subclass.
     */
-    open func set(text: String, searchText: String? = nil) {
+    open func set(text: AutocompleteModel, searchText: String? = nil) {
         preconditionFailure("This function must be implemented by each subclass")
     }
 }

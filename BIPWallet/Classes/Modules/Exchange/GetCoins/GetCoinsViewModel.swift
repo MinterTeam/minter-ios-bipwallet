@@ -45,6 +45,7 @@ class GetCoinsViewModel: ConvertCoinsViewModel, ViewModel {
     var coinService: CoinService
     var gateService: GateService
     var transactionService: TransactionService
+    var poolService: PoolService
   }
 
   init(dependency: Dependency) {
@@ -144,14 +145,41 @@ class GetCoinsViewModel: ConvertCoinsViewModel, ViewModel {
         self?.selectedCoin = item?.coin
         self?.spendCoin.accept(item?.coin)
       }).disposed(by: disposeBag)
+    
+    let estim = estimate.share()
+    
+    estim.map { [weak self] estimate in
+      var approximatelyValue: String = ""
+      switch estimate {
+      case .bancor(let val):
+        approximatelyValue = (self?.formatter.formattedDecimal(with: val) ?? "") + " " + (self?.spendCoin.value ?? "")
+      
+      default:
+        approximatelyValue = "OLOLO"
+//      break
+//        approximatelyValue = (self?.formatter.formattedDecimal(with: val > 0 ? val : 0) ?? "") + " " + //from
+      }
+      return approximatelyValue
+    }.subscribe(approximately).disposed(by: disposeBag)
+
+    estim.map { estimate in
+      return true
+    }.subscribe(approximatelyReady).disposed(by: disposeBag)
+
   }
+
+  enum Estimate {
+    case pool(route: [Coin], estimate: Decimal)
+    case bancor(estimate: Decimal)
+  }
+
+  private var estimate = PublishSubject<Estimate>()
 
   private var spendCoin = BehaviorRelay<String?>(value: nil)
   //TODO: Move to parent as amount
   private var getAmount = BehaviorRelay<String?>(value: nil)
   var approximately = PublishSubject<String?>()
   var approximatelySum = BehaviorSubject<Decimal?>(value: nil)
-  var approximatelyReady = PublishSubject<Bool>()
   var isButtonEnabled: Observable<Bool> {
     return Observable.combineLatest(getCoin.asObservable(),
                                     approximatelySum.asObservable(),
@@ -189,6 +217,8 @@ class GetCoinsViewModel: ConvertCoinsViewModel, ViewModel {
   func calculateApproximately() {
     approximatelyReady.onNext(false)
     approximatelySum.onNext(nil)
+    isPoolExhange.accept(false)
+    poolPath.accept([])
 
     guard let from = selectedCoin?.uppercased(),
       let to = try? self.getCoin.value()?.uppercased() ?? "",
@@ -200,9 +230,80 @@ class GetCoinsViewModel: ConvertCoinsViewModel, ViewModel {
 
     isApproximatelyLoading.onNext(true)
 
-    GateManager.shared.estimateCoinBuy(coinFrom: from,
+    Observable.zip(
+      self.dependency.coinService.estimate(fromCoin: from, toCoin: to.transformToCoinName(),
+                                           amount: amnt.decimalFromPIP(), type: .output),
+      self.dependency.poolService.route(from: from, to: to, amount: amnt.decimalFromPIP(), type: .output),
+      self.dependency.gateService.commission()
+    )
+    .do(onError: { [weak self] _ in
+      self?.isApproximatelyLoading.onNext(false)
+    }, onCompleted: { [weak self] in
+      self?.isApproximatelyLoading.onNext(false)
+    }, onSubscribe: { [weak self] in
+      self?.isApproximatelyLoading.onNext(true)
+    })
+    /*.map({ response in
+      let isPool = response.1?.type == "pool"
+      var route: [Coin]?
+      if isPool {
+        route = response.1?.route.compactMap {$0}
+//        normalizedCommission = canPayComissionWithBaseCoin ? 0 : res.0.commission.PIPToDecimal()
+      } else {
+//        self?.poolPath.accept([])
+//        normalizedCommission = canPayComissionWithBaseCoin ? 0 : res.0.commission.PIPToDecimal()
+      }
+      return isPool ? Estimate.pool(route: route ?? [], estimate: response.1?.amountOut ?? 0.0)
+        : Estimate.bancor(estimate: response.0.commission)
+    })*/
+  .subscribe(onNext: { [weak self] res in
+    let estiamte = res.0
+    let commissions = res.2
+//      if let route = res.1 {
+        self?.isPoolExhange.accept((estiamte?.swapType == "pool"))
+//      } else {
+//        self?.isPoolExhange.accept(false)
+//      }
+
+      //if we can pay commission with base coin - set normalized comission to zero
+      let canPayComissionWithBaseCoin = (self?.canPayComissionWithBaseCoin() ?? false)
+
+      var normalizedCommission: Decimal
+
+      if self?.isPoolExhange.value == true {
+        let path = res.1?.route.compactMap {$0.id} ?? []
+        self?.poolPath.accept(path)
+        let additionalFee = path.count > 2 ? Decimal(path.count - 2) * (commissions.transactionCommissions[.buyPoolBase]?.PIPToDecimal() ?? 0) : 0.0
+        normalizedCommission = canPayComissionWithBaseCoin ? 0 : additionalFee
+      } else {
+        self?.poolPath.accept([])
+//        normalizedCommission = canPayComissionWithBaseCoin ? 0 : res.0.commission.PIPToDecimal()
+        normalizedCommission = canPayComissionWithBaseCoin ? 0 : commissions.transactionCommissions[.buyBancor]?.PIPToDecimal() ?? 0
+      }
+
+    let val = (estiamte?.amountIn ?? 0) + normalizedCommission
+
+      let approximatelyValue = (self?.formatter.formattedDecimal(with: val > 0 ? val : 0) ?? "") + " " + from
+      self?.approximately.onNext(approximatelyValue)
+      self?.approximatelySum.onNext(val)
+      self?.isApproximatelyLoading.onNext(false)
+      self?.approximatelyReady.onNext(true)
+    }, onError: { [weak self] error in
+      self?.approximatelyReady.onNext(false)
+      if let err = error as? HTTPClientError {
+        var logMes = "Estimate can't be calculated at the moment".localized()
+        if let log = (err.userData?["log"] as? String ?? err.userData?["message"] as? String) {
+          logMes = log
+        }
+        self?.approximately.onNext(logMes)
+        return
+      }
+      self?.approximately.onNext("Estimate can't be calculated at the moment".localized())
+    }).disposed(by: self.disposeBag)
+
+    /*GateManager.shared.estimateCoinBuy(coinFrom: from,
                                        coinTo: to,
-                                       value: amnt * TransactionCoinFactorDecimal) { [weak self] (val, commission, error) in
+                                       value: amnt * TransactionCoinFactorDecimal) { [weak self] (val, commission, type, error) in
 
       self?.isApproximatelyLoading.onNext(false)
 
@@ -210,10 +311,13 @@ class GetCoinsViewModel: ConvertCoinsViewModel, ViewModel {
         let ammnt = val,
         let commission = commission else {
 
-        if let err = error as? HTTPClientError,
-          let log = err.userData?["log"] as? String {
-            self?.approximately.onNext(log)
-            return
+        if let err = error as? HTTPClientError {
+          var logMes = "Estimate can't be calculated at the moment".localized()
+          if let log = (err.userData?["log"] as? String ?? err.userData?["message"] as? String) {
+            logMes = log
+          }
+          self?.approximately.onNext(logMes)
+          return
         }
 
         self?.approximately.onNext("Estimate can't be calculated at the moment".localized())
@@ -225,20 +329,33 @@ class GetCoinsViewModel: ConvertCoinsViewModel, ViewModel {
       let normalizedCommission = canPayComissionWithBaseCoin ? 0 : commission / TransactionCoinFactorDecimal
       let val = (ammnt / TransactionCoinFactorDecimal) + normalizedCommission
 
-      let approximatelyValue = CurrencyNumberFormatter.formattedDecimal(with: val > 0 ? val : 0 ,
-                                                                        formatter: self!.formatter) + " " + from
+      let approximatelyValue = (self?.formatter.formattedDecimal(with: val > 0 ? val : 0) ?? "") + " " + from
       self?.approximately.onNext(approximatelyValue)
+      self?.isPoolExhange.accept((type == "pool"))
 
       self?.approximatelySum.onNext(val)
 
       if to == (try? self?.getCoin.value() ?? "") {
-        self?.approximatelyReady.onNext(true)
+        if self?.isPoolExhange.value == true {
+          self?.dependency.coinService.route(fromCoin: from,
+                                            toCoin: to,
+                                            amount: amnt * TransactionCoinFactorDecimal,
+                                            type: "output")
+            .subscribe(onNext: { res in
+              self?.poolPath.accept(res.1.compactMap {$0.id})
+              self?.approximatelyReady.accept(true)
+            }, onError: { error in
+              self?.approximatelyReady.accept(true)
+            }).disposed(by: self!.disposeBag)
+        } else {
+          self?.approximatelyReady.accept(true)
+        }
       }
-    }
+    }*/
   }
 
   func exchange(selectedAddress: String) {
-    var approximatelySumRoundedVal = ((try? self.approximatelySum.value()) ?? 0) * 1.1 * TransactionCoinFactorDecimal
+    var approximatelySumRoundedVal = ((try? self.approximatelySum.value()) ?? 0) * 1.05 * TransactionCoinFactorDecimal
     approximatelySumRoundedVal.round(.up)
     guard
       let coinFrom = self.selectedCoin?.transformToCoinName(),
@@ -294,58 +411,59 @@ class GetCoinsViewModel: ConvertCoinsViewModel, ViewModel {
             self?.errorNotification.onNext("Can't find coin with id \(coinFromId)")
             return
           }
-          //TODO: remove after https://github.com/MinterTeam/minter-go-node/issues/224
-          let maxValueToSell = BigUInt(decimal: (self?.selectedBalance ?? 0) * TransactionCoinFactorDecimal) ?? BigUInt(0)//maximumValueToSell
 
-          let rawTx = BuyCoinRawTransaction(nonce: BigUInt(decimal: nonce)!,
-                                            gasPrice: gas,
-                                            gasCoinId: coinId,
-                                            coinFromId: coinFromId,
-                                            coinToId: coinToId,
-                                            value: value,
-                                            maximumValueToSell: maxValueToSell)
-          let signedTx = RawTransactionSigner.sign(rawTx: rawTx, privateKey: privateKey)
+          self?.buyRawTransaction(nonce: nonce,
+                                  gasPrice: gas,
+                                  gasCoinId: coinId,
+                                  coinFromId: coinFromId,
+                                  coinToId: coinToId,
+                                  value: value,
+                                  maximumValueToSell: maximumValueToSell,
+                                  completion: { rawTx in
+                                    guard let rawTx = rawTx else { return }
+                                    let signedTx = RawTransactionSigner.sign(rawTx: rawTx, privateKey: privateKey)
 
-          GateManager.shared.sendRawTransaction(rawTransaction: signedTx!, completion: { (hash, block, err) in
+                                    GateManager.shared.sendRawTransaction(rawTransaction: signedTx!, completion: { (hash, block, err) in
 
-            self?.isLoading.onNext(false)
+                                      self?.isLoading.onNext(false)
 
-            defer {
-              self?.dependency.balanceService.updateBalance()
-            }
+                                      defer {
+                                        self?.dependency.balanceService.updateBalance()
+                                      }
 
-            guard let `self` = self else { return }
+                                      guard let `self` = self else { return }
 
-            guard nil == err else {
-              self.handleError(err)
-              return
-            }
+                                      guard nil == err else {
+                                        self.handleError(err)
+                                        return
+                                      }
 
-            self.shouldClearForm.value = true
+                                      self.shouldClearForm.value = true
 
-            if let hash = hash {
-              self.dependency.transactionService.transaction(hash: hash)
-                .delay(.seconds(1), scheduler: MainScheduler.instance)
-                .retry(.exponentialDelayed(maxCount: 3, initial: 1.0, multiplier: 2.0), scheduler: MainScheduler.instance, shouldRetry: nil)
-                .subscribe(onNext: { [weak self] (transaction) in
-                  guard let `self` = self else { return }
-                  if let transactionData = transaction?.data as? MinterExplorer.ConvertTransactionData,
-                    let coin = transactionData.toCoin?.symbol,
-                    let amount = transactionData.valueToBuy {
-                    let string = CurrencyNumberFormatter.formattedDecimal(with: amount, formatter: self.formatter) + " " + coin
-                      self.exchangeSucceeded.onNext((message: string, transactionHash: transaction?.hash))
-                  } else {
-                    let string = "Coins have been exchanged".localized()
-                    self.exchangeSucceeded.onNext((message: string, transactionHash: transaction?.hash))
-                  }
-                }, onError: { error in
-                  //If error in getting transaction - show convert succeeed without estimates
-                  self.exchangeSucceeded.onNext((message: "Coins have been exchanged".localized(), transactionHash: hash))
-              }).disposed(by: self.disposeBag)
-            } else {
-              self.errorNotification.onNext("An error occured".localized())
-            }
-          })
+                                      if let hash = hash {
+                                        self.dependency.transactionService.transaction(hash: hash)
+                                          .delay(.seconds(1), scheduler: MainScheduler.instance)
+                                          .retry(.exponentialDelayed(maxCount: 3, initial: 1.0, multiplier: 2.0), scheduler: MainScheduler.instance, shouldRetry: nil)
+                                          .subscribe(onNext: { [weak self] (transaction) in
+                                            guard let `self` = self else { return }
+                                            if let transactionData = transaction?.data as? MinterExplorer.ConvertTransactionData,
+                                              let coin = transactionData.toCoin?.symbol,
+                                              let amount = transactionData.valueToBuy {
+                                              let string = CurrencyNumberFormatter.formattedDecimal(with: amount, formatter: self.formatter) + " " + coin
+                                                self.exchangeSucceeded.onNext((message: string, transactionHash: transaction?.hash))
+                                            } else {
+                                              let string = "Coins have been exchanged".localized()
+                                              self.exchangeSucceeded.onNext((message: string, transactionHash: transaction?.hash))
+                                            }
+                                          }, onError: { error in
+                                            //If error in getting transaction - show convert succeeed without estimates
+                                            self.exchangeSucceeded.onNext((message: "Coins have been exchanged".localized(), transactionHash: hash))
+                                        }).disposed(by: self.disposeBag)
+                                      } else {
+                                        self.errorNotification.onNext("An error occured".localized())
+                                      }
+                                    })
+                                  })
         })
       })
     }
@@ -376,6 +494,77 @@ class GetCoinsViewModel: ConvertCoinsViewModel, ViewModel {
       .subscribe(onNext: { (coins) in
         completion?(coins)
       }).disposed(by: disposeBag)
+  }
+
+  private func buyRawTransaction(nonce: Decimal,
+                                 gasPrice: Int,
+                                 gasCoinId: Int,
+                                 coinFromId: Int,
+                                 coinToId: Int,
+                                 value: BigUInt,
+                                 maximumValueToSell: BigUInt,
+                                 completion: ((RawTransaction?) -> ())?) {
+    if (!self.isPoolExhange.value) {
+      // TODO: remove after https://github.com/MinterTeam/minter-go-node/issues/224
+      let maxValueToSell = maximumValueToSell
+
+      let rawTx = BuyCoinRawTransaction(nonce: BigUInt(decimal: nonce)!,
+                                        gasPrice: gasPrice,
+                                        gasCoinId: gasCoinId,
+                                        coinFromId: coinFromId,
+                                        coinToId: coinToId,
+                                        value: value,
+                                        maximumValueToSell: maxValueToSell)
+      completion?(rawTx)
+    } else {
+      guard let coinFrom = self.dependency.coinService.coinBy(id: coinFromId),
+            let coinTo = self.dependency.coinService.coinBy(id: coinToId) else {
+        completion?(nil)
+        return
+      }
+      self.dependency.coinService.route(fromCoin: coinFrom.symbol ?? "",
+                                        toCoin: coinTo.symbol ?? "",
+                                        amount: Decimal(bigInt: value) ?? 0.0, type: "output")
+        .subscribe(onNext: { res in
+          self.poolPath.accept(res.1.compactMap {$0.id})
+          let tx = BuySwapPoolRawTransaction(nonce: BigUInt(decimal: nonce)!, gasCoinId: gasCoinId, coins: res.1.compactMap {$0.id}, valueToBuy: value, maximumValueToSell: maximumValueToSell)
+          completion?(tx)
+        }, onError: { err in
+          completion?(nil)
+        }).disposed(by: disposeBag)
+    }
+  }
+  
+  private func buyRawTransaction(nonce: Decimal,
+                                 gasPrice: Int,
+                                 gasCoinId: Int,
+                                 coinFromId: Int,
+                                 coinToId: Int,
+                                 value: BigUInt,
+                                 maximumValueToSell: BigUInt,
+                                 path: [Coin] = []) -> RawTransaction? {
+    if (path.count == 0) {
+      let maxValueToSell = maximumValueToSell
+
+      let rawTx = BuyCoinRawTransaction(nonce: BigUInt(decimal: nonce)!,
+                                        gasPrice: gasPrice,
+                                        gasCoinId: gasCoinId,
+                                        coinFromId: coinFromId,
+                                        coinToId: coinToId,
+                                        value: value,
+                                        maximumValueToSell: maxValueToSell)
+      return rawTx
+    } else {
+      guard let coinFrom = self.dependency.coinService.coinBy(id: coinFromId),
+            let coinTo = self.dependency.coinService.coinBy(id: coinToId) else {
+        return nil
+      }
+      return BuySwapPoolRawTransaction(nonce: BigUInt(decimal: nonce)!, gasCoinId: gasCoinId, coins: path.compactMap {$0.id}, valueToBuy: value, maximumValueToSell: maximumValueToSell)
+    }
+  }
+  
+  func gasCoinId(coinFromId: Int) -> Int? {
+    return self.canPayComissionWithBaseCoin() ? self.dependency.gateService.lastComission?.coin?.id : coinFromId
   }
 
 }

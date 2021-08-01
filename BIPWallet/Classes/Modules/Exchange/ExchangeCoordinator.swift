@@ -49,18 +49,24 @@ class ExchangeCoordinator: BaseCoordinator<Void> {
     var spendViewController: UIViewController?
 
     let gateService = ExplorerGateService()
+//    gateService.priceCommissions().subscribe().disposed(by: disposeBag)
+    
+    let poolService = ExplorerPoolService()
 
     let spend = SpendCoinsCoordinator(viewController: &spendViewController,
                                       balanceService: balanceService,
                                       gateService: gateService,
                                       transactionService: transactionService,
-                                      coinService: coinService)
+                                      coinService: coinService,
+                                      poolService: poolService
+                                      )
 
     let get = GetCoinsCoordinator(viewController: &getViewController,
                                   balanceService: balanceService,
                                   gateService: gateService,
                                   transactionService: transactionService,
                                   coinService: coinService,
+                                  poolService: poolService,
                                   coin: settings?.buyCoin,
                                   amount: settings?.buyAmount,
                                   closeAfterBuy: settings?.closeAfterTransaction ?? false)

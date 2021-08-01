@@ -19,6 +19,5 @@ extension String {
 		self.init(data: coinData, encoding: .utf8)
 		let pattern = "[^A-Za-z0-9]+"
 		self = self.replacingOccurrences(of: pattern, with: "", options: [.regularExpression])
-//		self = self.replacingOccurrences(of: "\0", with: "")
 	}
 }
