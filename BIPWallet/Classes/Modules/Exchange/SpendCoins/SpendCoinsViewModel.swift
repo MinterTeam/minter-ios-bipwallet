@@ -240,8 +240,7 @@ class SpendCoinsViewModel: ConvertCoinsViewModel, ViewModel {
 
     Observable.zip(
       self.dependency.coinService.estimate(fromCoin: fromCoin, toCoin: getCoin.transformToCoinName(),
-                                           amount: value, type: .input
-      ),
+                                           amount: value, type: .input),
       self.dependency.poolService.route(from: fromCoin, to: getCoin.transformToCoinName(),
                                         amount: value, type: .input).catchErrorJustReturn(nil)
       ).do(onNext: { [weak self] (_) in
@@ -273,6 +272,7 @@ class SpendCoinsViewModel: ConvertCoinsViewModel, ViewModel {
         
         if let route = pool {
           self?.isPoolExhange.accept((route.type == "pool"))
+          self?.poolPath.accept(route.route.compactMap {$0.id})
         } else {
           self?.isPoolExhange.accept(false)
         }
@@ -283,7 +283,7 @@ class SpendCoinsViewModel: ConvertCoinsViewModel, ViewModel {
         self?.approximately.onNext(appr)
 
         var approximatelyRoundedVal = (val * 0.95)
-        approximatelyRoundedVal.round(.up)
+//        approximatelyRoundedVal.round(.up)
         self?.minimumValueToBuy.value = approximatelyRoundedVal
 
         let gtCoin = try? self?.getCoin.value() ?? ""

@@ -233,7 +233,7 @@ class GetCoinsViewModel: ConvertCoinsViewModel, ViewModel {
     Observable.zip(
       self.dependency.coinService.estimate(fromCoin: from, toCoin: to.transformToCoinName(),
                                            amount: amnt.decimalFromPIP(), type: .output),
-      self.dependency.poolService.route(from: from, to: to, amount: amnt.decimalFromPIP(), type: .output),
+      self.dependency.poolService.route(from: from, to: to, amount: amnt.decimalFromPIP(), type: .output).catchErrorJustReturn(nil),
       self.dependency.gateService.commission()
     )
     .do(onError: { [weak self] _ in

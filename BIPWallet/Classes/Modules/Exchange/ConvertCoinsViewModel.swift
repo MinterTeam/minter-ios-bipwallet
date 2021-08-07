@@ -210,13 +210,9 @@ extension ConvertCoinsViewModel: LUAutocompleteViewDelegate, LUAutocompleteViewD
                         completion: @escaping ([AutocompleteModel]) -> Void) {
     self.coins(by: text) { (coins) in
 
-      let coinsArray = coins.map({ (coin) -> String in
-        return coin.symbol ?? ""
-      }).filter({ (coin) -> Bool in
-        return coin != ""
-      }).map { str in
-        TextAutocompleteModel(shouldShowCheckmark: false, text: str)
-      }
+      let coinsArray = coins.compactMap({ (coin) -> TextAutocompleteModel in
+        return TextAutocompleteModel(shouldShowCheckmark: coin.isOracleVerified, text: coin.symbol ?? "")
+      })
 
       completion(Array(coinsArray[safe: 0..<3] ?? []))
     }

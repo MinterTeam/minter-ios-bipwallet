@@ -36,7 +36,7 @@
                         </userDefinedRuntimeAttributes>
                     </label>
                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="checkmarkIcon" translatesAutoresizingMaskIntoConstraints="NO" id="jut-p5-ZX8">
-                        <rect key="frame" x="70.5" y="18" width="12" height="12"/>
+                        <rect key="frame" x="65.5" y="18" width="12" height="12"/>
                         <constraints>
                             <constraint firstAttribute="width" constant="12" id="Gw4-3G-6gq"/>
                             <constraint firstAttribute="height" constant="12" id="yCG-fa-Vnc"/>
@@ -45,10 +45,11 @@
                 </subviews>
                 <constraints>
                     <constraint firstAttribute="bottom" secondItem="dhK-86-I1p" secondAttribute="bottom" constant="14" id="6AG-aG-WEf"/>
-                    <constraint firstItem="jut-p5-ZX8" firstAttribute="leading" secondItem="dhK-86-I1p" secondAttribute="trailing" constant="10" id="B2G-il-dCj"/>
+                    <constraint firstItem="jut-p5-ZX8" firstAttribute="leading" secondItem="dhK-86-I1p" secondAttribute="trailing" constant="5" id="B2G-il-dCj"/>
                     <constraint firstItem="dhK-86-I1p" firstAttribute="top" secondItem="XP3-Ak-1iE" secondAttribute="top" constant="14" id="Hul-CZ-m8z"/>
                     <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="dhK-86-I1p" secondAttribute="trailing" constant="10" id="RPu-cc-4sl"/>
                     <constraint firstItem="jut-p5-ZX8" firstAttribute="centerY" secondItem="dhK-86-I1p" secondAttribute="centerY" id="eoR-CD-5RD"/>
+                    <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="jut-p5-ZX8" secondAttribute="trailing" constant="10" id="iQJ-HH-xIH"/>
                     <constraint firstItem="dhK-86-I1p" firstAttribute="leading" secondItem="XP3-Ak-1iE" secondAttribute="leading" constant="16" id="yJz-Tk-TOB"/>
                 </constraints>
             </tableViewCellContentView>
