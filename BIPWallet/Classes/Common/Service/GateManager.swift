@@ -73,7 +73,7 @@ class GateManager: BaseManager {
   var lastComission: Commission?
   let commissionSubject = ReplaySubject<Commission>.create(bufferSize: 1)
 
-  static let shared = GateManager(httpClient: APIClient(headers: ["X-Minter-Chain-Id": "chilinet"]))
+  static let shared = GateManager(httpClient: APIClient(headers: ["X-Minter-Chain-Id": XMinterChainId]))
 
   private(set) var lastGas = MinterCore.RawTransactionDefaultGasPrice
 

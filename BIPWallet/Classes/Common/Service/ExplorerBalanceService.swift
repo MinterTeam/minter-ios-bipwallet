@@ -136,7 +136,7 @@ class ExplorerBalanceService: BalanceService {
     case noAddress
   }
 
-  let httpClient = APIClient(headers: ["X-Minter-Chain-Id": "chilinet"])
+  let httpClient = APIClient(headers: ["X-Minter-Chain-Id": XMinterChainId])
   lazy var addressManager = ExplorerAddressManager(httpClient: httpClient)
 
   func delegations(address: String, page: Int) -> Observable<[MinterExplorer.AddressDelegation]> {
@@ -241,7 +241,7 @@ class ExplorerTransactionService: TransactionService {
     }
   }
 
-  let explorerManager = ExplorerTransactionManager(httpClient: APIClient(headers: ["X-Minter-Chain-Id": "chilinet"]))
+  let explorerManager = ExplorerTransactionManager(httpClient: APIClient(headers: ["X-Minter-Chain-Id": XMinterChainId]))
 
   func transactions(address: String, filter: TransactionServiceFilter?, page: Int) -> Observable<[MinterExplorer.Transaction]> {
     return Observable.create { (observable) -> Disposable in

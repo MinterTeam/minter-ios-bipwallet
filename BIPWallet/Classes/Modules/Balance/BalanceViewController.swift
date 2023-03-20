@@ -306,8 +306,13 @@ class BalanceViewController: SegmentedPagerTabStripViewController, Controller, S
 
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
+    
+    let navigationBarAppearance = UINavigationBarAppearance()
+    navigationBarAppearance.backgroundColor = UIColor(hex: 0x2F1D69)
 
     self.navigationController?.navigationBar.barTintColor = UIColor(hex: 0x2F1D69)
+    navigationItem.scrollEdgeAppearance = navigationBarAppearance
+    navigationItem.standardAppearance = navigationBarAppearance
     self.navigationController?.navigationBar.barStyle = .default
     self.navigationController?.navigationBar.isTranslucent = false
   }

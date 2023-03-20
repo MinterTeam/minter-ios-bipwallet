@@ -127,11 +127,11 @@ PODS:
   - ObjectMapper (3.5.3)
   - PromisesObjC (1.2.12)
   - ReachabilitySwift (4.3.1)
-  - Realm (10.7.6):
-    - Realm/Headers (= 10.7.6)
-  - Realm/Headers (10.7.6)
-  - RealmSwift (10.7.6):
-    - Realm (= 10.7.6)
+  - Realm (10.7.7):
+    - Realm/Headers (= 10.7.7)
+  - Realm/Headers (10.7.7)
+  - RealmSwift (10.7.7):
+    - Realm (= 10.7.7)
   - RxAppState (1.6.0):
     - RxCocoa (~> 5.0)
     - RxSwift (~> 5.0)
@@ -198,7 +198,7 @@ DEPENDENCIES:
   - NotificationBannerSwift
   - ObjectMapper (~> 3.3)
   - ReachabilitySwift (~> 4.3)
-  - RealmSwift (from `https://github.com/realm/realm-cocoa.git`, branch `master`)
+  - RealmSwift (~> 10.7.6)
   - RxAppState
   - RxBiBinding
   - RxDataSources
@@ -243,6 +243,7 @@ SPEC REPOS:
     - PromisesObjC
     - ReachabilitySwift
     - Realm
+    - RealmSwift
     - RxAppState
     - RxBiBinding
     - RxCocoa
@@ -274,10 +275,6 @@ EXTERNAL SOURCES:
     :path: "../../minter-ios-core"
   MinterExplorer:
     :path: "../../minter-ios-explorer"
-  RealmSwift:
-    :branch: master
-    :git: https://github.com/realm/realm-cocoa.git
-    :submodules: true
   RxRouting:
     :git: https://github.com/e-sites/RxRouting.git
   SwiftValidator:
@@ -291,10 +288,6 @@ CHECKOUT OPTIONS:
   GoldenKeystore:
     :commit: 2f58a6eb405561bec305d5a197bcaa1514eed77e
     :git: https://github.com/sidorov-panda/GoldenKeystore
-  RealmSwift:
-    :commit: 39930fe2a8c4a207cb832ce8cf156f2e25db4f6a
-    :git: https://github.com/realm/realm-cocoa.git
-    :submodules: true
   RxRouting:
     :commit: b489bece04d92c77ecc11802eec2810fdf78ca10
     :git: https://github.com/e-sites/RxRouting.git
@@ -331,8 +324,8 @@ SPEC CHECKSUMS:
   ObjectMapper: 97111c97e054a6ee25917662106689f0b4127b37
   PromisesObjC: 3113f7f76903778cf4a0586bd1ab89329a0b7b97
   ReachabilitySwift: 4032e2f59586e11e3b0ebe15b167abdd587a388b
-  Realm: ed860452717c8db8f4bf832b6807f7f2ce708839
-  RealmSwift: e31c4ddbcc42ac879313d656b86f9ca539f6f4f4
+  Realm: 8010af8b7a576ba501729bcbc54a3cd1f1f7dca3
+  RealmSwift: dc17e6d649c12a8996f9e962c3fe6cef356885c4
   RxAppState: b633d7370970ecb80081912ea08a7bf3eb644b4e
   RxBiBinding: 6cc627d9e0dfa0b2ce8470cd7e539f3cb100f782
   RxCocoa: 32065309a38d29b5b0db858819b5bf9ef038b601
@@ -357,6 +350,6 @@ SPEC CHECKSUMS:
   XLPagerTabStrip: 63166e21c9844fa30f2d95d30f335e73be5caf22
   YandexMobileMetrica: f18374ee6977a4cd1d0a86298a0df4ad7baf4135
 
-PODFILE CHECKSUM: b0ac09016ae4efc72e0fd6d5010ca07777b2790e
+PODFILE CHECKSUM: 528829914a5b62903509d8a3f3615a38ec062b0c
 
 COCOAPODS: 1.10.0

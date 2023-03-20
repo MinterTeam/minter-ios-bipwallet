@@ -94,7 +94,7 @@ class SettingsViewController: BaseViewController, Controller, StoryboardInitiali
         return cell
       })
 
-    tableView.contentInset = UIEdgeInsets(top: -35, left: 0, bottom: 0, right: 0)
+    tableView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
 
     configure(with: viewModel)
   }
@@ -109,6 +109,7 @@ class SettingsViewController: BaseViewController, Controller, StoryboardInitiali
       NSAttributedString.Key.foregroundColor: UIColor.mainBlackColor(),
       NSAttributedString.Key.font: UIFont.semiBoldFont(of: 18.0)
     ]
+    self.navigationController?.navigationBar.isTranslucent = false
   }
 
   private func registerCells() {

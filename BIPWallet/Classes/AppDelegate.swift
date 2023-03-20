@@ -31,13 +31,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
       MinterGateBaseURLString = "https://qa.gate-api.minter.network"
     } else {
       if !isTestnet {
-        MinterGateBaseURLString = "https://gate.apps.minter.network"
+        MinterGateBaseURLString = "https://gate-api.toronet.minter.network"
       } else {
         MinterGateBaseURLString = "https://gate-api.testnet.minter.network"
       }
     }
 
-    MinterCoreSDK.initialize(urlString: conf.environment.nodeBaseURL, network: isTestnet ? .testnet : .mainnet)
+    MinterCoreSDK.initialize(urlString: conf.environment.nodeBaseURL, network: .testnet)
     MinterExplorerSDK.initialize(APIURLString: isUITesting ? conf.environment.testExplorerAPIBaseURL : conf.environment.explorerAPIBaseURL,
                                  WEBURLString: conf.environment.explorerWebURL,
                                  websocketURLString: conf.environment.explorerWebsocketURL)

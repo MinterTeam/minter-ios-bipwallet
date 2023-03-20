@@ -28,6 +28,9 @@ class ConvertCoinsViewModel: BaseViewModel {
 				.trimmingCharacters(in: .whitespacesAndNewlines)
 		}
 	}
+  var baseCoin: Coin {
+    return gateService.lastComission?.coin ?? Coin.baseCoin()
+  }
 
   var approximatelyReady = BehaviorSubject<Bool>(value: false)
   var spendCoinField = ReplaySubject<String?>.create(bufferSize: 2)
@@ -71,17 +74,18 @@ class ConvertCoinsViewModel: BaseViewModel {
 
 		super.init()
 
-    self.selectedCoin = Coin.baseCoin().symbol!
+    self.selectedCoin = self.baseCoin.symbol!//Coin.baseCoin().symbol!
 
     balanceService.balances().subscribe(onNext: { [weak self] (val) in
+      guard let self = self else { return; }
       let balances = val.balances
 
-      self?.balances = balances.mapValues({ (val) -> Decimal in
+      self.balances = balances.mapValues({ (val) -> Decimal in
         return val.0
       })
 
-      if self?.selectedCoin == nil {
-        self?.selectedCoin = Coin.baseCoin().symbol!
+      if self.selectedCoin == nil {
+        self.selectedCoin = self.baseCoin.symbol//Coin.baseCoin().symbol!
       }
 
       var spendCoinSource = [String: Decimal]()
@@ -89,10 +93,10 @@ class ConvertCoinsViewModel: BaseViewModel {
         spendCoinSource[coin] = balances[coin]?.0 ?? 0.0
       })
 
-      self?.spendCoinPickerSource = spendCoinSource
+      self.spendCoinPickerSource = spendCoinSource
 
-      if self?.selectedCoin != nil {
-        self?.spendCoinField.onNext(self?.spendCoinText)
+      if self.selectedCoin != nil {
+        self.spendCoinField.onNext(self.spendCoinText)
       }
     }).disposed(by: disposeBag)
 
@@ -147,7 +151,7 @@ class ConvertCoinsViewModel: BaseViewModel {
   var balances = [String: Decimal]()
 
   var baseCoinBalance: Decimal {
-    return balances[Coin.baseCoin().symbol!] ?? 0.0
+    return balances[self.baseCoin.symbol ?? ""] ?? 0.0
   }
 
 	var hasMultipleCoins: Bool = false
@@ -187,7 +191,7 @@ class ConvertCoinsViewModel: BaseViewModel {
 			return
 		}
 
-		if coin == Coin.baseCoin().symbol {
+    if coin == self.baseCoin.symbol {
 			hasCoin.value = true
 			self.validateErrors()
 			return

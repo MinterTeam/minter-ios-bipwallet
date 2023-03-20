@@ -12,8 +12,15 @@ class WhiteNavigationController: UINavigationController {
 
   override func loadView() {
     super.loadView()
-
-    self.navigationBar.shadowImage = UIImage(named: "PurpleNavigationBarShadowImage")
+    
+    self.navigationController?.navigationBar.barTintColor = .mainWhiteColor()
+    if #available(iOS 15, *) {
+      let appearance = UINavigationBarAppearance()
+      appearance.configureWithOpaqueBackground()
+      appearance.backgroundColor = .white
+      self.navigationBar.standardAppearance = appearance;
+      self.navigationBar.scrollEdgeAppearance = self.navigationBar.standardAppearance
+    }
   }
 
   override func viewDidLoad() {

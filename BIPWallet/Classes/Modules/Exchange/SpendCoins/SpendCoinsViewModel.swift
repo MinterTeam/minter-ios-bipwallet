@@ -147,10 +147,7 @@ class SpendCoinsViewModel: ConvertCoinsViewModel, ViewModel {
     }).disposed(by: disposeBag)
 
     didTapExchangeButton.withLatestFrom(self.approximately.asObservable()).subscribe(onNext: { [weak self] approx in
-      guard
-        let `self` = self,
-        let coinFrom = self.selectedCoin?.transformToCoinName(),
-        let amount = self.spendAmount.value else { return }
+      guard let self = self, let coinFrom = self.selectedCoin?.transformToCoinName(), let amount = self.spendAmount.value else { return }
 
       let fromString = CurrencyNumberFormatter.coinFormatter
         .formattedDecimal(with: Decimal(string: amount) ?? 0.0) + " " + coinFrom
@@ -169,8 +166,8 @@ class SpendCoinsViewModel: ConvertCoinsViewModel, ViewModel {
       .withLatestFrom(Observable.combineLatest(spendCoin, dependency.balanceService.balances()))
       .subscribe(onNext: { [weak self] (val) in
         guard let spendCoin = val.0, let selectedBalance = val.1.balances[spendCoin]?.0 else { return }
-
-        let selectedAmount = CurrencyNumberFormatter.decimalFormatter.formattedDecimal(with: selectedBalance, maxPlaces: 18)
+        let selectedAmount = CurrencyNumberFormatter.decimalFormatter.string(from: selectedBalance as NSNumber)
+//          CurrencyNumberFormatter.decimalFormatter.formattedDecimal(with: selectedBalance, maxPlaces: 18)
         self?.spendAmount.accept(selectedAmount)
       }).disposed(by: disposeBag)
   }
@@ -296,7 +293,10 @@ class SpendCoinsViewModel: ConvertCoinsViewModel, ViewModel {
   override func validateErrors() {
     if let amountString = self.spendAmount.value, let amount = Decimal(string: amountString) {
       if amount > selectedBalance {
-        amountError.value = "INSUFFICIENT FUNDS".localized()
+        let isMax = Decimal.PIPComparableBalance(from: self.selectedBalance) == Decimal.PIPComparableBalance(from: amount)
+        if !isMax {
+          amountError.value = "INSUFFICIENT FUNDS".localized()
+        }
       } else {
         amountError.value = nil
       }
@@ -383,7 +383,13 @@ class SpendCoinsViewModel: ConvertCoinsViewModel, ViewModel {
       }
     }
 
-    if let apiError = err as? HTTPClientError, let errorCode = apiError.userData?["code"] as? Int {
+    if let apiError = err as? HTTPClientError {
+      var errorCode = -1
+      if let eCode = apiError.userData?["code"] as? String {
+        errorCode = Int(eCode) ?? -1
+      } else if let eCode = apiError.userData?["code"] as? Int {
+        errorCode = eCode
+      }
 
       if errorCode == 107 {
         title = "Not enough coins to spend".localized()
@@ -446,8 +452,8 @@ class SpendCoinsViewModel: ConvertCoinsViewModel, ViewModel {
           let nonce = Decimal(val.0 + 1)
 
           var tx: RawTransaction!
-          let coinId = self.canPayComissionWithBaseCoin() ? Coin.baseCoin().id! : coinFromId
-          let isBaseCoin = Coin.baseCoin().id! == coinFromId
+          let coinId = self.canPayComissionWithBaseCoin() ? self.baseCoin.id! : coinFromId
+          let isBaseCoin = self.baseCoin.id! == coinFromId
 
           let minValBuy = BigUInt(decimal: minimumBuyValue.decimalFromPIP()) ?? BigUInt(0)
 
@@ -529,8 +535,8 @@ class SpendCoinsViewModel: ConvertCoinsViewModel, ViewModel {
     }
 
     var tx: RawTransaction!
-    let coinId = self.canPayComissionWithBaseCoin() ? Coin.baseCoin().id! : coinFromId
-    let isBaseCoin = Coin.baseCoin().id! == coinFromId
+    let coinId = self.canPayComissionWithBaseCoin() ? self.baseCoin.id! : coinFromId
+    let isBaseCoin = self.baseCoin.id! == coinFromId
 
     let minValBuy = BigUInt(decimal: minimumValueToBuy) ?? BigUInt(0)
 

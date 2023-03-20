@@ -88,14 +88,14 @@ enum Environment: String {
 	var explorerAPIBaseURL: String {
 		switch self {
 		case .dev: return "https://explorer-api.testnet.minter.network"
-		case .prod: return "https://explorer-api.apps.minter.network"
+		case .prod: return "https://explorer-api.toronet.minter.network"
 		}
 	}
 
 	var explorerWebURL: String {
 		switch self {
 		case .dev: return "https://explorer.testnet.minter.network"
-		case .prod: return "https://explorer.minter.network"
+		case .prod: return "https://explorer.toronet.minter.network"
 		}
 	}
 
