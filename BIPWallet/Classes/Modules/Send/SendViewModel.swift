@@ -113,7 +113,7 @@ class SendViewModel: BaseViewModel, ViewModel, WalletSelectableViewModel {// swi
                                     }))
   }
   private let openAppSettingsSubject = PublishSubject<Void>()
-  lazy var balanceTitleObservable = Observable.of(Observable<Int>.timer(0, period: 1, scheduler: MainScheduler.instance).map {_ in}).merge()
+  lazy var balanceTitleObservable = Observable.of(Observable<Int>.interval(RxTimeInterval.seconds(1), scheduler: MainScheduler.instance).map {_ in}).merge()
   private let usernameDidEndEditing = PublishSubject<Void>()
   private let showSendSucceed = PublishSubject<(String?, String?)>()
 
@@ -123,8 +123,8 @@ class SendViewModel: BaseViewModel, ViewModel, WalletSelectableViewModel {// swi
 
   private var showViewControllerSubject = PublishSubject<UIViewController?>()
 
-  var sections = Variable([BaseTableSectionItem]())
-  private var _sections = Variable([BaseTableSectionItem]())
+  var sections = BehaviorRelay(value: [BaseTableSectionItem]())
+  private var _sections = BehaviorRelay(value: [BaseTableSectionItem]())
 
   //Formatters
   private let formatter = CurrencyNumberFormatter.decimalFormatter
@@ -168,7 +168,7 @@ class SendViewModel: BaseViewModel, ViewModel, WalletSelectableViewModel {// swi
 
   private var lastBalances = [String: Decimal]()
   private var lastSentTransactionHash: String?
-  private var selectedCoin = Variable<String?>(nil)
+  private var selectedCoin = BehaviorRelay<String?>(value: nil)
   private let accountManager = AccountManager()
   private let infoManager = InfoManager(httpClient: APIClient(headers: ["X-Minter-Chain-Id": "chilinet"]))
   private let payloadSubject = BehaviorSubject<String?>(value: "")
@@ -266,21 +266,21 @@ YOU ARE ABOUT TO SEND SEED PHRASE IN THE MESSAGE ATTACHED TO THIS TRANSACTION.\n
         })
 
         if let selCoin = self?.selectedCoin.value, nil == val.balances[selCoin] {
-          self?.selectedCoin.value = nil
+          self?.selectedCoin.accept(nil)
           self?.coinSubject.accept(nil)
         }
-        self?.sections.value = self?.createSections() ?? []
+        self?.sections.accept(self?.createSections() ?? [])
       }).disposed(by: disposeBag)
 
     sections.asObservable()
       .subscribe(onNext: { [weak self] (items) in
-        self?._sections.value = items
+        self?._sections.accept(items)
       }).disposed(by: disposeBag)
 
     dependency.balanceService.account
       .subscribe(onNext: { [weak self] (_) in
         self?.amountSubject.accept(nil)
-        self?.sections.value = self?.createSections() ?? []
+        self?.sections.accept(self?.createSections() ?? [])
       }).disposed(by: disposeBag)
 
     didScanQRSubject.asObservable()
@@ -457,7 +457,7 @@ YOU ARE ABOUT TO SEND SEED PHRASE IN THE MESSAGE ATTACHED TO THIS TRANSACTION.\n
     } else if let item = accountPickerItems().first {
       coin.selected = item
       if let object = item.object as? AccountPickerItem {
-        selectedCoin.value = object.coin
+        selectedCoin.accept(object.coin)
         coinSubject.accept(object.coin)
       }
     }
@@ -588,7 +588,7 @@ YOU ARE ABOUT TO SEND SEED PHRASE IN THE MESSAGE ATTACHED TO THIS TRANSACTION.\n
   // MARK: - Validation
 
   func submitField(item: BaseCellItem, value: String) {
-    self._sections.value = self.createSections()
+    self._sections.accept(self.createSections())
   }
 
   func isToValid(to: String) -> Bool {
@@ -661,7 +661,7 @@ YOU ARE ABOUT TO SEND SEED PHRASE IN THE MESSAGE ATTACHED TO THIS TRANSACTION.\n
   // MARK: -
 
   func accountPickerSelect(item: AccountPickerItem) {
-    selectedCoin.value = item.coin
+    selectedCoin.accept(item.coin)
     coinSubject.accept(item.coin)
   }
 
@@ -721,7 +721,7 @@ YOU ARE ABOUT TO SEND SEED PHRASE IN THE MESSAGE ATTACHED TO THIS TRANSACTION.\n
 
         self?.lastSentTransactionHash = val.0
 
-        self?.sections.value = self?.createSections() ?? []
+        self?.sections.accept(self?.createSections() ?? [])
         let rec = self?.recipientSubject.value ?? ""
         let address = self?.addressSubject.value ?? ""
 

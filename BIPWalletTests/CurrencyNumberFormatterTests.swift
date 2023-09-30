@@ -1,13 +1,6 @@
-//
-//  CurrencyNumberFormatterTests.swift
-//  BIPWalletTests
-//
-//  Created by Alexey Sidorov on 11.05.2020.
-//  Copyright © 2020 Alexey Sidorov. All rights reserved.
-//
-
 import XCTest
 @testable import BIPWallet
+import secp256k1
 
 class CurrencyNumberFormatterTests: XCTestCase {
 
@@ -74,5 +67,36 @@ class CurrencyNumberFormatterTests: XCTestCase {
     let val = CurrencyNumberFormatter.formattedDecimal(with: decimal, formatter: formatter)
     XCTAssert(val == correctValue)
   }
-
+//    func testSigner() throws {
+//        RawTransactionSigner.sign(<#T##Data#>, privateKey: <#T##Data#>)
+//        
+//        
+//        
+//    }
+    
+    func testSecp256k1Signing() {
+         // Replace with your private key in hexadecimal format
+         let privateKeyHex = "YOUR_PRIVATE_KEY_HEX_STRING"
+         
+         // Convert the private key from hexadecimal to Data
+         let privateKeyData = Data(hex: privateKeyHex)
+         
+         // Create a secp256k1 key pair using the private key
+         let keyPair = ECDSAKey(privateKey: privateKeyData)
+         
+         // Data to be signed
+         let dataToSign = "Hello, World!".data(using: .utf8)!
+         
+         do {
+             // Sign the data using the secp256k1 private key
+             let signature = try keyPair.sign(dataToSign)
+             
+             // Verify that the signature is valid
+             let isSignatureValid = try keyPair.verify(signature: signature, message: dataToSign)
+             
+             XCTAssertTrue(isSignatureValid, "Signature is valid")
+         } catch {
+             XCTFail("Failed to sign or verify the signature: \(error)")
+         }
+     }
 }

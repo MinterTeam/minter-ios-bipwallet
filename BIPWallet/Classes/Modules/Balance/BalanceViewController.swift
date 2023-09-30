@@ -1,11 +1,3 @@
-//
-//  BalanceViewController.swift
-//  BIPWallet
-//
-//  Created by Alexey Sidorov on 14/02/2020.
-//  Copyright 2020 Minter. All rights reserved.
-//
-
 import UIKit
 import RxSwift
 import XLPagerTabStrip
@@ -321,9 +313,22 @@ class BalanceViewController: SegmentedPagerTabStripViewController, Controller, S
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
 
-    self.navigationController?.navigationBar.barTintColor = UIColor(hex: 0x2F1D69)
-    self.navigationController?.navigationBar.barStyle = .default
-    self.navigationController?.navigationBar.isTranslucent = false
+      let appearance = UINavigationBarAppearance()
+      appearance.configureWithOpaqueBackground()
+      appearance.backgroundColor = UIColor(hex: 0x2F1D69)
+      appearance.titleTextAttributes = [
+        NSAttributedString.Key.font: UIFont.defaultFont(of: 14),
+        NSAttributedString.Key.foregroundColor: UIColor.white,
+        NSAttributedString.Key.baselineOffset: 1
+      ]
+      let img = UIImage(named: "BackButtonIcon")!
+        .resizableImage(withCapInsets: UIEdgeInsets(top: 0, left: 12, bottom: 0, right: 0))
+        .withAlignmentRectInsets(UIEdgeInsets(top: 0, left: -10, bottom: 0, right: 0))
+      img.stretchableImage(withLeftCapWidth: 0, topCapHeight: 20)
+      appearance.setBackIndicatorImage(img, transitionMaskImage: img)
+
+      navigationController?.navigationBar.standardAppearance = appearance
+      navigationController?.navigationBar.scrollEdgeAppearance = appearance
   }
 
   override public func viewControllers(for pagerTabStripController: PagerTabStripViewController) -> [UIViewController] {

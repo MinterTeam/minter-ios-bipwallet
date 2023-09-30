@@ -20,3 +20,19 @@ class WhiteNavigationController: UINavigationController {
     super.viewDidLoad()
   }
 }
+
+class PurpleNavigationController: UINavigationController {
+
+  override func loadView() {
+    super.loadView()
+      
+      self.navigationController?.navigationBar.setBackgroundImage(UIImage(named: "NavigationBar"), for: .default)
+      self.navigationController?.edgesForExtendedLayout = []
+    self.navigationBar.shadowImage = UIImage(named: "PurpleNavigationBarShadowImage")
+  }
+
+  override func viewDidLoad() {
+    super.viewDidLoad()
+  }
+}
+

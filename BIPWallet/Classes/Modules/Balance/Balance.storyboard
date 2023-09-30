@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17506" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="22154" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
-        <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17505"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22130"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -18,18 +17,18 @@
             <objects>
                 <viewController storyboardIdentifier="BalanceViewController" title=" " extendedLayoutIncludesOpaqueBars="YES" useStoryboardIdentifierAsRestorationIdentifier="YES" id="b1B-CA-8a6" customClass="BalanceViewController" customModule="BIPWallet" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" multipleTouchEnabled="YES" contentMode="scaleToFill" id="woN-k6-82S">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="808"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NlE-9E-UKy">
-                                <rect key="frame" x="0.0" y="0.0" width="414" height="774"/>
+                                <rect key="frame" x="0.0" y="0.0" width="414" height="862"/>
                                 <subviews>
                                     <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ldP-DO-4kv">
                                         <rect key="frame" x="0.0" y="0.0" width="414" height="232.5"/>
                                         <color key="backgroundColor" red="0.1843137255" green="0.1137254902" blue="0.41176470590000003" alpha="1" colorSpace="deviceRGB"/>
                                     </view>
                                     <view multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Jcw-bC-189" customClass="BalanceView" customModule="BIPWallet" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="0.0" width="414" height="128"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="414" height="298.5"/>
                                         <subviews>
                                             <label opaque="NO" multipleTouchEnabled="YES" alpha="0.69999999999999996" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Available Balance" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LZU-RC-aW4" customClass="UHBCustomLabel" customModule="BIPWallet" customModuleProvider="target">
                                                 <rect key="frame" x="48" y="31" width="350" height="0.0"/>
@@ -48,13 +47,13 @@
                                                     <fragment content="0.">
                                                         <attributes>
                                                             <color key="NSColor" red="1" green="1" blue="1" alpha="1" colorSpace="deviceRGB"/>
-                                                            <font key="NSFont" size="30" name="Inter_Semi-Bold"/>
+                                                            <font key="NSFont" metaFont="system" size="30"/>
                                                         </attributes>
                                                     </fragment>
                                                     <fragment content="0000 BIP">
                                                         <attributes>
                                                             <color key="NSColor" red="1" green="1" blue="1" alpha="1" colorSpace="deviceRGB"/>
-                                                            <font key="NSFont" size="16" name="Inter_Semi-Bold"/>
+                                                            <font key="NSFont" metaFont="system" size="16"/>
                                                         </attributes>
                                                     </fragment>
                                                 </attributedString>
@@ -104,7 +103,7 @@
                                                 <rect key="frame" x="0.0" y="63" width="414" height="3"/>
                                             </button>
                                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" alwaysBounceHorizontal="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="npT-dZ-8C5">
-                                                <rect key="frame" x="0.0" y="76" width="414" height="28"/>
+                                                <rect key="frame" x="0.0" y="178.5" width="414" height="96"/>
                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="96" id="khE-dk-4it"/>
@@ -216,7 +215,7 @@
                         <constraints>
                             <constraint firstItem="NlE-9E-UKy" firstAttribute="leading" secondItem="gS7-dX-vnJ" secondAttribute="leading" id="8v1-WR-VOB"/>
                             <constraint firstItem="gS7-dX-vnJ" firstAttribute="trailing" secondItem="NlE-9E-UKy" secondAttribute="trailing" id="Aw1-ea-ENU"/>
-                            <constraint firstItem="NlE-9E-UKy" firstAttribute="top" secondItem="gS7-dX-vnJ" secondAttribute="top" id="bwB-tO-4HX"/>
+                            <constraint firstAttribute="top" secondItem="NlE-9E-UKy" secondAttribute="top" id="KA8-mO-naB"/>
                             <constraint firstItem="ldP-DO-4kv" firstAttribute="top" relation="lessThanOrEqual" secondItem="gS7-dX-vnJ" secondAttribute="top" id="cVC-kY-zBV"/>
                             <constraint firstItem="gS7-dX-vnJ" firstAttribute="trailing" secondItem="Jcw-bC-189" secondAttribute="trailing" id="cXU-Tc-pyi"/>
                             <constraint firstItem="uTW-SA-zQg" firstAttribute="leading" secondItem="gS7-dX-vnJ" secondAttribute="leading" id="eZI-SO-hRP"/>
@@ -225,7 +224,6 @@
                             <constraint firstItem="NlE-9E-UKy" firstAttribute="bottom" secondItem="gS7-dX-vnJ" secondAttribute="bottom" id="rrg-wP-AYu"/>
                         </constraints>
                     </view>
-                    <extendedEdge key="edgesForExtendedLayout" bottom="YES"/>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" translucent="NO" prompted="NO"/>
                     <connections>
                         <outlet property="availableBalance" destination="1jl-Ro-hiQ" id="H3B-9m-8Nt"/>

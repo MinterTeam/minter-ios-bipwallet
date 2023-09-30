@@ -1,15 +1,8 @@
-//
-//  ConvertCoinsViewModel.swift
-//  MinterWallet
-//
-//  Created by Alexey Sidorov on 17/07/2018.
-//  Copyright © 2018 Minter. All rights reserved.
-//
-
 import Foundation
 import RxSwift
 import MinterCore
 import MinterExplorer
+import RxRelay
 
 class ConvertCoinsViewModel: BaseViewModel {
 
@@ -28,29 +21,29 @@ class ConvertCoinsViewModel: BaseViewModel {
 		}
 	}
 
-  var spendCoinField = ReplaySubject<String?>.create(bufferSize: 2)
-	var hasCoin = Variable<Bool>(false)
-	var coinIsLoading = Variable(false)
+    var spendCoinField = ReplaySubject<String?>.create(bufferSize: 2)
+	var hasCoin = BehaviorRelay(value: false)
+	var coinIsLoading = BehaviorSubject(value: false)
 	var getCoin = BehaviorSubject<String?>(value: "")
-	var shouldClearForm = Variable(false)
-	var amountError = Variable<String?>(nil)
-	var getCoinError = PublishSubject<String?>()
-  lazy var isApproximatelyLoading = PublishSubject<Bool>()
+	var shouldClearForm = BehaviorRelay(value: false)
+	var amountError = BehaviorRelay<String?>(value: nil)
+	var getCoinError = PublishRelay<String?>()
+    lazy var isApproximatelyLoading = PublishSubject<Bool>()
 	lazy var isLoading = BehaviorSubject<Bool>(value: false)
 	lazy var errorNotification = PublishSubject<String?>()
 	lazy var successMessage = PublishSubject<String?>()
-  lazy var exchangeSucceeded = PublishSubject<ExchangeSuccessResult>()
+    lazy var exchangeSucceeded = PublishSubject<ExchangeSuccessResult>()
 	let formatter = CurrencyNumberFormatter.coinFormatter
 	var currentGas = RawTransactionDefaultGasPrice
-  lazy var feeObservable = ReplaySubject<String>.create(bufferSize: 1)
-	var baseCoinCommission: Decimal {
-    return (Decimal(currentGas) * RawTransactionType.buyCoin.commission()) / TransactionCoinFactorDecimal
+    lazy var feeObservable = ReplaySubject<String>.create(bufferSize: 1)
+    var baseCoinCommission: Decimal {
+        return (Decimal(currentGas) * RawTransactionType.buyCoin.commission()) / TransactionCoinFactorDecimal
 	}
-  var hasMultipleCoinsObserver: Observable<Bool> {
-    return balanceService.balances().map { (value) -> Bool in
-      value.balances.keys.count > 1
-    }
-  }
+      var hasMultipleCoinsObserver: Observable<Bool> {
+        return balanceService.balances().map { (value) -> Bool in
+          value.balances.keys.count > 1
+        }
+      }
   var endEditing = PublishSubject<Void>()
   var showConfirmation = PublishSubject<(String?, String?)>()
   var showReceived = PublishSubject<String?>()
@@ -98,13 +91,13 @@ class ConvertCoinsViewModel: BaseViewModel {
     }).disposed(by: disposeBag)
 
     getCoin.distinctUntilChanged()
-      .do(onNext: { [weak self] (term) in
-        if nil != term && term != "" {
-          self?.hasCoin.value = false
-          self?.getCoinError.onNext("COIN NOT FOUND".localized())
-        } else {
-          self?.getCoinError.onNext("")
-        }
+        .do(onNext: { [weak self] (term) in
+            if nil != term && term != "" {
+              self?.hasCoin.accept(false)
+              self?.getCoinError.accept("COIN NOT FOUND".localized())
+            } else {
+              self?.getCoinError.accept("")
+            }
       }).map({ (term) -> String in
         return term?.transformToCoinName() ?? ""
       }).filter({ (term) -> Bool in
@@ -116,10 +109,10 @@ class ConvertCoinsViewModel: BaseViewModel {
         case .completed:
           break
         case .next(let hasCoin):
-          self?.hasCoin.value = hasCoin
-          if hasCoin {
-            self?.getCoinError.onNext("")
-          }
+            self?.hasCoin.accept(hasCoin)
+            if hasCoin {
+                self?.getCoinError.accept("")
+            }
         case .error(_):
           break
         }
@@ -171,7 +164,7 @@ class ConvertCoinsViewModel: BaseViewModel {
 	func validateErrors() {}
 
 	func loadCoin() {
-		self.hasCoin.value = false
+		self.hasCoin.accept(false)
 		let coin = try? self.getCoin.value()?
 			.trimmingCharacters(in: .whitespacesAndNewlines).uppercased() ?? ""
 		guard coin?.isValidCoin() ?? false else {
@@ -180,7 +173,7 @@ class ConvertCoinsViewModel: BaseViewModel {
 		}
 
 		if coin == Coin.baseCoin().symbol {
-			hasCoin.value = true
+			hasCoin.accept(true)
 			self.validateErrors()
 			return
 		}

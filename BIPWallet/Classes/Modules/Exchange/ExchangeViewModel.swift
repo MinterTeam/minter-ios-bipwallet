@@ -50,7 +50,7 @@ class ExchangeViewModel: BaseViewModel, ViewModel, LastBlockViewable {
   // MARK: -
 
   private var viewDidDisappear = PublishSubject<Void>()
-  lazy var balanceTitleObservable = Observable.of(Observable<Int>.timer(0, period: 0.5, scheduler: MainScheduler.instance).map {_ in}).merge()
+  lazy var balanceTitleObservable = Observable.of(Observable<Int>.interval(RxTimeInterval.seconds(1), scheduler: MainScheduler.instance).map {_ in}).merge()
 
   var lastUpdated: Observable<NSAttributedString?> {
     return balanceTitleObservable.withLatestFrom(self.dependency.balanceService.lastBlockAgo()).map {

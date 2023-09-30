@@ -1,17 +1,9 @@
-//
-//  CoinsViewModel.swift
-//  BIPWallet
-//
-//  Created by Alexey Sidorov on 20/02/2020.
-//  Copyright 2020 Minter. All rights reserved.
-//
-
 import Foundation
 import RxSwift
 import MinterCore
 import MinterMy
 import Reachability
-import RxReachability
+//import RxReachability
 
 class CoinsViewModel: BaseViewModel, ViewModel {
 
@@ -108,12 +100,12 @@ class CoinsViewModel: BaseViewModel, ViewModel {
       self?.sound.onNext(.click)
     }).disposed(by: disposeBag)
 
-    reachability?.rx.isConnected.subscribe(onNext: { _ in
-      if ((try? self.coins.value())?.keys.count ?? 0) == 0 {
-        self.dependency.balanceService.updateBalance()
-        self.dependency.balanceService.updateDelegated()
-      }
-    }).disposed(by: disposeBag)
+//    reachability?.rx.isConnected.subscribe(onNext: { _ in
+//      if ((try? self.coins.value())?.keys.count ?? 0) == 0 {
+//        self.dependency.balanceService.updateBalance()
+//        self.dependency.balanceService.updateDelegated()
+//      }
+//    }).disposed(by: disposeBag)
 
   }
 

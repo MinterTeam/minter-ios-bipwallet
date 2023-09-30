@@ -177,12 +177,12 @@ class GetCoinsViewModel: ConvertCoinsViewModel, ViewModel {
     if let amountString = self.getAmount.value,
       let amnt = Decimal(str: amountString), amnt > 0 {
       if !AmountValidator.isValid(amount: amnt) {
-        self.amountError.value = "TOO SMALL VALUE".localized()
+        self.amountError.accept("TOO SMALL VALUE".localized())
       } else {
-        self.amountError.value = ""
+        self.amountError.accept("")
       }
     } else {
-      self.amountError.value = ""
+      self.amountError.accept("")
     }
   }
 
@@ -322,7 +322,7 @@ class GetCoinsViewModel: ConvertCoinsViewModel, ViewModel {
               return
             }
 
-            self.shouldClearForm.value = true
+            self.shouldClearForm.accept(true)
 
             if let hash = hash {
               self.dependency.transactionService.transaction(hash: hash)

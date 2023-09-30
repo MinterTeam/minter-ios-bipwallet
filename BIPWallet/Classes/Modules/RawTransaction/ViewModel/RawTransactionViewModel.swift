@@ -84,7 +84,7 @@ class RawTransactionViewModel: BaseViewModel, ViewModel {// swiftlint:disable:th
 
 	// MARK: -
 
-  lazy var lastBlockString = Observable<Int>.timer(0, period: 1, scheduler: MainScheduler.instance)
+  lazy var lastBlockString = Observable<Int>.interval(RxTimeInterval.seconds(1), scheduler: MainScheduler.instance)
     .withLatestFrom(self.dependency.balanceService.lastBlockAgo()).map {
       self.headerViewLastUpdatedTitleText(seconds: Date().timeIntervalSince1970 - ($0 ?? 0), shortened: true)
   }
@@ -1427,20 +1427,6 @@ extension RawTransactionViewModel {
 
             let ownerField = Field(key: "Owner Address".localized(), value: "Mx" + ownerAddressData.toHexString(), isEditable: false)
             fields.append(ownerField)
-
-          case .editCandidatePublicKey:
-            let typeField = Field(key: "Type".localized(), value: "Edit Candidate Public Key".localized(), isEditable: false)
-            fields.append(typeField)
-
-            guard let publicKeyData = items[0].data,
-              let newPublicKeyData = items[1].data else {
-                throw RawTransactionViewModelError.incorrectTxData
-            }
-            let pkField = Field(key: "Public Key".localized(), value: "Mp" + publicKeyData.toHexString(), isEditable: false)
-            fields.append(pkField)
-
-            let newPkField = Field(key: "New Public Key".localized(), value: "Mp" + newPublicKeyData.toHexString(), isEditable: false)
-            fields.append(newPkField)
 
           case .setHaltBlock:
             let typeField = Field(key: "Type".localized(), value: "Set Halt Block".localized(), isEditable: false)

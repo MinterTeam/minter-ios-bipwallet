@@ -1,18 +1,13 @@
-//
-//  AppDelegate.swift
-//  BIPWallet
-//x
-//  Created by Alexey Sidorov on 07.02.2020.
-//  Copyright © 2020 Alexey Sidorov. All rights reserved.
-//
-
 import UIKit
 import RxSwift
-import RxRouting
+//import RxRouting
 import MinterCore
 import MinterExplorer
 import MinterMy
-import Firebase
+//import Firebase
+
+public typealias Observable = RxSwift.Observable
+public typealias RxObservable<Element> = RxSwift.Observable<Element>
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -24,7 +19,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
   func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
 
     let isUITesting = ProcessInfo.processInfo.arguments.contains("UITesting")
-    FirebaseApp.configure()
+//    FirebaseApp.configure()
 
     let conf = Configuration()
     if isUITesting {
@@ -67,24 +62,24 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     appCoordinator.start().subscribe().disposed(by: disposeBag)
 
-    Observable.of(UIApplication.shared.rx.didOpenApp.skip(1).map { _ -> RouteMatchResult? in
-      return nil
-    }, RxRouting.instance.register("mintertestnet://bip.to/tx/<transaction>").map { val -> RouteMatchResult? in
-      return val
-    }, RxRouting.instance.register("https://bip.to/tx/<transaction>").map { val -> RouteMatchResult? in
-      return val
-    }, RxRouting.instance.register("https://testnet.bip.to/tx/<transaction>").map { val -> RouteMatchResult? in
-      return val
-    }).merge().flatMap { (result) -> Observable<Event<Void>> in
-      guard let url = result?.url else {
-
-        if !pinService.isUnlocked() {
-          return appCoordinator.start().materialize()
-        }
-        return Observable.empty().materialize()
-      }
-      return appCoordinator.start(with: url).materialize()
-    }.subscribe().disposed(by: disposeBag)
+//    Observable.of(UIApplication.shared.rx.didOpenApp.skip(1).map { _ -> RouteMatchResult? in
+//      return nil
+//    }, RxRouting.instance.register("mintertestnet://bip.to/tx/<transaction>").map { val -> RouteMatchResult? in
+//      return val
+//    }, RxRouting.instance.register("https://bip.to/tx/<transaction>").map { val -> RouteMatchResult? in
+//      return val
+//    }, RxRouting.instance.register("https://testnet.bip.to/tx/<transaction>").map { val -> RouteMatchResult? in
+//      return val
+//    }).merge().flatMap { (result) -> Observable<Event<Void>> in
+//      guard let url = result?.url else {
+//
+//        if !pinService.isUnlocked() {
+//          return appCoordinator.start().materialize()
+//        }
+//        return Observable.empty().materialize()
+//      }
+//      return appCoordinator.start(with: url).materialize()
+//    }.subscribe().disposed(by: disposeBag)
 
     appearance()
 
@@ -94,18 +89,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
   func application(_ app: UIApplication,
                    open url: URL,
                    options: [UIApplication.OpenURLOptionsKey: Any] = [:]) -> Bool {
-    if RxRouting.instance.handle(url: url) {
-      return true
-    }
+//    if RxRouting.instance.handle(url: url) {
+//      return true
+//    }
     return false
   }
 
   func application(_ application: UIApplication, continue userActivity: NSUserActivity, restorationHandler: @escaping ([UIUserActivityRestoring]?) -> Void) -> Bool {
-    if let url = userActivity.webpageURL {
-      if RxRouting.instance.handle(url: url) {
-        return true
-      }
-    }
+//    if let url = userActivity.webpageURL {
+//      if RxRouting.instance.handle(url: url) {
+//        return true
+//      }
+//    }
     return true
   }
 
@@ -152,6 +147,20 @@ extension AppDelegate {
       NSAttributedString.Key.foregroundColor : UIColor.mainColor(),
       NSAttributedString.Key.font : UIFont.mediumFont(of: 11.0)
     ], for: .selected)
+
+      // TODO: Check if any of above is still useful
+      let appearance = UINavigationBarAppearance()
+      appearance.configureWithOpaqueBackground()
+      appearance.titleTextAttributes = [
+        NSAttributedString.Key.font: UIFont.boldFont(of: 16),
+        NSAttributedString.Key.foregroundColor: UIColor.black,
+        NSAttributedString.Key.baselineOffset: 1
+      ]
+
+      appearance.setBackIndicatorImage(img!, transitionMaskImage: img!)
+
+      UINavigationBar.appearance().scrollEdgeAppearance = appearance
+      UINavigationBar.appearance().standardAppearance = appearance
   }
 
 }

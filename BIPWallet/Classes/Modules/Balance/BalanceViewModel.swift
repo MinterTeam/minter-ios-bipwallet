@@ -1,15 +1,7 @@
-//
-//  BalanceViewModel.swift
-//  BIPWallet
-//
-//  Created by Alexey Sidorov on 14/02/2020.
-//  Copyright 2020 Minter. All rights reserved.
-//
-
 import Foundation
 import RxSwift
 import MinterCore
-import RxReachability
+//import RxReachability
 import Reachability
 import AVFoundation
 
@@ -41,7 +33,7 @@ class BalanceViewModel: BaseViewModel, ViewModel, WalletSelectableViewModel {
   private let openAppSettingsSubject = PublishSubject<Void>()
   private let balanceTitle = PublishSubject<String?>()
   let didRefresh = PublishSubject<Void>()
-  lazy var balanceTitleObservable = Observable.of(Observable<Int>.timer(0, period: 0.5, scheduler: MainScheduler.instance).map {_ in}, self.changedBalanceTypeSubject.map {_ in}).merge()
+  lazy var balanceTitleObservable = Observable.of(Observable<Int>.interval(RxTimeInterval.seconds(1), scheduler: MainScheduler.instance).map {_ in}, self.changedBalanceTypeSubject.map {_ in}).merge()
   let storiesSubject = ReplaySubject<[BaseTableSectionItem]>.create(bufferSize: 1)
   let forceUpdateStories = PublishSubject<Void>()
 
@@ -132,7 +124,7 @@ class BalanceViewModel: BaseViewModel, ViewModel, WalletSelectableViewModel {
 
   func bind() {
 
-    //Change balance type when lastBlockAgo info appears or on type change
+//    Change balance type when lastBlockAgo info appears or on type change
     balanceTitleObservable.withLatestFrom(Observable.combineLatest(balanceService.lastBlockAgo(), changedBalanceTypeSubject)).map { lastBlockAgo, balanceType -> String in
      let ago = Date().timeIntervalSince1970 - (lastBlockAgo ?? 0)
      return self.headerViewLastUpdatedTitleText(balanceType: balanceType, seconds: ago)
@@ -201,11 +193,11 @@ class BalanceViewModel: BaseViewModel, ViewModel, WalletSelectableViewModel {
       self?.availableBalance.onNext(text?.1 ?? NSAttributedString())
     }).subscribe().disposed(by: disposeBag)
 
-    reachability?.rx.isDisconnected.map({ _ -> String in
-      return "Network is not reachable".localized()
-    })
-    .subscribe(self.showErrorMessage)
-    .disposed(by: disposeBag)
+//    reachability?.rx.isDisconnected.map({ _ -> String in
+//      return "Network is not reachable".localized()
+//    })
+//    .subscribe(self.showErrorMessage)
+//    .disposed(by: disposeBag)
 
     didScanQR.asObservable()
       .subscribe(onNext: { [weak self] (val) in

@@ -129,7 +129,7 @@ class SpendCoinsViewModel: ConvertCoinsViewModel, ViewModel {
       return val1.0 == val2.0 && val1.1 == val2.1 && val1.2 == val2.2
     }).throttle(.seconds(1), scheduler: MainScheduler.instance)
     .subscribe(onNext: { [weak self] (val) in
-      self?.minimumValueToBuy.value = nil
+      self?.minimumValueToBuy.accept(nil)
       self?.approximately.onNext("")
       self?.validateErrors()
 
@@ -177,14 +177,14 @@ class SpendCoinsViewModel: ConvertCoinsViewModel, ViewModel {
 
   // MARK: -
 
-  let useMaxDidTap = PublishSubject<Void>()
-  let didTapExchangeButton = PublishSubject<Void>()
-  var spendCoin = BehaviorSubject<String?>(value: nil)
-  var spendAmount = BehaviorRelay<String?>(value: nil)
+    let useMaxDidTap = PublishSubject<Void>()
+    let didTapExchangeButton = PublishSubject<Void>()
+    var spendCoin = BehaviorSubject<String?>(value: nil)
+    var spendAmount = BehaviorRelay<String?>(value: nil)
 
-  private var approximately = PublishSubject<String?>()
-  var approximatelyReady = Variable<Bool>(false)
-  var minimumValueToBuy = Variable<Decimal?>(nil)
+    private var approximately = PublishSubject<String?>()
+    var approximatelyReady = BehaviorRelay(value: false)
+    var minimumValueToBuy = BehaviorRelay<Decimal?>(value: nil)
 
   private let decimalsNoMantissaFormatter = CurrencyNumberFormatter.decimalShortNoMantissaFormatter
   private let decimalFormatter = CurrencyNumberFormatter.decimalFormatter
@@ -220,7 +220,7 @@ class SpendCoinsViewModel: ConvertCoinsViewModel, ViewModel {
   // MARK: -
 
   private func calculateApproximately(fromCoin: String, amount: Decimal, getCoin: String) {
-    approximatelyReady.value = false
+    approximatelyReady.accept(false)
 
     guard let maxComparableBalance = Decimal.PIPComparableBalance(from: selectedBalance) else {
       return
@@ -270,11 +270,11 @@ class SpendCoinsViewModel: ConvertCoinsViewModel, ViewModel {
 
         var approximatelyRoundedVal = (ammnt * 0.9)
         approximatelyRoundedVal.round(.up)
-        self?.minimumValueToBuy.value = approximatelyRoundedVal
+        self?.minimumValueToBuy.accept(approximatelyRoundedVal)
 
         let gtCoin = try? self?.getCoin.value() ?? ""
         if getCoin.transformToCoinName() == gtCoin?.transformToCoinName() {
-          self?.approximatelyReady.value = true
+          self?.approximatelyReady.accept(true)
         }
       }).disposed(by: disposeBag)
   }
@@ -282,16 +282,16 @@ class SpendCoinsViewModel: ConvertCoinsViewModel, ViewModel {
   override func validateErrors() {
     if let amountString = self.spendAmount.value, let amount = Decimal(string: amountString) {
       if amount > selectedBalance {
-        amountError.value = "INSUFFICIENT FUNDS".localized()
+        amountError.accept("INSUFFICIENT FUNDS".localized())
       } else {
-        amountError.value = nil
+        amountError.accept(nil)
       }
     } else {
       let amountString = self.spendAmount.value
       if nil == amountString || amountString == "" || amountString == "," || amountString == "." {
-        amountError.value = nil
+        amountError.accept(nil)
       } else {
-        amountError.value = "INCORRECT AMOUNT".localized()
+        amountError.accept("INCORRECT AMOUNT".localized())
       }
     }
   }
@@ -328,7 +328,7 @@ class SpendCoinsViewModel: ConvertCoinsViewModel, ViewModel {
         .do(onError: { [weak self] (error) in
           //If error in getting transaction - show convert succeeed without estimates
           self?.exchangeSucceeded.onNext((message: "Coins have been exchanged".localized(), transactionHash: hash))
-          self?.shouldClearForm.value = true
+          self?.shouldClearForm.accept(true)
           self?.dependency.balanceService.updateBalance()
         })
     }).subscribe(onNext: { [weak self] (transaction) in
@@ -349,7 +349,7 @@ class SpendCoinsViewModel: ConvertCoinsViewModel, ViewModel {
         self?.handleError(error)
       }
     }, onCompleted: {
-      self.shouldClearForm.value = true
+      self.shouldClearForm.accept(true)
       self.dependency.balanceService.updateBalance()
     }).disposed(by: self.disposeBag)
   }

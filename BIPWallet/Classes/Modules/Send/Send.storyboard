@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="16096" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="22154" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
-        <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16087"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22130"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
         <!--Send View Controller-->
         <scene sceneID="sGb-OR-z3a">
             <objects>
-                <viewController storyboardIdentifier="SendViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="0EN-Mp-PxR" customClass="SendViewController" customModule="BIPWallet" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="SendViewController" extendedLayoutIncludesOpaqueBars="YES" useStoryboardIdentifierAsRestorationIdentifier="YES" id="0EN-Mp-PxR" customClass="SendViewController" customModule="BIPWallet" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="PkO-OR-EDK"/>
                         <viewControllerLayoutGuide type="bottom" id="4pe-x3-UFl"/>
@@ -22,13 +22,14 @@
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" keyboardDismissMode="onDrag" dataMode="prototypes" style="grouped" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="18" sectionFooterHeight="18" translatesAutoresizingMaskIntoConstraints="NO" id="MvR-bB-f80" customClass="TPKeyboardAvoidingTableView">
                                 <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
-                                <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <connections>
                                     <outlet property="dataSource" destination="0EN-Mp-PxR" id="qVC-rF-s7S"/>
                                     <outlet property="delegate" destination="0EN-Mp-PxR" id="gv4-v7-52g"/>
                                 </connections>
                             </tableView>
                         </subviews>
+                        <viewLayoutGuide key="safeArea" id="CMd-VY-is3"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstAttribute="trailing" secondItem="MvR-bB-f80" secondAttribute="trailing" id="YwU-eT-xfV"/>
@@ -36,7 +37,6 @@
                             <constraint firstItem="MvR-bB-f80" firstAttribute="leading" secondItem="kox-Zb-xA6" secondAttribute="leading" id="na3-ZW-CHG"/>
                             <constraint firstItem="MvR-bB-f80" firstAttribute="top" secondItem="kox-Zb-xA6" secondAttribute="top" id="tIz-OU-o7G"/>
                         </constraints>
-                        <viewLayoutGuide key="safeArea" id="CMd-VY-is3"/>
                     </view>
                     <navigationItem key="navigationItem" id="rW1-8u-129">
                         <barButtonItem key="rightBarButtonItem" image="ScanQRIcon" id="Nqg-u4-SAx">
@@ -44,7 +44,6 @@
                             <color key="tintColor" red="0.31372549020000001" green="0.18039215689999999" blue="0.76078431369999999" alpha="1" colorSpace="custom" customColorSpace="deviceRGB"/>
                         </barButtonItem>
                     </navigationItem>
-                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
                     <connections>
                         <outlet property="autocompleteView" destination="lMe-nr-Lg2" id="IYb-5W-14v"/>
                         <outlet property="autocompleteViewWrapper" destination="clT-NP-2bU" id="ngx-F4-bsV"/>
@@ -62,6 +61,7 @@
                             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         </view>
                     </subviews>
+                    <viewLayoutGuide key="safeArea" id="CNF-4U-aTZ"/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <constraints>
                         <constraint firstItem="lMe-nr-Lg2" firstAttribute="top" secondItem="clT-NP-2bU" secondAttribute="top" id="Q6A-WX-uVM"/>
@@ -69,7 +69,6 @@
                         <constraint firstAttribute="trailing" secondItem="lMe-nr-Lg2" secondAttribute="trailing" constant="2" id="qVS-B7-eOz"/>
                         <constraint firstAttribute="bottom" secondItem="lMe-nr-Lg2" secondAttribute="bottom" id="uwF-dL-vul"/>
                     </constraints>
-                    <viewLayoutGuide key="safeArea" id="CNF-4U-aTZ"/>
                 </view>
             </objects>
             <point key="canvasLocation" x="1119.2" y="178.56071964017991"/>
@@ -77,5 +76,8 @@
     </scenes>
     <resources>
         <image name="ScanQRIcon" width="18" height="18"/>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
     </resources>
 </document>

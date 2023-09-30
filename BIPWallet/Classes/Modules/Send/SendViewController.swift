@@ -518,7 +518,7 @@ extension SendViewController {
   }
 
   func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-    if nil != viewModel.sections.value[safe: section]?.header {
+      if nil != viewModel.sections.value[safe: section]?.header {
       return 27
     }
     return 0.1

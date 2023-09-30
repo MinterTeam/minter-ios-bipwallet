@@ -262,13 +262,6 @@ extension TransactionViewableViewModel {
         transactionCellItem.image = UIImage(named: "SystemIcon")
       }
 
-    case .editCandidatePublicKey:
-      transactionCellItem.type = "Edit Candidate Public Key".localized()
-      if let data = transaction.data as? EditCandidatePublicKeyTransactionData {
-        transactionCellItem.title = TransactionTitleHelper.title(from: data.publicKey ?? "")
-        transactionCellItem.image = UIImage(named: "SystemIcon")
-      }
-
     case .setCandidateOffline:
       transactionCellItem.type = "Set Candidate Offline".localized()
       if let data = transaction.data as? SetCandidateBaseTransactionData {

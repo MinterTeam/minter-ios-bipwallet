@@ -1,11 +1,3 @@
-//
-//  AccountManager.swift
-//  MinterWallet
-//
-//  Created by Alexey Sidorov on 03/05/2018.
-//  Copyright © 2018 Minter. All rights reserved.
-//
-
 import Foundation
 import CryptoSwift
 import MinterCore
@@ -14,9 +6,8 @@ import MinterMy
 class AccountManager {
 
 	init(secureStorage: Storage = SecureStorage()) {
-		self.secureStorage = secureStorage
-
-    setRandomEncryptionKeyIfNotExists()
+        self.secureStorage = secureStorage
+        setRandomEncryptionKeyIfNotExists()
 	}
 
 	enum AccountManagerError: Error {
@@ -71,11 +62,11 @@ class AccountManager {
 		return newPk
 	}
 
-  func setRandomEncryptionKeyIfNotExists() {
-    if nil == self.encryptionKey() {
-      self.save(password: String.random(length: 32))
+    func setRandomEncryptionKeyIfNotExists() {
+        if nil == self.encryptionKey() {
+            self.save(password: String.random(length: 32))
+        }
     }
-  }
 
 	//save hash of password
 	func save(password: String) {
@@ -119,17 +110,17 @@ class AccountManager {
 		guard let data = try? encryptedMnemonic(mnemonic: mnemonic, password: password) else {
 			throw AccountManagerError.privateKeyCanNotBeSaved
 		}
-    secureStorage.set(data, forKey: key)
-	}
+        secureStorage.set(data, forKey: key)
+    }
 
-  func remove(key: String) {
-    secureStorage.removeObject(forKey: key)
-  }
+      func remove(key: String) {
+          secureStorage.removeObject(forKey: key)
+      }
 
-  func saveMnemonic(mnemonic: String) throws {
-    guard let password = self.encryptionKey() else { throw AccountManagerError.noEncryptionKey }
-    try self.save(mnemonic: mnemonic, password: password)
-  }
+    func saveMnemonic(mnemonic: String) throws {
+        guard let password = self.encryptionKey() else { throw AccountManagerError.noEncryptionKey }
+        try self.save(mnemonic: mnemonic, password: password)
+    }
 
 	func encryptedMnemonic(mnemonic: String, password: Data) throws -> Data? {
 		do {

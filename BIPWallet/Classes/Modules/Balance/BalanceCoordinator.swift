@@ -34,7 +34,6 @@ class BalanceCoordinator: BaseCoordinator<Void> {
        coinService: CoinService,
        storiesService: StoriesService
   ) {
-
     self.navigationController = navigationController
     self.balanceService = balanceService
     self.authService = authService
@@ -76,7 +75,7 @@ class BalanceCoordinator: BaseCoordinator<Void> {
 
     controller.controllers = [coins.viewController!, transactionsViewController!]
 
-    let headerInset = CGFloat(230.0)
+//    let headerInset = CGFloat(230.0)
 
     viewModel.output.showDelegated.flatMap { [weak self] (_) -> Observable<Void> in
       guard let `self` = self else { return Observable.just(()) }

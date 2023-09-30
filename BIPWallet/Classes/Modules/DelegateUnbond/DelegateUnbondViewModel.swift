@@ -111,7 +111,7 @@ class DelegateUnbondViewModel: BaseViewModel, ViewModel, LastBlockViewable {
   private let didTapSend = PublishSubject<Void>()
   private let didTapUseMax = PublishSubject<Void>()
   private let didEndEditingValidator = PublishSubject<Void>()
-  lazy var balanceTitleObservable = Observable.of(Observable<Int>.timer(0, period: 1, scheduler: MainScheduler.instance).map {_ in}).merge()
+  lazy var balanceTitleObservable = Observable.of(Observable<Int>.interval(RxTimeInterval.seconds(1), scheduler: MainScheduler.instance).map {_ in}).merge()
 
   // MARK: - ViewModel
 
