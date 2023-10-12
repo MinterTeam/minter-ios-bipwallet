@@ -13,7 +13,7 @@ PODS:
     - TrezorCrypto (= 0.0.9)
   - KeychainSwift (20.0.0)
   - MarqueeLabel (4.3.0)
-  - MinterCore (1.2.0):
+  - MinterCore (1.2.7):
     - Alamofire (= 4.7.3)
     - BigInt (~> 3.0)
     - CryptoSwift (~> 1.0)
@@ -83,7 +83,7 @@ DEPENDENCIES:
   - GoldenKeystore (from `https://github.com/sidorov-panda/GoldenKeystore`)
   - KeychainSwift
   - MinterCore (from `../minter-ios-core`)
-  - MinterExplorer
+  - MinterExplorer (from `https://github.com/MinterTeam/minter-ios-explorer`, branch `poolmanager`)
   - MinterMy
   - NotificationBannerSwift
   - ObjectMapper (~> 3.3)
@@ -114,7 +114,6 @@ SPEC REPOS:
     - Differentiator
     - KeychainSwift
     - MarqueeLabel
-    - MinterExplorer
     - MinterMy
     - NotificationBannerSwift
     - ObjectMapper
@@ -147,6 +146,9 @@ EXTERNAL SOURCES:
     :git: https://github.com/sidorov-panda/GoldenKeystore
   MinterCore:
     :path: "../minter-ios-core"
+  MinterExplorer:
+    :branch: poolmanager
+    :git: https://github.com/MinterTeam/minter-ios-explorer
   SwiftValidator:
     :git: https://github.com/jpotts18/SwiftValidator.git
     :tag: 4.2.0
@@ -158,6 +160,9 @@ CHECKOUT OPTIONS:
   GoldenKeystore:
     :commit: 2f58a6eb405561bec305d5a197bcaa1514eed77e
     :git: https://github.com/sidorov-panda/GoldenKeystore
+  MinterExplorer:
+    :commit: ccb718e86ca9ad73889d99ec49187088505f0daa
+    :git: https://github.com/MinterTeam/minter-ios-explorer
   SwiftValidator:
     :git: https://github.com/jpotts18/SwiftValidator.git
     :tag: 4.2.0
@@ -174,7 +179,7 @@ SPEC CHECKSUMS:
   GoldenKeystore: 6d176bbb332a4abb99024ebce06a3e3067c73a8a
   KeychainSwift: 0ce6a4d13f7228054d1a71bb1b500448fb2ab837
   MarqueeLabel: 02f5ac8fd6877c94564556cb93fa86c70c08baeb
-  MinterCore: 53e1fdfd831092a8c9836644b77f47ddd1386389
+  MinterCore: c6a88319fe9ab7532f50ea1ac630593687467936
   MinterExplorer: b0e719917063fe8dd743dfa12cddb08550d04ea2
   MinterMy: 4198c68f2dbdcced3cb6cbe86a6d300b81433288
   NotificationBannerSwift: 437e135298d297fcb03f3eec4466f45cdb128d3d
@@ -202,6 +207,6 @@ SPEC CHECKSUMS:
   TrezorCrypto: bfeea47a052dca2c77d4a39e1e183865e52de14d
   XLPagerTabStrip: 63166e21c9844fa30f2d95d30f335e73be5caf22
 
-PODFILE CHECKSUM: fc9ebab6c07f6ccdce8a0e1e30857e7a88bd9a60
+PODFILE CHECKSUM: 6dcd4cf9fb7edb5f9d4c5fa4f109a2b5fb7b4c45
 
 COCOAPODS: 1.13.0

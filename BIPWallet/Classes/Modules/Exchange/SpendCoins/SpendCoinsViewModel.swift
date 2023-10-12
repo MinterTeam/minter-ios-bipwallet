@@ -1,11 +1,3 @@
-//
-//  SpendCoinsViewModel.swift
-//  BIPWallet
-//
-//  Created by Alexey Sidorov on 19/03/2020.
-//  Copyright 2020 Minter. All rights reserved.
-//
-
 import Foundation
 import RxSwift
 import RxCocoa
@@ -58,6 +50,7 @@ class SpendCoinsViewModel: ConvertCoinsViewModel, ViewModel {
     var balanceService: BalanceService
     var gateService: GateService
     var transactionService: TransactionService
+    var poolService: PoolService
   }
 
   init(dependency: Dependency) {
@@ -146,10 +139,7 @@ class SpendCoinsViewModel: ConvertCoinsViewModel, ViewModel {
     }).disposed(by: disposeBag)
 
     didTapExchangeButton.withLatestFrom(self.approximately.asObservable()).subscribe(onNext: { [weak self] approx in
-      guard
-        let `self` = self,
-        let coinFrom = self.selectedCoin?.transformToCoinName(),
-        let amount = self.spendAmount.value else { return }
+      guard let self = self, let coinFrom = self.selectedCoin?.transformToCoinName(), let amount = self.spendAmount.value else { return }
 
       let fromString = CurrencyNumberFormatter.coinFormatter
         .formattedDecimal(with: Decimal(string: amount) ?? 0.0) + " " + coinFrom
@@ -168,22 +158,20 @@ class SpendCoinsViewModel: ConvertCoinsViewModel, ViewModel {
       .withLatestFrom(Observable.combineLatest(spendCoin, dependency.balanceService.balances()))
       .subscribe(onNext: { [weak self] (val) in
         guard let spendCoin = val.0, let selectedBalance = val.1.balances[spendCoin]?.0 else { return }
-
-        guard let _self = self else { return } //swiftlint:disable:this identifier_name
-        let selectedAmount = CurrencyNumberFormatter.decimalFormatter.formattedDecimal(with: selectedBalance, maxPlaces: 18)
+        let selectedAmount = CurrencyNumberFormatter.decimalFormatter.string(from: selectedBalance as NSNumber)
+//          CurrencyNumberFormatter.decimalFormatter.formattedDecimal(with: selectedBalance, maxPlaces: 18)
         self?.spendAmount.accept(selectedAmount)
       }).disposed(by: disposeBag)
   }
 
   // MARK: -
 
-    let useMaxDidTap = PublishSubject<Void>()
-    let didTapExchangeButton = PublishSubject<Void>()
-    var spendCoin = BehaviorSubject<String?>(value: nil)
-    var spendAmount = BehaviorRelay<String?>(value: nil)
+  let useMaxDidTap = PublishSubject<Void>()
+  let didTapExchangeButton = PublishSubject<Void>()
+  var spendCoin = BehaviorSubject<String?>(value: nil)
+  var spendAmount = BehaviorRelay<String?>(value: nil)
 
-    private var approximately = PublishSubject<String?>()
-    var approximatelyReady = BehaviorRelay(value: false)
+  private var approximately = PublishSubject<String?>()
     var minimumValueToBuy = BehaviorRelay<Decimal?>(value: nil)
 
   private let decimalsNoMantissaFormatter = CurrencyNumberFormatter.decimalShortNoMantissaFormatter
@@ -220,9 +208,12 @@ class SpendCoinsViewModel: ConvertCoinsViewModel, ViewModel {
   // MARK: -
 
   private func calculateApproximately(fromCoin: String, amount: Decimal, getCoin: String) {
-    approximatelyReady.accept(false)
+    approximatelyReady.onNext(false)
 
-    guard let maxComparableBalance = Decimal.PIPComparableBalance(from: selectedBalance) else {
+    guard let maxComparableBalance = Decimal.PIPComparableBalance(from: selectedBalance),
+          let coinFromId = self.dependency.coinService.coinId(symbol: fromCoin),
+          let coinToId = self.dependency.coinService.coinId(symbol: getCoin)
+          else {
       return
     }
 
@@ -236,11 +227,12 @@ class SpendCoinsViewModel: ConvertCoinsViewModel, ViewModel {
       return
     }
 
-    GateManager.shared.estimateCoinSell(coinFrom: fromCoin,
-                                        coinTo: getCoin.transformToCoinName(),
-                                        value: value,
-                                        isAll: isMax)
-      .do(onNext: { [weak self] (_) in
+    Observable.zip(
+      self.dependency.coinService.estimate(fromCoin: fromCoin, toCoin: getCoin.transformToCoinName(),
+                                           amount: value, type: .input),
+      self.dependency.poolService.route(from: fromCoin, to: getCoin.transformToCoinName(),
+                                        amount: value, type: .input).catchErrorJustReturn(nil)
+      ).do(onNext: { [weak self] (_) in
         self?.isApproximatelyLoading.onNext(false)
       }, onError: { [weak self] (error) in
         self?.isApproximatelyLoading.onNext(false)
@@ -261,20 +253,31 @@ class SpendCoinsViewModel: ConvertCoinsViewModel, ViewModel {
         }
       }, onSubscribe: { [weak self] in
         self?.isApproximatelyLoading.onNext(true)
+        self?.isPoolExhange.accept(false)
+        self?.poolPath.accept([])
       }).subscribe(onNext: { [weak self] (res) in
-        let ammnt = res.0
-        let val = ammnt.PIPToDecimal()
+        let estiamte = res.0
+        let pool = res.1
+        
+        if let route = pool {
+          self?.isPoolExhange.accept((route.type == "pool"))
+          self?.poolPath.accept(route.route.compactMap {$0.id})
+        } else {
+          self?.isPoolExhange.accept(false)
+        }
+
+        let val = estiamte?.amountOut ?? 0.0
 
         let appr = (CurrencyNumberFormatter.coinFormatter.formattedDecimal(with: val > 0 ? val : 0)) + " " + getCoin
         self?.approximately.onNext(appr)
 
-        var approximatelyRoundedVal = (ammnt * 0.9)
-        approximatelyRoundedVal.round(.up)
+        var approximatelyRoundedVal = (val * 0.95)
+//        approximatelyRoundedVal.round(.up)
         self?.minimumValueToBuy.accept(approximatelyRoundedVal)
 
         let gtCoin = try? self?.getCoin.value() ?? ""
         if getCoin.transformToCoinName() == gtCoin?.transformToCoinName() {
-          self?.approximatelyReady.accept(true)
+          self?.approximatelyReady.onNext(true)
         }
       }).disposed(by: disposeBag)
   }
@@ -282,7 +285,10 @@ class SpendCoinsViewModel: ConvertCoinsViewModel, ViewModel {
   override func validateErrors() {
     if let amountString = self.spendAmount.value, let amount = Decimal(string: amountString) {
       if amount > selectedBalance {
-        amountError.accept("INSUFFICIENT FUNDS".localized())
+        let isMax = Decimal.PIPComparableBalance(from: self.selectedBalance) == Decimal.PIPComparableBalance(from: amount)
+        if !isMax {
+          amountError.accept("INSUFFICIENT FUNDS".localized())
+        }
       } else {
         amountError.accept(nil)
       }
@@ -309,7 +315,7 @@ class SpendCoinsViewModel: ConvertCoinsViewModel, ViewModel {
       return
     }
 
-    Observable<Void>.just(()).withLatestFrom(dependency.balanceService.account)
+    Observable<Void>.just(()).flatMap{_ in self.coinService.updateCoinsWithResponse()}.withLatestFrom(dependency.balanceService.account)
       .filter({ (account) -> Bool in
         return account != nil && (account?.address.isValidAddress() ?? false)
     }).map({ (item) -> String in
@@ -369,7 +375,13 @@ class SpendCoinsViewModel: ConvertCoinsViewModel, ViewModel {
       }
     }
 
-    if let apiError = err as? HTTPClientError, let errorCode = apiError.userData?["code"] as? Int {
+    if let apiError = err as? HTTPClientError {
+      var errorCode = -1
+      if let eCode = apiError.userData?["code"] as? String {
+        errorCode = Int(eCode) ?? -1
+      } else if let eCode = apiError.userData?["code"] as? Int {
+        errorCode = eCode
+      }
 
       if errorCode == 107 {
         title = "Not enough coins to spend".localized()
@@ -417,33 +429,59 @@ class SpendCoinsViewModel: ConvertCoinsViewModel, ViewModel {
           return
         }
 
+        guard let fromCoin = self.dependency.coinService.coinBy(id: coinFromId)?.symbol,
+              let toCoin = self.dependency.coinService.coinBy(id: coinToId)?.symbol else {
+          return
+        }
+
+        let obs: Observable<(Decimal, [Coin])> = self.isPoolExhange.value ? self.dependency.coinService.route(fromCoin: fromCoin, toCoin: toCoin, amount: amnt.decimalFromPIP(), type: "input") : Observable.just((0.0, []))
+
         Observable.zip(GateManager.shared.nonce(address: selectedAddress),
-                       GateManager.shared.minGas()).flatMap({ (val) -> Observable<String?> in
+                       GateManager.shared.minGas(), obs).flatMap({ (val) -> Observable<String?> in
+                        
+          let coins = val.2.1
+                        
           let nonce = Decimal(val.0 + 1)
 
           var tx: RawTransaction!
-          let coinId = self.canPayComissionWithBaseCoin() ? Coin.baseCoin().id! : coinFromId
-          let isBaseCoin = Coin.baseCoin().id! == coinFromId
+          let coinId = self.canPayComissionWithBaseCoin() ? self.baseCoin.id! : coinFromId
+          let isBaseCoin = self.baseCoin.id! == coinFromId
 
-          //TODO: remove after https://github.com/MinterTeam/minter-go-node/issues/224
-          let minValBuy = /*minimumBuyVal*/BigUInt(0)
+          let minValBuy = BigUInt(decimal: minimumBuyValue.decimalFromPIP()) ?? BigUInt(0)
 
           //Using SellAll TX in case we're using maximum amount or there is no base coin (MNT, BIP) to pay commission
           if isMax && (isBaseCoin || !self.canPayComissionWithBaseCoin()) {
-            tx = SellAllCoinsRawTransaction(nonce: BigUInt(decimal: nonce)!,
-                                            gasPrice: val.1,
-                                            gasCoinId: coinId,
-                                            coinFromId: coinFromId,
-                                            coinToId: coinToId,
-                                            minimumValueToBuy: minValBuy)
+            if coins.count > 0 {
+              self.poolPath.accept(coins.compactMap {$0.id})
+              tx = SellAllSwapPoolRawTransaction(nonce: BigUInt(decimal: nonce)!,
+                                                 gasCoinId: coinId,
+                                                 coins: coins.compactMap { $0.id },
+                                                 minimumValueToBuy: minValBuy)
+            } else {
+              tx = SellAllCoinsRawTransaction(nonce: BigUInt(decimal: nonce)!,
+                                              gasPrice: val.1,
+                                              gasCoinId: coinId,
+                                              coinFromId: coinFromId,
+                                              coinToId: coinToId,
+                                              minimumValueToBuy: minValBuy)
+            }
           } else {
-            tx = SellCoinRawTransaction(nonce: BigUInt(decimal: nonce)!,
-                                        gasPrice: val.1,
-                                        gasCoinId: coinId,
-                                        coinFromId: coinFromId,
-                                        coinToId: coinToId,
-                                        value: realAmount,
-                                        minimumValueToBuy: minValBuy)
+            if coins.count > 0 {
+              self.poolPath.accept(coins.compactMap {$0.id})
+              tx = SellSwapPoolRawTransaction(nonce: BigUInt(decimal: nonce)!,
+                                              gasCoinId: coinId,
+                                              coins: coins.compactMap { $0.id },
+                                              valueToSell: realAmount,
+                                              minimumValueToBuy: minValBuy)
+            } else {
+              tx = SellCoinRawTransaction(nonce: BigUInt(decimal: nonce)!,
+                                          gasPrice: val.1,
+                                          gasCoinId: coinId,
+                                          coinFromId: coinFromId,
+                                          coinToId: coinToId,
+                                          value: realAmount,
+                                          minimumValueToBuy: minValBuy)
+            }
           }
           let signedTx = RawTransactionSigner.sign(rawTx: tx, privateKey: pk.raw.toHexString())
           return GateManager.shared.send(rawTx: signedTx).map {$0.0}
@@ -469,6 +507,64 @@ class SpendCoinsViewModel: ConvertCoinsViewModel, ViewModel {
       .subscribe(onNext: { (coins) in
         completion?(coins)
       }).disposed(by: disposeBag)
+  }
+
+  private func rawTx(nonce: BigUInt = BigUInt(1),
+                     gasPrice: Int = 1,
+                     coinFromId: Int,
+                     coinToId: Int,
+                     amount: Decimal,
+                     minimumValueToBuy: Decimal,
+                     coins: [Coin]) -> RawTransaction {
+    let convertedAmount = BigUInt(decimal: amount, fromPIP: true)
+
+    let isMax = Decimal.PIPComparableBalance(from: self.selectedBalance) == amount
+
+    var realAmount = convertedAmount ?? BigUInt(0)
+    //If is max value - get real value
+    if isMax {
+      realAmount = BigUInt(decimal: self.selectedBalance, fromPIP: true) ?? convertedAmount ?? BigUInt(0)
+    }
+
+    var tx: RawTransaction!
+    let coinId = self.canPayComissionWithBaseCoin() ? self.baseCoin.id! : coinFromId
+    let isBaseCoin = self.baseCoin.id! == coinFromId
+
+    let minValBuy = BigUInt(decimal: minimumValueToBuy) ?? BigUInt(0)
+
+    //Using SellAll TX in case we're using maximum amount or there is no base coin (MNT, BIP) to pay commission
+    if isMax && (isBaseCoin || !self.canPayComissionWithBaseCoin()) {
+      if coins.count > 0 {
+        tx = SellAllSwapPoolRawTransaction(nonce: nonce,
+                                           gasCoinId: coinId,
+                                           coins: coins.compactMap { $0.id },
+                                           minimumValueToBuy: minValBuy)
+      } else {
+        tx = SellAllCoinsRawTransaction(nonce: nonce,
+                                        gasPrice: gasPrice,
+                                        gasCoinId: coinId,
+                                        coinFromId: coinFromId,
+                                        coinToId: coinToId,
+                                        minimumValueToBuy: minValBuy)
+      }
+    } else {
+      if coins.count > 0 {
+        tx = SellSwapPoolRawTransaction(nonce: nonce,
+                                        gasCoinId: coinId,
+                                        coins: coins.compactMap { $0.id },
+                                        valueToSell: realAmount,
+                                        minimumValueToBuy: minValBuy)
+      } else {
+        tx = SellCoinRawTransaction(nonce: nonce,
+                                    gasPrice: gasPrice,
+                                    gasCoinId: coinId,
+                                    coinFromId: coinFromId,
+                                    coinToId: coinToId,
+                                    value: realAmount,
+                                    minimumValueToBuy: minValBuy)
+      }
+    }
+    return tx
   }
 
 }

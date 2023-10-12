@@ -228,7 +228,7 @@ class AllTransactionsViewModel: BaseViewModel, ViewModel, TransactionViewableVie
       case .multisend:
         transactionCellItem = self.multisendTransactionItem(with: transaction)
 
-      case .buyCoin, .sellCoin, .sellAllCoins:
+      case .buyCoin, .sellCoin, .sellAllCoins, .sellSwap, .buySwap,  .sellAllSwap:
         transactionCellItem = self.convertTransactionItem(with: transaction)
 
       case .delegate, .unbond:
@@ -239,7 +239,7 @@ class AllTransactionsViewModel: BaseViewModel, ViewModel, TransactionViewableVie
 
       case .createCoin, .declareCandidacy, .setCandidateOnline,
            .setCandidateOffline, .createMultisigAddress, .editCandidate, .priceVote,
-           .changeCoinOwner, .recreateCoin, .editMultisigOwner, .setHaltBlock:
+           .changeCoinOwner, .recreateCoin, .editMultisigOwner, .setHaltBlock, .editCandidatePublicKey:
         transactionCellItem = self.systemTransactionItem(with: transaction)
       }
 

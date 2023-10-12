@@ -1,11 +1,3 @@
-//
-//  ExplorerCoinService.swift
-//  BIPWallet
-//
-//  Created by Alexey Sidorov on 22.03.2020.
-//  Copyright © 2020 Alexey Sidorov. All rights reserved.
-//
-
 import Foundation
 import RxSwift
 import MinterCore
@@ -17,7 +9,7 @@ class ExplorerCoinService: CoinService {
     loadCoins()
   }
 
-  private let manager = ExplorerCoinManager(httpClient: APIClient(headers: ["X-Minter-Chain-Id": "chilinet"]))
+  private let manager = ExplorerCoinManager(httpClient: APIClient(headers: ["X-Minter-Chain-Id": XMinterChainId]))
 
   private var allCoins = [Coin]()
 
@@ -27,9 +19,27 @@ class ExplorerCoinService: CoinService {
     loadCoins()
   }
 
-  private func loadCoins() {
+  func updateCoinsWithResponse() -> Observable<Bool> {
     manager.coins(term: "").map { (coins) -> [Coin] in
       return coins ?? []
+    }.do(onNext: { [weak self] (coins) in
+      self?.setCoins(coins)
+    }).map({ (coins) -> Bool in
+      return coins.count > 0
+    })
+  }
+
+  private func loadCoins() {
+    Observable.zip(manager.verifiedCoins().catchErrorJustReturn([]), manager.coins(term: "")).map { (result) -> [Coin] in
+      let coins = result.1
+      let verified = result.0
+      return (coins ?? []).map { coin in
+        var newCoin = coin
+        newCoin.isOracleVerified = verified?.contains(where: { ver in
+          coin.id == ver.id
+        }) ?? false
+        return newCoin
+      }
     }.filter({ (coins) -> Bool in
       return coins.count > 0
     }).subscribe(onNext: { (coins) in
@@ -73,7 +83,6 @@ class ExplorerCoinService: CoinService {
     }).do { (coins) in
       self.setCoins(coins)
     }
-
   }
 
   func coinExists(name: String) -> Observable<Bool> {
@@ -108,6 +117,34 @@ class ExplorerCoinService: CoinService {
   func coinWith(predicate: (Coin) -> (Bool)) -> Coin? {
     return allCoins.first { (coin) -> Bool in
       return predicate(coin)
+    }
+  }
+
+  func route(fromCoin: String, toCoin: String, amount: Decimal, type: String = "input") -> Observable<(Decimal, [Coin])> {
+    return Observable.create { (observer) -> Disposable in
+      self.manager.route(fromCoin: fromCoin, toCoin: toCoin, type: type, amount: amount) { estimate, coins, error in
+        guard error == nil else {
+          observer.onError(error!)
+          return
+        }
+        observer.onNext((estimate ?? 0.0, coins ?? []))
+        observer.onCompleted()
+      }
+      return Disposables.create()
+    }
+  }
+
+  public func estimate(fromCoin: String, toCoin: String, amount: Decimal, type: PoolServiceRouteType) -> Observable<CoinManagerEstimateResponse?> {
+    return Observable.create { (observer) -> Disposable in
+      self.manager.estimate(fromCoin: fromCoin, toCoin: toCoin, type: type.rawValue, amount: amount) { response, error in
+        guard error == nil else {
+          observer.onError(error!)
+          return
+        }
+        observer.onNext(response)
+        observer.onCompleted()
+      }
+      return Disposables.create()
     }
   }
 
@@ -155,4 +192,21 @@ extension ExplorerCoinManager {
       return Disposables.create()
     }
   }
+
+  func verifiedCoins() -> Observable<[Coin]?> {
+    return Observable.create { (observer) -> Disposable in
+      self.verifiedCoins() { (coins, error) in
+
+        guard error == nil else {
+          observer.onError(error!)
+          return
+        }
+
+        observer.onNext(coins)
+        observer.onCompleted()
+      }
+      return Disposables.create()
+    }
+  }
+
 }

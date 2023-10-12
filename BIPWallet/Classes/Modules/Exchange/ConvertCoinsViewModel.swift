@@ -21,6 +21,10 @@ class ConvertCoinsViewModel: BaseViewModel {
 		}
 	}
 
+    var baseCoin: Coin {
+       return gateService.lastComission?.coin ?? Coin.baseCoin()
+     }
+    var approximatelyReady = BehaviorSubject<Bool>(value: false)
     var spendCoinField = ReplaySubject<String?>.create(bufferSize: 2)
 	var hasCoin = BehaviorRelay(value: false)
 	var coinIsLoading = BehaviorSubject(value: false)
@@ -29,6 +33,8 @@ class ConvertCoinsViewModel: BaseViewModel {
 	var amountError = BehaviorRelay<String?>(value: nil)
 	var getCoinError = PublishRelay<String?>()
     lazy var isApproximatelyLoading = PublishSubject<Bool>()
+    lazy var isPoolExhange = BehaviorRelay<Bool>(value: false)
+    lazy var poolPath = BehaviorRelay<[Int]>(value: [])
 	lazy var isLoading = BehaviorSubject<Bool>(value: false)
 	lazy var errorNotification = PublishSubject<String?>()
 	lazy var successMessage = PublishSubject<String?>()
@@ -57,30 +63,31 @@ class ConvertCoinsViewModel: BaseViewModel {
 
 		super.init()
 
-    self.selectedCoin = Coin.baseCoin().symbol!
+      self.selectedCoin = self.baseCoin.symbol!//Coin.baseCoin().symbol!
 
-    balanceService.balances().subscribe(onNext: { [weak self] (val) in
-      let balances = val.balances
+      balanceService.balances().subscribe(onNext: { [weak self] (val) in
+         guard let self = self else { return; }
+         let balances = val.balances
 
-      self?.balances = balances.mapValues({ (val) -> Decimal in
-        return val.0
-      })
+         self.balances = balances.mapValues({ (val) -> Decimal in
+           return val.0
+         })
 
-      if self?.selectedCoin == nil {
-        self?.selectedCoin = Coin.baseCoin().symbol!
-      }
+         if self.selectedCoin == nil {
+           self.selectedCoin = self.baseCoin.symbol//Coin.baseCoin().symbol!
+         }
 
-      var spendCoinSource = [String: Decimal]()
-      balances.keys.forEach({ (coin) in
-        spendCoinSource[coin] = balances[coin]?.0 ?? 0.0
-      })
+         var spendCoinSource = [String: Decimal]()
+         balances.keys.forEach({ (coin) in
+           spendCoinSource[coin] = balances[coin]?.0 ?? 0.0
+         })
 
-      self?.spendCoinPickerSource = spendCoinSource
+         self.spendCoinPickerSource = spendCoinSource
 
-      if self?.selectedCoin != nil {
-        self?.spendCoinField.onNext(self?.spendCoinText)
-      }
-    }).disposed(by: disposeBag)
+         if self.selectedCoin != nil {
+           self.spendCoinField.onNext(self.spendCoinText)
+         }
+   }).disposed(by: disposeBag)
 
     gateService.updateGas()
     gateService.currentGas().startWith(RawTransactionDefaultGasPrice).subscribe(onNext: { [weak self] (val) in
@@ -172,7 +179,7 @@ class ConvertCoinsViewModel: BaseViewModel {
 			return
 		}
 
-		if coin == Coin.baseCoin().symbol {
+        if coin == self.baseCoin.symbol {
 			hasCoin.accept(true)
 			self.validateErrors()
 			return

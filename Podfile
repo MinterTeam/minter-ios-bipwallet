@@ -5,7 +5,7 @@ platform :ios, '14.0'
 
 def shared_pods
   #Minter
-	pod 'MinterCore', :path => '../minter-ios-core' #:git => 'https://github.com/MinterTeam/minter-ios-core', :branch => 'fix/signature'
+	pod 'MinterCore'
 	pod 'MinterMy'
 	pod 'MinterExplorer'
   #Networking

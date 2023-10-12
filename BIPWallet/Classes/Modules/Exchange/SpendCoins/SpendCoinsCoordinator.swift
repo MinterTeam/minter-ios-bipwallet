@@ -1,11 +1,3 @@
-//
-//  SpendCoinsCoordinator.swift
-//  BIPWallet
-//
-//  Created by Alexey Sidorov on 19/03/2020.
-//  Copyright 2020 Minter. All rights reserved.
-//
-
 import UIKit
 import RxSwift
 
@@ -18,14 +10,17 @@ class SpendCoinsCoordinator: BaseCoordinator<Void> {
        balanceService: BalanceService,
        gateService: GateService,
        transactionService: TransactionService,
-       coinService: CoinService
+       coinService: CoinService,
+       poolService: PoolService
        ) {
     super.init()
 
     let dependency = SpendCoinsViewModel.Dependency(coinService: coinService,
                                                     balanceService: balanceService,
                                                     gateService: gateService,
-                                                    transactionService: transactionService)
+                                                    transactionService: transactionService,
+                                                    poolService: poolService
+                                                    )
 
     let viewModel = SpendCoinsViewModel(dependency: dependency)
     viewController = сontroller

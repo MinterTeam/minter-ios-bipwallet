@@ -33,6 +33,8 @@
 		3EB8005BBA6C7AA850DDE4C9 /* DelegateUnbondViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BCE01A82F430E43E3946E2A /* DelegateUnbondViewModel.swift */; };
 		4A728D31AAAD95AC148B798A /* SelectWalletViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A84D3BA4C8E80F0BCF605A3 /* SelectWalletViewController.swift */; };
 		4F2E24D9ACAEFBEB603F3C94 /* CoinsCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BFE7D4C0EDF8077A91F11DA /* CoinsCoordinator.swift */; };
+		5D3399792AD69535006E9B73 /* ExplorerPoolService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D3399782AD69535006E9B73 /* ExplorerPoolService.swift */; };
+		5D33997A2AD69535006E9B73 /* ExplorerPoolService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D3399782AD69535006E9B73 /* ExplorerPoolService.swift */; };
 		61E66212F4D185E28DD99CCE /* ShareViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE47C29106126DCED04A99E1 /* ShareViewModel.swift */; };
 		62CC2D325471C176A9632324 /* AddWalletCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = D082D6F1BD8A4E016C5D8A85 /* AddWalletCoordinator.swift */; };
 		63ACD7AD88C1561764F0C046 /* ContactPickerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63F517615863AB7370A24AAB /* ContactPickerViewModel.swift */; };
@@ -819,6 +821,7 @@
 		5463FB65358984D402A0B02F /* TransactionViewController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = TransactionViewController.swift; sourceTree = "<group>"; };
 		56D4777C11E6B51FD5EFEF67 /* SignInCoordinator.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = SignInCoordinator.swift; sourceTree = "<group>"; };
 		57F3B86220F91ADA4775AC9C /* CreateWalletViewController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = CreateWalletViewController.swift; sourceTree = "<group>"; };
+		5D3399782AD69535006E9B73 /* ExplorerPoolService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExplorerPoolService.swift; sourceTree = "<group>"; };
 		606717FCC0D0DDC3AF12D532 /* GetCoinsViewController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = GetCoinsViewController.swift; sourceTree = "<group>"; };
 		63F517615863AB7370A24AAB /* ContactPickerViewModel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ContactPickerViewModel.swift; sourceTree = "<group>"; };
 		6689D709B64BA12DDB270A15 /* AllTransactionsCoordinator.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AllTransactionsCoordinator.swift; sourceTree = "<group>"; };
@@ -2181,6 +2184,7 @@
 				FAF04BDC24499353004CBC07 /* ExplorerValidatorService.swift */,
 				FAE01A30244B72A700C5EB96 /* LocalStorageAccountService.swift */,
 				FA62231124507ADB006089EC /* LocalStorageAppSettings.swift */,
+				5D3399782AD69535006E9B73 /* ExplorerPoolService.swift */,
 			);
 			path = Service;
 			sourceTree = "<group>";
@@ -3010,6 +3014,7 @@
 				6CCDF5CFC5D97B0D2EEA779D /* WalletCoordinator.swift in Sources */,
 				FAA7CAA8253734B5006F6F24 /* UIView+Anchor.swift in Sources */,
 				337B40B7306272957F8CA5A7 /* CreateWalletViewController.swift in Sources */,
+				5D3399792AD69535006E9B73 /* ExplorerPoolService.swift in Sources */,
 				FA3BDE3F242A755D0076A7F4 /* ExplorerGateService.swift in Sources */,
 				EA3D2631E1BE051E430932E2 /* CreateWalletViewModel.swift in Sources */,
 				FA6AFB44244DC25100CCBE19 /* SwitchTableViewCell.swift in Sources */,
@@ -3337,6 +3342,7 @@
 				FAAAD90A24977B7A00D7F5FE /* WalletCoordinator.swift in Sources */,
 				FAA7CAA9253734B5006F6F24 /* UIView+Anchor.swift in Sources */,
 				FAAAD90B24977B7A00D7F5FE /* CreateWalletViewController.swift in Sources */,
+				5D33997A2AD69535006E9B73 /* ExplorerPoolService.swift in Sources */,
 				FAAAD90C24977B7A00D7F5FE /* ExplorerGateService.swift in Sources */,
 				FAAAD90D24977B7A00D7F5FE /* CreateWalletViewModel.swift in Sources */,
 				FAAAD90E24977B7A00D7F5FE /* SwitchTableViewCell.swift in Sources */,
@@ -3639,7 +3645,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = BIPWallet/BIPWallet.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 311;
+				CURRENT_PROJECT_VERSION = 333;
 				DEVELOPMENT_TEAM = A26H28FPZU;
 				INFOPLIST_FILE = BIPWallet/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
@@ -3647,7 +3653,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 2.1.0;
+				MARKETING_VERSION = 2.2.0;
 				PRODUCT_BUNDLE_IDENTIFIER = MNT.BipWallet;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "BIPWallet/BIPWallet-Bridging-Header.h";
@@ -3663,7 +3669,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = BIPWallet/BIPWallet.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 311;
+				CURRENT_PROJECT_VERSION = 333;
 				DEVELOPMENT_TEAM = A26H28FPZU;
 				INFOPLIST_FILE = BIPWallet/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
@@ -3671,7 +3677,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 2.1.0;
+				MARKETING_VERSION = 2.2.0;
 				PRODUCT_BUNDLE_IDENTIFIER = MNT.BipWallet;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "BIPWallet/BIPWallet-Bridging-Header.h";

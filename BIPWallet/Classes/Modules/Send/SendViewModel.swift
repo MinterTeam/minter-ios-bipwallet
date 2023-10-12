@@ -146,8 +146,12 @@ class SendViewModel: BaseViewModel, ViewModel, WalletSelectableViewModel {// swi
     guard selectedCoin.value != nil else {
       return nil
     }
-    return selectedCoin.value == Coin.baseCoin().symbol!
-  }
+    return selectedCoin.value == baseCoin.symbol
+    }
+
+     var baseCoin: Coin {
+       return GateManager.shared.lastComission?.coin ?? Coin.baseCoin()
+     }
 
   private func canPayCommissionWithBaseCoin(baseCoinBalance: Decimal) -> Bool {
     if baseCoinBalance >= commission() {
@@ -170,7 +174,7 @@ class SendViewModel: BaseViewModel, ViewModel, WalletSelectableViewModel {// swi
   private var lastSentTransactionHash: String?
   private var selectedCoin = BehaviorRelay<String?>(value: nil)
   private let accountManager = AccountManager()
-  private let infoManager = InfoManager(httpClient: APIClient(headers: ["X-Minter-Chain-Id": "chilinet"]))
+  private let infoManager = InfoManager(httpClient: APIClient(headers: ["X-Minter-Chain-Id": XMinterChainId]))
   private let payloadSubject = BehaviorSubject<String?>(value: "")
   private let clearPayloadSubject = BehaviorSubject<String?>(value: "")
   private let errorNotificationSubject = PublishSubject<NotifiableError?>()
@@ -705,6 +709,10 @@ YOU ARE ABOUT TO SEND SEED PHRASE IN THE MESSAGE ATTACHED TO THIS TRANSACTION.\n
 
         guard selectedAddress.isValidAddress() else { return Observable.error(SendViewModelError.noPrivateKey) }
 
+          guard let coinId = self.dependency.coinService.coinId(symbol: coinSymbol) else {
+              return Observable.error(SendViewModelError.invalidTransactionData)
+            }
+
         return self.prepareTx(nonce: nonce,
                               amount: amount,
                               selectedCoinBalance: selectedAddressBalance,
@@ -788,7 +796,7 @@ YOU ARE ABOUT TO SEND SEED PHRASE IN THE MESSAGE ATTACHED TO THIS TRANSACTION.\n
 
         let isMax = self.isMaxAmount.value
 
-        let isBaseCoin = coinId == Coin.baseCoin().id!
+        let isBaseCoin = coinId == self.baseCoin.id!
         let preparedAmount = amount.decimalFromPIP()
         let commission = self.commission()
         if
@@ -796,7 +804,7 @@ YOU ARE ABOUT TO SEND SEED PHRASE IN THE MESSAGE ATTACHED TO THIS TRANSACTION.\n
           let seed = self.accountManager.seed(mnemonic: mnemonic),
           let newPk = try? self.accountManager.privateKey(from: seed) {
 
-          var gasCoinId: Int = Coin.baseCoin().id!
+          var gasCoinId: Int = self.baseCoin.id!
           var value: BigUInt = BigUInt(0)
 
           if isMax {
@@ -847,11 +855,11 @@ YOU ARE ABOUT TO SEND SEED PHRASE IN THE MESSAGE ATTACHED TO THIS TRANSACTION.\n
               }
               return Disposables.create()
             } else {
-              gasCoinId = (canPayCommissionWithBaseCoin) ? Coin.baseCoin().id! : coinId
+              gasCoinId = (canPayCommissionWithBaseCoin) ? self.baseCoin.id!: coinId
               value = BigUInt(decimal: amount.decimalFromPIP()) ?? BigUInt(0)
             }
           } else {
-            gasCoinId = (canPayCommissionWithBaseCoin) ? Coin.baseCoin().id! : coinId
+            gasCoinId = (canPayCommissionWithBaseCoin) ? self.baseCoin.id! : coinId
             value = BigUInt(decimal: amount.decimalFromPIP()) ?? BigUInt(0)
           }
           if let rawTx: RawTransaction = self.rawTransaction(nonce: nonce,
@@ -880,7 +888,7 @@ YOU ARE ABOUT TO SEND SEED PHRASE IN THE MESSAGE ATTACHED TO THIS TRANSACTION.\n
     let payloadCom = Decimal((payloadData ?? Data()).count) * RawTransaction.payloadByteComissionPrice.decimalFromPIP()
     var commission = (RawTransactionType.sendCoin.commission() + payloadCom).PIPToDecimal() * Decimal(gas)
     let balanceString = coinFormatter.formattedDecimal(with: commission)
-    return balanceString + " " + (Coin.baseCoin().symbol ?? "")
+    return balanceString + " " + (GateManager.shared.lastComission?.coin?.symbol ?? self.baseCoin.symbol ?? "")
   }
 
   // MARK: -

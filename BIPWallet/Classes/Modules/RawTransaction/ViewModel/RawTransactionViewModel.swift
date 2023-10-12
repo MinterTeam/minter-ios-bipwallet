@@ -19,54 +19,54 @@ class RawTransactionViewModel: BaseViewModel, ViewModel {// swiftlint:disable:th
   //(Coin Name, Amount to buy, Total amount needed for tx)
   typealias NeededCoinAndAmount = (String, Decimal, Decimal)
 
-	// MARK: -
+    // MARK: -
 
-	enum RawTransactionViewModelError: Error {
-		case authRequired
-		case noPrivateKey
-		case incorrectTxData
-	}
+    enum RawTransactionViewModelError: Error {
+        case authRequired
+        case noPrivateKey
+        case incorrectTxData
+    }
 
-	enum CellIdentifierPrefix: String {
-		case fee = "TwoTitleTableViewCell_TransactionFee"
-		case separator = "SeparatorTableViewCell"
-		case blank = "BlankTableViewCell"
-		case button = "ButtonTableViewCell_send"
-		case cancelButton = "ButtonTableViewCell_cancel"
-	}
+    enum CellIdentifierPrefix: String {
+        case fee = "TwoTitleTableViewCell_TransactionFee"
+        case separator = "SeparatorTableViewCell"
+        case blank = "BlankTableViewCell"
+        case button = "ButtonTableViewCell_send"
+        case cancelButton = "ButtonTableViewCell_cancel"
+    }
 
-	// MARK: - ViewModelProtocol
+    // MARK: - ViewModelProtocol
 
-	struct Input {
+    struct Input {
     var viewDidAppear: AnyObserver<Void>
     var didTapEditing: AnyObserver<Void>
   }
 
-	struct Output {
-		var sections: Observable<[BaseTableSectionItem]>
-		var shouldClose: Observable<Void>
-		var errorNotification: Observable<NotifiableError?>
-		var successNotification: Observable<NotifiableSuccess?>
-		var vibrate: Observable<Void>
-		var popup: Observable<PopupViewController?>
-		var lastTransactionExplorerURL: () -> (URL?)
+    struct Output {
+        var sections: Observable<[BaseTableSectionItem]>
+        var shouldClose: Observable<Void>
+        var errorNotification: Observable<NotifiableError?>
+        var successNotification: Observable<NotifiableSuccess?>
+        var vibrate: Observable<Void>
+        var popup: Observable<PopupViewController?>
+        var lastTransactionExplorerURL: () -> (URL?)
     var isLoading: Observable<Bool>
     var showExchange: Observable<NeededCoinAndAmount?>
     var isButtonEnabled: Observable<Bool>
     var isEditButtonHidden: Observable<Bool>
-	}
+    }
 
-	struct Dependency {
-		var account: RawTransactionViewModelAccountProtocol
-		var gate: RawTransactionViewModelGateProtocol
+    struct Dependency {
+        var account: RawTransactionViewModelAccountProtocol
+        var gate: RawTransactionViewModelGateProtocol
     var authService: AuthService
     var balanceService: BalanceService
     var coinService: CoinService
-	}
+    }
 
-	var input: RawTransactionViewModel.Input!
-	var output: RawTransactionViewModel.Output!
-	var dependency: RawTransactionViewModel.Dependency!
+    var input: RawTransactionViewModel.Input!
+    var output: RawTransactionViewModel.Output!
+    var dependency: RawTransactionViewModel.Dependency!
 
   struct Field {
     var key: String?
@@ -82,7 +82,7 @@ class RawTransactionViewModel: BaseViewModel, ViewModel {// swiftlint:disable:th
     var onChanged: (() -> ())?
   }
 
-	// MARK: -
+    // MARK: -
 
   lazy var lastBlockString = Observable<Int>.interval(RxTimeInterval.seconds(1), scheduler: MainScheduler.instance)
     .withLatestFrom(self.dependency.balanceService.lastBlockAgo()).map {
@@ -90,16 +90,16 @@ class RawTransactionViewModel: BaseViewModel, ViewModel {// swiftlint:disable:th
   }
 
   private let viewDidAppearSubject = PublishSubject<Void>()
-	private let cancelButtonDidTapSubject = PublishSubject<Void>()
-	private let errorNotificationSubject = PublishSubject<NotifiableError?>()
-	private let successNotificationSubject = PublishSubject<NotifiableSuccess?>()
-	private let proceedButtonDidTapSubject = PublishSubject<Void>()
+    private let cancelButtonDidTapSubject = PublishSubject<Void>()
+    private let errorNotificationSubject = PublishSubject<NotifiableError?>()
+    private let successNotificationSubject = PublishSubject<NotifiableSuccess?>()
+    private let proceedButtonDidTapSubject = PublishSubject<Void>()
   private let showSelectWalletSubject = PublishSubject<Void>()
-	private let sendButtonDidTapSubject = PublishSubject<Void>()
-	private let sectionsSubject = ReplaySubject<[BaseTableSectionItem]>.create(bufferSize: 1)
-	private let sendingTxSubject = PublishSubject<Bool>()
-	private let popupSubject = PublishSubject<PopupViewController?>()
-	private let vibrateSubject = PublishSubject<Void>()
+    private let sendButtonDidTapSubject = PublishSubject<Void>()
+    private let sectionsSubject = ReplaySubject<[BaseTableSectionItem]>.create(bufferSize: 1)
+    private let sendingTxSubject = PublishSubject<Bool>()
+    private let popupSubject = PublishSubject<PopupViewController?>()
+    private let vibrateSubject = PublishSubject<Void>()
   private let isLoading = BehaviorSubject<Bool>(value: false)
   private let buttonTitle = PublishSubject<String?>()
   private let showExchange = PublishSubject<NeededCoinAndAmount?>()
@@ -108,7 +108,7 @@ class RawTransactionViewModel: BaseViewModel, ViewModel {// swiftlint:disable:th
   private let isEditing = BehaviorRelay<Bool>(value: false)
   private let isButtonEnabled = BehaviorRelay<Bool>(value: true)
 
-	// MARK: -
+    // MARK: -
 
   private var account: AccountItem? {
     didSet {
@@ -117,10 +117,10 @@ class RawTransactionViewModel: BaseViewModel, ViewModel {// swiftlint:disable:th
       }
     }
   }
-	private var nonce: BigUInt?
-	private var payload: String?
+    private var nonce: BigUInt?
+    private var payload: String?
   private var type: RawTransactionType
-	private var gasPrice: BigUInt?
+    private var gasPrice: BigUInt?
   private var gasCoin: String = Coin.baseCoin().symbol!
   private var gasCoinId: BigUInt
   private var data: Data? {
@@ -128,62 +128,62 @@ class RawTransactionViewModel: BaseViewModel, ViewModel {// swiftlint:disable:th
       self.isButtonEnabled.accept(data != nil)
     }
   }
-	private var userData: [String: Any]?
+    private var userData: [String: Any]?
 
-	private var multisendAddressCount = 0
-	private var createCoinSymbolCount = 0
+    private var multisendAddressCount = 0
+    private var createCoinSymbolCount = 0
 
   private var neededCoin: String?
   private var neededCoinAmount: Decimal?
 
-	private var fields: [Field] = []
-	private var currentGas = BehaviorSubject<Int>(value: RawTransactionDefaultGasPrice)
+    private var fields: [Field] = []
+    private var currentGas = BehaviorSubject<Int>(value: RawTransactionDefaultGasPrice)
   private let commissionTextForceUpdate = PublishSubject<Void>()
-	private var commissionTextObservable: Observable<String> {
+    private var commissionTextObservable: Observable<String> {
     return Observable.of(commissionTextForceUpdate, sectionsSubject.map{_ in}, currentGas.map{_ in}).merge().withLatestFrom(currentGas)
-			.map({ [weak self] (obj) -> String in
-				let payloadData = self?.payload?.data(using: .utf8)
-				return self?.commissionText(for: obj, payloadData: payloadData) ?? ""
-		})
-	}
-	private let coinFormatter = CurrencyNumberFormatter.coinFormatter
-	private let decimalFormatter = CurrencyNumberFormatter.decimalFormatter
-	private let noMantissaFormatter = CurrencyNumberFormatter.decimalShortNoMantissaFormatter
+            .map({ [weak self] (obj) -> String in
+                let payloadData = self?.payload?.data(using: .utf8)
+                return self?.commissionText(for: obj, payloadData: payloadData) ?? ""
+        })
+    }
+    private let coinFormatter = CurrencyNumberFormatter.coinFormatter
+    private let decimalFormatter = CurrencyNumberFormatter.decimalFormatter
+    private let noMantissaFormatter = CurrencyNumberFormatter.decimalShortNoMantissaFormatter
 
   ///Check data is used to rewrite RawTx Data
   private var checkData: Data?
 
-	// MARK: -
+    // MARK: -
 
-	init(// swiftlint:disable:this type_body_length cyclomatic_complexity function_body_length
-		dependency: Dependency,
+    init(// swiftlint:disable:this type_body_length cyclomatic_complexity function_body_length
+        dependency: Dependency,
     isLoggedIn: Bool = false,
-		nonce: BigUInt?,
-		gasPrice: BigUInt?,
-		gasCoinId: BigUInt?,
-		type: RawTransactionType,
-		data: Data?,
-		payload: String?,
-		serviceData: Data?,
-		signatureType: Data?,
-		userData: [String: Any]? = [:]
-	) throws {
+        nonce: BigUInt?,
+        gasPrice: BigUInt?,
+        gasCoinId: BigUInt?,
+        type: RawTransactionType,
+        data: Data?,
+        payload: String?,
+        serviceData: Data?,
+        signatureType: Data?,
+        userData: [String: Any]? = [:]
+    ) throws {
 
-		self.dependency = dependency
+        self.dependency = dependency
 
-		self.type = type
+        self.type = type
 
-		self.gasPrice = gasPrice
-		self.gasCoinId = gasCoinId ?? BigUInt(Coin.baseCoin().id!)
-		self.nonce = nonce
-		self.userData = userData
+        self.gasPrice = gasPrice
+        self.gasCoinId = gasCoinId ?? BigUInt(Coin.baseCoin().id!)
+        self.nonce = nonce
+        self.userData = userData
 
-		super.init()
+        super.init()
 
-		self.payload = payload
-		self.data = data
+        self.payload = payload
+        self.data = data
 
-//		try makeFields(data: data)
+//        try makeFields(data: data)
 
     if let data = data, let txData = RLP.decode(data), let content = txData[0]?.content {
       switch content {
@@ -206,13 +206,13 @@ class RawTransactionViewModel: BaseViewModel, ViewModel {// swiftlint:disable:th
                        didTapEditing: didTapEdit.asObserver()
     )
 
-		self.output = Output(sections: sectionsSubject.asObservable(),
-												 shouldClose: cancelButtonDidTapSubject.asObservable(),
-												 errorNotification: errorNotificationSubject.asObservable(),
-												 successNotification: successNotificationSubject.asObservable(),
-												 vibrate: vibrateSubject.asObservable(),
-												 popup: popupSubject.asObservable(),
-												 lastTransactionExplorerURL: self.lastTransactionExplorerURL,
+        self.output = Output(sections: sectionsSubject.asObservable(),
+                                                 shouldClose: cancelButtonDidTapSubject.asObservable(),
+                                                 errorNotification: errorNotificationSubject.asObservable(),
+                                                 successNotification: successNotificationSubject.asObservable(),
+                                                 vibrate: vibrateSubject.asObservable(),
+                                                 popup: popupSubject.asObservable(),
+                                                 lastTransactionExplorerURL: self.lastTransactionExplorerURL,
                          isLoading: isLoading.asObservable(),
                          showExchange: showExchange.asObservable(),
                          isButtonEnabled: isButtonEnabled.asObservable(),
@@ -304,7 +304,7 @@ class RawTransactionViewModel: BaseViewModel, ViewModel {// swiftlint:disable:th
       try? self.makeFields(data: data)
       self.sectionsSubject.onNext(self.createSections())
     }).subscribe().disposed(by: disposeBag)
-	}
+    }
 
   func address() throws -> String {
     guard let adr = self.account?.address else {
@@ -331,7 +331,7 @@ class RawTransactionViewModel: BaseViewModel, ViewModel {// swiftlint:disable:th
               let privateKey = try self?.dependency.account.privatekey(for: address)
             else {
               return Observable.error(RawTransactionViewModelError.noPrivateKey)
-				}
+                }
 
         let gasPrice = (self?.gasPrice != nil) ? self!.gasPrice! : BigUInt(try self?.currentGas.value() ?? RawTransactionDefaultGasPrice)
         let resultNonce = (self?.nonce != nil) ? self!.nonce! : nnnc
@@ -342,12 +342,12 @@ class RawTransactionViewModel: BaseViewModel, ViewModel {// swiftlint:disable:th
             self?.data = MinterCore.RedeemCheckRawTransactionData(rawCheck: checkData, proof: proof).encode()
         }
 
-				let tx = RawTransaction(nonce: resultNonce,
-																gasPrice: gasPrice,
+                let tx = RawTransaction(nonce: resultNonce,
+                                                                gasPrice: gasPrice,
                                 gasCoinId: gasCoin,
-																type: BigUInt(type.rawValue),
-																data: self?.data ?? Data(),
-																payload: self?.payload?.data(using: .utf8) ?? Data())
+                                                                type: BigUInt(type.rawValue),
+                                                                data: self?.data ?? Data(),
+                                                                payload: self?.payload?.data(using: .utf8) ?? Data())
 
         let signedTx = RawTransactionSigner.sign(rawTx: tx, privateKey: privateKey)
         return self?.dependency.gate.send(rawTx: signedTx).map {$0.0} ?? Observable<String?>.empty()
@@ -368,7 +368,7 @@ class RawTransactionViewModel: BaseViewModel, ViewModel {// swiftlint:disable:th
       }).disposed(by: disposeBag)
   }
 
-	// MARK: - Sections
+    // MARK: - Sections
 
   private func createSections() -> [BaseTableSectionItem] {
     var items = [BaseCellItem]()
@@ -434,8 +434,8 @@ class RawTransactionViewModel: BaseViewModel, ViewModel {// swiftlint:disable:th
         }
       }
 
-			items.append(item)
-		}
+            items.append(item)
+        }
 
     let fee = TwoTitleTableViewCellItem(reuseIdentifier: "TwoTitleTableViewCell",
                                         identifier: CellIdentifierPrefix.fee.rawValue)
@@ -462,28 +462,28 @@ class RawTransactionViewModel: BaseViewModel, ViewModel {// swiftlint:disable:th
     }
     button.buttonTitleObservable = isLoading.map { $0 ? "" : "Confirm and Send" }
 
-		button.output?.didTapButton
-			.asDriver(onErrorJustReturn: ())
-			.drive(proceedButtonDidTapSubject.asObserver())
-			.disposed(by: disposeBag)
+        button.output?.didTapButton
+            .asDriver(onErrorJustReturn: ())
+            .drive(proceedButtonDidTapSubject.asObserver())
+            .disposed(by: disposeBag)
 
-		let cancelButton = ButtonTableViewCellItem(reuseIdentifier: "ButtonTableViewCell",
-																							 identifier: CellIdentifierPrefix.cancelButton.rawValue)
-		cancelButton.title = "Cancel".localized()
-		cancelButton.buttonPattern = "blank_black"
-		cancelButton.output?.didTapButton
-			.asDriver(onErrorJustReturn: ())
-			.drive(cancelButtonDidTapSubject.asObserver())
-			.disposed(by: disposeBag)
+        let cancelButton = ButtonTableViewCellItem(reuseIdentifier: "ButtonTableViewCell",
+                                                                                             identifier: CellIdentifierPrefix.cancelButton.rawValue)
+        cancelButton.title = "Cancel".localized()
+        cancelButton.buttonPattern = "blank_black"
+        cancelButton.output?.didTapButton
+            .asDriver(onErrorJustReturn: ())
+            .drive(cancelButtonDidTapSubject.asObserver())
+            .disposed(by: disposeBag)
 
-		let blank2 = BlankTableViewCellItem(reuseIdentifier: "BlankTableViewCell",
-																				identifier: CellIdentifierPrefix.blank.rawValue + "_2")
-		let blank3 = BlankTableViewCellItem(reuseIdentifier: "BlankTableViewCell",
-																				identifier: CellIdentifierPrefix.blank.rawValue + "_3")
+        let blank2 = BlankTableViewCellItem(reuseIdentifier: "BlankTableViewCell",
+                                                                                identifier: CellIdentifierPrefix.blank.rawValue + "_2")
+        let blank3 = BlankTableViewCellItem(reuseIdentifier: "BlankTableViewCell",
+                                                                                identifier: CellIdentifierPrefix.blank.rawValue + "_3")
     blank3.height = 3
 
     var section = BaseTableSectionItem(identifier: "RawTransactionSections", header: "")
-		section.items = items + [blank0, fee, blank, blank2, blank3]
+        section.items = items + [blank0, fee, blank, blank2, blank3]
 
     if shouldShowNeededCoin.value && !isEditing.value {
       let exchangeCoins = RawTransactionConvertCoinCellItem(reuseIdentifier: "RawTransactionConvertCoinCell",
@@ -513,67 +513,67 @@ class RawTransactionViewModel: BaseViewModel, ViewModel {// swiftlint:disable:th
     }
 
     section.items += [button, cancelButton]
-		return [section]
-	}
+        return [section]
+    }
 
-	func sentViewModel() -> SentPopupViewModel {
+    func sentViewModel() -> SentPopupViewModel {
     let contacts = LocalStorageContactsService()
     let recipientInfo = ExplorerRecipientInfoService(contactsService: contacts)
     let vm = SentPopupViewModel(dependency: SentPopupViewModel.Dependency(recipientInfoService: recipientInfo))
-		vm.actionButtonTitle = "View Transaction".localized()
-		vm.secondButtonTitle = "Close".localized()
-		vm.title = "Success!".localized()
-		vm.noAvatar = true
-		vm.desc = "Transaction sent!"
-		return vm
-	}
+        vm.actionButtonTitle = "View Transaction".localized()
+        vm.secondButtonTitle = "Close".localized()
+        vm.title = "Success!".localized()
+        vm.noAvatar = true
+        vm.desc = "Transaction sent!"
+        return vm
+    }
 
-	private func commissionText(for gas: Int, payloadData: Data? = nil) -> String {
+    private func commissionText(for gas: Int, payloadData: Data? = nil) -> String {
     if self.type == .redeemCheck {
       return "0.0000 " + (Coin.baseCoin().symbol ?? "")
     }
-		let payloadCom = Decimal((payloadData ?? Data()).count) * RawTransaction.payloadByteComissionPrice.decimalFromPIP()
-		let commission = (self.type
-			.commission(options: [.multisendCount: self.multisendAddressCount,
-														.coinSymbolLettersCount: self.createCoinSymbolCount]) + payloadCom)
-			.PIPToDecimal() * Decimal(gas)
-		let balanceString = CurrencyNumberFormatter.formattedDecimal(with: commission,
-																																 formatter: coinFormatter)
-		return balanceString + " " + (Coin.baseCoin().symbol ?? "")
-	}
+        let payloadCom = Decimal((payloadData ?? Data()).count) * RawTransaction.payloadByteComissionPrice.decimalFromPIP()
+        let commission = (self.type
+            .commission(options: [.multisendCount: self.multisendAddressCount,
+                                                        .coinSymbolLettersCount: self.createCoinSymbolCount]) + payloadCom)
+            .PIPToDecimal() * Decimal(gas)
+        let balanceString = CurrencyNumberFormatter.formattedDecimal(with: commission,
+                                                                                                                                 formatter: coinFormatter)
+        return balanceString + " " + (Coin.baseCoin().symbol ?? "")
+    }
 
-	private func handle(error: Error) {
-		var notification: NotifiableError
-		if let error = error as? HTTPClientError {
-			if let errorMessage = error.userData?["log"] as? String {
-				notification = NotifiableError(title: "An Error Occurred".localized(),
-																			 text: errorMessage)
-			} else {
-				notification = NotifiableError(title: "An Error Occurred".localized(),
-																			 text: "Unable to send transaction".localized())
-			}
-		} else if let error = error as? RawTransactionViewModelError, error == .noPrivateKey {
-			notification = NotifiableError(title: "No private key found".localized())
-		} else {
-			notification = NotifiableError(title: "An Error Occurred".localized(),
-																		 text: "Unable to send transaction".localized())
-		}
-		self.errorNotificationSubject.onNext(notification)
-	}
+    private func handle(error: Error) {
+        var notification: NotifiableError
+        if let error = error as? HTTPClientError {
+            if let errorMessage = error.userData?["log"] as? String {
+                notification = NotifiableError(title: "An Error Occurred".localized(),
+                                                                             text: errorMessage)
+            } else {
+                notification = NotifiableError(title: "An Error Occurred".localized(),
+                                                                             text: "Unable to send transaction".localized())
+            }
+        } else if let error = error as? RawTransactionViewModelError, error == .noPrivateKey {
+            notification = NotifiableError(title: "No private key found".localized())
+        } else {
+            notification = NotifiableError(title: "An Error Occurred".localized(),
+                                                                         text: "Unable to send transaction".localized())
+        }
+        self.errorNotificationSubject.onNext(notification)
+    }
 
-	var lastSentTransactionHash: String?
-	func lastTransactionExplorerURL() -> URL? {
-		guard nil != lastSentTransactionHash else {
-			return nil
-		}
-		return URL(string: MinterExplorerBaseURL! + "/transactions/" + (lastSentTransactionHash ?? ""))
-	}
+    var lastSentTransactionHash: String?
+    func lastTransactionExplorerURL() -> URL? {
+        guard nil != lastSentTransactionHash else {
+            return nil
+        }
+        return URL(string: MinterExplorerBaseURL! + "/transactions/" + (lastSentTransactionHash ?? ""))
+    }
 }
 
 extension RawTransactionViewModel {
 
-	func makeFields(data: Data?) throws { // swiftlint:disable:this type_body_length cyclomatic_complexity function_body_length
-		if let data = data, let txData = RLP.decode(data), let content = txData[0]?.content {
+    func makeFields(data: Data?) throws { // swiftlint:disable:this type_body_length cyclomatic_complexity function_body_length
+        if let data = data, let txData = RLP.decode(data), let content = txData[0]?.content {
 
       var payloadField = Field(key: "Payload Message".localized(), value: payload ?? "", isEditable: true)
       payloadField.modify = { val in
@@ -601,6 +601,8 @@ extension RawTransactionViewModel {
         case .list(let items, _, _):
           switch type {
 
+          case .sellSwap, .buySwap, .sellAllSwap:
+              break;
           case .sendCoin:
             guard let coinData = items[0].data,
                   let coin = self.coinBy(coinIdData: coinData)?.symbol,
@@ -1410,7 +1412,7 @@ extension RawTransactionViewModel {
               }
             }
 
-          case .editCandidate:
+          case .editCandidate, .editCandidatePublicKey:
             let typeField = Field(key: "Type".localized(), value: "Edit Candidate".localized(), isEditable: false)
             fields.append(typeField)
 
@@ -1487,7 +1489,7 @@ extension RawTransactionViewModel {
         fields.append(payloadField)
       }
     }
-	}
+    }
 
   func coinBy(coinIdData: Data) -> Coin? {
     let coinId = BigUInt(coinIdData)
